@@ -1,23 +1,27 @@
 {
   "files": {
-    "main.css": "./static/css/main.d1b05096.chunk.css",
-    "main.js": "./static/js/main.c3d20663.chunk.js",
-    "main.js.map": "./static/js/main.c3d20663.chunk.js.map",
-    "runtime-main.js": "./static/js/runtime-main.859c77ec.js",
-    "runtime-main.js.map": "./static/js/runtime-main.859c77ec.js.map",
-    "static/js/2.dd464fe8.chunk.js": "./static/js/2.dd464fe8.chunk.js",
-    "static/js/2.dd464fe8.chunk.js.map": "./static/js/2.dd464fe8.chunk.js.map",
-    "index.html": "./index.html",
-    "precache-manifest.45be0b94c32742160f6ea7d7fea6f050.js": "./precache-manifest.45be0b94c32742160f6ea7d7fea6f050.js",
-    "service-worker.js": "./service-worker.js",
-    "static/css/main.d1b05096.chunk.css.map": "./static/css/main.d1b05096.chunk.css.map",
-    "static/js/2.dd464fe8.chunk.js.LICENSE.txt": "./static/js/2.dd464fe8.chunk.js.LICENSE.txt",
-    "static/media/logo.svg": "./static/media/logo.5d5d9eef.svg"
+    "main.css": "/static/css/main.57a9f69e.chunk.css",
+    "main.js": "/static/js/main.e63f4249.chunk.js",
+    "main.js.map": "/static/js/main.e63f4249.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.19fabb1b.js",
+    "runtime-main.js.map": "/static/js/runtime-main.19fabb1b.js.map",
+    "static/css/2.150d169a.chunk.css": "/static/css/2.150d169a.chunk.css",
+    "static/js/2.41d4f5a8.chunk.js": "/static/js/2.41d4f5a8.chunk.js",
+    "static/js/2.41d4f5a8.chunk.js.map": "/static/js/2.41d4f5a8.chunk.js.map",
+    "static/js/3.d9a3f6b6.chunk.js": "/static/js/3.d9a3f6b6.chunk.js",
+    "static/js/3.d9a3f6b6.chunk.js.map": "/static/js/3.d9a3f6b6.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/2.150d169a.chunk.css.map": "/static/css/2.150d169a.chunk.css.map",
+    "static/css/main.57a9f69e.chunk.css.map": "/static/css/main.57a9f69e.chunk.css.map",
+    "static/js/2.41d4f5a8.chunk.js.LICENSE.txt": "/static/js/2.41d4f5a8.chunk.js.LICENSE.txt",
+    "static/media/App.scss": "/static/media/Lato-Regular.77ca2742.woff",
+    "static/media/my_picture.db5690a8.jpg": "/static/media/my_picture.db5690a8.jpg"
   },
   "entrypoints": [
-    "static/js/runtime-main.859c77ec.js",
-    "static/js/2.dd464fe8.chunk.js",
-    "static/css/main.d1b05096.chunk.css",
-    "static/js/main.c3d20663.chunk.js"
+    "static/js/runtime-main.19fabb1b.js",
+    "static/css/2.150d169a.chunk.css",
+    "static/js/2.41d4f5a8.chunk.js",
+    "static/css/main.57a9f69e.chunk.css",
+    "static/js/main.e63f4249.chunk.js"
   ]
 }
