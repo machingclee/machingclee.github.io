@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "./static/css/main.ae4dcc85.chunk.css",
-    "main.js": "./static/js/main.2139542b.chunk.js",
-    "runtime-main.js": "./static/js/runtime-main.5f0fb989.js",
+    "main.css": "./static/css/main.25855d85.chunk.css",
+    "main.js": "./static/js/main.1c0179de.chunk.js",
+    "runtime-main.js": "./static/js/runtime-main.6dd1e521.js",
     "static/css/2.100b230f.chunk.css": "./static/css/2.100b230f.chunk.css",
-    "static/js/2.651bf31d.chunk.js": "./static/js/2.651bf31d.chunk.js",
-    "static/js/3.5271a96b.chunk.js": "./static/js/3.5271a96b.chunk.js",
+    "static/js/2.c041022a.chunk.js": "./static/js/2.c041022a.chunk.js",
+    "static/js/3.b30acb56.chunk.js": "./static/js/3.b30acb56.chunk.js",
     "index.html": "./index.html",
-    "static/js/2.651bf31d.chunk.js.LICENSE.txt": "./static/js/2.651bf31d.chunk.js.LICENSE.txt",
+    "static/js/2.c041022a.chunk.js.LICENSE.txt": "./static/js/2.c041022a.chunk.js.LICENSE.txt",
     "static/media/AlexNet.f1abd696.png": "./static/media/AlexNet.f1abd696.png",
     "static/media/index.css": "./static/media/Lato-Regular.77ca2742.woff",
     "static/media/VGG.f33dab72.jpg": "./static/media/VGG.f33dab72.jpg",
@@ -19,10 +19,10 @@
     "static/media/wpf_v1_02.c955130c.jpg": "./static/media/wpf_v1_02.c955130c.jpg"
   },
   "entrypoints": [
-    "static/js/runtime-main.5f0fb989.js",
+    "static/js/runtime-main.6dd1e521.js",
     "static/css/2.100b230f.chunk.css",
-    "static/js/2.651bf31d.chunk.js",
-    "static/css/main.ae4dcc85.chunk.css",
-    "static/js/main.2139542b.chunk.js"
+    "static/js/2.c041022a.chunk.js",
+    "static/css/main.25855d85.chunk.css",
+    "static/js/main.1c0179de.chunk.js"
   ]
 }
