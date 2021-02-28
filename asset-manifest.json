@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "./static/css/main.2a00eaac.chunk.css",
-    "main.js": "./static/js/main.3ade481d.chunk.js",
+    "main.js": "./static/js/main.75355457.chunk.js",
     "runtime-main.js": "./static/js/runtime-main.9ce1388c.js",
     "static/css/2.100b230f.chunk.css": "./static/css/2.100b230f.chunk.css",
     "static/js/2.f7b6b065.chunk.js": "./static/js/2.f7b6b065.chunk.js",
@@ -11,7 +11,6 @@
     "static/media/AlexNet.f1abd696.png": "./static/media/AlexNet.f1abd696.png",
     "static/media/index.css": "./static/media/Lato-Regular.77ca2742.woff",
     "static/media/VGG.f33dab72.jpg": "./static/media/VGG.f33dab72.jpg",
-    "static/media/YOLOv3StudyNotes.e2a93383.pdf": "./static/media/YOLOv3StudyNotes.e2a93383.pdf",
     "static/media/background_img.f4948d80.jpg": "./static/media/background_img.f4948d80.jpg",
     "static/media/my_picture.db5690a8.jpg": "./static/media/my_picture.db5690a8.jpg",
     "static/media/react_native_04.25c46289.jpg": "./static/media/react_native_04.25c46289.jpg",
@@ -24,6 +23,6 @@
     "static/css/2.100b230f.chunk.css",
     "static/js/2.f7b6b065.chunk.js",
     "static/css/main.2a00eaac.chunk.css",
-    "static/js/main.3ade481d.chunk.js"
+    "static/js/main.75355457.chunk.js"
   ]
 }
