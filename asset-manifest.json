@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "./static/css/main.60f64a96.chunk.css",
-    "main.js": "./static/js/main.9482a9e5.chunk.js",
+    "main.css": "./static/css/main.e1b3e4b8.chunk.css",
+    "main.js": "./static/js/main.1b64502f.chunk.js",
     "runtime-main.js": "./static/js/runtime-main.bc502f6d.js",
     "static/css/2.6b1c6762.chunk.css": "./static/css/2.6b1c6762.chunk.css",
-    "static/js/2.74c0129c.chunk.js": "./static/js/2.74c0129c.chunk.js",
+    "static/js/2.e85f665e.chunk.js": "./static/js/2.e85f665e.chunk.js",
     "static/js/3.a466b565.chunk.js": "./static/js/3.a466b565.chunk.js",
     "index.html": "./index.html",
-    "static/js/2.74c0129c.chunk.js.LICENSE.txt": "./static/js/2.74c0129c.chunk.js.LICENSE.txt",
+    "static/js/2.e85f665e.chunk.js.LICENSE.txt": "./static/js/2.e85f665e.chunk.js.LICENSE.txt",
     "static/media/AlexNet.f1abd696.png": "./static/media/AlexNet.f1abd696.png",
     "static/media/index.css": "./static/media/Lato-Regular.77ca2742.woff",
     "static/media/VGG.f33dab72.jpg": "./static/media/VGG.f33dab72.jpg",
@@ -21,8 +21,8 @@
   "entrypoints": [
     "static/js/runtime-main.bc502f6d.js",
     "static/css/2.6b1c6762.chunk.css",
-    "static/js/2.74c0129c.chunk.js",
-    "static/css/main.60f64a96.chunk.css",
-    "static/js/main.9482a9e5.chunk.js"
+    "static/js/2.e85f665e.chunk.js",
+    "static/css/main.e1b3e4b8.chunk.css",
+    "static/js/main.1b64502f.chunk.js"
   ]
 }
