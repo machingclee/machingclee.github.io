@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "./static/css/main.c92e8c0e.chunk.css",
-    "main.js": "./static/js/main.485bca8c.chunk.js",
+    "main.js": "./static/js/main.b0783f50.chunk.js",
     "runtime-main.js": "./static/js/runtime-main.a119a131.js",
     "static/css/2.9dbe5bea.chunk.css": "./static/css/2.9dbe5bea.chunk.css",
     "static/js/2.faf5425f.chunk.js": "./static/js/2.faf5425f.chunk.js",
     "static/js/3.9ddc4e44.chunk.js": "./static/js/3.9ddc4e44.chunk.js",
     "index.html": "./index.html",
     "static/js/2.faf5425f.chunk.js.LICENSE.txt": "./static/js/2.faf5425f.chunk.js.LICENSE.txt",
-    "static/media/2021-07-18.md": "./static/media/2021-07-18.7530962c.md",
+    "static/media/2021-07-18.md": "./static/media/2021-07-18.128c61dd.md",
     "static/media/2021-07-19.md": "./static/media/2021-07-19.fa697695.md",
-    "static/media/2021-07-21.md": "./static/media/2021-07-21.0d6fd6c7.md",
+    "static/media/2021-07-21.md": "./static/media/2021-07-21.6ce90336.md",
     "static/media/AlexNet.f1abd696.png": "./static/media/AlexNet.f1abd696.png",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "./static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "./static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -64,6 +64,6 @@
     "static/css/2.9dbe5bea.chunk.css",
     "static/js/2.faf5425f.chunk.js",
     "static/css/main.c92e8c0e.chunk.css",
-    "static/js/main.485bca8c.chunk.js"
+    "static/js/main.b0783f50.chunk.js"
   ]
 }
