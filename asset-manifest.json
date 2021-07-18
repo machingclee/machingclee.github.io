@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "./static/css/main.56398ac8.chunk.css",
-    "main.js": "./static/js/main.16b8e0f7.chunk.js",
+    "main.js": "./static/js/main.43f37e64.chunk.js",
     "runtime-main.js": "./static/js/runtime-main.575b7723.js",
     "static/css/2.9dbe5bea.chunk.css": "./static/css/2.9dbe5bea.chunk.css",
     "static/js/2.e650b282.chunk.js": "./static/js/2.e650b282.chunk.js",
     "static/js/3.f0a11c2e.chunk.js": "./static/js/3.f0a11c2e.chunk.js",
     "index.html": "./index.html",
     "static/js/2.e650b282.chunk.js.LICENSE.txt": "./static/js/2.e650b282.chunk.js.LICENSE.txt",
-    "static/media/2021-07-18.md": "./static/media/2021-07-18.7323eee5.md",
+    "static/media/2021-07-18.md": "./static/media/2021-07-18.7530962c.md",
     "static/media/2021-07-19.md": "./static/media/2021-07-19.03a1269a.md",
     "static/media/2021-07-21.md": "./static/media/2021-07-21.f6dfe595.md",
     "static/media/AlexNet.f1abd696.png": "./static/media/AlexNet.f1abd696.png",
@@ -64,6 +64,6 @@
     "static/css/2.9dbe5bea.chunk.css",
     "static/js/2.e650b282.chunk.js",
     "static/css/main.56398ac8.chunk.css",
-    "static/js/main.16b8e0f7.chunk.js"
+    "static/js/main.43f37e64.chunk.js"
   ]
 }
