@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "./static/css/main.3d18185e.chunk.css",
-    "main.js": "./static/js/main.d611d782.chunk.js",
+    "main.js": "./static/js/main.f6d2690f.chunk.js",
     "runtime-main.js": "./static/js/runtime-main.d5bdbbb9.js",
     "static/css/2.9dbe5bea.chunk.css": "./static/css/2.9dbe5bea.chunk.css",
     "static/js/2.1ed4e7a8.chunk.js": "./static/js/2.1ed4e7a8.chunk.js",
@@ -56,7 +56,7 @@
     "static/media/conda-useful-commands.md": "./static/media/conda-useful-commands.c98543bd.md",
     "static/media/gradient-penalty.md": "./static/media/gradient-penalty.a8e7e3f8.md",
     "static/media/my_picture.db5690a8.jpg": "./static/media/my_picture.db5690a8.jpg",
-    "static/media/python-scrapping.md": "./static/media/python-scrapping.4ebb474f.md",
+    "static/media/python-scrapping.md": "./static/media/python-scrapping.9f4fc891.md",
     "static/media/react_native_04.25c46289.jpg": "./static/media/react_native_04.25c46289.jpg",
     "static/media/review.c9c071ab.pdf": "./static/media/review.c9c071ab.pdf",
     "static/media/vggnet_emotion-epoch80.bc74e6f8.png": "./static/media/vggnet_emotion-epoch80.bc74e6f8.png",
@@ -68,6 +68,6 @@
     "static/css/2.9dbe5bea.chunk.css",
     "static/js/2.1ed4e7a8.chunk.js",
     "static/css/main.3d18185e.chunk.css",
-    "static/js/main.d611d782.chunk.js"
+    "static/js/main.f6d2690f.chunk.js"
   ]
 }
