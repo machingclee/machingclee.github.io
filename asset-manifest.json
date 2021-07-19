@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "./static/css/main.ff42c903.chunk.css",
-    "main.js": "./static/js/main.20d1bd73.chunk.js",
+    "main.js": "./static/js/main.ea089099.chunk.js",
     "runtime-main.js": "./static/js/runtime-main.d5bdbbb9.js",
     "static/css/2.9dbe5bea.chunk.css": "./static/css/2.9dbe5bea.chunk.css",
     "static/js/2.1ed4e7a8.chunk.js": "./static/js/2.1ed4e7a8.chunk.js",
@@ -53,10 +53,10 @@
     "static/media/VGG.f33dab72.jpg": "./static/media/VGG.f33dab72.jpg",
     "static/media/WorkshopinAnalysis.402ecd08.pdf": "./static/media/WorkshopinAnalysis.402ecd08.pdf",
     "static/media/background_img.d8b3c37d.jpg": "./static/media/background_img.d8b3c37d.jpg",
-    "static/media/conda-useful-commands.md": "./static/media/conda-useful-commands.c98543bd.md",
-    "static/media/gradient-penalty.md": "./static/media/gradient-penalty.a8e7e3f8.md",
+    "static/media/conda-useful-commands.md": "./static/media/conda-useful-commands.0c7ef10a.md",
+    "static/media/gradient-penalty.md": "./static/media/gradient-penalty.650fa6b8.md",
     "static/media/my_picture.db5690a8.jpg": "./static/media/my_picture.db5690a8.jpg",
-    "static/media/python-scrapping.md": "./static/media/python-scrapping.df85621a.md",
+    "static/media/python-scrapping.md": "./static/media/python-scrapping.81ee46c7.md",
     "static/media/react_native_04.25c46289.jpg": "./static/media/react_native_04.25c46289.jpg",
     "static/media/review.c9c071ab.pdf": "./static/media/review.c9c071ab.pdf",
     "static/media/vggnet_emotion-epoch80.bc74e6f8.png": "./static/media/vggnet_emotion-epoch80.bc74e6f8.png",
@@ -68,6 +68,6 @@
     "static/css/2.9dbe5bea.chunk.css",
     "static/js/2.1ed4e7a8.chunk.js",
     "static/css/main.ff42c903.chunk.css",
-    "static/js/main.20d1bd73.chunk.js"
+    "static/js/main.ea089099.chunk.js"
   ]
 }
