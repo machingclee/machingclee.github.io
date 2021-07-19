@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "./static/css/main.f7ad7233.chunk.css",
-    "main.js": "./static/js/main.a35472c4.chunk.js",
+    "main.js": "./static/js/main.2faee73c.chunk.js",
     "runtime-main.js": "./static/js/runtime-main.575b7723.js",
     "static/css/2.9dbe5bea.chunk.css": "./static/css/2.9dbe5bea.chunk.css",
     "static/js/2.0ab2a66e.chunk.js": "./static/js/2.0ab2a66e.chunk.js",
@@ -16,7 +16,7 @@
     "static/media/Midterm_Review_limsupinf.1e2193c7.pdf": "./static/media/Midterm_Review_limsupinf.1e2193c7.pdf",
     "static/media/On-Looping-all-Files-in-Frontend.md": "./static/media/On-Looping-all-Files-in-Frontend.fe0e4c3d.md",
     "static/media/Question_and_Answer.028118b5.pdf": "./static/media/Question_and_Answer.028118b5.pdf",
-    "static/media/Review-of-Basic-Statistics.md": "./static/media/Review-of-Basic-Statistics.ab546cd7.md",
+    "static/media/Review-of-Basic-Statistics.md": "./static/media/Review-of-Basic-Statistics.8c45319b.md",
     "static/media/Study-Notes-on-Distribution.md": "./static/media/Study-Notes-on-Distribution.ec9a8c36.md",
     "static/media/TN_00.51d1ba8e.pdf": "./static/media/TN_00.51d1ba8e.pdf",
     "static/media/TN_01.716a26e2.pdf": "./static/media/TN_01.716a26e2.pdf",
@@ -66,6 +66,6 @@
     "static/css/2.9dbe5bea.chunk.css",
     "static/js/2.0ab2a66e.chunk.js",
     "static/css/main.f7ad7233.chunk.css",
-    "static/js/main.a35472c4.chunk.js"
+    "static/js/main.2faee73c.chunk.js"
   ]
 }
