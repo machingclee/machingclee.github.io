@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "./static/css/main.f7ad7233.chunk.css",
-    "main.js": "./static/js/main.f0a17808.chunk.js",
+    "main.js": "./static/js/main.ec31a94f.chunk.js",
     "runtime-main.js": "./static/js/runtime-main.575b7723.js",
     "static/css/2.9dbe5bea.chunk.css": "./static/css/2.9dbe5bea.chunk.css",
     "static/js/2.0ab2a66e.chunk.js": "./static/js/2.0ab2a66e.chunk.js",
@@ -53,7 +53,7 @@
     "static/media/VGG.f33dab72.jpg": "./static/media/VGG.f33dab72.jpg",
     "static/media/WorkshopinAnalysis.402ecd08.pdf": "./static/media/WorkshopinAnalysis.402ecd08.pdf",
     "static/media/background_img.d8b3c37d.jpg": "./static/media/background_img.d8b3c37d.jpg",
-    "static/media/gradient-penalty.md": "./static/media/gradient-penalty.525f1146.md",
+    "static/media/gradient-penalty.md": "./static/media/gradient-penalty.8d6320fb.md",
     "static/media/my_picture.db5690a8.jpg": "./static/media/my_picture.db5690a8.jpg",
     "static/media/react_native_04.25c46289.jpg": "./static/media/react_native_04.25c46289.jpg",
     "static/media/review.c9c071ab.pdf": "./static/media/review.c9c071ab.pdf",
@@ -66,6 +66,6 @@
     "static/css/2.9dbe5bea.chunk.css",
     "static/js/2.0ab2a66e.chunk.js",
     "static/css/main.f7ad7233.chunk.css",
-    "static/js/main.f0a17808.chunk.js"
+    "static/js/main.ec31a94f.chunk.js"
   ]
 }
