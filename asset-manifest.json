@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "./static/css/main.fa1c78af.chunk.css",
-    "main.js": "./static/js/main.e9538128.chunk.js",
+    "main.css": "./static/css/main.3b07eec0.chunk.css",
+    "main.js": "./static/js/main.7df17fe1.chunk.js",
     "runtime-main.js": "./static/js/runtime-main.d5bdbbb9.js",
     "static/css/2.9dbe5bea.chunk.css": "./static/css/2.9dbe5bea.chunk.css",
     "static/js/2.31a695a2.chunk.js": "./static/js/2.31a695a2.chunk.js",
@@ -12,7 +12,7 @@
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "./static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "./static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
     "static/media/index.css": "./static/media/Lato-Regular.77ca2742.woff",
-    "static/media/Lazy-React-Router.md": "./static/media/Lazy-React-Router.ab183b2c.md",
+    "static/media/Lazy-React-Router.md": "./static/media/Lazy-React-Router.14c1d81c.md",
     "static/media/Midterm_Review_limsupinf.1e2193c7.pdf": "./static/media/Midterm_Review_limsupinf.1e2193c7.pdf",
     "static/media/On-Looping-all-Files-in-Frontend.md": "./static/media/On-Looping-all-Files-in-Frontend.fe0e4c3d.md",
     "static/media/Question_and_Answer.028118b5.pdf": "./static/media/Question_and_Answer.028118b5.pdf",
@@ -54,7 +54,7 @@
     "static/media/WorkshopinAnalysis.402ecd08.pdf": "./static/media/WorkshopinAnalysis.402ecd08.pdf",
     "static/media/background_img.d8b3c37d.jpg": "./static/media/background_img.d8b3c37d.jpg",
     "static/media/conda-useful-commands.md": "./static/media/conda-useful-commands.0c7ef10a.md",
-    "static/media/gradient-penalty.md": "./static/media/gradient-penalty.fb18c4dc.md",
+    "static/media/gradient-penalty.md": "./static/media/gradient-penalty.0b3f2ee7.md",
     "static/media/my_picture.db5690a8.jpg": "./static/media/my_picture.db5690a8.jpg",
     "static/media/python-scrapping.md": "./static/media/python-scrapping.81ee46c7.md",
     "static/media/react_native_04.25c46289.jpg": "./static/media/react_native_04.25c46289.jpg",
@@ -67,7 +67,7 @@
     "static/js/runtime-main.d5bdbbb9.js",
     "static/css/2.9dbe5bea.chunk.css",
     "static/js/2.31a695a2.chunk.js",
-    "static/css/main.fa1c78af.chunk.css",
-    "static/js/main.e9538128.chunk.js"
+    "static/css/main.3b07eec0.chunk.css",
+    "static/js/main.7df17fe1.chunk.js"
   ]
 }
