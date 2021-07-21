@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "./static/css/main.3b07eec0.chunk.css",
-    "main.js": "./static/js/main.22bd6eea.chunk.js",
+    "main.js": "./static/js/main.622b6bab.chunk.js",
     "runtime-main.js": "./static/js/runtime-main.95fff5ba.js",
     "static/css/2.9dbe5bea.chunk.css": "./static/css/2.9dbe5bea.chunk.css",
     "static/js/2.bdf47a55.chunk.js": "./static/js/2.bdf47a55.chunk.js",
@@ -17,7 +17,7 @@
     "static/media/On-Looping-all-Files-in-Frontend.md": "./static/media/On-Looping-all-Files-in-Frontend.fe0e4c3d.md",
     "static/media/Question_and_Answer.028118b5.pdf": "./static/media/Question_and_Answer.028118b5.pdf",
     "static/media/Review-of-Basic-Statistics.md": "./static/media/Review-of-Basic-Statistics.084aea85.md",
-    "static/media/Study-Notes-on-Distribution.md": "./static/media/Study-Notes-on-Distribution.ec9a8c36.md",
+    "static/media/Study-Notes-on-Distribution.md": "./static/media/Study-Notes-on-Distribution.dcec2fbb.md",
     "static/media/TN_00.51d1ba8e.pdf": "./static/media/TN_00.51d1ba8e.pdf",
     "static/media/TN_01.716a26e2.pdf": "./static/media/TN_01.716a26e2.pdf",
     "static/media/TN_01.c90e2df3.pdf": "./static/media/TN_01.c90e2df3.pdf",
@@ -69,6 +69,6 @@
     "static/css/2.9dbe5bea.chunk.css",
     "static/js/2.bdf47a55.chunk.js",
     "static/css/main.3b07eec0.chunk.css",
-    "static/js/main.22bd6eea.chunk.js"
+    "static/js/main.622b6bab.chunk.js"
   ]
 }
