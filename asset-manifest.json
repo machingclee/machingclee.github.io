@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "./static/css/main.3b07eec0.chunk.css",
-    "main.js": "./static/js/main.36904360.chunk.js",
+    "main.js": "./static/js/main.b05e89d9.chunk.js",
     "runtime-main.js": "./static/js/runtime-main.95fff5ba.js",
     "static/css/2.9dbe5bea.chunk.css": "./static/css/2.9dbe5bea.chunk.css",
     "static/js/2.bdf47a55.chunk.js": "./static/js/2.bdf47a55.chunk.js",
@@ -54,7 +54,7 @@
     "static/media/WorkshopinAnalysis.402ecd08.pdf": "./static/media/WorkshopinAnalysis.402ecd08.pdf",
     "static/media/background_img.d8b3c37d.jpg": "./static/media/background_img.d8b3c37d.jpg",
     "static/media/conda-useful-commands.md": "./static/media/conda-useful-commands.0c7ef10a.md",
-    "static/media/gradient-penalty.md": "./static/media/gradient-penalty.0b3f2ee7.md",
+    "static/media/gradient-penalty.md": "./static/media/gradient-penalty.b6cd9eed.md",
     "static/media/my_picture.db5690a8.jpg": "./static/media/my_picture.db5690a8.jpg",
     "static/media/python-scrapping.md": "./static/media/python-scrapping.81ee46c7.md",
     "static/media/react_native_04.25c46289.jpg": "./static/media/react_native_04.25c46289.jpg",
@@ -69,6 +69,6 @@
     "static/css/2.9dbe5bea.chunk.css",
     "static/js/2.bdf47a55.chunk.js",
     "static/css/main.3b07eec0.chunk.css",
-    "static/js/main.36904360.chunk.js"
+    "static/js/main.b05e89d9.chunk.js"
   ]
 }
