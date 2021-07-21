@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "./static/css/main.3b07eec0.chunk.css",
-    "main.js": "./static/js/main.7df17fe1.chunk.js",
-    "runtime-main.js": "./static/js/runtime-main.d5bdbbb9.js",
+    "main.js": "./static/js/main.22bd6eea.chunk.js",
+    "runtime-main.js": "./static/js/runtime-main.95fff5ba.js",
     "static/css/2.9dbe5bea.chunk.css": "./static/css/2.9dbe5bea.chunk.css",
-    "static/js/2.31a695a2.chunk.js": "./static/js/2.31a695a2.chunk.js",
-    "static/js/3.b4ce198c.chunk.js": "./static/js/3.b4ce198c.chunk.js",
+    "static/js/2.bdf47a55.chunk.js": "./static/js/2.bdf47a55.chunk.js",
+    "static/js/3.4ad1d068.chunk.js": "./static/js/3.4ad1d068.chunk.js",
     "index.html": "./index.html",
-    "static/js/2.31a695a2.chunk.js.LICENSE.txt": "./static/js/2.31a695a2.chunk.js.LICENSE.txt",
+    "static/js/2.bdf47a55.chunk.js.LICENSE.txt": "./static/js/2.bdf47a55.chunk.js.LICENSE.txt",
     "static/media/AlexNet.f1abd696.png": "./static/media/AlexNet.f1abd696.png",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "./static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "./static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -58,16 +58,17 @@
     "static/media/my_picture.db5690a8.jpg": "./static/media/my_picture.db5690a8.jpg",
     "static/media/python-scrapping.md": "./static/media/python-scrapping.81ee46c7.md",
     "static/media/react_native_04.25c46289.jpg": "./static/media/react_native_04.25c46289.jpg",
+    "static/media/redux-saga.md": "./static/media/redux-saga.16978d9d.md",
     "static/media/review.c9c071ab.pdf": "./static/media/review.c9c071ab.pdf",
     "static/media/vggnet_emotion-epoch80.bc74e6f8.png": "./static/media/vggnet_emotion-epoch80.bc74e6f8.png",
     "static/media/wpf_v1_01.bcfc03bd.jpg": "./static/media/wpf_v1_01.bcfc03bd.jpg",
     "static/media/wpf_v1_02.c955130c.jpg": "./static/media/wpf_v1_02.c955130c.jpg"
   },
   "entrypoints": [
-    "static/js/runtime-main.d5bdbbb9.js",
+    "static/js/runtime-main.95fff5ba.js",
     "static/css/2.9dbe5bea.chunk.css",
-    "static/js/2.31a695a2.chunk.js",
+    "static/js/2.bdf47a55.chunk.js",
     "static/css/main.3b07eec0.chunk.css",
-    "static/js/main.7df17fe1.chunk.js"
+    "static/js/main.22bd6eea.chunk.js"
   ]
 }
