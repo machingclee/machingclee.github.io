@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.9a58f1c4.chunk.css",
-    "main.js": "/static/js/main.8055d69a.chunk.js",
+    "main.js": "/static/js/main.43b143a9.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.b5989dbf.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.7ce0256f.chunk.js": "/static/js/2.7ce0256f.chunk.js",
@@ -10,19 +10,19 @@
     "static/js/2.7ce0256f.chunk.js.LICENSE.txt": "/static/js/2.7ce0256f.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.778b2dd6.md",
     "static/media/001-mongo-aggregation.md": "/static/media/001-mongo-aggregation.c334beb7.md",
-    "static/media/001-tkinter.md": "/static/media/001-tkinter.8e95b249.md",
+    "static/media/001-tkinter.md": "/static/media/001-tkinter.2dadd906.md",
     "static/media/002-closure-of-interior.md": "/static/media/002-closure-of-interior.91539601.md",
-    "static/media/002-wpf.md": "/static/media/002-wpf.51cda244.md",
+    "static/media/002-wpf.md": "/static/media/002-wpf.b3c82861.md",
     "static/media/003-lift-problem.md": "/static/media/003-lift-problem.b070bb9f.md",
-    "static/media/003-react-native.md": "/static/media/003-react-native.66f77dbb.md",
+    "static/media/003-react-native.md": "/static/media/003-react-native.ae2b08da.md",
     "static/media/004-countability-discontinuity.md": "/static/media/004-countability-discontinuity.effaf13f.md",
-    "static/media/004-emotion_vgg.md": "/static/media/004-emotion_vgg.72e93e30.md",
-    "static/media/005-yolo-custom-training.md": "/static/media/005-yolo-custom-training.2b811049.md",
-    "static/media/006-qt-project-starter.md": "/static/media/006-qt-project-starter.c30a6a4a.md",
-    "static/media/007-electron-next.md": "/static/media/007-electron-next.01715dde.md",
-    "static/media/008-text-detection-and-erase.md": "/static/media/008-text-detection-and-erase.76d491be.md",
-    "static/media/009-classifier-by-means-of-detection.md": "/static/media/009-classifier-by-means-of-detection.be72ebeb.md",
-    "static/media/010-defectGAN.md": "/static/media/010-defectGAN.c95478a4.md",
+    "static/media/004-emotion_vgg.md": "/static/media/004-emotion_vgg.5d29f596.md",
+    "static/media/005-yolo-custom-training.md": "/static/media/005-yolo-custom-training.070bee5e.md",
+    "static/media/006-qt-project-starter.md": "/static/media/006-qt-project-starter.b315d6d8.md",
+    "static/media/007-electron-next.md": "/static/media/007-electron-next.9870e56b.md",
+    "static/media/008-defectGAN.md": "/static/media/008-defectGAN.48ab5e4a.md",
+    "static/media/009-text-detection-and-erase.md": "/static/media/009-text-detection-and-erase.d07ad838.md",
+    "static/media/010-classifier-by-means-of-detection.md": "/static/media/010-classifier-by-means-of-detection.fb151a6e.md",
     "static/media/017-pytorch-study-notes.md": "/static/media/017-pytorch-study-notes.d1f02d3b.md",
     "static/media/018-tensorflow-revisit.md": "/static/media/018-tensorflow-revisit.ce4f55cc.md",
     "static/media/019-colab.md": "/static/media/019-colab.bbc73ab8.md",
@@ -151,6 +151,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.7ce0256f.chunk.js",
     "static/css/main.9a58f1c4.chunk.css",
-    "static/js/main.8055d69a.chunk.js"
+    "static/js/main.43b143a9.chunk.js"
   ]
 }
