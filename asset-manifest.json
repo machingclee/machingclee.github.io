@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/static/css/main.9a58f1c4.chunk.css",
-    "main.js": "/static/js/main.43b143a9.chunk.js",
+    "main.js": "/static/js/main.e116b20a.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.b5989dbf.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.7ce0256f.chunk.js": "/static/js/2.7ce0256f.chunk.js",
+    "static/js/2.91198934.chunk.js": "/static/js/2.91198934.chunk.js",
     "static/js/3.12e58191.chunk.js": "/static/js/3.12e58191.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.7ce0256f.chunk.js.LICENSE.txt": "/static/js/2.7ce0256f.chunk.js.LICENSE.txt",
+    "static/js/2.91198934.chunk.js.LICENSE.txt": "/static/js/2.91198934.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.778b2dd6.md",
     "static/media/001-mongo-aggregation.md": "/static/media/001-mongo-aggregation.c334beb7.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.2dadd906.md",
@@ -149,8 +149,8 @@
   "entrypoints": [
     "static/js/runtime-main.b5989dbf.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.7ce0256f.chunk.js",
+    "static/js/2.91198934.chunk.js",
     "static/css/main.9a58f1c4.chunk.css",
-    "static/js/main.43b143a9.chunk.js"
+    "static/js/main.e116b20a.chunk.js"
   ]
 }
