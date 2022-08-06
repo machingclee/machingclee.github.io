@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.9a58f1c4.chunk.css",
-    "main.js": "/static/js/main.520e6358.chunk.js",
+    "main.js": "/static/js/main.a68545fb.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.8c7096e3.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.859ea6c5.chunk.js": "/static/js/2.859ea6c5.chunk.js",
@@ -22,7 +22,7 @@
     "static/media/007-electron-next.md": "/static/media/007-electron-next.9870e56b.md",
     "static/media/008-defectGAN.md": "/static/media/008-defectGAN.fccf7837.md",
     "static/media/009-text-detection-and-erase.md": "/static/media/009-text-detection-and-erase.d07ad838.md",
-    "static/media/010-classifier-by-means-of-detection.md": "/static/media/010-classifier-by-means-of-detection.fb151a6e.md",
+    "static/media/010-classifier-by-means-of-detection.md": "/static/media/010-classifier-by-means-of-detection.ac7b1dac.md",
     "static/media/017-pytorch-study-notes.md": "/static/media/017-pytorch-study-notes.d1f02d3b.md",
     "static/media/018-tensorflow-revisit.md": "/static/media/018-tensorflow-revisit.ce4f55cc.md",
     "static/media/019-colab.md": "/static/media/019-colab.bbc73ab8.md",
@@ -151,6 +151,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.859ea6c5.chunk.js",
     "static/css/main.9a58f1c4.chunk.css",
-    "static/js/main.520e6358.chunk.js"
+    "static/js/main.a68545fb.chunk.js"
   ]
 }
