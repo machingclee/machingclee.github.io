@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.9cc18a53.chunk.css",
-    "main.js": "/static/js/main.efccd36f.chunk.js",
+    "main.js": "/static/js/main.22c5f3dd.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.435b005d.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.dcf490aa.chunk.js": "/static/js/2.dcf490aa.chunk.js",
@@ -97,7 +97,7 @@
     "static/media/WGAN.md": "/static/media/WGAN.13ff41b4.md",
     "static/media/WorkshopinAnalysis.402ecd08.pdf": "/static/media/WorkshopinAnalysis.402ecd08.pdf",
     "static/media/agent-classification.17931009.pdf": "/static/media/agent-classification.17931009.pdf",
-    "static/media/albumentation-in-pytorch.md": "/static/media/albumentation-in-pytorch.9b07e73f.md",
+    "static/media/albumentation-in-pytorch.md": "/static/media/albumentation-in-pytorch.81da5f72.md",
     "static/media/algo-exercises.md": "/static/media/algo-exercises.e163aff4.md",
     "static/media/algorithms.md": "/static/media/algorithms.a2d507ab.md",
     "static/media/augmentation_in_obj_detection.md": "/static/media/augmentation_in_obj_detection.09dd8ffd.md",
@@ -164,6 +164,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.dcf490aa.chunk.js",
     "static/css/main.9cc18a53.chunk.css",
-    "static/js/main.efccd36f.chunk.js"
+    "static/js/main.22c5f3dd.chunk.js"
   ]
 }
