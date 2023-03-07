@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/static/css/main.86100ac9.chunk.css",
-    "main.js": "/static/js/main.fd58f71f.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.8f4c88e7.js",
+    "main.js": "/static/js/main.84ee2ca0.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.1a0fab31.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.f650c336.chunk.js": "/static/js/2.f650c336.chunk.js",
-    "static/js/3.b1d6de51.chunk.js": "/static/js/3.b1d6de51.chunk.js",
+    "static/js/2.915c9ffc.chunk.js": "/static/js/2.915c9ffc.chunk.js",
+    "static/js/3.0d574f27.chunk.js": "/static/js/3.0d574f27.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.f650c336.chunk.js.LICENSE.txt": "/static/js/2.f650c336.chunk.js.LICENSE.txt",
+    "static/js/2.915c9ffc.chunk.js.LICENSE.txt": "/static/js/2.915c9ffc.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-mongo-aggregation.md": "/static/media/001-mongo-aggregation.fe504ae1.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.7667a328.md",
@@ -126,6 +126,7 @@
     "static/media/chrome_automation.md": "/static/media/chrome_automation.da73153d.md",
     "static/media/coco.md": "/static/media/coco.4c27ee6c.md",
     "static/media/color-gan.md": "/static/media/color-gan.07a097e0.md",
+    "static/media/com_two_threads.md": "/static/media/com_two_threads.4d557693.md",
     "static/media/conda-useful-commands.md": "/static/media/conda-useful-commands.706978da.md",
     "static/media/configure-s3-send-sqs.md": "/static/media/configure-s3-send-sqs.544a6cf8.md",
     "static/media/continuous-logging.md": "/static/media/continuous-logging.b5f96942.md",
@@ -142,6 +143,7 @@
     "static/media/debugger.md": "/static/media/debugger.c183e127.md",
     "static/media/decompose-a-class.md": "/static/media/decompose-a-class.bd1fe2cd.md",
     "static/media/desc-dot-ts.md": "/static/media/desc-dot-ts.3997b32f.md",
+    "static/media/diffusion_models.md": "/static/media/diffusion_models.7e0f6cd1.md",
     "static/media/disquz.md": "/static/media/disquz.8b4defa2.md",
     "static/media/excels-in-python.md": "/static/media/excels-in-python.1c75b8ba.md",
     "static/media/faster-rcnn.md": "/static/media/faster-rcnn.af6c4c23.md",
@@ -179,10 +181,10 @@
     "static/media/yolo-v3-deep-dive.md": "/static/media/yolo-v3-deep-dive.5fa9bf85.md"
   },
   "entrypoints": [
-    "static/js/runtime-main.8f4c88e7.js",
+    "static/js/runtime-main.1a0fab31.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.f650c336.chunk.js",
+    "static/js/2.915c9ffc.chunk.js",
     "static/css/main.86100ac9.chunk.css",
-    "static/js/main.fd58f71f.chunk.js"
+    "static/js/main.84ee2ca0.chunk.js"
   ]
 }
