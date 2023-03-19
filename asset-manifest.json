@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/static/css/main.86100ac9.chunk.css",
-    "main.js": "/static/js/main.e7c1f995.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.1a0fab31.js",
+    "main.js": "/static/js/main.53227a48.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.fc8d9265.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.915c9ffc.chunk.js": "/static/js/2.915c9ffc.chunk.js",
-    "static/js/3.0d574f27.chunk.js": "/static/js/3.0d574f27.chunk.js",
+    "static/js/2.0fa2cee9.chunk.js": "/static/js/2.0fa2cee9.chunk.js",
+    "static/js/3.96491749.chunk.js": "/static/js/3.96491749.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.915c9ffc.chunk.js.LICENSE.txt": "/static/js/2.915c9ffc.chunk.js.LICENSE.txt",
+    "static/js/2.0fa2cee9.chunk.js.LICENSE.txt": "/static/js/2.0fa2cee9.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-mongo-aggregation.md": "/static/media/001-mongo-aggregation.fe504ae1.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.7667a328.md",
@@ -66,7 +66,7 @@
     "static/media/117-dark-matter.md": "/static/media/117-dark-matter.6f62885b.md",
     "static/media/118-CmakeFile.md": "/static/media/118-CmakeFile.dfac3fee.md",
     "static/media/119-SocketProgramming.md": "/static/media/119-SocketProgramming.91fa3c3f.md",
-    "static/media/120-pytorchcpp.md": "/static/media/120-pytorchcpp.fd925e0e.md",
+    "static/media/120-pytorchcpp.md": "/static/media/120-pytorchcpp.7af03111.md",
     "static/media/121-cpp-configurtation.md": "/static/media/121-cpp-configurtation.1fbecc00.md",
     "static/media/122-cpp-utils.md": "/static/media/122-cpp-utils.c15dbe4a.md",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
@@ -160,6 +160,7 @@
     "static/media/my_picture.03df09c3.jpg": "/static/media/my_picture.03df09c3.jpg",
     "static/media/nextjs-debug.md": "/static/media/nextjs-debug.09beb281.md",
     "static/media/nextjs-electron.md": "/static/media/nextjs-electron.67113671.md",
+    "static/media/opencvinstall.md": "/static/media/opencvinstall.d4b6f445.md",
     "static/media/pandoc.md": "/static/media/pandoc.1405492f.md",
     "static/media/progress-bar.md": "/static/media/progress-bar.948cb527.md",
     "static/media/python-generator.md": "/static/media/python-generator.4e29d683.md",
@@ -181,10 +182,10 @@
     "static/media/yolo-v3-deep-dive.md": "/static/media/yolo-v3-deep-dive.5fa9bf85.md"
   },
   "entrypoints": [
-    "static/js/runtime-main.1a0fab31.js",
+    "static/js/runtime-main.fc8d9265.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.915c9ffc.chunk.js",
+    "static/js/2.0fa2cee9.chunk.js",
     "static/css/main.86100ac9.chunk.css",
-    "static/js/main.e7c1f995.chunk.js"
+    "static/js/main.53227a48.chunk.js"
   ]
 }
