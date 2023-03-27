@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.86100ac9.chunk.css",
-    "main.js": "/static/js/main.a6e29c7f.chunk.js",
+    "main.js": "/static/js/main.2bff70d0.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.e5d068a8.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.636626c2.chunk.js": "/static/js/2.636626c2.chunk.js",
@@ -23,7 +23,7 @@
     "static/media/008-defectGAN.md": "/static/media/008-defectGAN.b6084446.md",
     "static/media/009-text-detection-and-erase.md": "/static/media/009-text-detection-and-erase.6650e307.md",
     "static/media/010-classifier-by-means-of-detection copy.md": "/static/media/010-classifier-by-means-of-detection copy.cfe3da65.md",
-    "static/media/011-translate-custom-model.md": "/static/media/011-translate-custom-model.5b5c3bb2.md",
+    "static/media/011-translate-custom-model.md": "/static/media/011-translate-custom-model.4b1ce7e5.md",
     "static/media/017-pytorch-study-notes.md": "/static/media/017-pytorch-study-notes.ac795ee2.md",
     "static/media/018-tensorflow-revisit.md": "/static/media/018-tensorflow-revisit.dbb44eac.md",
     "static/media/019-colab.md": "/static/media/019-colab.87b0566b.md",
@@ -188,6 +188,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.636626c2.chunk.js",
     "static/css/main.86100ac9.chunk.css",
-    "static/js/main.a6e29c7f.chunk.js"
+    "static/js/main.2bff70d0.chunk.js"
   ]
 }
