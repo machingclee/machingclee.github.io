@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.86100ac9.chunk.css",
-    "main.js": "/static/js/main.0d83e875.chunk.js",
+    "main.js": "/static/js/main.7fb2a236.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.783773bc.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.346ed7c1.chunk.js": "/static/js/2.346ed7c1.chunk.js",
@@ -178,7 +178,7 @@
     "static/media/scroll.md": "/static/media/scroll.b2c67000.md",
     "static/media/shell-script.md": "/static/media/shell-script.65c4ae1d.md",
     "static/media/spa-seo.md": "/static/media/spa-seo.c3362055.md",
-    "static/media/std_variant.md": "/static/media/std_variant.c9359255.md",
+    "static/media/std_variant.md": "/static/media/std_variant.2e625ba7.md",
     "static/media/subgradients.md": "/static/media/subgradients.2b753fc9.md",
     "static/media/tensorflow-shapes.md": "/static/media/tensorflow-shapes.c22f8dd0.md",
     "static/media/texcommand.md": "/static/media/texcommand.85360952.md",
@@ -192,6 +192,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.346ed7c1.chunk.js",
     "static/css/main.86100ac9.chunk.css",
-    "static/js/main.0d83e875.chunk.js"
+    "static/js/main.7fb2a236.chunk.js"
   ]
 }
