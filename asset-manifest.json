@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/static/css/main.86100ac9.chunk.css",
-    "main.js": "/static/js/main.b67f93aa.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.905f1e38.js",
+    "main.js": "/static/js/main.0d83e875.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.783773bc.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.093db76d.chunk.js": "/static/js/2.093db76d.chunk.js",
-    "static/js/3.c66792a7.chunk.js": "/static/js/3.c66792a7.chunk.js",
+    "static/js/2.346ed7c1.chunk.js": "/static/js/2.346ed7c1.chunk.js",
+    "static/js/3.641a52ad.chunk.js": "/static/js/3.641a52ad.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.093db76d.chunk.js.LICENSE.txt": "/static/js/2.093db76d.chunk.js.LICENSE.txt",
+    "static/js/2.346ed7c1.chunk.js.LICENSE.txt": "/static/js/2.346ed7c1.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-mongo-aggregation.md": "/static/media/001-mongo-aggregation.fe504ae1.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.7667a328.md",
@@ -60,13 +60,13 @@
     "static/media/109-visual-studio-setup.md": "/static/media/109-visual-studio-setup.5439d16b.md",
     "static/media/110-copy-constructor.md": "/static/media/110-copy-constructor.8baadbf3.md",
     "static/media/111-precompiled-header.md": "/static/media/111-precompiled-header.2bf1db26.md",
-    "static/media/112-DSR-ELE.md": "/static/media/112-DSR-ELE.90e48e4f.md",
+    "static/media/112-DSR-ELE.md": "/static/media/112-DSR-ELE.e4fda5df.md",
     "static/media/113-Array.md": "/static/media/113-Array.71841cf0.md",
     "static/media/114-Iterator.md": "/static/media/114-Iterator.8dd7ddc1.md",
     "static/media/115-print.md": "/static/media/115-print.0ad81f3c.md",
     "static/media/116-TCPServer.md": "/static/media/116-TCPServer.e7da2471.md",
     "static/media/117-dark-matter.md": "/static/media/117-dark-matter.6f62885b.md",
-    "static/media/118-CmakeFile.md": "/static/media/118-CmakeFile.dfac3fee.md",
+    "static/media/118-CmakeFile.md": "/static/media/118-CmakeFile.42ef6835.md",
     "static/media/119-SocketProgramming.md": "/static/media/119-SocketProgramming.91fa3c3f.md",
     "static/media/120-pytorchcpp.md": "/static/media/120-pytorchcpp.7af03111.md",
     "static/media/121-cpp-configurtation.md": "/static/media/121-cpp-configurtation.1fbecc00.md",
@@ -153,6 +153,7 @@
     "static/media/feature_extractor.md": "/static/media/feature_extractor.96d351aa.md",
     "static/media/img-compression.md": "/static/media/img-compression.2ad59322.md",
     "static/media/installation.md": "/static/media/installation.d4a52327.md",
+    "static/media/libtorch-study.md": "/static/media/libtorch-study.dec541c6.md",
     "static/media/live2d.md": "/static/media/live2d.8b77c012.md",
     "static/media/mAP.md": "/static/media/mAP.9210a813.md",
     "static/media/makeStyles-in-next-js.md": "/static/media/makeStyles-in-next-js.5341b8bd.md",
@@ -165,7 +166,7 @@
     "static/media/nextjs-electron.md": "/static/media/nextjs-electron.67113671.md",
     "static/media/opencvinstall.md": "/static/media/opencvinstall.c84b99bb.md",
     "static/media/pandoc.md": "/static/media/pandoc.1405492f.md",
-    "static/media/precompiled-header.md": "/static/media/precompiled-header.93bedb7e.md",
+    "static/media/precompiled-header.md": "/static/media/precompiled-header.72ad9600.md",
     "static/media/progress-bar.md": "/static/media/progress-bar.948cb527.md",
     "static/media/python-generator.md": "/static/media/python-generator.4e29d683.md",
     "static/media/python-import.md": "/static/media/python-import.e0321524.md",
@@ -177,6 +178,7 @@
     "static/media/scroll.md": "/static/media/scroll.b2c67000.md",
     "static/media/shell-script.md": "/static/media/shell-script.65c4ae1d.md",
     "static/media/spa-seo.md": "/static/media/spa-seo.c3362055.md",
+    "static/media/std_variant.md": "/static/media/std_variant.c9359255.md",
     "static/media/subgradients.md": "/static/media/subgradients.2b753fc9.md",
     "static/media/tensorflow-shapes.md": "/static/media/tensorflow-shapes.c22f8dd0.md",
     "static/media/texcommand.md": "/static/media/texcommand.85360952.md",
@@ -186,10 +188,10 @@
     "static/media/yolo-v3-deep-dive.md": "/static/media/yolo-v3-deep-dive.5fa9bf85.md"
   },
   "entrypoints": [
-    "static/js/runtime-main.905f1e38.js",
+    "static/js/runtime-main.783773bc.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.093db76d.chunk.js",
+    "static/js/2.346ed7c1.chunk.js",
     "static/css/main.86100ac9.chunk.css",
-    "static/js/main.b67f93aa.chunk.js"
+    "static/js/main.0d83e875.chunk.js"
   ]
 }
