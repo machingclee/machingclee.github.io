@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.86100ac9.chunk.css",
-    "main.js": "/static/js/main.4c5010c0.chunk.js",
+    "main.js": "/static/js/main.a667854e.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.2b675e58.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.79e5d325.chunk.js": "/static/js/2.79e5d325.chunk.js",
@@ -24,7 +24,7 @@
     "static/media/009-text-detection-and-erase.md": "/static/media/009-text-detection-and-erase.6650e307.md",
     "static/media/010-classifier-by-means-of-detection copy.md": "/static/media/010-classifier-by-means-of-detection copy.cfe3da65.md",
     "static/media/011-translate-custom-model copy.md": "/static/media/011-translate-custom-model copy.3ec872e7.md",
-    "static/media/012-libtorch_deployment.md": "/static/media/012-libtorch_deployment.ea180922.md",
+    "static/media/012-libtorch_deployment.md": "/static/media/012-libtorch_deployment.3b16f989.md",
     "static/media/017-pytorch-study-notes.md": "/static/media/017-pytorch-study-notes.ac795ee2.md",
     "static/media/018-tensorflow-revisit.md": "/static/media/018-tensorflow-revisit.dbb44eac.md",
     "static/media/019-colab.md": "/static/media/019-colab.87b0566b.md",
@@ -154,7 +154,7 @@
     "static/media/feature_extractor.md": "/static/media/feature_extractor.96d351aa.md",
     "static/media/img-compression.md": "/static/media/img-compression.2ad59322.md",
     "static/media/installation.md": "/static/media/installation.d4a52327.md",
-    "static/media/libtorch-study.md": "/static/media/libtorch-study.dec541c6.md",
+    "static/media/libtorch-study.md": "/static/media/libtorch-study.2fcafaac.md",
     "static/media/live2d.md": "/static/media/live2d.8b77c012.md",
     "static/media/mAP.md": "/static/media/mAP.9210a813.md",
     "static/media/makeStyles-in-next-js.md": "/static/media/makeStyles-in-next-js.5341b8bd.md",
@@ -193,6 +193,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.79e5d325.chunk.js",
     "static/css/main.86100ac9.chunk.css",
-    "static/js/main.4c5010c0.chunk.js"
+    "static/js/main.a667854e.chunk.js"
   ]
 }
