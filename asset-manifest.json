@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.86100ac9.chunk.css",
-    "main.js": "/static/js/main.a5835892.chunk.js",
+    "main.js": "/static/js/main.0333be86.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.2b675e58.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.79e5d325.chunk.js": "/static/js/2.79e5d325.chunk.js",
@@ -20,7 +20,7 @@
     "static/media/005-yolo-custom-training.md": "/static/media/005-yolo-custom-training.0ad847ce.md",
     "static/media/006-qt-project-starter.md": "/static/media/006-qt-project-starter.7645e50e.md",
     "static/media/007-electron-next.md": "/static/media/007-electron-next.481a7c76.md",
-    "static/media/008-defectGAN.md": "/static/media/008-defectGAN.b6084446.md",
+    "static/media/008-defectGAN.md": "/static/media/008-defectGAN.96e89919.md",
     "static/media/009-text-detection-and-erase.md": "/static/media/009-text-detection-and-erase.6650e307.md",
     "static/media/010-classifier-by-means-of-detection copy.md": "/static/media/010-classifier-by-means-of-detection copy.cfe3da65.md",
     "static/media/011-translate-custom-model copy.md": "/static/media/011-translate-custom-model copy.3ec872e7.md",
@@ -193,6 +193,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.79e5d325.chunk.js",
     "static/css/main.86100ac9.chunk.css",
-    "static/js/main.a5835892.chunk.js"
+    "static/js/main.0333be86.chunk.js"
   ]
 }
