@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.86100ac9.chunk.css",
-    "main.js": "/static/js/main.0333be86.chunk.js",
+    "main.js": "/static/js/main.82f02f82.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.2b675e58.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.79e5d325.chunk.js": "/static/js/2.79e5d325.chunk.js",
@@ -9,7 +9,6 @@
     "index.html": "/index.html",
     "static/js/2.79e5d325.chunk.js.LICENSE.txt": "/static/js/2.79e5d325.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
-    "static/media/001-mongo-aggregation.md": "/static/media/001-mongo-aggregation.fe504ae1.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.7667a328.md",
     "static/media/002-closure-of-interior.md": "/static/media/002-closure-of-interior.d61226c6.md",
     "static/media/002-wpf.md": "/static/media/002-wpf.04d51fb5.md",
@@ -20,7 +19,7 @@
     "static/media/005-yolo-custom-training.md": "/static/media/005-yolo-custom-training.0ad847ce.md",
     "static/media/006-qt-project-starter.md": "/static/media/006-qt-project-starter.7645e50e.md",
     "static/media/007-electron-next.md": "/static/media/007-electron-next.481a7c76.md",
-    "static/media/008-defectGAN.md": "/static/media/008-defectGAN.96e89919.md",
+    "static/media/008-defectGAN.md": "/static/media/008-defectGAN.7a3960e0.md",
     "static/media/009-text-detection-and-erase.md": "/static/media/009-text-detection-and-erase.6650e307.md",
     "static/media/010-classifier-by-means-of-detection copy.md": "/static/media/010-classifier-by-means-of-detection copy.cfe3da65.md",
     "static/media/011-translate-custom-model copy.md": "/static/media/011-translate-custom-model copy.3ec872e7.md",
@@ -72,6 +71,7 @@
     "static/media/121-cpp-configurtation.md": "/static/media/121-cpp-configurtation.1fbecc00.md",
     "static/media/122-cpp-utils.md": "/static/media/122-cpp-utils.31625be9.md",
     "static/media/130-url-scheme.md": "/static/media/130-url-scheme.cbb1426e.md",
+    "static/media/131-mongo-aggregation.md": "/static/media/131-mongo-aggregation.5acf57f3.md",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/DefectGAN.md": "/static/media/DefectGAN.c0718f46.md",
     "static/media/EAST.md": "/static/media/EAST.86fb54d8.md",
@@ -193,6 +193,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.79e5d325.chunk.js",
     "static/css/main.86100ac9.chunk.css",
-    "static/js/main.0333be86.chunk.js"
+    "static/js/main.82f02f82.chunk.js"
   ]
 }
