@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.86100ac9.chunk.css",
-    "main.js": "/static/js/main.c22fe2c6.chunk.js",
+    "main.js": "/static/js/main.f86b663c.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.c246a906.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.a13ee10a.chunk.js": "/static/js/2.a13ee10a.chunk.js",
@@ -194,7 +194,7 @@
     "static/media/texcommand.md": "/static/media/texcommand.85360952.md",
     "static/media/threading.md": "/static/media/threading.336c175a.md",
     "static/media/transformer-date-fomatter.18a2d3fc.pdf": "/static/media/transformer-date-fomatter.18a2d3fc.pdf",
-    "static/media/two-kinds-of-lookup.md": "/static/media/two-kinds-of-lookup.b1e46405.md",
+    "static/media/two-kinds-of-lookup.md": "/static/media/two-kinds-of-lookup.68db9d35.md",
     "static/media/typescript-typetrick.md": "/static/media/typescript-typetrick.0e546903.md",
     "static/media/yolo-v3-deep-dive.md": "/static/media/yolo-v3-deep-dive.5fa9bf85.md"
   },
@@ -203,6 +203,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.a13ee10a.chunk.js",
     "static/css/main.86100ac9.chunk.css",
-    "static/js/main.c22fe2c6.chunk.js"
+    "static/js/main.f86b663c.chunk.js"
   ]
 }
