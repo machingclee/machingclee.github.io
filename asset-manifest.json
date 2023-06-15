@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.86100ac9.chunk.css",
-    "main.js": "/static/js/main.1db74767.chunk.js",
+    "main.js": "/static/js/main.70b42b37.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.92543577.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.91716266.chunk.js": "/static/js/2.91716266.chunk.js",
@@ -165,7 +165,7 @@
     "static/media/installation.md": "/static/media/installation.d4a52327.md",
     "static/media/libtorch-study.md": "/static/media/libtorch-study.2fcafaac.md",
     "static/media/live2d.md": "/static/media/live2d.8b77c012.md",
-    "static/media/lookup-from-array-of-objects.md": "/static/media/lookup-from-array-of-objects.a582c342.md",
+    "static/media/lookup-from-array-of-objects.md": "/static/media/lookup-from-array-of-objects.f9e02b7e.md",
     "static/media/mAP.md": "/static/media/mAP.9210a813.md",
     "static/media/makeStyles-in-next-js.md": "/static/media/makeStyles-in-next-js.5341b8bd.md",
     "static/media/mask-in-numpy.md": "/static/media/mask-in-numpy.83a198cb.md",
@@ -204,6 +204,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.91716266.chunk.js",
     "static/css/main.86100ac9.chunk.css",
-    "static/js/main.1db74767.chunk.js"
+    "static/js/main.70b42b37.chunk.js"
   ]
 }
