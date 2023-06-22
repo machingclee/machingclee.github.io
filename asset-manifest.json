@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.86100ac9.chunk.css",
-    "main.js": "/static/js/main.434a7f3e.chunk.js",
+    "main.js": "/static/js/main.d63e6301.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.4faf45e9.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.35e99337.chunk.js": "/static/js/2.35e99337.chunk.js",
@@ -72,7 +72,7 @@
     "static/media/122-cpp-utils.md": "/static/media/122-cpp-utils.31625be9.md",
     "static/media/130-url-scheme.md": "/static/media/130-url-scheme.cbb1426e.md",
     "static/media/131-mongo-aggregation.md": "/static/media/131-mongo-aggregation.2b9299ae.md",
-    "static/media/132-redux-thunk.md": "/static/media/132-redux-thunk.3f36f8a2.md",
+    "static/media/132-redux-thunk.md": "/static/media/132-redux-thunk.99a59458.md",
     "static/media/133-Review-FileUpload.md": "/static/media/133-Review-FileUpload.6f1c65d3.md",
     "static/media/134-Data-Scrapping.md": "/static/media/134-Data-Scrapping.d8d1fafa.md",
     "static/media/135-LazyLoading.md": "/static/media/135-LazyLoading.39ed406a.md",
@@ -149,7 +149,7 @@
     "static/media/cxxstandard.md": "/static/media/cxxstandard.3980edac.md",
     "static/media/cycle-gan-tf.md": "/static/media/cycle-gan-tf.517276b8.md",
     "static/media/datetime.md": "/static/media/datetime.e24d8883.md",
-    "static/media/dayjs.md": "/static/media/dayjs.9dbd09b0.md",
+    "static/media/dayjs.md": "/static/media/dayjs.07f3f76d.md",
     "static/media/dc-gan-in-python.md": "/static/media/dc-gan-in-python.0c7b14ae.md",
     "static/media/debug.md": "/static/media/debug.e735871c.md",
     "static/media/debugger.md": "/static/media/debugger.c183e127.md",
@@ -157,7 +157,7 @@
     "static/media/desc-dot-ts.md": "/static/media/desc-dot-ts.3997b32f.md",
     "static/media/diffusion_models.md": "/static/media/diffusion_models.14914b49.md",
     "static/media/disquz.md": "/static/media/disquz.8b4defa2.md",
-    "static/media/docker-study.md": "/static/media/docker-study.18a07efc.md",
+    "static/media/docker-study.md": "/static/media/docker-study.5b534e29.md",
     "static/media/excels-in-python.md": "/static/media/excels-in-python.1c75b8ba.md",
     "static/media/faster-rcnn.md": "/static/media/faster-rcnn.af6c4c23.md",
     "static/media/feature_extractor.md": "/static/media/feature_extractor.96d351aa.md",
@@ -175,7 +175,7 @@
     "static/media/my_picture.03df09c3.jpg": "/static/media/my_picture.03df09c3.jpg",
     "static/media/nextjs-debug.md": "/static/media/nextjs-debug.09beb281.md",
     "static/media/nextjs-electron.md": "/static/media/nextjs-electron.67113671.md",
-    "static/media/normalizr.md": "/static/media/normalizr.3a3738cd.md",
+    "static/media/normalizr.md": "/static/media/normalizr.6cb8b9b1.md",
     "static/media/opencvinstall.md": "/static/media/opencvinstall.c84b99bb.md",
     "static/media/pandoc.md": "/static/media/pandoc.1405492f.md",
     "static/media/persist-data.md": "/static/media/persist-data.f18a1ad2.md",
@@ -208,6 +208,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.35e99337.chunk.js",
     "static/css/main.86100ac9.chunk.css",
-    "static/js/main.434a7f3e.chunk.js"
+    "static/js/main.d63e6301.chunk.js"
   ]
 }
