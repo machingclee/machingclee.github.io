@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/static/css/main.86100ac9.chunk.css",
-    "main.js": "/static/js/main.84aab381.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.4faf45e9.js",
+    "main.js": "/static/js/main.37bb6306.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.76bfd27c.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.8ec107d4.chunk.js": "/static/js/2.8ec107d4.chunk.js",
-    "static/js/3.f5043407.chunk.js": "/static/js/3.f5043407.chunk.js",
+    "static/js/2.695f7e62.chunk.js": "/static/js/2.695f7e62.chunk.js",
+    "static/js/3.33a505a9.chunk.js": "/static/js/3.33a505a9.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.8ec107d4.chunk.js.LICENSE.txt": "/static/js/2.8ec107d4.chunk.js.LICENSE.txt",
+    "static/js/2.695f7e62.chunk.js.LICENSE.txt": "/static/js/2.695f7e62.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.7667a328.md",
     "static/media/002-closure-of-interior.md": "/static/media/002-closure-of-interior.d61226c6.md",
@@ -157,7 +157,7 @@
     "static/media/desc-dot-ts.md": "/static/media/desc-dot-ts.3997b32f.md",
     "static/media/diffusion_models.md": "/static/media/diffusion_models.14914b49.md",
     "static/media/disquz.md": "/static/media/disquz.8b4defa2.md",
-    "static/media/docker-study.md": "/static/media/docker-study.5b534e29.md",
+    "static/media/docker-study.md": "/static/media/docker-study.9ea47360.md",
     "static/media/excels-in-python.md": "/static/media/excels-in-python.1c75b8ba.md",
     "static/media/faster-rcnn.md": "/static/media/faster-rcnn.af6c4c23.md",
     "static/media/feature_extractor.md": "/static/media/feature_extractor.96d351aa.md",
@@ -199,15 +199,16 @@
     "static/media/texcommand.md": "/static/media/texcommand.85360952.md",
     "static/media/threading.md": "/static/media/threading.336c175a.md",
     "static/media/transformer-date-fomatter.18a2d3fc.pdf": "/static/media/transformer-date-fomatter.18a2d3fc.pdf",
+    "static/media/tsconfig.md": "/static/media/tsconfig.182840d2.md",
     "static/media/two-kinds-of-lookup.md": "/static/media/two-kinds-of-lookup.76e5be02.md",
     "static/media/typescript-typetrick.md": "/static/media/typescript-typetrick.0e546903.md",
     "static/media/yolo-v3-deep-dive.md": "/static/media/yolo-v3-deep-dive.5fa9bf85.md"
   },
   "entrypoints": [
-    "static/js/runtime-main.4faf45e9.js",
+    "static/js/runtime-main.76bfd27c.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.8ec107d4.chunk.js",
+    "static/js/2.695f7e62.chunk.js",
     "static/css/main.86100ac9.chunk.css",
-    "static/js/main.84aab381.chunk.js"
+    "static/js/main.37bb6306.chunk.js"
   ]
 }
