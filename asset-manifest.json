@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/static/css/main.86100ac9.chunk.css",
-    "main.js": "/static/js/main.37bb6306.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.76bfd27c.js",
+    "main.js": "/static/js/main.71d73786.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.26e2ef67.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.695f7e62.chunk.js": "/static/js/2.695f7e62.chunk.js",
-    "static/js/3.33a505a9.chunk.js": "/static/js/3.33a505a9.chunk.js",
+    "static/js/2.828fb5c5.chunk.js": "/static/js/2.828fb5c5.chunk.js",
+    "static/js/3.0224ecc5.chunk.js": "/static/js/3.0224ecc5.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.695f7e62.chunk.js.LICENSE.txt": "/static/js/2.695f7e62.chunk.js.LICENSE.txt",
+    "static/js/2.828fb5c5.chunk.js.LICENSE.txt": "/static/js/2.828fb5c5.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.7667a328.md",
     "static/media/002-closure-of-interior.md": "/static/media/002-closure-of-interior.d61226c6.md",
@@ -157,7 +157,7 @@
     "static/media/desc-dot-ts.md": "/static/media/desc-dot-ts.3997b32f.md",
     "static/media/diffusion_models.md": "/static/media/diffusion_models.14914b49.md",
     "static/media/disquz.md": "/static/media/disquz.8b4defa2.md",
-    "static/media/docker-study.md": "/static/media/docker-study.9ea47360.md",
+    "static/media/docker-study.md": "/static/media/docker-study.2a10d1c1.md",
     "static/media/excels-in-python.md": "/static/media/excels-in-python.1c75b8ba.md",
     "static/media/faster-rcnn.md": "/static/media/faster-rcnn.af6c4c23.md",
     "static/media/feature_extractor.md": "/static/media/feature_extractor.96d351aa.md",
@@ -189,6 +189,7 @@
     "static/media/redux-saga.md": "/static/media/redux-saga.f840908f.md",
     "static/media/retrain-nan.md": "/static/media/retrain-nan.3c7eba3c.md",
     "static/media/review.c9c071ab.pdf": "/static/media/review.c9c071ab.pdf",
+    "static/media/s3-deployment-ci.md": "/static/media/s3-deployment-ci.e287039c.md",
     "static/media/scroll.md": "/static/media/scroll.b2c67000.md",
     "static/media/scrollbar.md": "/static/media/scrollbar.011a0db0.md",
     "static/media/shell-script.md": "/static/media/shell-script.65c4ae1d.md",
@@ -205,10 +206,10 @@
     "static/media/yolo-v3-deep-dive.md": "/static/media/yolo-v3-deep-dive.5fa9bf85.md"
   },
   "entrypoints": [
-    "static/js/runtime-main.76bfd27c.js",
+    "static/js/runtime-main.26e2ef67.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.695f7e62.chunk.js",
+    "static/js/2.828fb5c5.chunk.js",
     "static/css/main.86100ac9.chunk.css",
-    "static/js/main.37bb6306.chunk.js"
+    "static/js/main.71d73786.chunk.js"
   ]
 }
