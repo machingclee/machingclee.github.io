@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.86100ac9.chunk.css",
-    "main.js": "/static/js/main.10eab8c1.chunk.js",
+    "main.js": "/static/js/main.ef337003.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.fcb64fb9.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.2a9c60e7.chunk.js": "/static/js/2.2a9c60e7.chunk.js",
@@ -75,7 +75,7 @@
     "static/media/132-redux-thunk.md": "/static/media/132-redux-thunk.99a59458.md",
     "static/media/133-Review-FileUpload.md": "/static/media/133-Review-FileUpload.6f1c65d3.md",
     "static/media/134-Data-Scrapping.md": "/static/media/134-Data-Scrapping.d8d1fafa.md",
-    "static/media/135-LazyLoading.md": "/static/media/135-LazyLoading.39ed406a.md",
+    "static/media/135-LazyLoading.md": "/static/media/135-LazyLoading.50a94bf3.md",
     "static/media/136-mui-css-animation.md": "/static/media/136-mui-css-animation.386bf1f5.md",
     "static/media/137-jsonpipeline-in-java.md": "/static/media/137-jsonpipeline-in-java.6b18fb87.md",
     "static/media/138-redux-slice-template.md": "/static/media/138-redux-slice-template.f25db875.md",
@@ -175,7 +175,7 @@
     "static/media/my_picture.03df09c3.jpg": "/static/media/my_picture.03df09c3.jpg",
     "static/media/nextjs-debug.md": "/static/media/nextjs-debug.09beb281.md",
     "static/media/nextjs-electron.md": "/static/media/nextjs-electron.67113671.md",
-    "static/media/normalizr.md": "/static/media/normalizr.6cb8b9b1.md",
+    "static/media/normalizr.md": "/static/media/normalizr.26ac38da.md",
     "static/media/opencvinstall.md": "/static/media/opencvinstall.c84b99bb.md",
     "static/media/pandoc.md": "/static/media/pandoc.1405492f.md",
     "static/media/persist-data.md": "/static/media/persist-data.f18a1ad2.md",
@@ -211,6 +211,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.2a9c60e7.chunk.js",
     "static/css/main.86100ac9.chunk.css",
-    "static/js/main.10eab8c1.chunk.js"
+    "static/js/main.ef337003.chunk.js"
   ]
 }
