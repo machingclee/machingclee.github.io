@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/static/css/main.86100ac9.chunk.css",
-    "main.js": "/static/js/main.d3e0aa10.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.bb4accf2.js",
+    "main.js": "/static/js/main.d9e95ef4.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.d98f0022.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.80ce8c59.chunk.js": "/static/js/2.80ce8c59.chunk.js",
-    "static/js/3.5399a108.chunk.js": "/static/js/3.5399a108.chunk.js",
+    "static/js/2.82aa6c6d.chunk.js": "/static/js/2.82aa6c6d.chunk.js",
+    "static/js/3.d964127f.chunk.js": "/static/js/3.d964127f.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.80ce8c59.chunk.js.LICENSE.txt": "/static/js/2.80ce8c59.chunk.js.LICENSE.txt",
+    "static/js/2.82aa6c6d.chunk.js.LICENSE.txt": "/static/js/2.82aa6c6d.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.7667a328.md",
     "static/media/002-closure-of-interior.md": "/static/media/002-closure-of-interior.d61226c6.md",
@@ -75,12 +75,14 @@
     "static/media/132-redux-thunk.md": "/static/media/132-redux-thunk.99a59458.md",
     "static/media/133-Review-FileUpload.md": "/static/media/133-Review-FileUpload.6f1c65d3.md",
     "static/media/134-Data-Scrapping.md": "/static/media/134-Data-Scrapping.d8d1fafa.md",
-    "static/media/135-LazyLoading.md": "/static/media/135-LazyLoading.b63c81d8.md",
+    "static/media/135-LazyLoading.md": "/static/media/135-LazyLoading.29a585b0.md",
     "static/media/136-mui-css-animation.md": "/static/media/136-mui-css-animation.386bf1f5.md",
     "static/media/137-jsonpipeline-in-java.md": "/static/media/137-jsonpipeline-in-java.6b18fb87.md",
     "static/media/138-redux-slice-template.md": "/static/media/138-redux-slice-template.f25db875.md",
     "static/media/153-S3Deployment.md": "/static/media/153-S3Deployment.443c808e.md",
-    "static/media/154-uwsgi-flask.md": "/static/media/154-uwsgi-flask.2ab47c60.md",
+    "static/media/154-uwsgi-flask.md": "/static/media/154-uwsgi-flask.d8d0cf15.md",
+    "static/media/155-gmail-pubsub.md": "/static/media/155-gmail-pubsub.131888dc.md",
+    "static/media/156-serverless.md": "/static/media/156-serverless.c8646cdd.md",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/DefectGAN.md": "/static/media/DefectGAN.c0718f46.md",
     "static/media/EAST.md": "/static/media/EAST.86fb54d8.md",
@@ -209,10 +211,10 @@
     "static/media/yolo-v3-deep-dive.md": "/static/media/yolo-v3-deep-dive.5fa9bf85.md"
   },
   "entrypoints": [
-    "static/js/runtime-main.bb4accf2.js",
+    "static/js/runtime-main.d98f0022.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.80ce8c59.chunk.js",
+    "static/js/2.82aa6c6d.chunk.js",
     "static/css/main.86100ac9.chunk.css",
-    "static/js/main.d3e0aa10.chunk.js"
+    "static/js/main.d9e95ef4.chunk.js"
   ]
 }
