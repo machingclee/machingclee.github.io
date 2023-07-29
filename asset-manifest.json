@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/static/css/main.86100ac9.chunk.css",
-    "main.js": "/static/js/main.7c5a223b.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.ce0764ec.js",
+    "main.js": "/static/js/main.33a56f52.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.2580c3c0.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.8eb34da2.chunk.js": "/static/js/2.8eb34da2.chunk.js",
-    "static/js/3.ff6ae01e.chunk.js": "/static/js/3.ff6ae01e.chunk.js",
+    "static/js/2.12008811.chunk.js": "/static/js/2.12008811.chunk.js",
+    "static/js/3.299480c1.chunk.js": "/static/js/3.299480c1.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.8eb34da2.chunk.js.LICENSE.txt": "/static/js/2.8eb34da2.chunk.js.LICENSE.txt",
+    "static/js/2.12008811.chunk.js.LICENSE.txt": "/static/js/2.12008811.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.7667a328.md",
     "static/media/002-closure-of-interior.md": "/static/media/002-closure-of-interior.d61226c6.md",
@@ -84,8 +84,8 @@
     "static/media/155-gmail-pubsub.md": "/static/media/155-gmail-pubsub.1e2e196b.md",
     "static/media/156-serverless.md": "/static/media/156-serverless.c8646cdd.md",
     "static/media/157-SSE.md": "/static/media/157-SSE.ee258d1e.md",
-    "static/media/158-algolia.md": "/static/media/158-algolia.7ae5540a.md",
-    "static/media/159-clickoutside.md": "/static/media/159-clickoutside.44e5190f.md",
+    "static/media/158-algolia.md": "/static/media/158-algolia.fd572720.md",
+    "static/media/159-clickoutside.md": "/static/media/159-clickoutside.800d0b58.md",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/DefectGAN.md": "/static/media/DefectGAN.c0718f46.md",
     "static/media/EAST.md": "/static/media/EAST.86fb54d8.md",
@@ -214,10 +214,10 @@
     "static/media/yolo-v3-deep-dive.md": "/static/media/yolo-v3-deep-dive.5fa9bf85.md"
   },
   "entrypoints": [
-    "static/js/runtime-main.ce0764ec.js",
+    "static/js/runtime-main.2580c3c0.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.8eb34da2.chunk.js",
+    "static/js/2.12008811.chunk.js",
     "static/css/main.86100ac9.chunk.css",
-    "static/js/main.7c5a223b.chunk.js"
+    "static/js/main.33a56f52.chunk.js"
   ]
 }
