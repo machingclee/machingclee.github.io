@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/static/css/main.86100ac9.chunk.css",
-    "main.js": "/static/js/main.96aa97d0.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.2580c3c0.js",
+    "main.js": "/static/js/main.9a55651c.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.5f3c3ffc.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.1118daa7.chunk.js": "/static/js/2.1118daa7.chunk.js",
-    "static/js/3.299480c1.chunk.js": "/static/js/3.299480c1.chunk.js",
+    "static/js/2.c70103ff.chunk.js": "/static/js/2.c70103ff.chunk.js",
+    "static/js/3.7122abde.chunk.js": "/static/js/3.7122abde.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.1118daa7.chunk.js.LICENSE.txt": "/static/js/2.1118daa7.chunk.js.LICENSE.txt",
+    "static/js/2.c70103ff.chunk.js.LICENSE.txt": "/static/js/2.c70103ff.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.7667a328.md",
     "static/media/002-closure-of-interior.md": "/static/media/002-closure-of-interior.d61226c6.md",
@@ -77,7 +77,7 @@
     "static/media/134-Data-Scrapping.md": "/static/media/134-Data-Scrapping.d8d1fafa.md",
     "static/media/135-LazyLoading.md": "/static/media/135-LazyLoading.29a585b0.md",
     "static/media/136-mui-css-animation.md": "/static/media/136-mui-css-animation.386bf1f5.md",
-    "static/media/137-jsonpipeline-in-java.md": "/static/media/137-jsonpipeline-in-java.16dde6be.md",
+    "static/media/137-jsonpipeline-in-java.md": "/static/media/137-jsonpipeline-in-java.8c386571.md",
     "static/media/138-redux-slice-template.md": "/static/media/138-redux-slice-template.f25db875.md",
     "static/media/153-S3Deployment.md": "/static/media/153-S3Deployment.443c808e.md",
     "static/media/154-uwsgi-flask.md": "/static/media/154-uwsgi-flask.d8d0cf15.md",
@@ -214,10 +214,10 @@
     "static/media/yolo-v3-deep-dive.md": "/static/media/yolo-v3-deep-dive.5fa9bf85.md"
   },
   "entrypoints": [
-    "static/js/runtime-main.2580c3c0.js",
+    "static/js/runtime-main.5f3c3ffc.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.1118daa7.chunk.js",
+    "static/js/2.c70103ff.chunk.js",
     "static/css/main.86100ac9.chunk.css",
-    "static/js/main.96aa97d0.chunk.js"
+    "static/js/main.9a55651c.chunk.js"
   ]
 }
