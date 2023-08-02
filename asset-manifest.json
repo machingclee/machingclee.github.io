@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/static/css/main.86100ac9.chunk.css",
-    "main.js": "/static/js/main.677b0d46.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.5f3c3ffc.js",
+    "main.js": "/static/js/main.5b8c3f36.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.c89d041e.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.c70103ff.chunk.js": "/static/js/2.c70103ff.chunk.js",
-    "static/js/3.7122abde.chunk.js": "/static/js/3.7122abde.chunk.js",
+    "static/js/2.7a13b55a.chunk.js": "/static/js/2.7a13b55a.chunk.js",
+    "static/js/3.a25e072d.chunk.js": "/static/js/3.a25e072d.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.c70103ff.chunk.js.LICENSE.txt": "/static/js/2.c70103ff.chunk.js.LICENSE.txt",
+    "static/js/2.7a13b55a.chunk.js.LICENSE.txt": "/static/js/2.7a13b55a.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.7667a328.md",
     "static/media/002-closure-of-interior.md": "/static/media/002-closure-of-interior.d61226c6.md",
@@ -86,6 +86,7 @@
     "static/media/157-SSE.md": "/static/media/157-SSE.ef077ce9.md",
     "static/media/158-algolia.md": "/static/media/158-algolia.220a836c.md",
     "static/media/159-clickoutside.md": "/static/media/159-clickoutside.800d0b58.md",
+    "static/media/160-multiselections.md": "/static/media/160-multiselections.04467aa0.md",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/DefectGAN.md": "/static/media/DefectGAN.c0718f46.md",
     "static/media/EAST.md": "/static/media/EAST.86fb54d8.md",
@@ -214,10 +215,10 @@
     "static/media/yolo-v3-deep-dive.md": "/static/media/yolo-v3-deep-dive.5fa9bf85.md"
   },
   "entrypoints": [
-    "static/js/runtime-main.5f3c3ffc.js",
+    "static/js/runtime-main.c89d041e.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.c70103ff.chunk.js",
+    "static/js/2.7a13b55a.chunk.js",
     "static/css/main.86100ac9.chunk.css",
-    "static/js/main.677b0d46.chunk.js"
+    "static/js/main.5b8c3f36.chunk.js"
   ]
 }
