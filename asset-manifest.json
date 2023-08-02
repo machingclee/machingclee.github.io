@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.86100ac9.chunk.css",
-    "main.js": "/static/js/main.5b8c3f36.chunk.js",
+    "main.js": "/static/js/main.fff7e6a6.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.c89d041e.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.7a13b55a.chunk.js": "/static/js/2.7a13b55a.chunk.js",
@@ -33,7 +33,7 @@
     "static/media/023-dataset-pipeline-with-augmentation.md": "/static/media/023-dataset-pipeline-with-augmentation.9b696da4.md",
     "static/media/058-json-in-python.md": "/static/media/058-json-in-python.ba4bc11b.md",
     "static/media/059-ts-debug-config.md": "/static/media/059-ts-debug-config.7d385d2d.md",
-    "static/media/060-ssh-download-file.md": "/static/media/060-ssh-download-file.44be580b.md",
+    "static/media/060-ssh-download-file.md": "/static/media/060-ssh-download-file.c2b5a099.md",
     "static/media/061-rust-beginner-summary.md": "/static/media/061-rust-beginner-summary.72b306af.md",
     "static/media/062-DCT.md": "/static/media/062-DCT.a9154a97.md",
     "static/media/063-fadein.md": "/static/media/063-fadein.20c7825d.md",
@@ -219,6 +219,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.7a13b55a.chunk.js",
     "static/css/main.86100ac9.chunk.css",
-    "static/js/main.5b8c3f36.chunk.js"
+    "static/js/main.fff7e6a6.chunk.js"
   ]
 }
