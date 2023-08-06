@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.86100ac9.chunk.css",
-    "main.js": "/static/js/main.69a9565c.chunk.js",
+    "main.js": "/static/js/main.0b885091.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.c89d041e.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.7a13b55a.chunk.js": "/static/js/2.7a13b55a.chunk.js",
@@ -182,7 +182,7 @@
     "static/media/mongo.md": "/static/media/mongo.5e06cbd6.md",
     "static/media/my_picture.03df09c3.jpg": "/static/media/my_picture.03df09c3.jpg",
     "static/media/nextjs-debug.md": "/static/media/nextjs-debug.09beb281.md",
-    "static/media/nextjs-electron.md": "/static/media/nextjs-electron.67113671.md",
+    "static/media/nextjs-electron.md": "/static/media/nextjs-electron.3f8d1fe1.md",
     "static/media/normalizr.md": "/static/media/normalizr.26ac38da.md",
     "static/media/opencvinstall.md": "/static/media/opencvinstall.c84b99bb.md",
     "static/media/pandoc.md": "/static/media/pandoc.1405492f.md",
@@ -219,6 +219,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.7a13b55a.chunk.js",
     "static/css/main.86100ac9.chunk.css",
-    "static/js/main.69a9565c.chunk.js"
+    "static/js/main.0b885091.chunk.js"
   ]
 }
