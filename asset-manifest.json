@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.86100ac9.chunk.css",
-    "main.js": "/static/js/main.0a792bcb.chunk.js",
+    "main.js": "/static/js/main.4a25bb11.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.3c7b3ab2.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.8490e442.chunk.js": "/static/js/2.8490e442.chunk.js",
@@ -181,7 +181,7 @@
     "static/media/makeStyles-in-next-js.md": "/static/media/makeStyles-in-next-js.5341b8bd.md",
     "static/media/mask-in-numpy.md": "/static/media/mask-in-numpy.83a198cb.md",
     "static/media/modulus-of-continuity.md": "/static/media/modulus-of-continuity.837b37f9.md",
-    "static/media/mongo-engine-py.md": "/static/media/mongo-engine-py.7bcefb7a.md",
+    "static/media/mongo-engine-py.md": "/static/media/mongo-engine-py.95b47056.md",
     "static/media/mongo.md": "/static/media/mongo.5e06cbd6.md",
     "static/media/my_picture.03df09c3.jpg": "/static/media/my_picture.03df09c3.jpg",
     "static/media/nextjs-debug.md": "/static/media/nextjs-debug.09beb281.md",
@@ -222,6 +222,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.8490e442.chunk.js",
     "static/css/main.86100ac9.chunk.css",
-    "static/js/main.0a792bcb.chunk.js"
+    "static/js/main.4a25bb11.chunk.js"
   ]
 }
