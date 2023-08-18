@@ -2,7 +2,7 @@
 title: "Serverless Flask and Serverless Express-ts"
 date: 2023-07-19
 id: blog0156
-tag: serverless
+tag: serverless, aws
 intro: "Guide to creating serverless flask and express application."
 toc: true
 ---
@@ -39,7 +39,7 @@ You can reduce the size by modifying `serverless.yml`.
 
 - `dockerizePip: true` is necessary for package `PILLOW` because the compiled binary in windows is not compatible with linux.
 
-- I haven't tried to Flask yet, we may add `noDeploy` in the list once we find suitable lambda layers available in our region:
+- Layers! I haven't tried to Flask yet, we may add `noDeploy` in the list once we find suitable lambda layers available in our region:
 
   ```text
   provider:
