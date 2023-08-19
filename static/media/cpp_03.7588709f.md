@@ -2,7 +2,8 @@
 title: C++ Beginner Notes 03 - C++ in VSCode of Windows
 date: 2021-09-10
 id: blog0027
-tag: coding
+tag: C++
+wip: true
 intro: List some configuration I made to make C++ project compilable in VSCode.
 ---
 

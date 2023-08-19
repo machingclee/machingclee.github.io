@@ -2,7 +2,7 @@
 title: C++ Beginner Notes 01 - Stack and Heap
 date: 2021-09-08
 id: blog0025
-tag: coding
+tag: C++
 intro: We write simple functions to understand cpp syntax, memory in stack and memory in heaps by using raw pointer.
 toc: false
 ---

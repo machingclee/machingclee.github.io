@@ -1,5 +1,5 @@
 ---
-title: C++ Beginner Notes 02 - Shallow Copy, Deep Copy and Move-Semantics
+title: C++ Beginner Notes 02 - Shallow Copy, Deep Copy and Move Semantics
 date: 2021-09-09
 id: blog0026
 tag: C++
