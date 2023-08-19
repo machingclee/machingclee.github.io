@@ -157,7 +157,7 @@ export default function Users() {
 }
 ```
 
-#### Generlization into a useLazyload Hook
+#### Generlization into a useLazyload Hook with Search Params
 
 ##### Hook Implementation
 
