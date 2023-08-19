@@ -3,7 +3,7 @@ title: C++ Beginner Notes 02 - Shallow Copy, Deep Copy and Move-Semantics
 date: 2021-09-09
 id: blog0026
 tag: C++
-wip: true
+wip: false
 intro: We list some potential problem of using shallow copy and how to avoid them by deep copy. We can also improve computation efficiency when a variable is never reused but needed to be passed into a function/class attribute. We achieve this by using move constructor.
 ---
 
