@@ -1,13 +1,13 @@
 ---
-title: "Write Middleware in Redux-Toolkit"
+title: "Write Middlewares in Redux-Toolkit"
 date: 2023-06-20
 id: blog0132
 tag: react
 intro: "We list sample usage of createThunkAction provided by redux-toolkit in order to single out the logic of data-fetching away from the UI component."
 toc: true
 ---
-
-#### Write Data-Fetching in Slices
+#### Thunk Actions and Extra Reducer for the Return
+##### Write Data-Fetching in Slices
 
 As a usual practice we create `ThunkAction` in the corresponding slice file, for example:
 
@@ -24,7 +24,7 @@ export const fetchProjects = createAsyncThunk(
 );
 ```
 
-#### Problem of Using ExtraReducer to Listen `fetchProjects.pending`
+##### Problem of Using ExtraReducer to Listen `fetchProjects.pending`
 
 When reading documentation ([link](https://redux-toolkit.js.org/api/createAsyncThunk)) we are instructed to create listener as follows:
 
@@ -73,29 +73,26 @@ Now we are free to dispatch any action that adjusts the state of other slices.
 
 > **Important.** Note that we can `startListening()` multiple times using the same middleware. There is no need to create multiple middlewares for multiple actions.
 
-#### Add Middlewares to Store
+##### Add Middlewares to Store
 
 ```typescript
 // store.ts;
 // real use case, ignore the other slices
 
-export const store = configureStore({
-  reducer: {
-    user: persistedUserReducer,
-    application: appSlice.reducer,
-    projects: projectSlice.reducer,
-    template: templateSlice.reducer,
-    fakeTime: fakeTimeSlice.reducer,
-  },
-  devTools: true,
-  //@ts-ignore, as we don't need to maintain this piece of code:
-  middleware: (
-    gDM //gDM stands for getDefaultMiddleware
-  ) => gDM().concat(...templateMiddlewares, ...projectMiddlwares),
+const store = configureStore({
+	reducer: rootReducer,
+	middleware: (getDefaultMiddleware) =>
+		//@ts-ignore
+		getDefaultMiddleware({
+			serializableCheck: false
+		}).concat(
+			projectMiddleware.middleware,
+			someOtherMiddleware.middleware
+		)
 });
 ```
 
-#### Share a Middleware for Multiple Actions by `matcher` and `isAnyOf`
+##### Share a Middleware for Multiple Actions by `matcher` and `isAnyOf`
 
 In the section <a href="#Work-Around:-Write-a-Middleware-for-fetchProjects.pending">Work Around: Write a Middleware for fetchProjects.pending</a> we:
 
@@ -141,25 +138,42 @@ projectMiddleware.startListening({
 });
 ```
 
-#### Further Simplification of Writing Middlewares
+#### Further Simplification for Writing Middleware to Handler Multiple Actions
 
 Sometimes we have fine-grained notification pop-up messages for different thunk actions. It is tedious to write ``someMiddle.startListening({...` for each of the actions.
 
-For not to repeat the coding block, we write a helper function:
+For not to repeat writing the same code block, we write a helper function:
 
 ```typescript
-import { 
-  AnyAction, ListenerEffect, 
-  ListenerMiddlewareInstance, ThunkDispatch, isAnyOf 
-} from "@reduxjs/toolkit"
-import appSlice from "../redux/slices/appSlice"
+import {
+    AnyAction,
+    ListenerEffect,
+    ListenerMiddlewareInstance,
+    ThunkDispatch,
+    isAnyOf
+} from "@reduxjs/toolkit";
+import snackbarUtils from "./snackbarUtils";
 
 type Effect = ListenerEffect<any, unknown, ThunkDispatch<unknown, unknown, AnyAction>, unknown>;
 
 /**
- * actionMessageList consists of objects either of the form { action, content } or of the form { rejections } / { rejections, content }. For rejections when content is absent, the error message is supposed to be returned by thunkAPI.rejectWithValue
+ * actionMessageList consists of objects either of the form { action, content } or  of the form { rejections } / { rejections, content }. When content is absent, the error message is supposed to be returned by thunkAPI.rejectWithValue
  * in createAsyncThunk function.
  */
+
+const messageDispatch = ({ contentType, content }: { contentType: string, content: string }) => {
+    if (contentType === "sucesss") {
+        snackbarUtils.success(content)
+    } else if (contentType === "info") {
+        snackbarUtils.info(content)
+    } else if (contentType === "warning") {
+        snackbarUtils.warning(content)
+    } else if (contentType === "error") {
+        snackbarUtils.error(content);
+    }
+}
+
+
 export default (
     middleware: ListenerMiddlewareInstance<
         unknown,
@@ -171,10 +185,11 @@ export default (
         rejections?: any[],
         content?: string
         effect?: Effect
+        contentType?: "sucesss" | "info" | "error" | "warning"
     }[]
 ) => {
     for (const actionMessage of actionMessageList) {
-        const { action, rejections, content, effect } = actionMessage;
+        const { action, rejections, content, effect, contentType = "sucesss" } = actionMessage;
 
         if (action) {
             let effect_: Effect;
@@ -182,36 +197,46 @@ export default (
                 effect_ = effect;
             } else if (content) {
                 effect_ = async (action, { dispatch }) => {
-                    dispatch(appSlice.actions.updateNotification(
-                        { open: true, content: content || "No Message" }
-                    ))
+                    messageDispatch({ contentType, content })
+                    // dispatch(appSlice.actions.updateNotification(
+                    //     { open: true, content: content || "No Message" }
+                    // ))
                 };
             } else {
                 effect_ = async (action, thunkAPI) => { };
             }
 
             middleware.startListening({ actionCreator: action, effect: effect_ });
+
         } else if (rejections) {
-            middleware.startListening({
+            if (effect) {
                 // @ts-ignore
-                matcher: isAnyOf(...rejections),
-                effect: async (action, { dispatch }) => {
-                    if (content) {
-                        dispatch(appSlice.actions.updateNotification(
-                            { open: true, content: content || "No Message" }
-                        ))
-                    } else {
-                        const msg = action?.payload || "";
-                        let errMsg = "Failed";
-                        if (msg) {
-                            errMsg += ` (Reason: ${msg})`;
+                middleware.startListening({ matcher: isAnyOf(...rejections), effect });
+            } else {
+                middleware.startListening({
+                    // @ts-ignore
+                    matcher: isAnyOf(...rejections),
+                    effect: async (action, { dispatch }) => {
+                        if (content) {
+                            messageDispatch({ contentType, content })
+                            // dispatch(appSlice.actions.updateNotification(
+                            //     { open: true, content: content || "No Message" }
+                            // ))
+                        } else {
+                            const msg = action?.payload || "";
+                            let errMsg = "Failed";
+                            if (msg) {
+                                errMsg += ` (Reason: ${msg})`;
+                            }
+                            snackbarUtils.error(errMsg)
+                            // dispatch(appSlice.actions.updateNotification(
+                            //     { open: true, content: errMsg }
+                            // ))
                         }
-                        dispatch(appSlice.actions.updateNotification(
-                            { open: true, content: errMsg }
-                        ))
                     }
-                }
-            })
+                })
+            }
+
         }
     }
 }
@@ -220,7 +245,7 @@ We are now happy writing multiple middlewares:
 
 ```typescript
 export const companyMiddleware = createListenerMiddleware();
-registerDialog(
+registerEffects(
     companyMiddleware,
     [
         {
@@ -264,3 +289,81 @@ registerDialog(
 - For `rejections`:
   - If we just have `rejections`, the message is supposed to be the error message passed from `thunkAPI.rejectWithValue` in createAsyncThunk function.
   - If we pair `rejections` with `content`, then it will show our `content` as pop-up notification.
+
+
+#### Middleware that Handles all Rejected Actions (Optional)
+
+We usually learn how to react to all api error in axios by using interceptor:
+
+```js
+apiClient.interceptors.response.use(
+    function (response) {
+      const param = {
+            url: response.config.url,
+            data: response.data,
+        }
+
+        if (`${process.env.REACT_APP_ENV}` === 'LOCAL') {
+            if (response?.data?.success === false) {
+                
+            } else {
+                
+            }
+        }
+    },
+    function (error) {
+        if (error?.response?.status === 404) {
+            //404 page
+        }
+    }
+)
+```
+We can instead handle all rejected api requests by middleware (provided that all api calls are processed by thunk actions)
+
+```js
+import { createListenerMiddleware, isRejected } from "@reduxjs/toolkit";
+import snackbarUtils from "../../util/snackbarUtils";
+import { loginUrl } from "../../app/__paths__deprecated";
+import { getHistory } from "../../util/historyUtils";
+import authSlice from "../slices/authSlice";
+
+const errorCodeRegex = /(?<=status\scode\s)\d+/gi
+
+export const errorMiddleware = createListenerMiddleware();
+
+errorMiddleware.startListening({
+    matcher: isRejected,
+    effect: async (action, { dispatch }) => {
+        const history = getHistory();
+        const { error } = action;
+        const { message, stack } = error;
+        if (message) {
+            // sample message: Request failed with status code 401
+            const mathches = message.match(errorCodeRegex);
+            const errorCode = parseInt(mathches?.[0] || "0");
+
+            if (
+                errorCode === 403 ||
+                errorCode === 401
+            ) {
+                console.log('403 401 redirect: ' + loginUrl)
+                dispatch(authSlice.actions.reset());
+                history?.push(loginUrl);
+            } else if (errorCode === 404) {
+                //404 page
+            } else if (errorCode === 500) {
+                //do nothing
+            } else {
+               
+            }
+        }
+        if (stack) {
+            snackbarUtils.error(stack);
+        }
+    }
+});
+```
+This will be helpful if we are going to handle a very general error flow like 
+- expiration of access-token
+- make an api call to refresh access-token
+- ***resume the action again***, etc.
