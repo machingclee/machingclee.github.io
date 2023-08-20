@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.86100ac9.chunk.css",
-    "main.js": "/static/js/main.294cd6a9.chunk.js",
+    "main.js": "/static/js/main.213988cd.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.d67eca24.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.20211bf7.chunk.js": "/static/js/2.20211bf7.chunk.js",
@@ -72,7 +72,7 @@
     "static/media/122-cpp-utils.md": "/static/media/122-cpp-utils.31625be9.md",
     "static/media/130-url-scheme.md": "/static/media/130-url-scheme.cbb1426e.md",
     "static/media/131-mongo-aggregation.md": "/static/media/131-mongo-aggregation.2b9299ae.md",
-    "static/media/132-redux-thunk.md": "/static/media/132-redux-thunk.54879393.md",
+    "static/media/132-redux-thunk.md": "/static/media/132-redux-thunk.e550738d.md",
     "static/media/133-Review-FileUpload.md": "/static/media/133-Review-FileUpload.6f1c65d3.md",
     "static/media/134-Data-Scrapping.md": "/static/media/134-Data-Scrapping.d8d1fafa.md",
     "static/media/135-LazyLoading.md": "/static/media/135-LazyLoading.cd44381b.md",
@@ -225,6 +225,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.20211bf7.chunk.js",
     "static/css/main.86100ac9.chunk.css",
-    "static/js/main.294cd6a9.chunk.js"
+    "static/js/main.213988cd.chunk.js"
   ]
 }

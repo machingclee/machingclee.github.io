@@ -24,7 +24,7 @@ export const fetchProjects = createAsyncThunk(
 );
 ```
 
-##### Problem of Using ExtraReducer to Listen `fetchProjects.pending`
+##### Limitation of Using ExtraReducer to Listen `fetchProjects.fulfilled`
 
 When reading documentation ([link](https://redux-toolkit.js.org/api/createAsyncThunk)) we are instructed to create listener as follows:
 
@@ -33,8 +33,8 @@ When reading documentation ([link](https://redux-toolkit.js.org/api/createAsyncT
 
 extraReducers: (builder) => {
   // Add reducers for additional action types here, and handle loading state as needed
-  builder.addCase(fetchUserById.fulfilled, (state, action) => {
-    // Add user to the state array
+  builder.addCase(fetchProjects.fulfilled, (state, action) => {
+    // Add the result to the state
     state.entities.push(action.payload);
   });
 };
