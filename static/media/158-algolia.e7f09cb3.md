@@ -42,26 +42,25 @@ First we build our `blog.json` file which serves as a search resource.
     ...
 ]
 ```
+
 ##### Build a `blog.json` which Contains Documents to Search
 
 In my case I use the following script:
+
 ```js
 import fs from "fs";
 import matter from "gray-matter";
 import path from "path";
 
-const mdDirs = [
-  "./src/mds/articles/tech",
-  "./src/mds/articles/math"
-]
+const mdDirs = ["./src/mds/articles/tech", "./src/mds/articles/math"];
 
 const getAllMdFilePaths = (dir: string) => {
   const mdFiles: string[] = [];
 
   const getFiles = (dir: string) => {
     const paths = fs.readdirSync(dir);
-    paths.forEach(p => {
-      const newPath = path.join(`${dir}/${p}`)
+    paths.forEach((p) => {
+      const newPath = path.join(`${dir}/${p}`);
       const pathStat = fs.statSync(newPath);
       if (pathStat.isDirectory()) {
         getFiles(newPath);
@@ -70,41 +69,42 @@ const getAllMdFilePaths = (dir: string) => {
           mdFiles.push(newPath);
         }
       }
-    })
-  }
+    });
+  };
 
   getFiles(dir);
   return mdFiles;
-}
+};
 
 const writeMdInJson = () => {
   const targetPaths = "./src/mds/blog.json";
   const blogJson: any[] = [];
   for (const dirpath of mdDirs) {
     const mdpaths = getAllMdFilePaths(dirpath);
-    mdpaths.forEach(path => {
-      const mdText = fs.readFileSync(path, { encoding: 'utf8', flag: 'r' });
+    mdpaths.forEach((path) => {
+      const mdText = fs.readFileSync(path, { encoding: "utf8", flag: "r" });
       const { data, content } = matter(mdText);
       const { wip = false } = data;
       if (!wip) {
         blogJson.push({ content, ...data });
       }
-    })
+    });
   }
-  fs.writeFileSync(targetPaths, JSON.stringify(blogJson, null, 0)
-    .replace(/(\\r\\n)/g, " ")
-    .replace(/`/g, "")
-    .replace(/\s+/g, " ")
-  )
-}
+  fs.writeFileSync(
+    targetPaths,
+    JSON.stringify(blogJson, null, 0)
+      .replace(/(\\r\\n)/g, " ")
+      .replace(/`/g, "")
+      .replace(/\s+/g, " ")
+  );
+};
 
 const main = () => {
   writeMdInJson();
-}
+};
 
 main();
 ```
-
 
 Next in the our search component:
 
@@ -160,9 +160,11 @@ export default function SearchComponent() {
 ###### Responsibilities of Backend in Using Algolia
 
 Our backend will take the following tasks:
+
 - Provide `ALGOLIA_SEARCH_INDEX`
 
   ![](/assets/tech/158/001.png)
+
 - Provide `applicationID`
 - Provide frontend client with `searchApiKey`'s with differnent priviledges for searching, for example:
   - Admin users can search everything
@@ -170,14 +172,9 @@ Our backend will take the following tasks:
 - Upload searchable targets (named `Record`) to Algolia database
 - Add new search item into algolia when needed (like emails)
 
-
-
-
 ###### Dependencies
 
 After registering an account in Algolia and creating an application there, we include the following two dependencies:
-
-
 
 ```xml
 <dependency>
@@ -205,7 +202,7 @@ import lombok.Data;
 
 @Data
 public class EmailChainRecord {
-    
+
     @Data
     public static class Supplier {
         private List<String> material_manu_internal_codes;
@@ -261,10 +258,9 @@ public class EmailChainRecord {
     private NameField projectDetail;
     private List<ProgramDetail> programmesDetail;
     private List<EmailField> emails_body;
-    private List<String> participant_emails;  
+    private List<String> participant_emails;
 }
 ```
-
 
 ###### SearchIndex Object
 
@@ -372,7 +368,6 @@ public class SearchServiceImpl implements SearchService {
     }
 ```
 
-
 **Insert Data Into Algolia.**
 
 ```java-59
@@ -395,6 +390,7 @@ public class SearchServiceImpl implements SearchService {
 ```
 
 **Define Attributes that Contributes to the Search.**
+
 ```java-75
     public void setKeyAndFacetsForQueryAndFilter() {
         var indexSettings = new IndexSettings();
@@ -417,17 +413,21 @@ public class SearchServiceImpl implements SearchService {
                 "participant_emails");
         indexSettings.setSearchableAttributes(attributes);
 ```
+
 **Define Facets (configs to the search keys)**
+
 ```java-95
         List<String> filterFacets = Arrays.asList(
                 "filterOnly(participant_emails)",
                 "filterOnly(emails_body.participant_emails)");
 ```
+
 ```java-98
         List<String> searchFacets = attributes.stream()
                 .map(key -> String.format("searchable(%s)", key))
                 .collect(Collectors.toList());
 ```
+
 **Add the Facets into Index Settings.** `ListUtils.union` is the same as `arr1 + arr2` in python:
 
 ```java-101
@@ -462,7 +462,9 @@ public class SearchServiceImpl implements SearchService {
         return publicKey;
     }
 ```
+
 **Save a Record into Algolia.**
+
 ```java-127
     public void saveObject(ObjectId someId) throws CustomException {
         // logics to fetch search targets
@@ -477,6 +479,7 @@ public class SearchServiceImpl implements SearchService {
     }
 }
 ```
+
 **Remark.** From [documentation](https://www.algolia.com/doc/api-reference/api-methods/partial-update-objects/?client=java) if a record exists in your database but does not exist in algolia, then:
 
 ```none
@@ -485,14 +488,14 @@ If the objectID is specified but doesn’t exist, Algolia creates a new record
 
 That means an `upsert` operation is automatic.
 
-
 ##### Frontend
 
 ###### Responsibility of Frontend
 
 The frontend needs to
+
 - Get `applicationID` and `searchApiKey` from backend
-- Call the search api to get 
+- Call the search api to get
   - `target document`
   - `searchable facets` for search suggestions.
 
@@ -505,21 +508,27 @@ The frontend needs to
 - Instead we create our own search component (with `<input/>`) and use debounced `onChange` handler with the following `search<T>` function.
 
 ```js
-import algoliasearch, { SearchClient, SearchIndex } from 'algoliasearch/lite';
-import constant from '../config/constant';
-
 export default class AlgoliaUtil {
 	public static instance: AlgoliaUtil | undefined;
-
-	private ALGOLIA_SEARCH_INDEX = "correspondence";
+	public algoliaEnabled: boolean | undefined;
+	private algoliaSearchIndex: string | undefined;
 	private searchClient: SearchClient | undefined;
 	private searchIndex: SearchIndex | undefined;
 
-	constructor(applicationID: string, apiKey: string) {
+	constructor(props: { applicationID: string, apiKey: string, initIndex: string, algoliaEnabled: boolean }) {
+		this.algoliaEnabled = props.algoliaEnabled;
+		this.algoliaSearchIndex = props.initIndex;
 		this.searchClient = algoliasearch(
-			applicationID,
-			apiKey
+			props.applicationID,
+			props.apiKey,
 		);
+	}
+
+	public static getInstance() {
+		if (!AlgoliaUtil.instance) {
+			throw new Error("An algolia instance has not been instantiated yet.")
+		}
+		return AlgoliaUtil.instance;
 	}
 
 	private getSearchClient(): SearchClient {
@@ -532,7 +541,9 @@ export default class AlgoliaUtil {
 	private getIndex() {
 		if (!this.searchIndex) {
 			const searchClient = this.getSearchClient();
-			this.searchIndex = searchClient.initIndex(this.ALGOLIA_SEARCH_INDEX);
+			if (this.algoliaSearchIndex) {
+				this.searchIndex = searchClient.initIndex(this.algoliaSearchIndex);
+			}
 		}
 		return this.searchIndex;
 	}
@@ -540,17 +551,29 @@ export default class AlgoliaUtil {
 	public search<T>(params: { queryString: string, attributesToRetrieve: Extract<keyof T, string>[] }) {
 		const { attributesToRetrieve, queryString } = params;
 		const index = this.getIndex();
-		return index.search(queryString, {
+		return index?.search(queryString, {
 			attributesToRetrieve, facets: constant.FACETS_TO_RECEIVE
 		});
 	}
 }
 ```
-- Here the type `T` in  `search<T>` is simply the target attribute to retrieve. In our case, we use `T = { oid: string }`.
+
+We instantiate `AlgoliaUtil` object when some page is rendered. Sometimes when search feature is not ready yet, and we determine whether algolia is available by setting:
+
+```js
+useEffect(() => {
+  if (dialogOpen) {
+    const enabled = AlgoliaUtil.getInstance().algoliaEnabled;
+    setAlgoliaEnabled(enabled || false);
+  }
+}, [dialogOpen]);
+```
+
+- Here the type `T` in `search<T>` is simply the target attribute to retrieve. In our case, we use `T = { oid: string }`.
 
 - Also:
   ```js
-  FACETS_TO_RECEIVE: [
+  constant.FACETS_TO_RECEIVE = [
     "title",
     "latest_gmail_snippet",
     "programmesDetail.name",

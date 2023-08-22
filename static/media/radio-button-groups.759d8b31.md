@@ -1,5 +1,5 @@
 ---
-title: "Radio Buttons Group and Generic Dropdown List"
+title: "Radio Buttons Group and General Dropdown List"
 date: 2023-06-21
 id: blog0144
 tag: react
@@ -125,10 +125,14 @@ import classnames from "classnames";
 import { BsFillCaretUpFill } from "react-icons/bs";
 import normalizeUtil from "../util/normalizeUtil";
 import useClickOutside from "../pages/hooks/useClickOutside";
-import { useMainStyles } from "../pages/MailChain/CorrespondenceDashboard";
+import { useMainStyles } from "../pages/CorrespondenceDashboard/CorrespondenceDashboard";
+import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 
 const borderStyle = "1px solid rgb(200, 200, 200)";
 const borderRadius = 4;
+const options = {
+  scrollbars: { autoHide: "scroll" },
+};
 
 const useStyles = makeStyles({
   display: {
@@ -142,8 +146,16 @@ const useStyles = makeStyles({
   },
 
   option: {
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    padding: "8px 8px",
+    fontFamily: "Roboto, Helvetica, Arial, sans-serif",
     "&:hover": {
       backgroundColor: "#f2f9fc",
+    },
+    "&.selected": {
+      backgroundColor: "rgb(0, 166, 250)",
+      color: "white",
     },
   },
 });
@@ -191,6 +203,8 @@ const GeneralDropdown = <T extends { code: string; name: string }>({
   const selectionDisplayRef = useRef<HTMLDivElement>(null);
   const dropDownRef = useRef<HTMLDivElement>(null);
   const [eleWidth, setEleWidth] = useState(0);
+  const [selectedName, setSelectedName] = useState(initialValue?.name || "");
+  const [selectedCode, setSelectedCode] = useState(initialValue?.code || "");
 
   const { outsideClicked: outsideOfDropdownClicked } = useClickOutside({
     ref: dropDownRef,
@@ -203,22 +217,30 @@ const GeneralDropdown = <T extends { code: string; name: string }>({
     idAttribute: "code",
   });
 
-  const additionalNoneOption: Option[] = [
-    { name: "None", code: "", className: enableNone ? "" : classes.disabled },
-  ];
+  const additionalNoneOption: Option[] = enableNone
+    ? [
+        {
+          name: "None",
+          code: "",
+          className: enableNone ? "" : classes.disabled,
+        },
+      ]
+    : [];
 
   const options_: Option[] = additionalNoneOption.concat(
     fullList.map((opt) => ({
       name: opt.name,
       code: opt.code,
-      className: disablePredicate(opt) ? classes.disabled : "",
+      className: classnames(
+        disablePredicate(opt) ? classes.disabled : "",
+        selectedCode === opt.code ? "selected" : ""
+      ),
     }))
   );
   const refUpdateHandler_ = (arg: Option) => {
     const orgingalData = codeToObject?.[arg.code];
     refUpdateHandler(orgingalData);
   };
-  const [displayName, setDisplayName] = useState(initialValue?.name);
 
   useEffect(() => {
     if (selectionDisplayRef.current) {
@@ -232,6 +254,8 @@ const GeneralDropdown = <T extends { code: string; name: string }>({
       setShowDropdown(false);
     }
   }, [outsideOfDropdownClicked]);
+
+  const hasOption = options_.length > 0;
 
   return (
     <div style={{ width: "100%", ...style }}>
@@ -258,7 +282,7 @@ const GeneralDropdown = <T extends { code: string; name: string }>({
             style={{ width: "calc(100% - 20px)" }}
             className={classes.display}
           >
-            {displayName ? displayName : selectionHint}
+            {selectedName ? selectedName : selectionHint}
           </div>
         </div>
         <div
@@ -277,7 +301,8 @@ const GeneralDropdown = <T extends { code: string; name: string }>({
         className={mainClasses.mainPage}
         style={{
           fontWeight: 400,
-          background: "white",
+          background: "rgba(255,255,255,0.8)",
+          backdropFilter: "blur(80px) brightness(115%)",
           marginTop: -1,
           width: Math.max(eleWidth, 0),
           whiteSpace: "nowrap",
@@ -290,36 +315,49 @@ const GeneralDropdown = <T extends { code: string; name: string }>({
       >
         <div
           style={{
-            width: "100%",
-            maxHeight: 300,
-            overflow: "scroll",
+            width: selectionDisplayRef.current?.offsetWidth,
           }}
           ref={dropDownRef}
         >
-          {options_.map((item) => {
-            return (
+          <OverlayScrollbarsComponent
+            style={{
+              maxHeight: 300,
+              overflow: "hidden",
+            }}
+          >
+            {!hasOption && (
               <div
-                title={item.name}
-                key={item.code}
-                style={{
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  padding: "8px 8px",
-                  cursor: "pointer",
-                  fontFamily: "Roboto, Helvetica, Arial, sans-serif",
-                  ...optionStyle,
-                }}
-                onClick={() => {
-                  setShowDropdown(false);
-                  refUpdateHandler_(item);
-                  setDisplayName(item.name);
-                }}
-                className={classnames(classes.option, item.className || "")}
+                style={{ padding: 10, userSelect: "none" }}
+                className={classnames(classes.option, classes.disabled)}
               >
-                {item.name}
+                No options
               </div>
-            );
-          })}
+            )}
+
+            {hasOption &&
+              options_.map((item) => {
+                return (
+                  <div
+                    title={item.name}
+                    key={item.code}
+                    style={{
+                      width: "calc(100% - 2px)",
+                      cursor: "pointer",
+                      ...optionStyle,
+                    }}
+                    onClick={() => {
+                      setShowDropdown(false);
+                      refUpdateHandler_(item);
+                      setSelectedName(item.name);
+                      setSelectedCode(item.code);
+                    }}
+                    className={classnames(classes.option, item.className || "")}
+                  >
+                    {item.name}
+                  </div>
+                );
+              })}
+          </OverlayScrollbarsComponent>
         </div>
       </Popper>
     </div>
@@ -329,28 +367,5 @@ const GeneralDropdown = <T extends { code: string; name: string }>({
 export default GeneralDropdown;
 ```
 
-- Note that `GeneralDropdown` itself is a generic function which accepts any type that extends `{code: string, name: string}`:
-  ```typescript
-  type MeansurementUnit = {
-      id: number,
-      name: string,
-      code: string,
-      name_styled: string,
-      enabled: boolean
-  }
-  const units: MeansurementUnit[] = useAppSelector(s => s.wbcategories.units);
-  return (
-      ...
-      <GeneralDropdown
-          fullList={units}
-          initialValue={unit || { code: "", name: "", enabled: false, id: -1, name_styled: "" }}
-          refUpdateHandler={(unit) => {
-              if (unit) {
-                  updateRefChangeHandler({ uom_rdbms_id: unit.id })
-              }
-          }}
-      />
-  )
-  ```
-  - Under the hood `GeneralDropdown` just requires `code` as an identifier and `name` as a display of selected items.
-  - We can do complicated selection update logic in `refUpdateHandler` (not the `name` and `code`, we update `id` here).
+- Under the hood `GeneralDropdown` just requires `code` as an identifier and `name` as a display of selected items.
+- We can do complicated selection update logic in `refUpdateHandler` (not the `name` and `code`, we update `id` here).
