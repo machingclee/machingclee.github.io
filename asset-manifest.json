@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.86100ac9.chunk.css",
-    "main.js": "/static/js/main.37786af9.chunk.js",
+    "main.js": "/static/js/main.9c124b10.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.29e60fae.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.b3a39bc6.chunk.js": "/static/js/2.b3a39bc6.chunk.js",
@@ -187,7 +187,7 @@
     "static/media/modulus-of-continuity.md": "/static/media/modulus-of-continuity.837b37f9.md",
     "static/media/mongo-engine-py.md": "/static/media/mongo-engine-py.95b47056.md",
     "static/media/mongo.md": "/static/media/mongo.5e06cbd6.md",
-    "static/media/my_picture.03df09c3.jpg": "/static/media/my_picture.03df09c3.jpg",
+    "static/media/my_picture_3.9fff9228.jpg": "/static/media/my_picture_3.9fff9228.jpg",
     "static/media/nextjs-debug.md": "/static/media/nextjs-debug.09beb281.md",
     "static/media/nextjs-electron.md": "/static/media/nextjs-electron.3f8d1fe1.md",
     "static/media/normalizr.md": "/static/media/normalizr.26ac38da.md",
@@ -226,6 +226,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.b3a39bc6.chunk.js",
     "static/css/main.86100ac9.chunk.css",
-    "static/js/main.37786af9.chunk.js"
+    "static/js/main.9c124b10.chunk.js"
   ]
 }
