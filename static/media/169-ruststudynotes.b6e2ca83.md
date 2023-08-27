@@ -4,7 +4,6 @@ date: 2023-08-27
 id: blog0169
 tag: rust
 intro: "Study notes from the beginning"
-wip: true
 toc: true
 ---
 
@@ -147,7 +146,7 @@ fn main() {
     });
 ```
 
-Then the following are equivalent:
+Then the following two are equivalent:
 
 ```rust-7
     run(config).unwrap_or_else(|err| {
