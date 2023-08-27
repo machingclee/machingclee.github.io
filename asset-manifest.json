@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/static/css/main.f963df99.chunk.css",
-    "main.js": "/static/js/main.fd962332.chunk.js",
+    "main.js": "/static/js/main.d2ef36d5.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.ea752d26.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.cc2e4e67.chunk.js": "/static/js/2.cc2e4e67.chunk.js",
+    "static/js/2.47b82704.chunk.js": "/static/js/2.47b82704.chunk.js",
     "static/js/3.18dd2b40.chunk.js": "/static/js/3.18dd2b40.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.cc2e4e67.chunk.js.LICENSE.txt": "/static/js/2.cc2e4e67.chunk.js.LICENSE.txt",
+    "static/js/2.47b82704.chunk.js.LICENSE.txt": "/static/js/2.47b82704.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.7667a328.md",
     "static/media/002-closure-of-interior.md": "/static/media/002-closure-of-interior.d61226c6.md",
@@ -225,8 +225,8 @@
   "entrypoints": [
     "static/js/runtime-main.ea752d26.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.cc2e4e67.chunk.js",
+    "static/js/2.47b82704.chunk.js",
     "static/css/main.f963df99.chunk.css",
-    "static/js/main.fd962332.chunk.js"
+    "static/js/main.d2ef36d5.chunk.js"
   ]
 }
