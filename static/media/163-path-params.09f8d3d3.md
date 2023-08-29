@@ -33,6 +33,7 @@ We print the result in chrome debug console:
 
 ```ts
 // usePathUtils.ts
+
 import { useLocation } from "react-router-dom";
 
 export default () => {
@@ -58,6 +59,7 @@ Next for convenience we create another hook so that instead of calling `paramRig
 
 ```ts
 // useGetPathParams.ts
+
 import usePathUtils from "./usePathUtils";
 
 export default () => {
@@ -70,3 +72,59 @@ export default () => {
   };
 };
 ```
+
+But any change in the path may trigger rerender for components using this hook which may just use `projectId` but not `section`. Therefore we may consider **_putting path params in redux_** and let redux control which component to rerender.
+
+#### Ultimate Version
+
+We invoke the following hook at the first routing component (where we have `useLocation` hook):
+
+```js
+//useGenPathParams.ts
+
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { useAppDispatch } from "../redux/app/hook";
+import applicationSlice from "../redux/slice/applicationSlice";
+import usePathUtils from "./usePathUtils";
+
+export default () => {
+  const { pathname } = useLocation();
+  const dispatch = useAppDispatch();
+  const { paramRightAfter } = usePathUtils();
+
+  useEffect(() => {
+    dispatch(
+      applicationSlice.actions.updatePathParams({
+        projectOid: paramRightAfter("/order/"),
+        programmeOid: paramRightAfter("/contract/"),
+        section: paramRightAfter("/order/.*?/"),
+        mailchainOid: paramRightAfter("/mailchain/"),
+      })
+    );
+  }, [pathname]);
+};
+```
+
+Next we create a reducer in our slice that stores path params:
+
+```js
+updatePathParams: (state, action: PayloadAction<ApplicationSliceState["pathParams"]>) => {
+    state.pathParams = { ...state.pathParams, ...action.payload };
+},
+```
+
+Finally we adjust our existing `useGetPathParams`:
+
+```js
+// useGetPathParams.ts
+
+import { useAppSelector } from "../redux/app/hook"
+import { ApplicationSliceState } from "../redux/slice/applicationSlice"
+
+export default (paramKey: keyof ApplicationSliceState["pathParams"]) => {
+	return useAppSelector(s => s.application.pathParams?.[paramKey]);
+}
+```
+
+which minimizes potential rerender problem while using this hook!
