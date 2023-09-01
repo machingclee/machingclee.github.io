@@ -2,7 +2,7 @@
 title: "Data Scrapping for Data that Requires Click by Click "
 date: 2023-05-27
 id: blog0134
-tag: python
+tag: python, selenium
 intro: "*Click and then get detail* is a very routine practice for data scrapping. We record how to do that by selenium in python."
 toc: true
 ---

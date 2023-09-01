@@ -2,7 +2,7 @@
 title: Automation Task for Chrome
 date: 2021-10-02
 id: blog030
-tag: python
+tag: python, selenium
 intro: Simple click and download (and wait for its completion!) tasks that are achieved in python.
 ---
 
