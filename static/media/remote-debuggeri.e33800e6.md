@@ -75,7 +75,9 @@ This is a built-in param for spring project, which make spring pick `application
 
 In line 13 we have
 
-- `JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005`
+- ```text
+  JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+  ```
 
 - The backend can still be accessed through 8090, and in addition we can remote debug the spring project via port 5005.
 

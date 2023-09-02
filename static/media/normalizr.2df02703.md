@@ -161,7 +161,7 @@ After normlization:
 }
 ```
 
-#### Abstrct into a Until Function
+#### Abstract into a Until Function
 
 ```typescript
 import { normalize, schema } from "normalizr";

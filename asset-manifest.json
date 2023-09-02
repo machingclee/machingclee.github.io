@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/static/css/main.f963df99.chunk.css",
-    "main.js": "/static/js/main.1b27df5c.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.99278de1.js",
+    "main.js": "/static/js/main.fb9f1cfe.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.eb6e8141.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.cfdca989.chunk.js": "/static/js/2.cfdca989.chunk.js",
-    "static/js/3.a0ba3e12.chunk.js": "/static/js/3.a0ba3e12.chunk.js",
+    "static/js/2.1de3eb1f.chunk.js": "/static/js/2.1de3eb1f.chunk.js",
+    "static/js/3.a89e97d1.chunk.js": "/static/js/3.a89e97d1.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.cfdca989.chunk.js.LICENSE.txt": "/static/js/2.cfdca989.chunk.js.LICENSE.txt",
+    "static/js/2.1de3eb1f.chunk.js.LICENSE.txt": "/static/js/2.1de3eb1f.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.7667a328.md",
     "static/media/002-closure-of-interior.md": "/static/media/002-closure-of-interior.d61226c6.md",
@@ -96,6 +96,7 @@
     "static/media/167-gov-analyst-programmer.md": "/static/media/167-gov-analyst-programmer.842e2477.md",
     "static/media/168-boxshadow.md": "/static/media/168-boxshadow.b6b760e0.md",
     "static/media/169-ruststudynotes.md": "/static/media/169-ruststudynotes.b6e2ca83.md",
+    "static/media/170-scroll.md": "/static/media/170-scroll.6b981664.md",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/DefectGAN.md": "/static/media/DefectGAN.c0718f46.md",
     "static/media/EAST.md": "/static/media/EAST.86fb54d8.md",
@@ -192,7 +193,7 @@
     "static/media/my_picture_3.9fff9228.jpg": "/static/media/my_picture_3.9fff9228.jpg",
     "static/media/nextjs-debug.md": "/static/media/nextjs-debug.09beb281.md",
     "static/media/nextjs-electron.md": "/static/media/nextjs-electron.3f8d1fe1.md",
-    "static/media/normalizr.md": "/static/media/normalizr.26ac38da.md",
+    "static/media/normalizr.md": "/static/media/normalizr.2df02703.md",
     "static/media/opencvinstall.md": "/static/media/opencvinstall.c84b99bb.md",
     "static/media/pandoc.md": "/static/media/pandoc.1405492f.md",
     "static/media/persist-data.md": "/static/media/persist-data.f18a1ad2.md",
@@ -204,7 +205,7 @@
     "static/media/pytorch-summary.md": "/static/media/pytorch-summary.1e0a19b1.md",
     "static/media/radio-button-groups.md": "/static/media/radio-button-groups.759d8b31.md",
     "static/media/redux-saga.md": "/static/media/redux-saga.f840908f.md",
-    "static/media/remote-debuggeri.md": "/static/media/remote-debuggeri.9407fc62.md",
+    "static/media/remote-debuggeri.md": "/static/media/remote-debuggeri.e33800e6.md",
     "static/media/retrain-nan.md": "/static/media/retrain-nan.3c7eba3c.md",
     "static/media/review.c9c071ab.pdf": "/static/media/review.c9c071ab.pdf",
     "static/media/s3-deployment-ci.md": "/static/media/s3-deployment-ci.e287039c.md",
@@ -224,10 +225,10 @@
     "static/media/yolo-v3-deep-dive.md": "/static/media/yolo-v3-deep-dive.5fa9bf85.md"
   },
   "entrypoints": [
-    "static/js/runtime-main.99278de1.js",
+    "static/js/runtime-main.eb6e8141.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.cfdca989.chunk.js",
+    "static/js/2.1de3eb1f.chunk.js",
     "static/css/main.f963df99.chunk.css",
-    "static/js/main.1b27df5c.chunk.js"
+    "static/js/main.fb9f1cfe.chunk.js"
   ]
 }
