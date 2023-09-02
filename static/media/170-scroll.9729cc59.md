@@ -46,7 +46,7 @@ export default (props: { up: () => void, down: () => void }) => {
     }, 100);
 
     return () => {
-      scrollRef?.current?.addEventListener("scroll", scrollHandler);
+      scrollRef?.current?.removeEventListener("scroll", scrollHandler);
     };
   }, []);
 
