@@ -278,7 +278,9 @@ We can observe that our chunks never exceed $2^8 \times 2^8 = 2^{16} = 65536$ by
 #### Download Zip of Files with Stream Manipulation
 
 ##### Node.js
+
 ###### Backend Implementation
+
 We take AWS S3 bucket as an example. We will:
 
 - Use npm package `@aws-sdk/client-s3` to get `Buffer` of our object through `bucketName` and `objectKey`.
@@ -288,39 +290,47 @@ Let's create another route called `/download` for downloading zip of multiple fi
 
 ```js
 app.get("/download", async (req, res) => {
-  const bucketName = "james-cicd";
+  const bucketName = "jaems-cicd";
   const objectKey1 = "assets/fonts/FreightTextProMedium-Italic.woff2";
   const objectKey2 = "assets/fonts/FreightTextProMedium-Italic.woff";
 
-  const buffer1 = await awsS3Util.getFileBuffer({ bucketName, objectKey: objectKey1 });
-  const buffer2 = await awsS3Util.getFileBuffer({ bucketName, objectKey: objectKey2 });
+  const stream1 = await awsS3Util.getFileStream({
+    bucketName,
+    objectKey: objectKey1,
+  });
+  const stream2 = await awsS3Util.getFileStream({
+    bucketName,
+    objectKey: objectKey2,
+  });
 
   const zipStream = streamUtil.getZipStream();
 
-  if (buffer1) {
-    zipStream.append(buffer1, { name: "FreightTextProMedium-Italic.woff2" });
+  if (stream1) {
+    zipStream.append(stream1, { name: "FreightTextProMedium-Italic.woff2" });
   }
-  if (buffer2) {
-    zipStream.append(buffer2, { name: "FreightTextProMedium-Italic.woff" });
+  if (stream2) {
+    zipStream.append(stream2, { name: "FreightTextProMedium-Italic.woff" });
   }
-
-  zipStream.finalize()
+  zipStream.finalize();
   zipStream.pipe(res);
   
   res.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
-  res.setHeader("Content-Disposition", "attachment; filename=\"zip-file-example.zip\"");
+  res.setHeader(
+    "Content-Disposition",
+    'attachment; filename="zip-file-example.zip"'
+  );
 });
 ```
-- Here `streamUtil.getZipStream` and `awsS3Util.getFileBuffer` are defined below.  
+
+- Here `streamUtil.getZipStream` and `awsS3Util.getFileStream` are defined below.
 - `ZipStream` is a kind of `middleware` between streams, we call it a `Duplex` stream in node.js, which is both a `ReadStream` and a `WriteStream`.
 - Our `name` field can be `some/path/file.ext` inside `zipStream.append`. `archiver` will `mkdir -p` for us.
 - Note that by default `Content-Disposition` is not among the auto-allowed headers, we need to specify it explicitly.
 - It would be better to enclose the filename by `"`'s.
--  Modern browser will try to parse the filename without quotes, but enclosing by `"`'s makes frontend more easy to grab the filename using regex, as we shall see later.
+- Modern browser will try to parse the filename without quotes, but enclosing by `"`'s makes frontend more easy to grab the filename using regex, as we shall see later.
 
+- `streamUtil.getZipStream`
 
-
-- `streamUtil.getZipStream` 
   ```js
   // streamUtil.ts
 
@@ -328,47 +338,38 @@ app.get("/download", async (req, res) => {
 
   const getZipStream = () => {
     const archive = archiver("zip", {
-      zlib: { level: 9 }
+      zlib: { level: 9 },
     });
     return archive;
-  }
+  };
 
   export default {
-    getZipStream
-  }
+    getZipStream,
+  };
   ```
-- `awsS3Util.getFileBuffer`
+
+- `awsS3Util.getFileStream`
+
   ```js
   // awsS3Util.ts
+  import AWS from "aws-sdk";
 
-  import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
-  import stream, { Readable } from 'stream';
-  import util from 'util';
-  import { PassThrough } from "stream";
+  const S3 = new AWS.S3();
 
-  const s3Client = new S3Client({ region: "ap-northeast-2" });
-
-  async function getFileBuffer(props: { bucketName: string, objectKey: string }) {
-    const middle = new PassThrough();
-
-    const { bucketName, objectKey: key } = props;
-    const command = new GetObjectCommand({ Bucket: bucketName, Key: key });
-    const response = await s3Client.send(command);
-    const bytes = await response.Body?.transformToByteArray();
-    if (!bytes) {
-      return null;
-    } else {
-      return Buffer.from(bytes);
-    }
+  async function getFileStream(props: { bucketName: string, objectKey: string }) {
+    const { bucketName, objectKey } = props;
+    return S3.getObject({ Bucket: bucketName, Key: objectKey }).createReadStream();
   }
 
   export default {
-    getFileBuffer
+    getFileStream
   }
-  ````
+  ```
 
 ###### Frontend to Handle the Stream
+
 We extract filename from header in line 14.
+
 ```js-1
 import Button from "@mui/material/Button/Button";
 import Box from "@mui/material/Box";
@@ -392,7 +393,7 @@ export default () => {
 
   return (
     <Box sx={
-      { 
+      {
         "& .MuiButton-root": {
           textTransform: "none"
           }
@@ -406,22 +407,25 @@ export default () => {
   )
 }
 ```
-Note that since it is a `GET` request, `downloadZip` can be alternatively defined by 
+
+Note that since it is a `GET` request, `downloadZip` can be alternatively defined by
+
 ```js
-  const downloadZip = async () => {
-    const link = document.createElement("a");
-    link.href = "http://localhost:8080/download";
-    link.click();
-  }
+const downloadZip = async () => {
+  const link = document.createElement("a");
+  link.href = "http://localhost:8080/download";
+  link.click();
+};
 ```
-and we still get the same result (the filename can be correctly obtained). 
+
+and we still get the same result (the filename can be correctly obtained).
 
 The former approach (line 8) works equally well for `POST` request (e.g., we may want more complicated query data in the body).
 
 ##### Springboot
 
-- The `spring` way will be more elegant as everything will be simply stream without transforming into `Buffer`. 
-- The idea is the same, we create a `middleware` before piping data into `outputStream`.
+- Idea in node.js can be translated to spring directly.
+- We create a `middleware` before piping data into `outputStream`.
 
 ```java
 @Data
@@ -436,7 +440,7 @@ public static StreamingResponseBody inputStreamsIntoZip(List<FullPathAndInputStr
             for (var fullPathAndInputStream : inputs) {
                 String fullPath = fullPathAndInputStream.getFullPath().replace("\\", "/");
                 InputStream inputStream = fullPathAndInputStream.getInputStream();
-                
+
                 ZipEntry zipEntry = new ZipEntry(fullPath);
                 zipEntry.setTime(System.currentTimeMillis());
                 zipOutStream.putNextEntry(zipEntry);
@@ -449,7 +453,9 @@ public static StreamingResponseBody inputStreamsIntoZip(List<FullPathAndInputStr
     return responseBody;
 }
 ```
+
 Here `InputStream` can be obtained from `S3ObjectInputStream`:
+
 ```java
 public S3ObjectInputStream getFileStream(String bucketName, String key) {
     try {
@@ -462,10 +468,11 @@ public S3ObjectInputStream getFileStream(String bucketName, String key) {
     return null;
 }
 ```
+
 - In `spring`'s controller we can return `ResponseEntity` and pass `StreamingResponseBody` object into its `body` argument.
 - Frontend code that handles the response is the same as the previous section.
 
-#### Reference 
+#### Reference
 
 - **Web Dev Jounry**, Discussion on Streaming:
   - [Node JS - HTTP Streaming](https://www.youtube.com/watch?v=CiGnubZC5cs)
