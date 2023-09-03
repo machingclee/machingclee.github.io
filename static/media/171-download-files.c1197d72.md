@@ -468,7 +468,7 @@ public S3ObjectInputStream getFileStream(String bucketName, String key) {
 
 #### Reference 
 
-- Web Dev Jounry On Streamming
+- **Web Dev Jounry**, Discussion on Streaming:
   - [Node JS - HTTP Streaming](https://www.youtube.com/watch?v=CiGnubZC5cs)
   - [Node JS - Streams Intro](https://www.youtube.com/watch?v=qU8PmZOOnac)
   - [Node JS - Readable Streams](https://www.youtube.com/watch?v=_pqv06ySvuk)
