@@ -392,7 +392,14 @@ export default () => {
   }
 
   return (
-    <Box sx={{ "& .MuiButton-root": {textTransform: "none"} }}>
+    <Box sx={
+      { 
+        "& .MuiButton-root": {
+          textTransform: "none"
+          }
+        }
+      }
+    >
       <div>
         <Button onClick={downloadZip}> Download Zip File </Button>
       </div>
