@@ -464,4 +464,13 @@ public S3ObjectInputStream getFileStream(String bucketName, String key) {
 }
 ```
 - In `spring`'s controller we can return `ResponseEntity` and pass `StreamingResponseBody` object into its `body` argument.
-- Frontend knowledge that handles the response is the same as the previous section.
+- Frontend code that handles the response is the same as the previous section.
+
+#### Reference 
+
+- Web Dev Jounry On Streamming
+  - [Node JS - HTTP Streaming](https://www.youtube.com/watch?v=CiGnubZC5cs)
+  - [Node JS - Streams Intro](https://www.youtube.com/watch?v=qU8PmZOOnac)
+  - [Node JS - Readable Streams](https://www.youtube.com/watch?v=_pqv06ySvuk)
+  - [Node JS - Writable Streams & Backpressure](https://www.youtube.com/watch?v=FS2OWxS5P_E&t=605s)
+  - [Node JS - Pipe, Duplex, & Transform Streams](https://www.youtube.com/watch?v=rQXaDH__Suk)
