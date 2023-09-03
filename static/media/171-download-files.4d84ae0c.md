@@ -281,7 +281,7 @@ We can observe that our chunks never exceed $2^8 \times 2^8 = 2^{16} = 65536$ by
 ###### Backend Implementation
 We take AWS S3 bucket as an example. We will:
 
-- We use npm package `@aws-sdk/client-s3` to get `Buffer` of our object through `bucketName` and `objectKey`.
+- Use npm package `@aws-sdk/client-s3` to get `Buffer` of our object through `bucketName` and `objectKey`.
 - Use npm package `archiver` to pack `Buffer` into the response `WriteStream`, i.e., `res`.
 
 Let's create another route called `/download` for downloading zip of multiple files:
@@ -347,7 +347,6 @@ app.get("/download", async (req, res) => {
   import { PassThrough } from "stream";
 
   const s3Client = new S3Client({ region: "ap-northeast-2" });
-  const getStream = util.promisify(stream.pipeline);
 
   async function getFileBuffer(props: { bucketName: string, objectKey: string }) {
     const middle = new PassThrough();
