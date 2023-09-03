@@ -2,7 +2,7 @@
 title: "Google Login"
 date: 2023-08-13
 id: blog0164
-tag: express
+tag: express, cors
 intro: "A simple backend that perform google authentication. I personally use this to restrict users who can access my project."
 toc: true
 ---
@@ -29,6 +29,7 @@ import cors from 'cors';
 import errorHandler from "./middlewares/errorHandler";
 
 const allowlist = ['http://localhost:3000']
+
 const corsOptionsDelegate = (req, callback) => {
   var corsOptions;
   if (allowlist.indexOf(req.header('Origin')) > -1) {
@@ -39,6 +40,8 @@ const corsOptionsDelegate = (req, callback) => {
   callback(null, corsOptions) // callback expects two parameters: error and options
 }
 ```
+
+Later we will bring the delegate into use by `app.use(cors(corsOptionsDelegate))`;
 
 ##### .env-cmdrc, the Environment Variables
 

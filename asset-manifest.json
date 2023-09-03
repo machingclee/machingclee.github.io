@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/static/css/main.f963df99.chunk.css",
-    "main.js": "/static/js/main.ef35bbcf.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.eb6e8141.js",
+    "main.js": "/static/js/main.b4fcb6e5.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.873d1288.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.1de3eb1f.chunk.js": "/static/js/2.1de3eb1f.chunk.js",
-    "static/js/3.a89e97d1.chunk.js": "/static/js/3.a89e97d1.chunk.js",
+    "static/js/2.9dad2968.chunk.js": "/static/js/2.9dad2968.chunk.js",
+    "static/js/3.d804658a.chunk.js": "/static/js/3.d804658a.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.1de3eb1f.chunk.js.LICENSE.txt": "/static/js/2.1de3eb1f.chunk.js.LICENSE.txt",
+    "static/js/2.9dad2968.chunk.js.LICENSE.txt": "/static/js/2.9dad2968.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.7667a328.md",
     "static/media/002-closure-of-interior.md": "/static/media/002-closure-of-interior.d61226c6.md",
@@ -83,20 +83,21 @@
     "static/media/154-uwsgi-flask.md": "/static/media/154-uwsgi-flask.d8d0cf15.md",
     "static/media/155-gmail-pubsub.md": "/static/media/155-gmail-pubsub.1e2e196b.md",
     "static/media/156-serverless.md": "/static/media/156-serverless.77ae63e8.md",
-    "static/media/157-SSE.md": "/static/media/157-SSE.8223b8cd.md",
+    "static/media/157-SSE.md": "/static/media/157-SSE.1da5fc10.md",
     "static/media/158-algolia.md": "/static/media/158-algolia.e7f09cb3.md",
     "static/media/159-clickoutside.md": "/static/media/159-clickoutside.800d0b58.md",
     "static/media/160-multiselections.md": "/static/media/160-multiselections.04467aa0.md",
     "static/media/161-third-party.md": "/static/media/161-third-party.b90fa561.md",
     "static/media/162-snackbar-utils.md": "/static/media/162-snackbar-utils.bacdad77.md",
     "static/media/163-path-params.md": "/static/media/163-path-params.09f8d3d3.md",
-    "static/media/164-google-login.md": "/static/media/164-google-login.a6554cc3.md",
+    "static/media/164-google-login.md": "/static/media/164-google-login.36d2442e.md",
     "static/media/165-forwardRef.md": "/static/media/165-forwardRef.fc573469.md",
     "static/media/166-Rerender-component.md": "/static/media/166-Rerender-component.d74b4620.md",
     "static/media/167-gov-analyst-programmer.md": "/static/media/167-gov-analyst-programmer.842e2477.md",
     "static/media/168-boxshadow.md": "/static/media/168-boxshadow.b6b760e0.md",
     "static/media/169-ruststudynotes.md": "/static/media/169-ruststudynotes.b6e2ca83.md",
     "static/media/170-scroll.md": "/static/media/170-scroll.9729cc59.md",
+    "static/media/171-download-files.md": "/static/media/171-download-files.51876459.md",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/DefectGAN.md": "/static/media/DefectGAN.c0718f46.md",
     "static/media/EAST.md": "/static/media/EAST.86fb54d8.md",
@@ -225,10 +226,10 @@
     "static/media/yolo-v3-deep-dive.md": "/static/media/yolo-v3-deep-dive.5fa9bf85.md"
   },
   "entrypoints": [
-    "static/js/runtime-main.eb6e8141.js",
+    "static/js/runtime-main.873d1288.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.1de3eb1f.chunk.js",
+    "static/js/2.9dad2968.chunk.js",
     "static/css/main.f963df99.chunk.css",
-    "static/js/main.ef35bbcf.chunk.js"
+    "static/js/main.b4fcb6e5.chunk.js"
   ]
 }
