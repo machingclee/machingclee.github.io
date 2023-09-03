@@ -59,7 +59,7 @@ export default () => {
 }
 ```
 
-On accessing `localhost:8080/form` we have:
+We have:
 
 ![](/assets/tech/171/001.png)
 
@@ -161,9 +161,9 @@ inputStream.pipe(outputStream);
 
 For this, we remove the `pipe` line, we read `chunk` and write `chunk` on our own:
 
-###### Version 1 of `pipe` (Demonstrative Purpose, Not Recommanded)
+###### Version 1 of `pipe` (Demonstrative Purpose, Not Recommended)
 
-We Accumulate all the bytes and then write it into a file:
+We accumulate all the bytes and then write it into a file:
 
 ```js
 app.post("/stream", async (req, res) => {
