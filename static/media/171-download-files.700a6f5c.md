@@ -213,7 +213,7 @@ finalBuffer: <Buffer 89 50 4e 47 0d 0a 1a 0a 00 00 00 0d 49 48 44 52 00 00 0d 70
 
 ###### Version 2 of `pipe`
 
-Whenever we read a chunk, we write it into outStream:
+Whenever we read a chunk, we write it into `outputStream`:
 
 ```js
 app.post("/stream", async (req, res) => {
@@ -251,7 +251,7 @@ We can observe that our chunks never exceed $2^8 \times 2^8 = 2^{16} = 65536$ by
 
 ###### Summary of Version 1 and Version 2
 
-- **_Version 2_** is exactly what `inputStream.pipe(outStream)` does for us. Therefore we have no hassle of worrying memory overflow problem for data streaming.
+- **_Version 2_** is exactly what `inputStream.pipe(outputStream)` does for us. Therefore we have no hassle of worrying memory overflow problem for data streaming.
 
 - Not only that, `pipe` method also handles **back-pressure** problem which we haven't implemented anything to handle yet:
 
@@ -266,9 +266,9 @@ We can observe that our chunks never exceed $2^8 \times 2^8 = 2^{16} = 65536$ by
   It is in fact a boolean.
 
 - When it returns `false`, which means that the buffer of size 65kb is not large enough to receive the incoming chunk immediately.
-- The reason is mostly because of the write speed is slower than the data-pulling speed.
+- The reason is mostly because of that the writing speed is slower than the data-pulling speed.
 - We need to
-  - `inputStream.pause()` our incoming stream when `outputStream.write` returns false;
+  - `inputStream.pause()` when `outputStream.write` returns false;
   - `inputStream.resume()` when our buffer in the `outputStream` gets **_drained of_** data;
   - The **drainded event** can be subscribed by
     ```js
@@ -283,8 +283,8 @@ We can observe that our chunks never exceed $2^8 \times 2^8 = 2^{16} = 65536$ by
 
 We take AWS S3 bucket as an example. We will:
 
-- Use npm package `@aws-sdk/client-s3` to get `Buffer` of our object through `bucketName` and `objectKey`.
-- Use npm package `archiver` to pack `Buffer` into the response `WriteStream`, i.e., `res`.
+- Use npm package `aws-sdk` to get `ReadStream` of our object through `bucketName` and `objectKey`.
+- Use npm package `archiver` to pipe the `ReadStream` into a `ZipStream`, data will then be piped into our final `WriteStream`, i.e., `res`.
 
 Let's create another route called `/download` for downloading zip of multiple files:
 
@@ -313,7 +313,7 @@ app.get("/download", async (req, res) => {
   }
   zipStream.finalize();
   zipStream.pipe(res);
-  
+
   res.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
   res.setHeader(
     "Content-Disposition",
@@ -356,14 +356,20 @@ app.get("/download", async (req, res) => {
 
   const S3 = new AWS.S3();
 
-  async function getFileStream(props: { bucketName: string, objectKey: string }) {
+  async function getFileStream(props: {
+    bucketName: string,
+    objectKey: string,
+  }) {
     const { bucketName, objectKey } = props;
-    return S3.getObject({ Bucket: bucketName, Key: objectKey }).createReadStream();
+    return S3.getObject({
+      Bucket: bucketName,
+      Key: objectKey,
+    }).createReadStream();
   }
 
   export default {
-    getFileStream
-  }
+    getFileStream,
+  };
   ```
 
 ###### Frontend to Handle the Stream
