@@ -3,7 +3,7 @@ title: "Rust Study Notes"
 date: 2023-09-04
 id: blog0169
 tag: rust
-intro: "Study notes from the beginning"
+intro: "This is a beginner notes."
 toc: true
 ---
 
