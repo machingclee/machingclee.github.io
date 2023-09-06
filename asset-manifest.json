@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.f963df99.chunk.css",
-    "main.js": "/static/js/main.41bafa16.chunk.js",
+    "main.js": "/static/js/main.6f710c6c.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.dc964fb9.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.f9e95b9a.chunk.js": "/static/js/2.f9e95b9a.chunk.js",
@@ -99,7 +99,7 @@
     "static/media/170-scroll.md": "/static/media/170-scroll.9729cc59.md",
     "static/media/171-download-files.md": "/static/media/171-download-files.700a6f5c.md",
     "static/media/172-restrict-CORS.md": "/static/media/172-restrict-CORS.8fdba459.md",
-    "static/media/173-website-route-schema.md": "/static/media/173-website-route-schema.b9cd697d.md",
+    "static/media/173-website-route-schema.md": "/static/media/173-website-route-schema.1e8bf602.md",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/DefectGAN.md": "/static/media/DefectGAN.c0718f46.md",
     "static/media/EAST.md": "/static/media/EAST.86fb54d8.md",
@@ -232,6 +232,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.f9e95b9a.chunk.js",
     "static/css/main.f963df99.chunk.css",
-    "static/js/main.41bafa16.chunk.js"
+    "static/js/main.6f710c6c.chunk.js"
   ]
 }

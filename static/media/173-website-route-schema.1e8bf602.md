@@ -88,7 +88,7 @@ export type ClientNavigation = RouteBreakdown<NavigationRouteSchema>;
 
 Then by hovering `ClientNavigation`:
 
-```text
+```none
 type ClientNavigation = ["/buyer" | "/supplier", "order", string, "" | "requirements" |
 "quotation" | "sampling" | "freight"] | ["/buyer" | "/supplier", "order", string, "contract",
 string] | [...] | [...] | [...]
@@ -113,9 +113,12 @@ which simply assembles the values into a correct URL for navigation.
 
   ![](/assets/tech/173/002.png)
 
-- Next, though the type system from Typescript keeps listing all possibilities, we are not prone to make any mistake:
+- Any route that is not among our **_tuple of string-types_** will trigger an error:
 
   ![](/assets/tech/173/003.png)
 
-- Any route that is not among our tuple of typed strings will trigger error.
+- Apart from auto-complete suggestions, there will also be a pop-up indicating the type at the current positional argument:
+
+  ![](/assets/tech/173/004.png)
+
 - From now on any **_change of routes_** requirement becomes extremely trivial!
