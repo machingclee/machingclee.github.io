@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/static/css/main.f963df99.chunk.css",
-    "main.js": "/static/js/main.6f710c6c.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.dc964fb9.js",
+    "main.css": "/static/css/main.5bb92df7.chunk.css",
+    "main.js": "/static/js/main.aa54b8cf.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.645d2571.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.f9e95b9a.chunk.js": "/static/js/2.f9e95b9a.chunk.js",
-    "static/js/3.f3c9572c.chunk.js": "/static/js/3.f3c9572c.chunk.js",
+    "static/js/2.38cde8a9.chunk.js": "/static/js/2.38cde8a9.chunk.js",
+    "static/js/3.fe93e88d.chunk.js": "/static/js/3.fe93e88d.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.f9e95b9a.chunk.js.LICENSE.txt": "/static/js/2.f9e95b9a.chunk.js.LICENSE.txt",
+    "static/js/2.38cde8a9.chunk.js.LICENSE.txt": "/static/js/2.38cde8a9.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.7667a328.md",
     "static/media/002-closure-of-interior.md": "/static/media/002-closure-of-interior.d61226c6.md",
@@ -228,10 +228,10 @@
     "static/media/yolo-v3-deep-dive.md": "/static/media/yolo-v3-deep-dive.5fa9bf85.md"
   },
   "entrypoints": [
-    "static/js/runtime-main.dc964fb9.js",
+    "static/js/runtime-main.645d2571.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.f9e95b9a.chunk.js",
-    "static/css/main.f963df99.chunk.css",
-    "static/js/main.6f710c6c.chunk.js"
+    "static/js/2.38cde8a9.chunk.js",
+    "static/css/main.5bb92df7.chunk.css",
+    "static/js/main.aa54b8cf.chunk.js"
   ]
 }
