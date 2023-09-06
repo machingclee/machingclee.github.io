@@ -118,4 +118,4 @@ which simply assembles the values into a correct URL for navigation.
   ![](/assets/tech/173/003.png)
 
 - Any route that is not among our tuple of typed strings will trigger error.
-- From now on any **_change of routes_** requirement becomes extremely trivial now!
+- From now on any **_change of routes_** requirement becomes extremely trivial!
