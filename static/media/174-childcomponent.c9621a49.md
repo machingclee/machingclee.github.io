@@ -1,6 +1,6 @@
 ---
 title: "Custom Rendering of Custom Child Component"
-date: 2023-09-07
+date: 2023-09-06
 id: blog0174
 tag: react
 intro: "We dicuss how to customize the way of rendering custom children component to produce highly reusable code."
