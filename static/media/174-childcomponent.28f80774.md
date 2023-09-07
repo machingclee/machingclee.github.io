@@ -148,19 +148,19 @@ public static Body({ children, ...props }: { children: ReactNode } & HTMLAttribu
 		<div {...props}>
 			{radioRows}
 			<Spacer height={5} />
-			<Table sx={{
-				"& td": {
-					paddingTop: "5px"
-				},
-				"& td:nth-child(1)": {
-					width: 160,
-					verticalAlign: "middle",
-					paddingLeft: "34px"
-				},
-				"& td:nth-child(2)": {
-					verticalAlign: "middle"
+			<Table sx={
+				{
+					"& td": {
+						paddingTop: "5px"
+					},
+					"& td:nth-child(1)": {
+						width: 160,
+						verticalAlign: "middle",
+						paddingLeft: "34px"
+					},
+					"& td:nth-child(2)": { verticalAlign: "middle" }
 				}
-			}}>
+				}>
 				{inputs}
 			</Table>
 		</div>
