@@ -19,7 +19,7 @@ Let's study the following forms:
 
 <Center>
 <a href="/assets/tech/174/003.png">
-<img src="/assets/tech/174/003.png" />
+<img src="/assets/tech/174/003.png"/>
 </a>
 </Center>
 
