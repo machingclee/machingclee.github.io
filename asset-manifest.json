@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.5bb92df7.chunk.css",
-    "main.js": "/static/js/main.638bc8b7.chunk.js",
+    "main.js": "/static/js/main.49adef81.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.53139066.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.89b5a720.chunk.js": "/static/js/2.89b5a720.chunk.js",
@@ -100,7 +100,7 @@
     "static/media/171-download-files.md": "/static/media/171-download-files.700a6f5c.md",
     "static/media/172-restrict-CORS.md": "/static/media/172-restrict-CORS.8fdba459.md",
     "static/media/173-website-route-schema.md": "/static/media/173-website-route-schema.1e8bf602.md",
-    "static/media/174-childcomponent.md": "/static/media/174-childcomponent.c9621a49.md",
+    "static/media/174-childcomponent.md": "/static/media/174-childcomponent.2d45e4f1.md",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/DefectGAN.md": "/static/media/DefectGAN.c0718f46.md",
     "static/media/EAST.md": "/static/media/EAST.86fb54d8.md",
@@ -233,6 +233,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.89b5a720.chunk.js",
     "static/css/main.5bb92df7.chunk.css",
-    "static/js/main.638bc8b7.chunk.js"
+    "static/js/main.49adef81.chunk.js"
   ]
 }

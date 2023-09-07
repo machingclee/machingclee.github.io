@@ -69,13 +69,11 @@ Let's denote `DC` as `DialogComponent`. The above component can be described by
 
 ```js
 <DC.RadioRow>
-	<DC.RadioRowButton>
-		<RadioButton/>
-	</DC.RadioRowButton>
+  <DC.RadioRowButton>
+    <RadioButton />
+  </DC.RadioRowButton>
 
-	<DC.RadioRowTitle>
-		Create New Buyer Company
-	</DC.RadioRowTitle>
+  <DC.RadioRowTitle>Create New Buyer Company</DC.RadioRowTitle>
 </DC.RadioRow>
 ```
 
@@ -106,23 +104,25 @@ export class DC {
 	}
 }
 ```
+
 Note that `RadioRowButton` and `RadioRowTitle` are simply `children => children` and identitcal. They serve as a building block of our custom rendering.
 
 - ![](/assets/tech/174/005.png)
 
-This can be expressed by 
+This can be expressed by
+
 ```js
 <DC.InputRow>
-	<DC.InputRowLeft>
-		Choose Company
-	</DC.InputRowLeft>
-	<DC.InputRowRight>
-		<GeneralDropdown fullList={buyerCompany} initialValue={null} />
-	</DC.InputRowRight>
+  <DC.InputRowLeft>Choose Company</DC.InputRowLeft>
+  <DC.InputRowRight>
+    <GeneralDropdown fullList={buyerCompany} initialValue={null} />
+  </DC.InputRowRight>
 </DC.InputRow>
 ```
+
 We hide all the dirty work by defining:
-```js	
+
+```js
 export class DC {
 	public static InputRowLeft({ children, ...props }: { children: ReactNode } & HTMLAttributes<HTMLDivElement>) { return <div {...props}>{children}</div> }
 	public static InputRowRight({ children, ...props }: { children: ReactNode } & HTMLAttributes<HTMLDivElement>) { return <div {...props}>{children}</div> }
@@ -137,7 +137,9 @@ export class DC {
 		)
 	}
 ```
+
 Finally we want our component to be able to capture `<InputRow />` and `<RadioRow />` and inject the components in desired position.
+
 ```js
 public static Body({ children, ...props }: { children: ReactNode } & HTMLAttributes<HTMLDivElement>) {
 	const inputs = childUtil.grabChildrenByType(children, DC.InputRow.name);
@@ -165,10 +167,13 @@ public static Body({ children, ...props }: { children: ReactNode } & HTMLAttribu
 	)
 }
 ```
+
 #### Final Result
-- If we put all the single pieces into the component we want, it still looks very long. 
+
+- If we put all the single pieces into the component we want, it still looks very long.
 - But at least we don't need to mess around with the hard-coded CSS values, in this sense the code is more reusable.
 - In case we want to change CSS, it is much more consistent.
+
 ```js
 export type Step1FormData = {
 	option?: string,
