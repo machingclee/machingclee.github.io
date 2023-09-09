@@ -119,7 +119,7 @@ impl EllipticCurve {
 }
 ```
 
-#### Utility Struct to Perform Arithmatics on $\mathbb Z/ p \mathbb Z$ for `BigUint`
+#### Utility Struct to Perform Arithmetic on $\mathbb Z/ p \mathbb Z$ for `BigUint`
 
 ```rust
 struct Fp<'a> {
