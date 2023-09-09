@@ -172,24 +172,69 @@ That is, we wish to overload the operators:
 without the utility struct `Fp`.
 
 ```rust
-struct F_p<'a> {
+#[derive(PartialEq, Clone, Debug)]
+pub struct F_p<'a> {
+    value: BigUint,
+    p: &'a BigUint,
+}
+```
+
+##### New Definition of Point and EllipticCurve base on `F_p`
+
+```rust
+pub enum Point<'a> {
+    Coor(F_p<'a>, F_p<'a>),
+    Identity,
+}
+
+pub struct EllipticCurve<'a> {
+    a: F_p<'a>,
+    b: F_p<'a>,
+}
+```
+
+##### Key to Note before Implementing the Overloadings
+
+- During the course of computatons we must let our final computational result to prosses ownership of the data.
+- Therefore, we **_cannot_** perform computation **_merely by references_** if that computation will be being returned.
+- Thus we must allow `move` to occur.
+- In the sequel, all operator overloading are **_for_** an **_owned_** type, which plays the role `A` of:
+  ```rust
+  let A = B + C_1;
+  let A = A + C_2;
+  let A = A + C_3;
+  ```
+  and by design the data ownership moves downwards in the computation pipeline.
+
+```rust
+#[derive(PartialEq, Clone, Debug)]
+pub struct F_p<'a> {
     value: BigUint,
     p: &'a BigUint,
 }
 
-impl<'a> Add<&'a F_p<'a>> for &F_p<'a> {
+impl<'a> F_p<'a> {
+    pub fn new(i: u32, p: &'a BigUint) -> Self {
+        F_p {
+            value: BigUint::from(i),
+            p,
+        }
+    }
+}
+
+impl<'a> Add<&F_p<'a>> for F_p<'a> {
     type Output = F_p<'a>;
 
-    fn add(self, rhs: &F_p<'a>) -> Self::Output {
+    fn add(self, rhs: &F_p) -> Self::Output {
         let value = (&self.value + &rhs.value).modpow(&BigUint::from(1u32), self.p);
         F_p { value, p: self.p }
     }
 }
 
-impl<'a> Sub<&'a F_p<'a>> for &F_p<'a> {
+impl<'a> Sub<&F_p<'a>> for F_p<'a> {
     type Output = F_p<'a>;
 
-    fn sub(self, rhs: &F_p<'a>) -> Self::Output {
+    fn sub(self, rhs: &F_p) -> Self::Output {
         let value: BigUint;
         let a = &self.value;
         let b = &rhs.value;
@@ -202,28 +247,28 @@ impl<'a> Sub<&'a F_p<'a>> for &F_p<'a> {
     }
 }
 
-impl<'a> Mul<BigUint> for &F_p<'a> {
+impl<'a> Mul<BigUint> for F_p<'a> {
     type Output = F_p<'a>;
     fn mul(self, rhs: BigUint) -> Self::Output {
         let a = &self.value;
-        let value = a * &rhs;
+        let value = (a * &rhs).modpow(&BigUint::from(1u32), &self.p);
         return F_p { value, p: self.p };
     }
 }
 
-impl<'a> Mul<&'a F_p<'a>> for &F_p<'a> {
+impl<'a> Mul<&F_p<'a>> for F_p<'a> {
     type Output = F_p<'a>;
 
-    fn mul(self, rhs: &F_p<'a>) -> Self::Output {
+    fn mul(self, rhs: &F_p) -> Self::Output {
         let value = (&self.value * &rhs.value).modpow(&BigUint::from(1u32), self.p);
         F_p { value, p: self.p }
     }
 }
 
-impl<'a> Div<&'a F_p<'a>> for &F_p<'a> {
+impl<'a> Div<&F_p<'a>> for F_p<'a> {
     type Output = F_p<'a>;
 
-    fn div(self, rhs: &F_p<'a>) -> Self::Output {
+    fn div(self, rhs: &F_p) -> Self::Output {
         let left = &self.value;
         let right = &rhs.value;
         let p_minus_2 = (self.p - BigUint::from(2u32)).modpow(&BigUint::from(1u32), self.p);
@@ -235,112 +280,172 @@ impl<'a> Div<&'a F_p<'a>> for &F_p<'a> {
 }
 ```
 
-##### Rewrite of EllipticCurve::double
+##### Rewrite of EllipticCurve::double With `F_p` in Place of `BigUint`
 
 ```rust
-    fn double(&self, h: &Point) -> Point {
-        let fp = Fp { p: &self.p };
-        let h_on_curve = self.is_on_curve(h);
-        assert!(h_on_curve, "point h is not on the curve");
-        // s = (3*x^2 + a)/(2*y)
-        // x_ = s^2 - 2*x
-        // y_ = s*(x - x_) - y
-        match h {
-            Point::Identity => Point::Identity,
-            Point::Coor(x, y) => {
-                let xp = F_p {
-                    value: x.clone(),
-                    p: &self.p,
-                };
-                let yp = F_p {
-                    value: y.clone(),
-                    p: &self.p,
-                };
+impl<'a> EllipticCurve<'a> {
+		pub fn double(&self, h: &'a Point) -> Point {
+				let h_on_curve = self.is_on_curve(h);
+				assert!(h_on_curve, "point h is not on the curve");
+				// s = (3*x^2 + a)/(2*y)
+				// x_ = s^2 - 2*x
+				// y_ = s*(x - x_) - y
+				match h {
+						Point::Identity => Point::Identity,
+						Point::Coor(xp, yp) => {
+								let two_times_yp = yp.clone() * BigUint::from(2u32);
+								let s = xp.clone() * xp;
+								let s = s * BigUint::from(3u32);
+								let s = s + &self.a;
+								let s = s.clone() / &two_times_yp;
 
-                let ap = F_p {
-                    value: self.a.clone(),
-                    p: &self.p,
-                };
+								let two_times_x = xp.clone() * BigUint::from(2u32);
+								let new_x = s.clone() * &s;
+								let new_x = new_x - &two_times_x;
 
-                let two_times_yp = &yp * BigUint::from(2u32);
-                let s = &(&(&(&xp * &xp) * BigUint::from(3u32)) + &ap) / &two_times_yp;
-                let two_times_x = (&xp) * BigUint::from(2u32);
-                let new_x = &(&s * &s) - &two_times_x;
-                let x_minus_new_x = &xp - &new_x;
-                let new_y = &(&s * &x_minus_new_x) - &yp;
+								let new_y = xp.clone() - &new_x;
+								let new_y = s * &new_y;
+								let new_y = new_y - yp;
 
-                Point::Coor(new_x.value.clone(), new_y.value)
-            }
-        }
-    }
+								Point::Coor(new_x, new_y)
+						}
+				}
+		}
+}
 ```
 
-##### Rewrite of EllipticCurve::add
+##### Rewrite of EllipticCurve::add With `F_p` in Place of `BigUint`
 
 ```rust
-    fn add(&self, h: &Point, k: &Point) -> Point {
+impl<'a> EllipticCurve<'a> {
+    pub fn add(&self, h: &Point<'a>, k: &Point<'a>) -> Point {
         let h_on_curve = self.is_on_curve(h);
         let k_on_curve = self.is_on_curve(k);
         assert!(*h != *k, "two points should not be the same");
         assert!(h_on_curve, "point h is not on the curve");
         assert!(k_on_curve, "point k is not on the curve");
         match (h, k) {
-            (Point::Identity, _) => k.clone(),
-            (_, Point::Identity) => h.clone(),
-            (Point::Coor(x1, y1), Point::Coor(x2, y2)) => {
-                if x1 == x2 && (y1 + y2) == BigUint::from(0u32) {
+            (Point::Identity, _) => k.to_owned(),
+            (_, Point::Identity) => h.to_owned(),
+            (Point::Coor(x1p, y1p), Point::Coor(x2p, y2p)) => {
+                if x1p == x2p && (&y1p.value + &y2p.value) == BigUint::from(0u32) {
                     return Point::Identity;
                 }
                 // s = (y2-y1)/(x2-x1)
                 // x3 = s^2 - x1 - x2
                 // y3 = s*(x1-x3) - y1
-                let x1p = F_p {
-                    value: x1.clone(),
-                    p: &self.p,
-                };
-                let y1p = F_p {
-                    value: y1.clone(),
-                    p: &self.p,
-                };
-                let x2p = F_p {
-                    value: x2.clone(),
-                    p: &self.p,
-                };
-                let y2p = F_p {
-                    value: y2.clone(),
-                    p: &self.p,
-                };
 
-                let x2p_minus_x1p = &x2p - &x1p;
-                let s = &(&y2p - &y1p) / &x2p_minus_x1p;
-                let x3p = &(&((&s) * (&s)) - &x1p) - &x2p;
-                let x1p_minus_x3p = &x1p - &x3p;
-                let y3p = &(&s * &x1p_minus_x3p) - &y1p;
+                let s = y2p.clone() - y1p;
+                let x2_minus_x1 = x2p.clone() - x1p;
+                let s = s / &x2_minus_x1;
+                let s_square = s.clone() * &s;
 
-                Point::Coor(x3p.value.clone(), y3p.value)
+                let x3p = s_square - x1p;
+                let x3p = x3p - x2p;
+
+                let y3p = s * &(x1p.clone() - &x3p);
+                let y3p = y3p - y1p;
+
+                Point::Coor(x3p, y3p)
             }
         }
     }
+}
 ```
 
-#### Caveat
+##### EllipticCurve::scalar_mul --- the Double and Add Algorithm under `F_p`
 
-- There are necessary copyings because our enum variant is defined as
+```rust
+impl<'a> EllipticCurve<'a> {
+    pub fn scalar_mul(&'a self, q: &Point<'a>, k: &BigUint) -> Point<'a> {
+        let mut t = q.clone();
+        for i in (0..(k.bits() - 1)).rev() {
+            t = self.double(&t);
+            if k.bit(i) {
+                t = self.add(&t, q);
+            }
+        }
+        t
+    }
+}
+```
 
-  - `Point::Coor(BigUint, BigUint)`
+#### Test Cases
 
-  but not
+The following 3 cases can pass successfully:
 
-  - `Point::Coor(F_p, F_p)`.
+```text
+running 4 tests
+test test::test_ec_point_add_identity ... ok
+test test::test_ec_point_addition ... ok
+test test::test_double ... ok
+test test::test_scalar_mul ... ok
+```
 
-- Make sure to choose correct data type from the begining, if we were to convert
+```rust
+#[cfg(test)]
+mod test {
+    use super::*;
+    #[test]
+    fn test_ec_point_addition() {
+        let p = BigUint::from(17u32);
+        let ec = EllipticCurve {
+            a: F_p::new(2, &p),
+            b: F_p::new(2, &p),
+        };
 
-  - `original_type` (`BigUint` in our case)
+        // (6, 3) + (5, 1) = (10, 6);
+        let p1 = Point::Coor(F_p::new(6, &p), F_p::new(3, &p));
+        let p2 = Point::Coor(F_p::new(5, &p), F_p::new(1, &p));
+        let r = Point::Coor(F_p::new(10, &p), F_p::new(6, &p));
 
-  into
+        let res = ec.add(&p1, &p2);
+        assert_eq!(r, res);
+    }
+    #[test]
+    fn test_ec_point_add_identity() {
+        let p = BigUint::from(17u32);
+        let ec = EllipticCurve {
+            a: F_p::new(2, &p),
+            b: F_p::new(2, &p),
+        };
 
-  - `convenient_type` (`F_p` in our case)
+        // (6, 3) + (5, 1) = (10, 6);
+        let p1 = Point::Coor(F_p::new(6, &p), F_p::new(3, &p));
+        let p2 = Point::Identity;
+        let expect = Point::Coor(F_p::new(6, &p), F_p::new(3, &p));
 
-  later, we will need to do copying for that kind of types transfer.
+        let result = ec.add(&p1, &p2);
+        assert_eq!(expect, result);
+    }
 
-- Worse still, that kind of copying operations will accumulate.
+    #[test]
+    fn test_scalar_mul() {
+        let p = BigUint::from(17u32);
+        let ec = EllipticCurve {
+            a: F_p::new(2, &p),
+            b: F_p::new(2, &p),
+        };
+        let q = Point::Coor(F_p::new(5, &p), F_p::new(1, &p));
+        let k = BigUint::from(16u32);
+        let result = ec.scalar_mul(&q, &k);
+
+        let expected = Point::Coor(F_p::new(10, &p), F_p::new(11, &p));
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn test_double() {
+        let p = BigUint::from(17u32);
+        let ec = EllipticCurve {
+            a: F_p::new(2, &p),
+            b: F_p::new(2, &p),
+        };
+
+        let p = Point::Coor(F_p::new(6, &p), F_p::new(3, &p));
+        let double = ec.double(&p);
+        let p_on_curve = ec.is_on_curve(&double);
+        assert!(p_on_curve);
+    }
+}
+```
