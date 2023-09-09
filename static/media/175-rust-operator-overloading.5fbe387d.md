@@ -297,6 +297,9 @@ impl<'a> EllipticCurve<'a> {
 				match h {
 						Point::Identity => Point::Identity,
 						Point::Coor(xp, yp) => {
+                if yp.value == BigUint::from(0u32) {
+                    return Point::Identity;
+                }
 								let two_times_yp = yp.clone() * BigUint::from(2u32);
 								let s = xp.clone() * xp;
 								let s = s * BigUint::from(3u32);
