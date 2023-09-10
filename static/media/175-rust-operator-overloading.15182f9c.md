@@ -513,3 +513,50 @@ fn test_secp256k1() {
 		assert_eq!(Point::Identity, result);
 }
 ```
+
+#### The Elliptic Curve Digital Signature Algorithm (ECDSA)
+
+##### Statement of the Theorem and Proof
+
+Let's define $G$ be the group of points on an elliptic curve $C: y^2 = x^3+ax+b$ over $Z_p$.
+
+> **Theorem.** Let $g\in \mathbb Z_p\times \mathbb Z_p$ be a given generator of the additive group $G$. For a fixed $k_\text{pri}\in \mathbb  Z_p$, define $K_\text{pub} = k_\text{pri} g$, then for every $k\in \mathbb Z$ and every $z\in \mathbb Z$, there holds
+>
+> $$
+> \begin{cases}
+> R := \pi_x(kg), \\
+> S := k^{-1}\big(z +\pi_x(kg) k_\text{pri}\big )
+> \end{cases}
+> \implies\pi_x\bigg(\big[S^{-1}z\big]g + \big[S^{-1}R\big]K_\text{pub}\bigg)= \pi_x(kg).
+> $$
+>
+> In other words, if $(R,S)$ defined above is given, then **_necessarily_**
+>
+> $$
+> \pi_x\bigg(\big[S^{-1}z\big]g + \big[S^{-1}R\big]K_\text{pub}\bigg)=R.
+> $$
+>
+> This necessity condition is defined to be the **_valid_** condition of a message $z=h(m)$ for some hash $h$ and string $m$, and the tuple $(R,S)$ is called the **_signature_** of the message.
+
+<proof>
+
+**_Proof._** The proof is a direct transformation from the definition:
+
+$$
+\begin{aligned}
+ &{\color{white}\iff}\,\,\, S= k^{-1}(z + \pi_x(kg)k_\text{pri})\\
+&\iff k = S^{-1}(z + \underbrace{\pi_x(kg)}_{=:R}k_\text{pri})\\
+&\iff kg = [S^{-1}z]g + [S^{-1}R]k_\text{pri}g\\
+&\iff kg =  [S^{-1}z]g + [S^{-1}R]K_\text{pub}\\
+&\implies R = \pi_x\big( [S^{-1}z]g + [S^{-1}R]K_\text{pub}\big ).
+\end{aligned}
+$$
+
+</proof>
+
+<!-- ##### How to use This Theorem? -->
+
+#### Reference
+
+- Udemy course: [Elliptic Curve Cryptography in Rust](https://www.udemy.com/course/elliptic-curve-cryptography-in-rust/)
+- [一文读懂 ECDSA 算法如何保护数据](https://zhuanlan.zhihu.com/p/97953640?fbclid=IwAR0MMbQbGXVTAcErHNlHWRU1lUnpzqHTGdmB7rUxiD-xfFgguh_czX-gm50)
