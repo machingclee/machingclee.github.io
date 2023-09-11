@@ -518,7 +518,7 @@ fn test_secp256k1() {
 
 ##### Statement of the Theorem and Proof
 
-Let $G$ be the group of points on an elliptic curve $C: y^2 = x^3+ax+b$ over $Z_p$.
+Let $G$ be the group of points on an elliptic curve $C: y^2 = x^3+ax+b$ over $\mathbb Z_p$.
 
 > **Theorem.** Let $g\in \mathbb Z_p\times \mathbb Z_p$ be a given generator of the additive group $G$. For a fixed $k_\text{pri}\in \mathbb  Z_p$, define $K_\text{pub} = k_\text{pri} g$, then for every $k,z\in \mathbb Z$, there holds
 >
@@ -530,7 +530,9 @@ Let $G$ be the group of points on an elliptic curve $C: y^2 = x^3+ax+b$ over $Z_
 > \implies\pi_x\bigg(\big[S^{-1}z\big]g + \big[S^{-1}R\big]K_\text{pub}\bigg)= \pi_x(kg).
 > $$
 >
-> In other words, if $(R,S)$ defined above is given, then **_necessarily_**
+> Where $\pi_x$, denotes the canonical project to the first coordinate.
+
+> In other words, if $(R,S)$ defined above is given to the target receiver, then **_necessarily_**
 >
 > $$
 > \pi_x\bigg(\big[S^{-1}z\big]g + \big[S^{-1}R\big]K_\text{pub}\bigg)=R.
