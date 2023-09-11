@@ -15,7 +15,7 @@ color = "Auto"
 unstable_features = true
 
 # Width
-max_width = 100
+max_width = 140
 
 # Layout
 indent_style = "Block"
