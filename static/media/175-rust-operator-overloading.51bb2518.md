@@ -520,7 +520,7 @@ fn test_secp256k1() {
 
 Let's define $G$ be the group of points on an elliptic curve $C: y^2 = x^3+ax+b$ over $Z_p$.
 
-> **Theorem.** Let $g\in \mathbb Z_p\times \mathbb Z_p$ be a given generator of the additive group $G$. For a fixed $k_\text{pri}\in \mathbb  Z_p$, define $K_\text{pub} = k_\text{pri} g$, then for every $k\in \mathbb Z$ and every $z\in \mathbb Z$, there holds
+> **Theorem.** Let $g\in \mathbb Z_p\times \mathbb Z_p$ be a given generator of the additive group $G$. For a fixed $k_\text{pri}\in \mathbb  Z_p$, define $K_\text{pub} = k_\text{pri} g$, then for every $k,z\in \mathbb Z$, there holds
 >
 > $$
 > \begin{cases}
