@@ -13,6 +13,13 @@ toc: true
   }
 </style>
 
+#### Header to Ignore Annoying Warnings:
+
+```rust
+#![allow(unused)]
+#![allow(non_camel_case_types)]
+```
+
 #### Utility Struct to Perform Arithmetic on $\mathbb Z/ p \mathbb Z$ for `BigUint`
 
 ```rust
