@@ -166,9 +166,9 @@ impl EllipticCurve {
 
 #### Operator Overloading
 
-##### New Struct `F_p`
+##### New Struct `Field`
 
-We wish to convert `BigUint` into our own struct `F_p` and define all the usual operation on $\mathbb Z/p \mathbb Z$, i.e., among the `F_p` objects.
+We wish to convert `BigUint` into our own struct `Field` and define all the usual operation on $\mathbb Z/p \mathbb Z$, i.e., among the `Field` objects.
 
 That is, we wish to overload the operators:
 
@@ -180,27 +180,27 @@ without the utility struct `Fp`.
 
 ```rust
 #[derive(PartialEq, Clone, Debug)]
-pub struct F_p<'a> {
+pub struct Field<'a> {
     value: BigUint,
     p: &'a BigUint,
 }
 ```
 
-##### New Definition of Point and EllipticCurve base on `F_p`
+##### New Definition of Point and EllipticCurve base on `Field`
 
 ```rust
 pub enum Point<'a> {
-    Coor(F_p<'a>, F_p<'a>),
+    Coor(Field<'a>, Field<'a>),
     Identity,
 }
 
 pub struct EllipticCurve<'a> {
-    a: F_p<'a>,
-    b: F_p<'a>,
+    a: Field<'a>,
+    b: Field<'a>,
 }
 ```
 
-##### Operator Overloadings on `F_p`
+##### Operator Overloadings on `Field`
 
 ###### Key to Note
 
@@ -219,33 +219,33 @@ pub struct EllipticCurve<'a> {
 
 ```rust
 #[derive(PartialEq, Clone, Debug)]
-pub struct F_p<'a> {
+pub struct Field<'a> {
     value: BigUint,
     p: &'a BigUint,
 }
 
-impl<'a> F_p<'a> {
+impl<'a> Field<'a> {
     pub fn new(i: u32, p: &'a BigUint) -> Self {
-        F_p {
+        Field {
             value: BigUint::from(i),
             p,
         }
     }
 }
 
-impl<'a> Add<&F_p<'a>> for F_p<'a> {
-    type Output = F_p<'a>;
+impl<'a> Add<&Field<'a>> for Field<'a> {
+    type Output = Field<'a>;
 
-    fn add(self, rhs: &F_p) -> Self::Output {
+    fn add(self, rhs: &Field) -> Self::Output {
         let value = (&self.value + &rhs.value).modpow(&BigUint::from(1u32), self.p);
-        F_p { value, p: self.p }
+        Field { value, p: self.p }
     }
 }
 
-impl<'a> Sub<&F_p<'a>> for F_p<'a> {
-    type Output = F_p<'a>;
+impl<'a> Sub<&Field<'a>> for Field<'a> {
+    type Output = Field<'a>;
 
-    fn sub(self, rhs: &F_p) -> Self::Output {
+    fn sub(self, rhs: &Field) -> Self::Output {
         let value: BigUint;
         let a = &self.value;
         let b = &rhs.value;
@@ -254,44 +254,44 @@ impl<'a> Sub<&F_p<'a>> for F_p<'a> {
         } else {
             value = (self.p + a) - b;
         }
-        F_p { value, p: &self.p }
+        Field { value, p: &self.p }
     }
 }
 
-impl<'a> Mul<BigUint> for F_p<'a> {
-    type Output = F_p<'a>;
+impl<'a> Mul<BigUint> for Field<'a> {
+    type Output = Field<'a>;
     fn mul(self, rhs: BigUint) -> Self::Output {
         let a = &self.value;
         let value = (a * &rhs).modpow(&BigUint::from(1u32), &self.p);
-        return F_p { value, p: self.p };
+        return Field { value, p: self.p };
     }
 }
 
-impl<'a> Mul<&F_p<'a>> for F_p<'a> {
-    type Output = F_p<'a>;
+impl<'a> Mul<&Field<'a>> for Field<'a> {
+    type Output = Field<'a>;
 
-    fn mul(self, rhs: &F_p) -> Self::Output {
+    fn mul(self, rhs: &Field) -> Self::Output {
         let value = (&self.value * &rhs.value).modpow(&BigUint::from(1u32), self.p);
-        F_p { value, p: self.p }
+        Field { value, p: self.p }
     }
 }
 
-impl<'a> Div<&F_p<'a>> for F_p<'a> {
-    type Output = F_p<'a>;
+impl<'a> Div<&Field<'a>> for Field<'a> {
+    type Output = Field<'a>;
 
-    fn div(self, rhs: &F_p) -> Self::Output {
+    fn div(self, rhs: &Field) -> Self::Output {
         let left = &self.value;
         let right = &rhs.value;
         let p_minus_2 = (self.p - BigUint::from(2u32)).modpow(&BigUint::from(1u32), self.p);
 
         let multiplicative_inverse_right = right.modpow(&p_minus_2, &self.p);
         let value = (left * &multiplicative_inverse_right).modpow(&BigUint::from(1u32), self.p);
-        F_p { value, p: &self.p }
+        Field { value, p: &self.p }
     }
 }
 ```
 
-##### Rewrite of EllipticCurve::double With `F_p` in Place of `BigUint`
+##### Rewrite of EllipticCurve::double With `Field` in Place of `BigUint`
 
 ```rust
 impl<'a> EllipticCurve<'a> {
@@ -328,7 +328,7 @@ impl<'a> EllipticCurve<'a> {
 }
 ```
 
-##### Rewrite of EllipticCurve::add With `F_p` in Place of `BigUint`
+##### Rewrite of EllipticCurve::add With `Field` in Place of `BigUint`
 
 ```rust
 impl<'a> EllipticCurve<'a> {
@@ -367,7 +367,7 @@ impl<'a> EllipticCurve<'a> {
 }
 ```
 
-##### EllipticCurve::scalar_mul --- the Double and Add Algorithm under `F_p`
+##### EllipticCurve::scalar_mul --- the Double and Add Algorithm under `Field`
 
 ```rust
 impl<'a> EllipticCurve<'a> {
@@ -404,14 +404,14 @@ mod test {
     fn test_ec_point_addition() {
         let p = BigUint::from(17u32);
         let ec = EllipticCurve {
-            a: F_p::new(2, &p),
-            b: F_p::new(2, &p),
+            a: Field::new(2, &p),
+            b: Field::new(2, &p),
         };
 
         // (6, 3) + (5, 1) = (10, 6);
-        let p1 = Point::Coor(F_p::new(6, &p), F_p::new(3, &p));
-        let p2 = Point::Coor(F_p::new(5, &p), F_p::new(1, &p));
-        let r = Point::Coor(F_p::new(10, &p), F_p::new(6, &p));
+        let p1 = Point::Coor(Field::new(6, &p), Field::new(3, &p));
+        let p2 = Point::Coor(Field::new(5, &p), Field::new(1, &p));
+        let r = Point::Coor(Field::new(10, &p), Field::new(6, &p));
 
         let res = ec.add(&p1, &p2);
         assert_eq!(r, res);
@@ -420,14 +420,14 @@ mod test {
     fn test_ec_point_add_identity() {
         let p = BigUint::from(17u32);
         let ec = EllipticCurve {
-            a: F_p::new(2, &p),
-            b: F_p::new(2, &p),
+            a: Field::new(2, &p),
+            b: Field::new(2, &p),
         };
 
         // (6, 3) + (5, 1) = (10, 6);
-        let p1 = Point::Coor(F_p::new(6, &p), F_p::new(3, &p));
+        let p1 = Point::Coor(Field::new(6, &p), Field::new(3, &p));
         let p2 = Point::Identity;
-        let expect = Point::Coor(F_p::new(6, &p), F_p::new(3, &p));
+        let expect = Point::Coor(Field::new(6, &p), Field::new(3, &p));
 
         let result = ec.add(&p1, &p2);
         assert_eq!(expect, result);
@@ -437,14 +437,14 @@ mod test {
     fn test_scalar_mul() {
         let p = BigUint::from(17u32);
         let ec = EllipticCurve {
-            a: F_p::new(2, &p),
-            b: F_p::new(2, &p),
+            a: Field::new(2, &p),
+            b: Field::new(2, &p),
         };
-        let q = Point::Coor(F_p::new(5, &p), F_p::new(1, &p));
+        let q = Point::Coor(Field::new(5, &p), Field::new(1, &p));
         let k = BigUint::from(16u32);
         let result = ec.scalar_mul(&q, &k);
 
-        let expected = Point::Coor(F_p::new(10, &p), F_p::new(11, &p));
+        let expected = Point::Coor(Field::new(10, &p), Field::new(11, &p));
         assert_eq!(result, expected);
     }
 
@@ -452,11 +452,11 @@ mod test {
     fn test_double() {
         let p = BigUint::from(17u32);
         let ec = EllipticCurve {
-            a: F_p::new(2, &p),
-            b: F_p::new(2, &p),
+            a: Field::new(2, &p),
+            b: Field::new(2, &p),
         };
 
-        let p = Point::Coor(F_p::new(6, &p), F_p::new(3, &p));
+        let p = Point::Coor(Field::new(6, &p), Field::new(3, &p));
         let double = ec.double(&p);
         let p_on_curve = ec.is_on_curve(&double);
         assert!(p_on_curve);
@@ -508,11 +508,11 @@ fn test_secp256k1() {
 		)
 		.expect("Parsing fail for y");
 
-		let point = Point::Coor(F_p { value: x, p: &p }, F_p { value: y, p: &p });
+		let point = Point::Coor(Field { value: x, p: &p }, Field { value: y, p: &p });
 
 		let ec = EllipticCurve {
-				a: F_p { value: a, p: &p },
-				b: F_p { value: b, p: &p },
+				a: Field { value: a, p: &p },
+				b: Field { value: b, p: &p },
 		};
 
 		let result = ec.scalar_mul(&point, &n);
