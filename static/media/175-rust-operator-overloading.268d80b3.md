@@ -537,19 +537,22 @@ Let $G$ be the group of points on an elliptic curve $C: y^2 = x^3+ax+b$ over $\m
 > \implies\pi_x\bigg(\big[S^{-1}z\big]g + \big[S^{-1}R\big]K_\text{pub}\bigg)= \pi_x(kg).
 > $$
 >
-> Where $\pi_x$, denotes the canonical project to the first coordinate.
-
+> Where $\pi_x$ denotes the canonical projection to the first coordinate.
+>
 > In other words, if $(R,S)$ defined above is given to the target receiver, then **_necessarily_**
 >
 > $$
 > \pi_x\bigg(\big[S^{-1}z\big]g + \big[S^{-1}R\big]K_\text{pub}\bigg)=R.
 > $$
 >
-> This necessity condition is defined to be the **_valid_** condition of a message $z=h(m)$ for some hash $h$ and string $m$, and the tuple $(R,S)$ is called the **_signature_** of the message.
+> - This **necessary** condition is defined to be the **_valid_** condition of a message, where $z=h(m)$ for some hash $h:\texttt{&str}\to\texttt{u32}$ and string $m: \texttt{&str}$ the message.
+> - The tuple $(R,S)$ is called the **_signature_** of the message.
+
+Note that here $K_\text{pub}$ is called a **_public key_**, $k_\text{pri}$ a **_private key_** and $k$ a **_random number_**.
 
 <proof>
 
-**_Proof._** The proof is a direct transformation from the definition:
+**_Proof._** The proof is a direct transformation from the definition over field $\mathbb Z_p$:
 
 $$
 \begin{aligned}
@@ -560,6 +563,10 @@ $$
 &\implies R = \pi_x\big( [S^{-1}z]g + [S^{-1}R]K_\text{pub}\big ).
 \end{aligned}
 $$
+
+The $(\Longleftarrow)$ direction of the last line is incorrect because $\pi_x(k_1g) = \pi_x(k_2g)$ **_cannot_** imply $k_1=k_2$.
+
+For example, recall that $g$ is a generator of $G$, if $k_1 g=(x_0, y_0)$, then since $G$ is cyclic, there must be a unique $k_2\neq k_1$ such that $k_2g = ({\boldsymbol x_{\boldsymbol 0}}, -y_0) \in G$.
 
 </proof>
 
