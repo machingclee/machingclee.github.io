@@ -170,9 +170,7 @@ public static Body({ children, ...props }: { children: ReactNode } & HTMLAttribu
 
 #### Final Result
 
-- If we put all the single pieces into the component we want, it still looks very long.
-- But at least we don't need to mess around with the hard-coded CSS values, in this sense the code is more reusable.
-- In case we want to change CSS, it is much more consistent.
+If we put all the single pieces into the component we want, it will look very long:
 
 ```js
 export type Step1FormData = {
@@ -275,3 +273,166 @@ export default ({ step1FormData }: { step1FormData: React.MutableRefObject<Step1
 	)
 }
 ```
+
+#### Simplification of the Final Result
+
+The result so far is not complicated but **_cumbersome_**, if we look back there are room for simplification.
+
+We use the same concept but define only **_two_** child components:
+
+- For the biggest components (the whole form in our case) we devide it by grabbing relatively smaller component.
+- For relatively smaller components we divide it by injecting dynamic components by props.
+
+```js
+export class DC {
+	public static InputRow({ left, right }: {
+		left: ReactNode,
+		right: ReactNode,
+	}) {
+		return (
+			<tr>
+				<td style={{ verticalAlign: "middle" }}>{left}</td>
+				<td style={{ verticalAlign: "middle" }}>{right}</td>
+			</tr>
+		)
+
+	}
+	public static RadioRow({ left, right }: {
+		left: ReactNode,
+		right: ReactNode,
+	}) {
+		return (
+			<div style={{ display: "flex" }}>
+				<div id="raio-column" style={{ display: "flex", justifyContent: "flex-end", }}>
+					{left}
+				</div>
+				<div id="input-form" style={{ flex: 1 }}>
+					<div style={{ paddingTop: 4 }}>{right}</div>
+				</div>
+			</div>
+		)
+	}
+
+	public static Body({ children, disabled = true, ...props }: {
+		children: ReactNode,
+		disabled?: boolean
+	} & HTMLAttributes<HTMLDivElement>) {
+		const inputs = childUtil.grabChildrenByType(children, DC.InputRow.name);
+		const radioRows = childUtil.grabChildrenByType(children, DC.RadioRow.name);
+		const disabledStyle = { opacity: 0.5, pointerEvents: "none" };
+		return (
+			<div
+				{...props}
+			>
+				{radioRows}
+				<Spacer height={5} />
+				<Table sx={{
+					"& td": {
+						paddingTop: "5px",
+						...(disabled ? disabledStyle : {})
+					},
+					"& td:nth-child(1)": {
+						width: 160,
+						verticalAlign: "middle",
+						paddingLeft: "34px"
+					},
+					"& td:nth-child(2)": {
+						verticalAlign: "middle"
+					}
+				}}>
+					{inputs}
+				</Table>
+			</div>
+		)
+	}
+}
+```
+
+Which becomes
+
+```js
+<DC.Body>
+	<DC.RadioRow
+		left={
+			<RadioButton
+				value={options.step1.CREATE_NEW_COMPANY}
+				style={{ padding: 0, paddingRight: 10 }}
+				onClick={() => { updateField({ option: options.step1.CREATE_NEW_COMPANY }) }}
+			/>
+		}
+		right={<span>Create New Buyer Company</span>}
+	/>
+
+	<DC.InputRow
+		left={<span>Company Name</span>}
+		right={<WbInput onChange={e => updateField({ newCompName: e.target.value })} />}
+	/>
+
+	<DC.InputRow
+		left={<span>Email Domain</span>}
+		right={
+			<div style={{ display: "flex", alignItems: "center" }}>
+				<div style={{ display: "inline-block", marginRight: 10 }}>@</div>
+				<WbInput onChange={e => { updateField({ emailDomain: e.target.value }) }} />
+			</div>
+		}
+	/>
+</DC.Body >
+<Spacer height={20} />
+
+<DC.Body disabled={selectedOption !== options.step1.USE_EXISTING_COMPANY}>
+	<DC.RadioRow
+		left={
+			<RadioButton
+				value={options.step1.USE_EXISTING_COMPANY}
+				style={{ padding: 0, paddingRight: 10 }}
+				onClick={() => { updateField({ option: options.step1.USE_EXISTING_COMPANY }) }}
+			/>
+		}
+		right={<span>Use Existing Company</span>}
+	/>
+
+	<DC.InputRow
+		left={<span>Choose Company</span>}
+		right={<GeneralDropdown
+			fullList={buyerCompany}
+			initialValue={null}
+			refUpdateHandler={(option) => {
+				updateField({ existingBuyerCompany: option!, compCodeForStep2: option?.code || "" });
+			}}
+		/>}
+	/>
+	<DC.InputRow
+		left={<span>Email Domain</span>}
+		right={
+			<div style={{ display: "flex", alignItems: "center" }}>
+				<div style={{ display: "inline-block", marginRight: 10 }}>@</div>
+				<WbInput onChange={e => { updateField({ emailDomain: e.target.value }) }} />
+			</div>
+		}
+	/>
+</DC.Body>
+```
+
+#### Summary
+
+- Our **_child-grabbing_** strategy helps locate **_specific component_** in **_specific location_**.
+- We can design elements injection of `DC.Body` by
+
+  ```js
+  <DC.Body
+  	radios={<><DC.Radiorow {...} /></>}
+  	inputs={<><DC.InputRow {...} /></>}
+  />
+  ```
+
+  which is much flexible than:
+
+- ```js
+  <DC.Body> 				        // only child of type RadioRow or InputRow is allowed,
+  	<DC.RadioRow {...} />		// look of output is easy to expect
+  	<DC.InputRow {...} />
+  </DC.Body>
+  ```
+
+- No absolute true/false, they are all matter of taste (by the way I love the latter one).

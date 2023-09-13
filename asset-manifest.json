@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.5bb92df7.chunk.css",
-    "main.js": "/static/js/main.ad2b3cb0.chunk.js",
+    "main.js": "/static/js/main.7e6f9938.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.ee9b4f80.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.58505c2b.chunk.js": "/static/js/2.58505c2b.chunk.js",
@@ -100,7 +100,7 @@
     "static/media/171-download-files.md": "/static/media/171-download-files.700a6f5c.md",
     "static/media/172-restrict-CORS.md": "/static/media/172-restrict-CORS.8fdba459.md",
     "static/media/173-website-route-schema.md": "/static/media/173-website-route-schema.1e8bf602.md",
-    "static/media/174-childcomponent.md": "/static/media/174-childcomponent.28f80774.md",
+    "static/media/174-childcomponent.md": "/static/media/174-childcomponent.985612cf.md",
     "static/media/175-rust-operator-overloading.md": "/static/media/175-rust-operator-overloading.3113c4bd.md",
     "static/media/176-rust-fmt.md": "/static/media/176-rust-fmt.56d54a17.md",
     "static/media/177-env.md": "/static/media/177-env.5057e966.md",
@@ -236,6 +236,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.58505c2b.chunk.js",
     "static/css/main.5bb92df7.chunk.css",
-    "static/js/main.ad2b3cb0.chunk.js"
+    "static/js/main.7e6f9938.chunk.js"
   ]
 }
