@@ -2,7 +2,7 @@
 title: "Setup of Express with Socket.io with JWT Authentication Using Cookie"
 date: 2023-09-16
 id: blog0178
-tag: nodejs, express, jwt, socket.io
+tag: nodejs, express, jwt, socketio
 intro: "Basic reivew of API provided by socket.io-client and socket.io in nodejs."
 toc: true
 ---
