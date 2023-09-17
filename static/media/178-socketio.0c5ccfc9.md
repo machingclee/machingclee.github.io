@@ -37,6 +37,8 @@ export default function WebSocket() {
             addMessage(data);
         })
         socket.current.on("disconnect", (reason) => {
+            // note that if a user is disconnected actively by server (like no token is found)
+            // the reason will be "io server disconnect"
             addMessage({ sender: "disconnect", msg: JSON.stringify(reason) });
         })
         socket.current.on("connect_error", (err) => {
@@ -83,12 +85,15 @@ expressService.initExpressApp([
 ]);
 ```
 
-##### expressService
+##### Servics
 
-Here we try to split configuration into separate files, with `configSocketio` the only exception since it does not have api like `app.ws`, for us the configure to `Express` object directly.
+###### expressService.ts
+
+Here we try to split configuration into separate files, with `configSocketio` the only exception since it does not have api like `app.ws` for us the configure to `Express` object directly.
 
 ```js
 import express from "express";
+import "express-async-errors";
 import http from "http";
 import configCors from "../config/configCors";
 import configParsers from "../config/configParsers";
@@ -99,8 +104,9 @@ import configErrorHandler from "../config/configErrorHandler";
 const { PORT } = process.env;
 
 const app = express();
-const ioRef: IORef = { current: null };
+const ioRef: IORef = { current: undefined };
 
+app.set("trust proxy", 1);
 configCors(app);
 configParsers(app);
 configRouting(app);
@@ -127,6 +133,49 @@ export default {
   initExpressApp,
   getSocketIo,
 };
+```
+
+###### socketService.ts
+
+- Since each user should have at most one socket connecting to the server, we use a `Map` object `socketStore` to store the correspondence between `userOid` and `socket`.
+
+- We will plug the `socket` object into `req: Express.Request` in the middleware `socketioMiddleware` below.
+
+- Then the controllers in `chatRouter` can get access to user's socket (as well as the server side `io` object).
+
+```js
+import { Socket } from "socket.io";
+import expressService from "./expressService"
+import { DefaultEventsMap } from "socket.io/dist/typed-events";
+
+
+const socketStore = new Map<string, Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>>();
+
+const saveSocket = (uuid: string, socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>) => {
+    socketStore.set(uuid, socket);
+};
+
+const getSocket = (userOid: string) => {
+    console.log("token", userOid);
+    return socketStore.get(userOid) || undefined;
+}
+
+const deleteSocket = (uuid: string) => {
+    socketStore.delete(uuid);
+}
+
+
+const getIo = () => {
+    const ioRef = expressService.getSocketIo();
+    return ioRef.current;
+}
+
+export default {
+    getIo,
+    saveSocket,
+    getSocket,
+    deleteSocket
+}
 ```
 
 ##### Mongo Connection
@@ -318,6 +367,26 @@ export default (
 };
 ```
 
+###### socketioMiddleware.ts <----------- inject userSocket and io into req here!
+
+```js
+import { NextFunction, Request, Response } from "express";
+import socketService from "../service/socketService";
+
+export default (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const userOid = req.user?.userOid!;
+        const socket = socketService.getSocket(userOid);
+        req.userSocket = socket;
+        const io = socketService.getIo();
+        req.io = io;
+        next();
+    } catch (err) {
+        next(err);
+    }
+}
+```
+
 ###### jwtAuthMiddleware.ts <------------ We parse token into req.user here!
 
 ```js
@@ -426,6 +495,117 @@ userRouter.post("/create", async (req, res, next: NextFunction) => {
 export default userRouter;
 ```
 
+###### chatRouter
+
+```js
+import express from "express";
+import chatController from "../controller/chatController";
+
+const chatRouter = express.Router();
+
+chatRouter.get("/rooms", chatController.getRooms);
+chatRouter.get("/create-room", chatController.createRoom);
+chatRouter.get("/join-room/:roomCode", chatController.joinRoom);
+chatRouter.post("/message", chatController.sendMessageFromClient);
+
+export default chatRouter;
+```
+
+with
+
+```js
+import { NextFunction, Request, Response } from "express"
+import { Room, RoomModel } from "../db/models/Room";
+import codeUtil from "../util/codeUtil";
+import chatService from "../service/chatService";
+
+
+const getRooms = async (req: Request, res: Response) => {
+    const results = await RoomModel.find({}).exec();
+    const rooms = results.map(r => r.toObject());
+    res.json({
+        success: true,
+        result: { rooms }
+    })
+};
+
+const createRoom = async (req: Request, res: Response) => {
+    const { roomName } = req.body as { roomName: string };
+    const code = codeUtil.generateCode();
+    const roomProps: Room = {
+        active: true,
+        code,
+        hostUserOid: req.user?.userOid || "",
+        members: [{ userOid: req.user?.userOid || "" }],
+        name: roomName
+    }
+
+    const room = new RoomModel(roomProps).save();
+    res.json({
+        success: true,
+        result: { newRoom: room }
+    });
+};
+
+const sendMessageFromClient = async (req: Request, res: Response) => {
+    const { roomCode, msg } = req.body as { roomCode: string, msg: string };
+    const room = await chatService.findRoomDocByCode(roomCode);
+    const roomName = room?.name || ""
+
+    req.io?.to(roomCode).emit(...chatService.createMsgToClients({ sender: `${req.user?.name} (from ${roomName || "unknown"})` || "", msg: msg }));
+}
+
+const joinRoom = async (req: Request, res: Response) => {
+    // disconnect all existing rooms
+    const userConnectedRooms = req.userSocket?.rooms;
+    if (userConnectedRooms) {
+        userConnectedRooms.forEach(async (roomOid) => {
+            try {
+                const room = await chatService.getRoombyOid(roomOid);
+                if (room) {
+                    req.io?.to(roomOid).emit(...chatService.createMsgToClients({
+                        sender: "server",
+                        msg: `${req.user?.name || ""} leaved room: ${room.name}`
+                    }));
+                }
+            }
+            catch (err) {
+            }
+            req.userSocket?.leave(roomOid);
+        })
+    }
+
+    // start to join new room
+    const { roomCode } = req.params;
+    const room = await chatService.findRoomDocByCode(roomCode);
+    if (room) {
+        req.userSocket?.join(roomCode!);
+    } else {
+        throw new Error(`No room of code ${roomCode} exists`);
+    }
+
+    // history purpose
+    const existingUser = room?.members.find(m => m.userOid === req.user?.userOid);
+    if (!existingUser) {
+        room?.members.push({ userOid: req.user!.userOid });
+        await room?.save();
+    }
+
+    req.io?.to(roomCode).emit(...chatService.createMsgToClients({
+        sender: "server",
+        msg: `${req.user?.name} just connected to room ${room.name}`
+    }));
+    res.json({ success: true });
+}
+
+export default {
+    getRooms,
+    joinRoom,
+    sendMessageFromClient,
+    createRoom
+}
+```
+
 ##### Configuration Files
 
 ###### configCors.ts
@@ -477,95 +657,89 @@ export default (app: Express) => {
 };
 ```
 
-###### configRouting.ts
+###### configRouting.ts <----------- jwtAuthMiddleware and socketioMiddleware!
 
 ```js
 import jwtAuthMiddleware from "../middleware/jwtAuthMiddleware";
+import socketioMiddleware from "../middleware/socketioMiddleware";
 import authRouter from "../router/authRouter";
 import chatRouter from "../router/chatRouter";
 import userRouter from "../router/userRouter";
 import { Express } from "express";
 
 export default (app: Express) => {
-  app.use("/chat", jwtAuthMiddleware, chatRouter);
+  app.use("/chat", jwtAuthMiddleware, socketioMiddleware, chatRouter);
   app.use("/user", userRouter);
   app.use("/auth", authRouter);
 };
 ```
 
-##### configSocketio.ts: <---------------------- We parse token here!
+###### configSocketio.ts: <---------------- We parse token here!
 
-- In line-27 our string property `socket.request.headers.cookie` is of the form
+```js
+import { Server } from "socket.io";
+import http from "http";
+import { IORef } from "../dto/types";
+const { ALLOWED_ORIGINS } = process.env;
+const allowlist = ALLOWED_ORIGINS?.split(",") || [];
+import cookie from "cookie";
+import userSerevice from "../service/userSerevice";
+import { serialize, parse } from "cookie";
+import { v4 as uuidv4 } from "uuid";
+import socketService from "../service/socketService";
+import chatService from "../service/chatService";
 
-  ```text
-  "token=#$POJKSDF; sth=abc"
-  ```
+export const MSG_TO_CLIENTS = "MSG_TO_CLIENTS";
 
-  Of course we can `.split` by `;` and then `.split` by `=`, trim spaces, set key as ... value as .... As I am lazy, I simply `yarn add cookie` and use it to parse the string.
+export default (httpServer: http.Server, ioRef: IORef) => {
+  ioRef.current = new Server(httpServer, {
+    cookie: true,
+    allowUpgrades: true,
+    cors: {
+      origin: allowlist,
+      methods: ["GET", "POST"],
+      credentials: true,
+    },
+  });
+  const io = ioRef.current;
 
-  ```js-1
-  import { Server } from "socket.io";
-  import http from "http";
-  import { IORef } from "../dto/types";
-  const { ALLOWED_ORIGINS } = process.env;
-  const allowlist = ALLOWED_ORIGINS?.split(",") || [];
-  import cookie from "cookie";
-  import tokenUtil from "../util/tokenUtil";
+  io.on("connect", async (socket) => {
+    try {
+      const cookieString = cookie.parse(socket.request.headers.cookie || "");
 
-  type Message = { sender: string, msg: string };
-
-  const MSG_FROM_CLIENT = "messageToServer";
-  const MSG_TO_CLIENTS = "newMessageToClients";
-
-  export default (httpServer: http.Server, ioRef: IORef) => {
-  ```
-
-- Here is the crucial configuration for cookie to work.
-
-  ```js-15
-      ioRef.current = new Server(httpServer, {
-          cookie: true,
-          allowUpgrades: true,
-          cors: {
-              origin: allowlist,
-              methods: ["GET", "POST"],
-              credentials: true,
-          }
-      });
-      const io = ioRef.current;
-  ```
-
-- Next we take cookie form socket request, the rest will be the standard stuff in any `socket.io` tutorial.
-
-  ```js-25
-      io.on("connect", async (socket) => {
-          try {
-              const cookieString = cookie.parse(socket.request.headers.cookie || "");
-              const token = cookieString?.["token"];
-              let usernameInDb = "";
-              if (token) {
-                  const user = await tokenUtil.getUserFromToken(token);
-                  usernameInDb = `${user.name}`;
-              }
-
-              io?.emit(MSG_TO_CLIENTS, { msg: `${usernameInDb || socket.id} has connected`, sender: "server" } as Message)
-
-              // If info can be found in token represented in cookie, then use that name,
-              // otherwise, use a name declared in frontend.
-              socket.on(MSG_FROM_CLIENT, ({ sender, msg }: Message) => {
-                  io?.emit(MSG_TO_CLIENTS, { sender: usernameInDb || sender, msg });
-              })
-
-              socket.on("disconnect", (reason) => {
-                  console.log(`${usernameInDb} has disconnected because: ${reason}`)
-              })
-          }
-          catch (error) {
-              io.close();
-          }
-      })
-  }
-  ```
+      const token = cookieString?.["token"];
+      if (!token) {
+        console.log(`socket was dropped because no token is found.`);
+        return socket.disconnect();
+      }
+      let usernameInDb = "";
+      try {
+        const user = await userSerevice.getUserFromToken(token);
+        if (user) {
+          usernameInDb = `${user.name}`;
+          console.log(`${usernameInDb} has connected`);
+          socketService.saveSocket(user.userOid, socket);
+          socket.emit(
+            ...chatService.createMsgToClients({
+              sender: "server",
+              msg: "Connected.",
+            })
+          );
+        }
+        socket.on("disconnect", (reason) => {
+          socketService.deleteSocket(user.userOid);
+          console.log(`socketService.deleteSocket(${user.userOid});`);
+          console.log(`${usernameInDb} has disconnected because: ${reason}`);
+        });
+      } catch (err) {
+        socket.disconnect();
+      }
+    } catch (error) {
+      io.close();
+    }
+  });
+};
+```
 
 ##### The desc.d.ts for req.user
 
