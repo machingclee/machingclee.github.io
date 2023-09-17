@@ -1,6 +1,6 @@
 ---
 title: "Jest Fundamentals in TS"
-date: 2023-09-16
+date: 2023-09-15
 id: blog0178
 tag: nodejs, test
 intro: "Testings not only justify our functions are working, it also demonstrates how our function is used. We will be setting up tests in typescript."
@@ -29,7 +29,7 @@ At `package.json`, add
 
 This will debug all the file that bare the name as suffix: `.test.ts`.
 
-#### Debug a Single File
+#### Debug a Single Jest File
 
 Let's define the following in `.vscode/launch.json`
 
