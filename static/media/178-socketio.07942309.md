@@ -559,11 +559,11 @@ const joinRoom = async (req: Request, res: Response) => {
     // disconnect all existing rooms
     const userConnectedRooms = req.userSocket?.rooms;
     if (userConnectedRooms) {
-        userConnectedRooms.forEach(async (roomOid) => {
+        userConnectedRooms.forEach(async (roomCode) => {
             try {
-                const room = await chatService.getRoombyOid(roomOid);
+                const room = await chatService.getRoombyOid(roomCode);
                 if (room) {
-                    req.io?.to(roomOid).emit(...chatService.createMsgToClients({
+                    req.io?.to(roomCode).emit(...chatService.createMsgToClients({
                         sender: "server",
                         msg: `${req.user?.name || ""} leaved room: ${room.name}`
                     }));
@@ -571,7 +571,7 @@ const joinRoom = async (req: Request, res: Response) => {
             }
             catch (err) {
             }
-            req.userSocket?.leave(roomOid);
+            req.userSocket?.leave(roomCode);
         })
     }
 
