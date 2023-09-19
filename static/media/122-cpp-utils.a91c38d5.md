@@ -1,5 +1,5 @@
 ---
-title: "C++ Useful Util Functions Mimiced from Python, Regular Expression in C++"
+title: "C++ Useful Util Functions Mimiced from Python, Regular Expression"
 date: 2023-02-09
 id: blog0122
 tag: C++

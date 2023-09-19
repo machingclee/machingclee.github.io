@@ -1,7 +1,7 @@
 ---
 title: "Jest Fundamentals in TS"
 date: 2023-09-15
-id: blog0178
+id: blog0179
 tag: nodejs, test
 intro: "Testings not only justify our functions are working, it also demonstrates how our function is used. We will be setting up tests in typescript."
 toc: true
