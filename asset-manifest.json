@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.c804feff.chunk.css",
-    "main.js": "/static/js/main.57343340.chunk.js",
+    "main.js": "/static/js/main.5105ed40.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.89b175db.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.c5b4b157.chunk.js": "/static/js/2.c5b4b157.chunk.js",
@@ -107,7 +107,7 @@
     "static/media/178-socketio.md": "/static/media/178-socketio.07942309.md",
     "static/media/179-jest.md": "/static/media/179-jest.a566edbb.md",
     "static/media/180-tokio-chat.md": "/static/media/180-tokio-chat.e11fb5b2.md",
-    "static/media/181-scale-socketio.md": "/static/media/181-scale-socketio.fd4f6a3d.md",
+    "static/media/181-scale-socketio.md": "/static/media/181-scale-socketio.94c1d004.md",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/DefectGAN.md": "/static/media/DefectGAN.c0718f46.md",
     "static/media/EAST.md": "/static/media/EAST.86fb54d8.md",
@@ -240,6 +240,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.c5b4b157.chunk.js",
     "static/css/main.c804feff.chunk.css",
-    "static/js/main.57343340.chunk.js"
+    "static/js/main.5105ed40.chunk.js"
   ]
 }

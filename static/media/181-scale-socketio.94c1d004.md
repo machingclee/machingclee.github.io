@@ -21,7 +21,7 @@ toc: false
 
 - For each of `ws_k`'s, they still rely on `room`'s for publishing messages within a group of sockets.
 
-- Same `room` can repeatedly appear in each of the socket servers.
+- Same `room` can repeatedly appears in each of the socket servers.
 
   - For example, `room_1` can appear in both `ws_1` and `ws_2`.
   - `u_1` join `room_1` via `ws_1` and `u_2` join `room_1` via `ws_2`.
@@ -48,7 +48,7 @@ toc: false
   });
   ```
 
-  ```js-17
+  ```js-16
   const io = getIoSingletonFromSomewhere();
 
   subscriber.on("subscribe", function (channel, count) {
@@ -63,7 +63,7 @@ toc: false
   subscriber.on("message", function (_channel: string, message: Message) {
     try {
       const { namespace, roomCode, msg } = message;
-      io.of(namespace).to(roomCode).emit(msg);
+      io.of(namespace).to(roomCode).emit("MSG_TO_CLIENTS", msg);
     } catch (err) {
       consol.log(err);
     }
@@ -88,7 +88,7 @@ toc: false
 
 - Now we easily scaled up the a chat server!
 
-#### Refernece
+#### Referenece
 
 - [Scaling Websockets with Redis, HAProxy and Node JS - High-availability Group Chat Application](https://www.youtube.com/watch?v=gzIcGhJC8hA&t=920s)
 - [Understanding Redis Pub/Sub (Getting Started)](https://www.youtube.com/watch?v=KIFA_fFzSbo&t=449s)
