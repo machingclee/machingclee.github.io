@@ -17,7 +17,7 @@ toc: false
 
   [![](/assets/tech/181/001.png)](/assets/tech/181/001.png)
 
-- Each of the users connect to web-socket server as normal.
+- Each of the `u_k`'s connects to web-socket server as normal.
 
 - For each of `ws_k`'s, they still rely on `room`'s for publishing messages within a group of sockets.
 
@@ -39,12 +39,12 @@ toc: false
 
   const subscriber = redis.createClient({
     port: 6379,
-    host: "rds",
+    host: redis_url,
   });
 
   export const publisher = redis.createClient({
     port: 6379,
-    host: "rds",
+    host: redis_url,
   });
   ```
 
