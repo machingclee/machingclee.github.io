@@ -125,4 +125,4 @@ const results = await RoomModel.aggregate([
 ]).exec();
 ```
 
-Note that we also cover the case when our `localField` is an ***stringified*** `ObjectId`, we provide a `stringToOid` option to convert the string into `ObjectId` which inherits an index for searching in any collection by default.
+Note that we also cover the case when our `localField` is an ***stringified*** `ObjectId`, we provide a `stringToOid` option to convert the string into `ObjectId` which inherits an index for searching.
