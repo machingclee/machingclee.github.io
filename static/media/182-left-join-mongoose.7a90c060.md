@@ -110,19 +110,17 @@ const createSqueeze = (fieldName: string): PipelineStage[] => {
 const results = await RoomModel.aggregate([
   { $match: {} },
   {
-    $project: {code: 1, name: 1, hostUserOid: 1, active: 1, createdAt: 1 },
+    $project: { code: 1, name: 1, hostUserOid: 1, active: 1, createdAt: 1 },
   },
-  ...mongoUtil.createLeftJoin(
-    {
-      from: UserModel.collection.name,
-      localField: { stringToOid: true, fieldName: "hostUserOid" },
-      foreignField: "_id",
-      leftjoinPipeline: [{ $project: { _id: 0, name: 1, email: 1 } }],
-      as: "hostUser",
-    }
-  ),
+  ...mongoUtil.createLeftJoin({
+    from: UserModel.collection.name,
+    localField: { stringToOid: true, fieldName: "hostUserOid" },
+    foreignField: "_id",
+    leftjoinPipeline: [{ $project: { _id: 0, name: 1, email: 1 } }],
+    as: "hostUser",
+  }),
   ...mongoUtil.createSqueeze("hostUser"),
 ]).exec();
 ```
 
-Note that we also cover the case when our `localField` is an ***stringified*** `ObjectId`, we provide a `stringToOid` option to convert the string into `ObjectId` which inherits an index for searching.
+Note that we also cover the case when our `localField` is an **_stringified_** `ObjectId`, we provide a `stringToOid` option to convert the string into `ObjectId` which inherits an index for searching.
