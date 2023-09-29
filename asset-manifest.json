@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/static/css/main.c804feff.chunk.css",
-    "main.js": "/static/js/main.37181f09.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.6225030b.js",
+    "main.js": "/static/js/main.01c0f067.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.ab7ea929.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.a51e6478.chunk.js": "/static/js/2.a51e6478.chunk.js",
-    "static/js/3.c3f3a01c.chunk.js": "/static/js/3.c3f3a01c.chunk.js",
+    "static/js/2.6418af86.chunk.js": "/static/js/2.6418af86.chunk.js",
+    "static/js/3.f7a585be.chunk.js": "/static/js/3.f7a585be.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.a51e6478.chunk.js.LICENSE.txt": "/static/js/2.a51e6478.chunk.js.LICENSE.txt",
+    "static/js/2.6418af86.chunk.js.LICENSE.txt": "/static/js/2.6418af86.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.72064d8e.md",
     "static/media/002-closure-of-interior.md": "/static/media/002-closure-of-interior.d61226c6.md",
@@ -109,7 +109,10 @@
     "static/media/180-tokio-chat.md": "/static/media/180-tokio-chat.e11fb5b2.md",
     "static/media/181-scale-socketio.md": "/static/media/181-scale-socketio.94c1d004.md",
     "static/media/182-left-join-mongoose.md": "/static/media/182-left-join-mongoose.7a90c060.md",
-    "static/media/183-next-config.md": "/static/media/183-next-config.990db514.md",
+    "static/media/183-voice-chat.md": "/static/media/183-voice-chat.0353ffa2.md",
+    "static/media/184-mongo-auto-increment.md": "/static/media/184-mongo-auto-increment.ed046548.md",
+    "static/media/185-reanimated.md": "/static/media/185-reanimated.3f890463.md",
+    "static/media/186-expo-cli.md": "/static/media/186-expo-cli.6baeb5d5.md",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/DefectGAN.md": "/static/media/DefectGAN.c0718f46.md",
     "static/media/EAST.md": "/static/media/EAST.86fb54d8.md",
@@ -238,10 +241,10 @@
     "static/media/yolo-v3-deep-dive.md": "/static/media/yolo-v3-deep-dive.5fa9bf85.md"
   },
   "entrypoints": [
-    "static/js/runtime-main.6225030b.js",
+    "static/js/runtime-main.ab7ea929.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.a51e6478.chunk.js",
+    "static/js/2.6418af86.chunk.js",
     "static/css/main.c804feff.chunk.css",
-    "static/js/main.37181f09.chunk.js"
+    "static/js/main.01c0f067.chunk.js"
   ]
 }
