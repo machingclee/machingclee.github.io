@@ -1,8 +1,8 @@
 ---
-title: "Expo-Cli for Development Build"
+title: "Expo-CLI for Development Build"
 date: 2023-09-30
 id: blog0186
-tag: react-native expo-cli
+tag: react-native, expo-cli
 intro: "Record detail of expo-cli workflow in development build."
 toc: true
 ---
