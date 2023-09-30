@@ -1,6 +1,6 @@
 ---
 title: "Clone a Swipable Page Inspired from Discord Mobile App"
-date: 2023-09-30
+date: 2023-09-26
 id: blog0185
 tag: react-native
 intro: "We can create our custom component by creating custom behaviour via customizing animtation!"

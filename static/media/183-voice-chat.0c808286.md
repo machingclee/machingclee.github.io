@@ -1,6 +1,6 @@
 ---
-title: "Implement Voice Chat on Mobile Using AgoraRTC"
-date: 2023-09-30
+title: "Voice Chat on Mobile Using AgoraRTC"
+date: 2023-09-23
 id: blog0183
 tag: react-native
 intro: "We create a voice chat application on mobile using third party API called AgoraRTC."
@@ -206,15 +206,12 @@ Here:
 
 ```js
 const generateRtcToken = (channelId: string, uid: number) => {
-    // Rtc Examples
     const appID = process.env.AGORARTC_APP_ID!;
     const appCertificate = process.env.AGORARTC_APP_CERT!;
     const role = RtcRole.PUBLISHER;
     const expirationTimeInSeconds = 3600
     const currentTimestamp = Math.floor(Date.now() / 1000)
     const privilegeExpiredTs = currentTimestamp + expirationTimeInSeconds
-
-    // IMPORTANT! Build token with either the uid or with the user account. Comment out the option you do not want to use below.
 
     // Build token with uid
     const token = RtcTokenBuilder.buildTokenWithUid(appID, appCertificate, channelId, uid, role, privilegeExpiredTs, 600);
@@ -223,7 +220,7 @@ const generateRtcToken = (channelId: string, uid: number) => {
 ```
 
 - `appId`, `appCertificate` can be obtained from `https://console.agora.io/projects`.
-- The first person calling this api using this `channelId` will be the host of this channel.
+- The first person calling this api with this `channelId` will be the host of this channel.
 - Once the host leaves, the channel will be closed.
 
 #### Reference

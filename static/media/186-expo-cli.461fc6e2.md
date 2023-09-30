@@ -1,8 +1,8 @@
 ---
-title: "Common Command in Expo-Cli Using Development Build"
+title: "Common Command in Expo-Cli for Development Build"
 date: 2023-09-30
 id: blog0186
-tag: react-native
+tag: react-native expo-cli
 intro: "Record frequently used command in the expo-cli workflow in development build."
 toc: false
 ---

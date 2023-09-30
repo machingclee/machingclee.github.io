@@ -1,6 +1,6 @@
 ---
-title: "Create Auto-Incremented Id for Mongo Collection"
-date: 2023-09-30
+title: "Auto-Incremented Id for Mongo Collection"
+date: 2023-09-24
 id: blog0184
 tag: mongo
 intro: "We create a special collection and a hook to the save method of a collection to obtain an auto-incremented id field!"
