@@ -1,5 +1,5 @@
 ---
-title: Rust Study Notes #1
+title: Rust Study Notes First Trial
 date: 2022-04-03
 id: blog057
 tag: rust

@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.c804feff.chunk.css",
-    "main.js": "/static/js/main.6d34b880.chunk.js",
+    "main.js": "/static/js/main.1cd69a5b.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.ab7ea929.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.6418af86.chunk.js": "/static/js/2.6418af86.chunk.js",
@@ -165,7 +165,7 @@
     "static/media/algorithms.md": "/static/media/algorithms.1411a248.md",
     "static/media/augmentation_in_obj_detection.md": "/static/media/augmentation_in_obj_detection.d2dcc305.md",
     "static/media/automation_winapp.md": "/static/media/automation_winapp.ecb96c7d.md",
-    "static/media/begin-rust.md": "/static/media/begin-rust.17f46bf7.md",
+    "static/media/begin-rust.md": "/static/media/begin-rust.1ca550fc.md",
     "static/media/child-process.md": "/static/media/child-process.a75cdae3.md",
     "static/media/chrome_automation.md": "/static/media/chrome_automation.64f09c74.md",
     "static/media/coco.md": "/static/media/coco.4c27ee6c.md",
@@ -225,7 +225,7 @@
     "static/media/retrain-nan.md": "/static/media/retrain-nan.3c7eba3c.md",
     "static/media/review.c9c071ab.pdf": "/static/media/review.c9c071ab.pdf",
     "static/media/s3-deployment-ci.md": "/static/media/s3-deployment-ci.e287039c.md",
-    "static/media/scroll.md": "/static/media/scroll.12ff7226.md",
+    "static/media/scroll.md": "/static/media/scroll.0006b21b.md",
     "static/media/scrollbar.md": "/static/media/scrollbar.011a0db0.md",
     "static/media/shell-script.md": "/static/media/shell-script.65c4ae1d.md",
     "static/media/spa-seo.md": "/static/media/spa-seo.c3362055.md",
@@ -245,6 +245,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.6418af86.chunk.js",
     "static/css/main.c804feff.chunk.css",
-    "static/js/main.6d34b880.chunk.js"
+    "static/js/main.1cd69a5b.chunk.js"
   ]
 }

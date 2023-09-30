@@ -27,13 +27,12 @@ This indicates either
 ```js
   const navToArticle = (articleId: string) => (event?: MouseEvent<HTMLElement>) => {
     if (event) {
-      event.preventDefault();
-      // middleClick or ctrlkey pressed
-      const middleClickedOrCtrlPressed = (event.button === 1) || event.ctrlKey
-      if (!middleClickedOrCtrlPressed && event.button === 0) {
-        // when not middle-clicked, or not ctrl-pressed and when it is a simple left-click
+      if (event.button === 1 || (event.ctrlKey && event.button === 0)) {
+        // middle-click or ctrl+leftclick
+        window.open(urlByArticleId(articleId), "_blank");
+      }
+      else {
         history.push(urlByArticleId(articleId))
-        return;
       }
     }
   }
