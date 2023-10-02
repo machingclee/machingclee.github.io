@@ -20,7 +20,7 @@ toc: true
 
 <center>
   <video controls width="500">
-    <source  src="/assets/tech/187/001.mp4" type="video/mp4">
+    <source  src="/assets/tech/187/001.MP4" type="video/mp4">
     Sorry, your browser doesn't support embedded videos.
   <video/>
 </center>
@@ -327,7 +327,7 @@ const styles = StyleSheet.create({
 
 #### Usage
 
-In `_layout.tsx` at the root project level (or `App.tsx` without `expo-router`) we added our `ToastProvider` to initialize our `addMessage` function:
+In `_layout.tsx` at the root project level (or `App.tsx` without `expo-router`) we add our `ToastProvider` to initialize `addMessage` function:
 
 ```js
 function RootLayoutNav() {
@@ -338,7 +338,6 @@ function RootLayoutNav() {
       <Provider store={store}>
         <PersistGate persistor={persistor}>
           <ConfigApiClient store={store}>...</ConfigApiClient>
-
           <ToastProvider />
         </PersistGate>
       </Provider>
@@ -350,7 +349,7 @@ function RootLayoutNav() {
 
 Since we simply use `useState` in our `Toast`'s, our `ToastProvider` does not necessarily lie inside `Provider`.
 
-Next we create a utility function to different kinds of messages:
+Next we create a utility function to send different kinds of messages:
 
 ```js
 // toastUtil.ts
