@@ -46,6 +46,7 @@ import { BlurView } from "@react-native-community/blur";
 import Animated, {
     FadeIn,
     FadeOut,
+    cancelAnimation,
     runOnJS,
     useAnimatedGestureHandler,
     useAnimatedScrollHandler,
@@ -191,7 +192,6 @@ const Toast = ({ message, remainingIds, deleteMessage }: {
 export default () => {
     const [toastMessages, setToastMessages] = useState<ToastMessage[]>([]);
     const remainingIds = toastMessages.map(m => m.uuid);
-    const [startScrolling, setStartScrolling] = useState(false);
 
     const addMessage = ({ type, msg }: { type: ToastMessage["type"], msg: string }) => {
         const toast: ToastMessage = { uuid: uuid.v4() as string, type, text: msg };
@@ -219,38 +219,47 @@ export default () => {
 
     const translateY = useSharedValue(0);
 
+    const scrollRegionHeight = useSharedValue(0);
+
+    const scrollSpacerRstyle = useAnimatedStyle(() => {
+        return {
+            height: scrollRegionHeight.value
+        }
+    })
+
     const toastContainerStyle = useAnimatedStyle(() => {
         return {
             transform: [{ translateY: translateY.value }]
         }
     })
 
-    const setScrollingRegion = () => {
-        setStartScrolling(true)
-    }
 
-    const unsetStartScrolling = () => setTimeout(() => {
-        setStartScrolling(false);
+    const killMessages = () => setTimeout(() => {
+        scrollRegionHeight.value = 0
         setToastMessages([]);
-        translateY.value = 0;
+        translateY.value = withTiming(0);
     }, 100);
 
-
+    const killScrollSpacerInFutre = () => {
+        setTimeout(() => {
+            scrollRegionHeight.value = withTiming(0);
+        }, 300)
+    }
 
     const scrollHandler = useAnimatedScrollHandler({
         onBeginDrag: () => {
-            runOnJS(setScrollingRegion)();
+            scrollRegionHeight.value = 200
         },
         onEndDrag: (event) => {
             if (event.contentOffset.y > 20) {
                 translateY.value = withTiming(-height);
-                runOnJS(unsetStartScrolling)();
+                runOnJS(killMessages)();
             } else {
                 translateY.value = withTiming(0);
+                runOnJS(killScrollSpacerInFutre)();
             }
         }
     })
-
 
     return (
         <Animated.View style={[
@@ -259,9 +268,12 @@ export default () => {
                 position: "absolute",
                 zIndex: 1,
                 width,
+                maxHeight: height
             },
+
             toastContainerStyle
-        ]}>
+        ]}
+        >
             <Animated.ScrollView
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}
@@ -276,7 +288,7 @@ export default () => {
                         <Toast message={msg} key={msg.uuid} deleteMessage={deleteMessage} remainingIds={remainingIds} />
                     )
                 })}
-                {startScrolling && <Spacer height={200} />}
+                <Animated.View style={scrollSpacerRstyle} />
             </Animated.ScrollView>
         </Animated.View >
     )
