@@ -7,7 +7,17 @@ intro: "We can create our custom component by creating custom behaviour via cust
 toc: true
 ---
 
-#### Result Demonstration
+
+<style>
+  img {
+    max-width: 600px;
+  }
+  video {
+    border-radius: 8px;
+  }
+</style>
+
+#### Result
 
 <center>
   <video controls width="500">
@@ -123,7 +133,7 @@ export default playground
 ##### Implementation
 
 ```js
-import { View, StyleSheet, Dimensions } from 'react-native'
+import { View, StyleSheet, Dimensions, TouchableOpacity } from 'react-native'
 import { ReactNode, forwardRef, useImperativeHandle } from 'react'
 import { PanGestureHandler, PanGestureHandlerGestureEvent } from 'react-native-gesture-handler';
 import Animated, {
@@ -157,16 +167,16 @@ const TrinityPage = forwardRef<TrinityHandle, TrinityProps>((props, ref) => {
 
   const returnCenterRange = width * 4 / 5
 
-  const { left, middle, right, remainingWidth: protrudingWidth = 40 } = props;
+  const { left, middle, right, remainingWidth = 40 } = props;
 
   const clampedX = useDerivedValue(() => {
     if (!right) {
-      return panGesTranslationUtil.clampX(translateX, 0, width - protrudingWidth);
+      return panGesTranslationUtil.clampX(translateX, 0, width - remainingWidth);
     }
     else if (!left) {
-      return panGesTranslationUtil.clampX(translateX, width - protrudingWidth, 0);
+      return panGesTranslationUtil.clampX(translateX, width - remainingWidth, 0);
     } else {
-      return panGesTranslationUtil.clampX(translateX, width - protrudingWidth, width - protrudingWidth);
+      return panGesTranslationUtil.clampX(translateX, width - remainingWidth, width - remainingWidth);
     }
   })
 
@@ -222,10 +232,28 @@ const TrinityPage = forwardRef<TrinityHandle, TrinityProps>((props, ref) => {
     return { transform: [{ translateX: clampedX.value }] }
   });
 
+  const backdropRStyle = useAnimatedStyle(() => {
+    const opacity = 1 - ((width - remainingWidth) - clampedX.value) / (width - remainingWidth);
+    return {
+      opacity: opacity,
+      zIndex: opacity === 0 ? -1 : 3
+    }
+  })
+
+  const backDrop = (
+    <Animated.View
+      style={[
+        { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(0,0,0,0.2)" },
+        backdropRStyle
+      ]}>
+      <TouchableOpacity style={{ ...StyleSheet.absoluteFillObject }} onPress={returnCenter} />
+    </Animated.View>)
+
   return (
     <View style={{ flex: 1 }}>
       <PanGestureHandler onGestureEvent={panGestureHandler} activeOffsetX={[-10, 10]}>
         <Animated.View style={[{ ...StyleSheet.absoluteFillObject }]}>
+
           <Animated.View style={[{
             ...StyleSheet.absoluteFillObject, flex: 1,
             flexDirection: "row",
@@ -235,6 +263,7 @@ const TrinityPage = forwardRef<TrinityHandle, TrinityProps>((props, ref) => {
             <View style={{ width }}>
               {middle}
             </View>
+            {backDrop}
           </Animated.View>
 
 
@@ -249,7 +278,7 @@ const TrinityPage = forwardRef<TrinityHandle, TrinityProps>((props, ref) => {
             },
             leftpageRStyle
           ]}>
-            <View style={{ width: width - protrudingWidth }}>
+            <View style={{ width: width - remainingWidth }}>
               {left}
             </View>
           </Animated.View>}
@@ -265,7 +294,7 @@ const TrinityPage = forwardRef<TrinityHandle, TrinityProps>((props, ref) => {
             },
             rightpageRStyle
           ]}>
-            <View style={{ width: width - protrudingWidth }}>
+            <View style={{ width: width - remainingWidth }}>
               {right}
             </View>
           </Animated.View>
