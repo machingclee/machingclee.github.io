@@ -48,10 +48,13 @@ import Animated, {
     FadeOut,
     cancelAnimation,
     runOnJS,
+    runOnUI,
     useAnimatedGestureHandler,
     useAnimatedScrollHandler,
     useAnimatedStyle,
     useSharedValue,
+    withDelay,
+    withSequence,
     withSpring,
     withTiming
 } from "react-native-reanimated";
@@ -72,7 +75,8 @@ export const toastProviderStore: {
     addMessage: null
 }
 
-const Toast = ({ message, remainingIds, deleteMessage }: {
+const Toast = ({ index, message, remainingIds, deleteMessage }: {
+    index: number,
     message: ToastMessage,
     remainingIds: string[],
     deleteMessage: (props: { uuid: string }) => void;
@@ -135,11 +139,11 @@ const Toast = ({ message, remainingIds, deleteMessage }: {
 
     const toastIcon = (() => {
         if (message.type === "success") {
-            return <Ionicons name="checkmark-circle" size={26} color={toastStyle.color} />
+            return <Ionicons name="checkmark-circle" size={24} color={toastStyle.color} />
         } else if (message.type === "info") {
-            return <Ionicons name="md-information-circle-sharp" size={26} color="white" />
+            return <Ionicons name="md-information-circle-sharp" size={24} color="white" />
         } else {
-            return <Ionicons name="alert-circle" size={26} color="white" />
+            return <Ionicons name="alert-circle" size={24} color="white" />
         }
     })()
 
@@ -149,14 +153,16 @@ const Toast = ({ message, remainingIds, deleteMessage }: {
         }
     }, [remainingIds])
 
+    const extrStyle = index === 0 ? { marginTop: 20 } : {}
+
     return (
         <Animated.View
             entering={FadeIn}
             exiting={FadeOut}
-            style={containerRstyle}
+            style={[extrStyle, containerRstyle]}
         >
             <PanGestureHandler
-                activeOffsetX={[-10, 10]}
+                activeOffsetX={[-20, 20]}
                 onGestureEvent={panGesture}
             >
                 <Animated.View style={[
@@ -196,9 +202,10 @@ export default () => {
     const addMessage = ({ type, msg }: { type: ToastMessage["type"], msg: string }) => {
         const toast: ToastMessage = { uuid: uuid.v4() as string, type, text: msg };
 
+
         setToastMessages(msgs => {
-            if (msgs.length >= 3) {
-                return [...msgs.slice(msgs.length - 2, msgs.length), toast]
+            if (msgs.length >= 4) {
+                return [...msgs.slice(msgs.length - 4, msgs.length), toast]
             } else {
                 return [...msgs, toast];
             }
@@ -217,7 +224,7 @@ export default () => {
     }
 
 
-    const translateY = useSharedValue(0);
+    const containerTranslateY = useSharedValue(0);
 
     const scrollRegionHeight = useSharedValue(0);
 
@@ -229,35 +236,33 @@ export default () => {
 
     const toastContainerStyle = useAnimatedStyle(() => {
         return {
-            transform: [{ translateY: translateY.value }]
+            transform: [{
+                translateY: containerTranslateY.value,
+            }]
         }
     })
 
+    const killMessages = () => {
+        scrollRegionHeight.value = withDelay(200, withTiming(0));
+        setTimeout(() => { setToastMessages([]) }, 390);
+        containerTranslateY.value = withSequence(
+            withDelay(200, withTiming(-height)),
+            withDelay(400, withTiming(0))
+        );
+    };
 
-    const killMessages = () => setTimeout(() => {
-        scrollRegionHeight.value = 0
-        setToastMessages([]);
-        translateY.value = withTiming(0);
-    }, 100);
-
-    const killScrollSpacerInFutre = () => {
-        setTimeout(() => {
-            scrollRegionHeight.value = withTiming(0);
-        }, 300)
-    }
 
     const scrollHandler = useAnimatedScrollHandler({
-        onBeginDrag: () => {
-            scrollRegionHeight.value = 200
+        onBeginDrag: (event, ctx) => {
+            scrollRegionHeight.value = 200;
         },
         onEndDrag: (event) => {
-            if (event.contentOffset.y > 20) {
-                translateY.value = withTiming(-height);
+            if (Math.abs(event.contentOffset.y) > 20) {
                 runOnJS(killMessages)();
             } else {
-                translateY.value = withTiming(0);
-                runOnJS(killScrollSpacerInFutre)();
+                scrollRegionHeight.value = withDelay(300, withTiming(0));
             }
+
         }
     })
 
@@ -270,7 +275,6 @@ export default () => {
                 width,
                 maxHeight: height
             },
-
             toastContainerStyle
         ]}
         >
@@ -279,16 +283,13 @@ export default () => {
                 showsVerticalScrollIndicator={false}
                 scrollEventThrottle={16}
                 onScroll={scrollHandler}
-                style={{
-                    marginTop: 20
-                }}
             >
-                {toastMessages.map(msg => {
+                {toastMessages.map((msg, index) => {
                     return (
-                        <Toast message={msg} key={msg.uuid} deleteMessage={deleteMessage} remainingIds={remainingIds} />
+                        <Toast index={index} message={msg} key={msg.uuid} deleteMessage={deleteMessage} remainingIds={remainingIds} />
                     )
                 })}
-                <Animated.View style={scrollSpacerRstyle} />
+                <Animated.View style={[scrollSpacerRstyle]} />
             </Animated.ScrollView>
         </Animated.View >
     )
