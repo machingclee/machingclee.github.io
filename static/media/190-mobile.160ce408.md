@@ -1,0 +1,115 @@
+---
+title: "General Strategy for File-Uploading Using Stream and FormData in React-Native"
+date: 2023-10-05
+id: blog0190
+tag: react-native
+intro: "File streaming is a very basic technique to effectively transmit files from frontend to backend and, of course, from within backends as well."
+toc: true
+---
+
+<style>
+  img {
+    max-width: 600px;
+  }
+  video {
+    border-radius: 8px;
+  }
+</style>
+
+#### Result:
+
+<center>
+  <video controls width="400">
+    <source  src="/assets/tech/190/001.MP4" type="video/mp4">
+    Sorry, your browser doesn't support embedded videos.
+  <video/>
+</center>
+
+#### Fontend: Upload an Audio Using FormData and Base64 Encoded String
+
+```js
+import * as FileSystem from "expo-file-system";
+
+const uploadFile = async (audioFileUri: string) => {
+  const base64EncodedFile = await FileSystem.readAsStringAsync(audioFileUri, {
+    encoding: FileSystem.EncodingType.Base64,
+  });
+
+  dispatch(
+    chatThunkAction.uploadVoice({
+      roomOid: selectedRoom._id,
+      base64EncodedFile: { current: base64EncodedFile },
+    })
+  )
+    .unwrap()
+    .finally(() => {
+      FileSystem.deleteAsync(audioFileUri).catch(() => {
+        msgUtil.error(`Cannot delete file: ${audioFileUri}`);
+      });
+    });
+};
+```
+
+Here the thunk action `chatThunkAction.uploadVoice` is defined as follows:
+
+```js
+chatThunkAction =
+{
+    uploadVoice: createAsyncThunk("chatSlice/upload-voice", async (props: {
+        roomOid: string,
+        base64EncodedFile: { current: string }
+    }, api) => {
+        const { base64EncodedFile, roomOid } = props;
+        const formData = new FormData();
+        formData.append("file", base64EncodedFile.current);
+        const res = await apiClient
+            .post<WBResponse<undefined>>(
+                apiRoutes.POST_UPLOAD_VOICE(roomOid),
+                formData,
+                { headers: { "Content-Type": "multipart/form-data" } }
+            );
+        return processRes(res, api);
+    }),
+    ...
+}
+```
+
+We also pass an object to avoid copying the base64 encoded string (which is huge).
+
+- Now we have changed the file-upload procedures into a standard `form-data` approach that we have learnt from web developement.
+
+- As a full-stack developer in nodejs we love to handle incoming file stream by multiparty!
+
+#### Backend: Process the String Stream: Base64 to Uint8, From m4a To mp3, Pass Resulting Stream to azureClient.uploadStream()
+
+```js
+const voiceUpload = async (req: Request, res: Response) => {
+    const { roomOid } = req.query as { roomOid: string }
+    const form = new multiparty.Form();
+    const msgDoc = await MessageModel.create({
+        roomOid,
+        userOid: req.user?.userOid,
+        type: "Voice"
+    });
+    form.parse(req);
+    form.on("part", async (inputStream) => {
+        const uint8Stream = inputStream.pipe(new Base64Decode());
+        const bufferStream = new PassThrough();
+        const ffmpeg = ffmpegUtil.getFfmpeg();
+        ffmpeg(uint8Stream)
+            .inputFormat("m4a")
+            .audioCodec('libmp3lame')
+            .audioChannels(1)
+            .audioBitrate(128)
+            .format('mp3')
+            .pipe(bufferStream)
+
+        const res_ = await client.getBlockBlobClient(filename).uploadStream(bufferStream);
+    })
+```
+
+#### Summary for Backend
+
+Everything step is processing stream, which is memory efficient as we never wait for the whole stream to complete before moving to the next step.
+
+Apart from handling data conversion in stream, we also discussed zip stream in the past! [Check this out](/blog/article/Handle-Streams-in-File-Responding-Request)!
