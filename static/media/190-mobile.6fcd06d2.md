@@ -20,7 +20,7 @@ toc: true
 
 <center>
   <video controls width="400">
-    <source  src="/assets/tech/190/001.MP4" type="video/mp4">
+    <source  src="/assets/tech/190/001.mp4" type="video/mp4">
     Sorry, your browser doesn't support embedded videos.
   <video/>
 </center>

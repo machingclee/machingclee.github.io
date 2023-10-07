@@ -7,7 +7,6 @@ intro: "We can create our custom component by creating custom behaviour via cust
 toc: true
 ---
 
-
 <style>
   img {
     max-width: 600px;
@@ -20,7 +19,7 @@ toc: true
 #### Result
 
 <center>
-  <video controls width="500">
+  <video controls width="400">
     <source  src="/assets/tech/185/001.mp4" type="video/mp4">
     Sorry, your browser doesn't support embedded videos.
   <video/>
@@ -311,7 +310,7 @@ export default TrinityPage
 ##### Visual Example
 
 <center>
-  <video controls width="500">
+  <video controls width="400">
     <source  src="/assets/tech/185/002.mov" type="video/mp4">
     Sorry, your browser doesn't support embedded videos.
   <video/>

@@ -19,7 +19,7 @@ toc: true
 #### Result
 
 <center>
-  <video controls width="500">
+  <video controls width="400">
     <source  src="/assets/tech/188/001.MP4" type="video/mp4">
     Sorry, your browser doesn't support embedded videos.
   <video/>
@@ -162,19 +162,32 @@ export default BottomSheet;
 
 ```js
 const playground = () => {
-    const ref = useRef<BottomSheetHandle>(null);
-    const showBottomSheet = () => { ref.current?.show(); }
-    return (
-        <View style={{ width: "100%", height: "100%", justifyContent: "center", "alignItems": "center" }}>
-            <TouchableOpacity onLongPress={showBottomSheet} delayLongPress={1000}>
-                <Text style={{ padding: 20, borderWidth: 1 }}>Test</Text>
-            </TouchableOpacity>
-            <BottomSheet
-                component={<><Text>This is my nice Test</Text></>}
-                ref={ref}
-                maxHeight={400}
-            />
-        </View>
-    )
-}
+  const ref = useRef < BottomSheetHandle > null;
+  const showBottomSheet = () => {
+    ref.current?.show();
+  };
+  return (
+    <View
+      style={{
+        width: "100%",
+        height: "100%",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <TouchableOpacity onLongPress={showBottomSheet} delayLongPress={1000}>
+        <Text style={{ padding: 20, borderWidth: 1 }}>Test</Text>
+      </TouchableOpacity>
+      <BottomSheet
+        component={
+          <>
+            <Text>This is my nice Test</Text>
+          </>
+        }
+        ref={ref}
+        maxHeight={400}
+      />
+    </View>
+  );
+};
 ```

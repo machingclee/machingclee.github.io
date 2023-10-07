@@ -19,7 +19,7 @@ toc: true
 #### Result
 
 <center>
-  <video controls width="500">
+  <video controls width="400">
     <source  src="/assets/tech/187/001.MP4" type="video/mp4">
     Sorry, your browser doesn't support embedded videos.
   <video/>
