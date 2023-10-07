@@ -110,6 +110,6 @@ const voiceUpload = async (req: Request, res: Response) => {
 
 #### Summary for Backend
 
-Everything step is processing stream, which is memory efficient as we never wait for the whole stream to complete before moving to the next step.
+Since every step is merely processing stream, our data processing (from data conversion to file uploading to azure) is memory efficient as we never wait for the whole stream to complete before moving to the next step.
 
 Apart from handling data conversion in stream, we also discussed zip stream in the past! [Check this out](/blog/article/Handle-Streams-in-File-Responding-Request)!
