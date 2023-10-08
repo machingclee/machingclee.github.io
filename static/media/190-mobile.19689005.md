@@ -16,7 +16,7 @@ toc: true
   }
 </style>
 
-#### Result:
+#### The Visual Result 
 
 <center>
   <video controls width="400">
@@ -24,6 +24,23 @@ toc: true
     Sorry, your browser doesn't support embedded videos.
   <video/>
 </center>
+
+<p></p>
+
+<center></center>
+
+#### Behind the Scene
+
+The following pieces have taken place:
+
+- An audio file is `base64`-encoded in frontend
+- We send this `base64`-encoded string as `formData`
+- We have nice package in backend to receive `formData` as `inputStreams`
+- The input stream of audio file is processed by the following pipelines:
+  - `base64`-encoded to `uint8`
+  - `m4a` file to `mp3` file
+  - The stream is piped into a `Duplex` stream (to adapt to api design of `ffmpeg`)
+  - That `Duplex` stream is piped into azure's `uploadStream()` method
 
 #### Fontend: Upload an Audio Using FormData and Base64 Encoded String
 
@@ -50,7 +67,7 @@ const uploadFile = async (audioFileUri: string) => {
 };
 ```
 
-Here the thunk action `chatThunkAction.uploadVoice` is defined as follows:
+Here the thunk action `chatThunkAction.uploadVoice()` is defined as follows:
 
 ```js
 chatThunkAction =
