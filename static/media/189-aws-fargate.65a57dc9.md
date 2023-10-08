@@ -22,13 +22,13 @@ In short:
 
 - **Task Definition.** Define which image to use, define how much resources (vCPU, memory, etc) should be allocated to the task.
 
-- **Task.** It is the most basic building blocks in Fargate, they are instances of **Task Definition**.
+- **Task.** It is the most basic building blocks in Fargate, they are **_instances_** of Task Definition.
 
 - **Service.** It is a system that **_ensures_** _X_ amount of tasks are up and running.
 
 When we have containerized an application, we can readily deploy it on cloud using ECS Fargate!
 
-Fargate is designed to work with load-balancer. Make sure to have one before proceding.
+Fargate is designed to work with load balancer. Make sure to have one before proceeding.
 
 #### Procedures to Create an ECS Fargate Service/Task
 
@@ -52,7 +52,7 @@ Fargate is designed to work with load-balancer. Make sure to have one before pro
 
     [![](/assets/tech/189/004.png)](/assets/tech/189/004.png)
 
-##### Create Target Group and associte it with a Load Balancer
+##### Create Target Group and Associte it with a Load Balancer
 
 - We can only use Target Group of type `IP Address`
 
@@ -90,11 +90,11 @@ Fargate is designed to work with load-balancer. Make sure to have one before pro
 
 - We can start our deployment by simply running a task or creating a service using this task definition.
 
-- We first procede by creating a service directly.
-
-- Back to task definition, check our desired revision, and click Create service
-
   [![](/assets/tech/189/image-8.png)](/assets/tech/189/image-8.png)
+
+  We first proceed by creating a service directly.
+
+  Back to task definition, check our desired revision, and click Create service
 
 - Choose cluster (which groups our services), choose Launch type and choose FARGATE (default)
 
@@ -164,13 +164,13 @@ Fargate is designed to work with load-balancer. Make sure to have one before pro
 
   [![](/assets/tech/189/image-27.png)](/assets/tech/189/image-27.png)
 
-- Next we leave everything unchanged, this time we will bind our task to Target Group through **_private IP_**.
-
-- Click create.
+- Next we leave everything unchanged, click create.
 
   [![](/assets/tech/189/image-28.png)](/assets/tech/189/image-28.png)
 
-- Click the task in Tasks tab:
+- This time we will bind our task to Target Group through **_private IP_**.
+
+- Click Tasks tab:
 
   [![](/assets/tech/189/image-29.png)](/assets/tech/189/image-29.png)
 
