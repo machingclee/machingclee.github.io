@@ -46,11 +46,11 @@ Fargate is designed to work with load balancer. Make sure to have one before pro
 
   1. Create new revision
 
-      [![](/assets/tech/189/003.png)](/assets/tech/189/003.png)
+     [![](/assets/tech/189/003.png)](/assets/tech/189/003.png)
 
   2. Use latest docker image
 
-      [![](/assets/tech/189/004.png)](/assets/tech/189/004.png)
+     [![](/assets/tech/189/004.png)](/assets/tech/189/004.png)
 
 ##### Create Target Group and Associte it with a Load Balancer
 
@@ -61,8 +61,6 @@ Fargate is designed to work with load balancer. Make sure to have one before pro
 - Target group acts like a forward proxy, we just need HTTP (without SSL):
 
   [![](/assets/tech/189/image-22.png)](/assets/tech/189/image-22.png)
-
-  Later we will point to 9090 of the instance running our tasks.
 
 - Make sure we have created a route for health-check, in my case I use `/test` which simply responses `{"success": true}`.
 
@@ -96,12 +94,12 @@ Fargate is designed to work with load balancer. Make sure to have one before pro
 
   [![](/assets/tech/189/image-8.png)](/assets/tech/189/image-8.png)
 
-- Why there are two options? 
+- Why there are two options?
 
   - **Create service.** With this option we can set how many tasks are up and running, we can also set min and max number of tasks to handle sudden changes of traffic.
 
-  - **Run task.** However, not every task is readily scalable. 
-  
+  - **Run task.** However, not every task is readily scalable.
+
     For example, if our web server is also a socket.io chat server, we need to scale it by subscribing and publishing to a redis client (see [here](/blog/article/Scaling-Websocket-Chat-Sever-by-Redis)) and change the mechanism of "client send message" in backend to adapt this change.
 
     In such cases, we only want 1 task to be kept running.
@@ -182,7 +180,7 @@ Fargate is designed to work with load balancer. Make sure to have one before pro
 
 - This time we will bind our task to Target Group through **_private IP_**.
 
-- Click Tasks tab:
+- Click Tasks tab and click the running task:
 
   [![](/assets/tech/189/image-29.png)](/assets/tech/189/image-29.png)
 
