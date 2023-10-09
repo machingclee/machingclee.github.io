@@ -3,7 +3,7 @@ title: "Pin to Zoom Camera"
 date: 2023-10-09
 id: blog0192
 tag: react-native
-intro: "Pin to zoom feature is very common but it is not an out-of-the-box feature for camera API in iOS. Let''s bring it back on our own."
+intro: "Pin to zoom is very common but it is not an out-of-the-box feature for camera API in iOS. Let's bring it back on our own."
 toc: true
 ---
 
@@ -16,7 +16,7 @@ toc: true
   }
 </style>
 
-#### How do I come up with This Implementation?
+#### How do I come up with this Implementation?
 
 I find an inspiring article
 

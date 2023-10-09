@@ -147,7 +147,7 @@ There are two kinds of file-downloading api:
 
   - **Pros and Cons.** Easy to implement, but memory inefficient. Can we use up a few GB in memory before sending anything to the client?
 
-- **Return Data Stream of Object** This approach usually gets `dataStream` from APIs like
+- **Return Data Stream of Object.** This approach usually gets `dataStream` from APIs like
 
   1. `fs.createReadStream()` or
   2. from `aws-sdk`:
@@ -166,16 +166,16 @@ There are two kinds of file-downloading api:
 
 The `<Image/>` component in react-native works fine if an image is already saved in our mobile or an image file api returns a complete buffer object (the whole chunk).
 
-`<Image/>` fails to load an image for API returning a stream of data such as
+`<Image/>` fails to load an image for API that returns a stream. For example:
 
 - **Nodejs.** Data stream piped into `res` stream (a `WriteStream`).
-- **Spring.** `ResponseEntity` as return with `StreamingResponseBody` body
+- **Spring.** Return `ResponseEntity` with body: `StreamingResponseBody`
 
-API that returns stream are for higher memory effiency and therefore are always encouraged. The following
+API that returns a stream is for memory effiency and is always encouraged.
 
-##### Example of Redesigned Image Component for API That Returns Stream
+##### Example of Redesigned Image Component for API That Returns a Stream
 
-When `<Image source={{ uri: imageUrl }}/>` fails, it is possible that the API returns a stream (chunks) instead, then you may try the following:
+When `<Image source={{ uri: imageUrl }}/>` fails, it is possible that the API returns a stream (chunks), then you may try the following:
 
 ```js
 export default (props: { imageUri: string }) => {

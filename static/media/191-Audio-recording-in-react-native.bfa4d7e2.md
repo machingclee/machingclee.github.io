@@ -110,35 +110,40 @@ export default () => {
         onStopPlay,
         onStopRecord,
     } = useAudioRecording();
+
+
+    const startRecording = () => {
+        await onStartRecord("");
+        setIsRecording(true);
+    };
+
+    const stopRecording =()=>{
+        await onStopRecord();
+        setIsRecording(false);
+        await uploadAudio();
+    }
+
+    const uploadAudio = async () => {
+        console.log("uploading", audioFileUri)
+        const base64EncodedFile = await FileSystem.readAsStringAsync(
+            audioFileUri,
+            { encoding: FileSystem.EncodingType.Base64 }
+        );
+        dispatch(chatThunkAction.uploadAudioFile(
+            {
+                roomOid: selectedRoom._id,
+                base64EncodedFile: { current: base64EncodedFile }
+            }
+        )).unwrap().finally(() => {
+            FileSystem.deleteAsync(audioFileUri)
+                .catch(() => {
+                    msgUtil.error(`Cannot delete file: ${audioFileUri}`)
+                });
+        })
+    }
+
+    return (
+        ...
+    )
 };
-
-const startRecording = () => {
-    await onStartRecord("");
-    setIsRecording(true);
-};
-
-const stopRecording =()=>{
-    await onStopRecord();
-    setIsRecording(false);
-    await uploadAudio();
-}
-
-const uploadAudio = async () => {
-    console.log("uploading", audioFileUri)
-    const base64EncodedFile = await FileSystem.readAsStringAsync(
-        audioFileUri,
-        { encoding: FileSystem.EncodingType.Base64 }
-    );
-    dispatch(chatThunkAction.uploadAudioFile(
-        {
-            roomOid: selectedRoom._id,
-            base64EncodedFile: { current: base64EncodedFile }
-        }
-    )).unwrap().finally(() => {
-        FileSystem.deleteAsync(audioFileUri)
-            .catch(() => {
-                msgUtil.error(`Cannot delete file: ${audioFileUri}`)
-            });
-    })
-}
 ```
