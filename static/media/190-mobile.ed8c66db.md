@@ -1,5 +1,5 @@
 ---
-title: "General Strategy for File-Uploading Using Stream and FormData in React-Native"
+title: "File Upload and Download Using Stream and FormData in React-Native"
 date: 2023-10-05
 id: blog0190
 tag: react-native
@@ -16,7 +16,9 @@ toc: true
   }
 </style>
 
-#### The Visual Result 
+#### File Upload
+
+##### The Visual Result
 
 <center>
   <video controls width="400">
@@ -29,7 +31,7 @@ toc: true
 
 <center></center>
 
-#### Behind the Scene
+##### Behind the Scene
 
 The following pieces have taken place:
 
@@ -42,7 +44,7 @@ The following pieces have taken place:
   - The stream is piped into a `Duplex` stream (to adapt to api design of `ffmpeg`)
   - That `Duplex` stream is piped into azure's `uploadStream()` method
 
-#### Fontend: Upload an Audio Using FormData and Base64 Encoded String
+##### Fontend: Upload an Audio Using FormData and Base64 Encoded String
 
 ```js
 import * as FileSystem from "expo-file-system";
@@ -97,7 +99,7 @@ We also pass an object to avoid copying the base64 encoded string (which is huge
 
 - As a full-stack developer in nodejs we love to handle incoming file stream by multiparty!
 
-#### Backend: Process the String Stream: Base64 to Uint8, From m4a To mp3, Pass Resulting Stream to azureClient.uploadStream()
+##### Backend: Process the String Stream: Base64 to Uint8, From m4a To mp3, Pass Resulting Stream to azureClient.uploadStream()
 
 ```js
 const voiceUpload = async (req: Request, res: Response) => {
@@ -125,8 +127,93 @@ const voiceUpload = async (req: Request, res: Response) => {
     })
 ```
 
-#### Summary for Backend
+##### Summary for Backend
 
 Since every step is merely processing stream, our data processing (from data conversion to file uploading to azure) is memory efficient as we never wait for the whole stream to complete before moving to the next step.
 
 Apart from handling data conversion in stream, we also discussed zip stream in the past! [Check this out](/blog/article/Handle-Streams-in-File-Responding-Request)!
+
+#### File Download
+
+##### Two Kinds of File-downloading API in Backend
+
+We take downloading image as an example, in general the idea applies to downloading any kinds of file.
+
+There are two kinds of file-downloading api:
+
+- **Return Whole Chunk of Object.** This approach is feasible when the object is relatively small (like a few MB).
+
+  - **Behaviour.** Take image as an example, when we make a `GET` request to this api, we get a new image in the browser.
+
+  - **Pros and Cons.** Easy to implement, but memory inefficient. Can we use up a few GB in memory before sending anything to the client?
+
+- **Return Data Stream of Object** This approach usually gets `dataStream` from APIs like
+
+  1. `fs.createReadStream()` or
+  2. from `aws-sdk`:
+
+     ```js
+     new AWS.S3()
+       .getObject({ Bucket: bucketName, Key: objectKey })
+       .createReadStream()`
+     ```
+
+  And the stream is piped into our `res` `WriteStream`.
+
+  - **Behaviour.** Take image as an example, when we make a `GET` request to this api, a new image will not be shown in the browser, but it gets downloaded.
+
+  - **Pros and Cons.** Memory eifficient, **_but_** frontend developer takes extra effort to handle the response (especially mobile).
+
+The `<Image/>` component in react-native works fine if an image is already saved in our mobile or an image file api returns a complete buffer object (the whole chunk).
+
+`<Image/>` fails to load an image for API returning a stream of data such as
+
+- **Nodejs.** Data stream piped into `res` stream (a `WriteStream`).
+- **Spring.** `ResponseEntity` as return with `StreamingResponseBody` body
+
+API that returns stream are for higher memory effiency and therefore are always encouraged. The following
+
+##### Example of Redesigned Image Component for API That Returns Stream
+
+When `<Image source={{ uri: imageUrl }}/>` fails, it is possible that the API returns a stream (chunks) instead, then you may try the following:
+
+```js
+export default (props: { imageUri: string }) => {
+    const { imageUri } = props;
+    const [base64, setBase64] = useState("");
+    const [id, setId] = useState("");
+
+useEffect(() => {
+        RNFetchBlob
+            .fetch('GET', imageUri)
+            .then((res) => {
+                setBase64("data:image/jpeg;base64," + res.base64());
+                setId(uuid.v4() as string);
+            })
+            .catch((err) => {
+                msgUtil.error(err);
+            })
+    }, []);
+
+    if (!base64) {
+        return null;
+    }
+
+    return (
+        <Image
+            source={{ uri: base64 }}
+            key={id}
+            style={{
+                width: 180,
+                height: 300,
+                marginTop: 10,
+                borderRadius: 4
+            }}
+        />
+    )
+}
+```
+
+#### More on Base64 Encoding
+
+- [Why do we use Base64?](https://stackoverflow.com/questions/3538021/why-do-we-use-base64)
