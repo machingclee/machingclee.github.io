@@ -135,44 +135,6 @@ Apart from handling data conversion in stream, we also discussed zip stream in t
 
 #### File Download
 
-##### Two Kinds of File-downloading API in Backend
-
-We take downloading image as an example, in general the idea applies to downloading any kinds of file.
-
-There are two kinds of file-downloading api:
-
-- **Return Whole Chunk of Object.** This approach is feasible when the object is relatively small (like a few MB).
-
-  - **Behaviour.** Take image as an example, when we make a `GET` request to this api, we get a new image in the browser.
-
-  - **Pros and Cons.** Easy to implement, but memory inefficient. Can we use up a few GB in memory before sending anything to the client?
-
-- **Return Data Stream of Object.** This approach usually gets `dataStream` from APIs like
-
-  1. `fs.createReadStream()` or
-  2. from `aws-sdk`:
-
-     ```js
-     new AWS.S3()
-       .getObject({ Bucket: bucketName, Key: objectKey })
-       .createReadStream()`
-     ```
-
-  And the stream is piped into our `res` `WriteStream`.
-
-  - **Behaviour.** Take image as an example, when we make a `GET` request to this api, a new image will not be shown in the browser, but it gets downloaded.
-
-  - **Pros and Cons.** Memory eifficient, **_but_** frontend developer takes extra effort to handle the response (especially mobile).
-
-The `<Image/>` component in react-native works fine if an image is already saved in our mobile or an image file api returns a complete buffer object (the whole chunk).
-
-`<Image/>` fails to load an image for API that returns a stream. For example:
-
-- **Nodejs.** Data stream piped into `res` stream (a `WriteStream`).
-- **Spring.** Return `ResponseEntity` with body: `StreamingResponseBody`
-
-API that returns a stream is for memory effiency and is always encouraged.
-
 ##### Example of Redesigned Image Component for API That Returns a Stream
 
 When `<Image source={{ uri: imageUrl }}/>` fails, it is possible that the API returns a stream (chunks), then you may try the following:

@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/static/css/main.c804feff.chunk.css",
-    "main.js": "/static/js/main.4a1f39cc.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.0fcacb95.js",
+    "main.js": "/static/js/main.5be42777.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.5bc11118.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.3aa5f44d.chunk.js": "/static/js/2.3aa5f44d.chunk.js",
-    "static/js/3.9166d68d.chunk.js": "/static/js/3.9166d68d.chunk.js",
+    "static/js/2.3474b518.chunk.js": "/static/js/2.3474b518.chunk.js",
+    "static/js/3.5700b863.chunk.js": "/static/js/3.5700b863.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.3aa5f44d.chunk.js.LICENSE.txt": "/static/js/2.3aa5f44d.chunk.js.LICENSE.txt",
+    "static/js/2.3474b518.chunk.js.LICENSE.txt": "/static/js/2.3474b518.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.72064d8e.md",
     "static/media/002-closure-of-interior.md": "/static/media/002-closure-of-interior.d61226c6.md",
@@ -116,9 +116,10 @@
     "static/media/187-custom-toast.md": "/static/media/187-custom-toast.3f684da0.md",
     "static/media/188-custom-bottom-sheet.md": "/static/media/188-custom-bottom-sheet.2eaeca75.md",
     "static/media/189-aws-fargate.md": "/static/media/189-aws-fargate.a75e4772.md",
-    "static/media/190-mobile.md": "/static/media/190-mobile.f535fc04.md",
+    "static/media/190-mobile.md": "/static/media/190-mobile.891f4a4d.md",
     "static/media/191-Audio-recording-in-react-native.md": "/static/media/191-Audio-recording-in-react-native.bfa4d7e2.md",
     "static/media/192-pin-to-zoom-camera.md": "/static/media/192-pin-to-zoom-camera.e2fe98d7.md",
+    "static/media/193-terra-form-create.md": "/static/media/193-terra-form-create.7a1e0e64.md",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/DefectGAN.md": "/static/media/DefectGAN.c0718f46.md",
     "static/media/EAST.md": "/static/media/EAST.86fb54d8.md",
@@ -247,10 +248,10 @@
     "static/media/yolo-v3-deep-dive.md": "/static/media/yolo-v3-deep-dive.5fa9bf85.md"
   },
   "entrypoints": [
-    "static/js/runtime-main.0fcacb95.js",
+    "static/js/runtime-main.5bc11118.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.3aa5f44d.chunk.js",
+    "static/js/2.3474b518.chunk.js",
     "static/css/main.c804feff.chunk.css",
-    "static/js/main.4a1f39cc.chunk.js"
+    "static/js/main.5be42777.chunk.js"
   ]
 }
