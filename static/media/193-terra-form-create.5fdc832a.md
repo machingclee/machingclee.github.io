@@ -1,9 +1,9 @@
 ---
-title: "Terraform Fundamentals"
+title: "AWS Resources Instanciation in Terraform"
 date: 2023-10-10
 id: blog0193
 tag: aws, cloud, terraform
-intro: "A introductory study of Terraform."
+intro: "A study of Terraform basic building blocks."
 toc: true
 ---
 
@@ -16,9 +16,7 @@ toc: true
   }
 </style>
 
-#### AWS Resources in Terraform
-
-##### A Complete EC2 with Security Group
+#### A Complete EC2 with Security Group
 
 ```hcl
 provider "aws" {
@@ -121,7 +119,7 @@ service httpd start
 chkconfig httpd on
 ```
 
-##### Dynamic Properties
+#### Dynamic Properties
 
 Example of a security group:
 
@@ -173,7 +171,7 @@ resource "aws_security_group" "web" {
 }
 ```
 
-##### Elastic IP
+#### Elastic IP
 
 ```hcl
 resource "aws_eip" "web" {
@@ -197,7 +195,7 @@ resource "aws_instance" "web" {
 }
 ```
 
-##### Life Cycle: Create Before Destroy
+#### Life Cycle: Create Before Destroy
 
 Since we have attached an elastic IP to an aws instance.
 
@@ -221,7 +219,7 @@ resource "aws_instance" "web" {
 }
 ```
 
-##### Implicit and Explicit Dependencies
+#### Implicit and Explicit Dependencies
 
 ```hcl
 resource "aws_instance" "my_web_server" {
@@ -280,7 +278,7 @@ resource "aws_security_group" "general" {
 }
 ```
 
-##### Random Password in SSM Parameter Store
+#### Random Password in SSM Parameter Store
 
 ```hcl
 resource "random_password" "main" {
@@ -311,7 +309,7 @@ data "aws_ssm_parameter" "rds_password" {
 
 And we use `data.aws_ssm_parameter.rds_password.value` as the value in attributes.
 
-##### Random Password in Secrets Managers
+#### Random Password in Secrets Managers
 
 ```hcl
 resource "random_password" "main" {
@@ -342,7 +340,7 @@ output "random_password_rds" {
 }
 ```
 
-##### JSON as Environment Variable Stored in Secrets Managers
+#### JSON as Environment Variable Stored in Secrets Managers
 
 We additionally add a database for more data to store.
 
@@ -393,7 +391,7 @@ output "rds_all" {
 }
 ```
 
-##### Create VPC and Subnets
+#### Create VPC and Subnets
 
 ```hcl
 provider "aws" {}
@@ -453,7 +451,7 @@ output "availability_zones" {
 }
 ```
 
-##### Get the AMI-id of Ubuntu/Amazon Linux by Filtering
+#### Get the AMI-id of Ubuntu/Amazon Linux by Filtering
 
 ```hcl
 provider "aws" {}
@@ -491,383 +489,4 @@ output:
 ```text
 latest_amazonlinux_ami_id = "ami-0fd8f5842685ca887"
 latest_ubuntu20_ami_id = "ami-09a81b370b76de6a2"
-```
-
-#### Variables
-
-##### The variables.tf
-
-```hcl
-variable "aws_region" {
-  description = "Region where you want to provision"
-  type        = string //number, bool
-  default     = "ap-northeast-1"
-}
-
-variable "port_list" {
-  description = "List of port to open for your webserver"
-  type        = list(any)
-  default     = ["80", "443"]
-}
-
-variable "instance_type" {
-  description = "EC2 Instance size to provision"
-  type        = string
-  default     = "t3.micro"
-}
-
-variable "tags" {
-  description = "Tags to apply to resources"
-  type        = map(any)
-  default = {
-    Owner       = "James Lee"
-    Environment = "Prod"
-    Project     = "Pheonix"
-  }
-}
-
-output "latest_ubuntu20_ami_id" {
-  value = data.aws_ami.latest_ubuntu20.id
-}
-
-output "latest_amazonlinux_ami_id" {
-  value = data.aws_ami.latest_amazonlinux.id
-}
-```
-
-##### The main.tf Using variables.tf
-
-```hcl
-provider "aws" { region = var.aws_region }
-
-resource "aws_security_group" "web" {
-  name        = "${var.tags["Environment"]} WebServer-SG"
-  description = "Security Group for WebServer"
-  dynamic "ingress" {
-    for_each = var.port_list
-    content {
-      from_port   = ingress.value
-      to_port     = ingress.value
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
-    }
-  }
-  egress {
-    description = "Allow All Ports"
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  tags = merge(var.tags, { Name = "${var.tags["Environment"]} WebServer SG by Terraform" })
-}
-
-resource "aws_instance" "web" {
-  ami                    = data.aws_ami.latest_amazonlinux.id
-  instance_type          = var.instance_type
-  vpc_security_group_ids = [aws_security_group.web.id]
-  tags                   = merge(var.tags, { Name = "${var.tags["Environment"]} WebServer Built by Terraform" })
-}
-
-resource "aws_eip" "web" {
-  instance = aws_instance.web.id
-  tags     = merge(var.tags, { Name = "${var.tags["Environment"]} Elastic IP by Terraform" })
-}
-
-data "aws_ami" "latest_ubuntu20" {
-  owners      = ["099720109477"]
-  most_recent = true
-  filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
-  }
-}
-
-data "aws_ami" "latest_amazonlinux" {
-  owners      = ["137112412989"]
-  most_recent = true
-  filter {
-    name   = "name"
-    values = ["al2023-ami-2023.*-kernel-6.1-x86_64"]
-  }
-}
-```
-
-##### The \*.tfvars
-
-This provides the default values to `variables.tf` in a separate file:
-
-###### New variables.tf
-
-```hcl
-variable "aws_region" {
-  description = "Region where you want to provision"
-  type        = string //number, bool
-}
-
-variable "port_list" {
-  description = "List of port to open for your webserver"
-  type        = list(any)
-}
-
-variable "instance_type" {
-  description = "EC2 Instance size to provision"
-  type        = string
-}
-
-variable "tags" {
-  description = "Tags to apply to resources"
-  type        = map(any)
-}
-```
-
-###### terraform.tfvars
-
-```hcl
-aws_region    = "ap-northeast-1"
-port_list     = ["80", "443"]
-instance_type = "t3.micro"
-tags = {
-  Owner       = "James Lee"
-  Environment = "Prod"
-  Project     = "Pheonix"
-}
-```
-
-###### prod.tfvars
-
-Let's rename `terraform.tfvars` to `prod.tfvars` and `terraform apply` again, the `*.tfvars` does not take effect. In that case, we try:
-
-```text
-terraform apply -var-file=prod.tfvars
-```
-
-##### Local Variables
-
-In `main.tf` we can write
-
-```hcl
-locals {
-  X = 1
-  Y = 2
-}
-
-locals {
-  amazonlinux_ami = data.aws_ami.latest_amazonlinux.id
-  ubuntu_ami      = data.aws_ami.latest_ubuntu20.id
-  Z = "${local.X} and ${local.Y}"
-  some_tags = {
-    Owner = "James Lee"
-  }
-}
-
-resource "aws_instance" "web" {
-  ami                    = local.amazonlinux_ami
-  instance_type          = var.instance_type
-  vpc_security_group_ids = [aws_security_group.web.id]
-  tags                   = merge(var.tags, local.some_tags, { Name = "${var.tags["Environment"]} WebServer Built by Terraform" })
-}
-
-data "aws_ami" "latest_ubuntu20" {
-  owners      = ["099720109477"]
-  most_recent = true
-  filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
-  }
-}
-
-data "aws_ami" "latest_amazonlinux" {
-  owners      = ["137112412989"]
-  most_recent = true
-  filter {
-    name   = "name"
-    values = ["al2023-ami-2023.*-kernel-6.1-x86_64"]
-  }
-}
-
-...
-```
-
-#### Remote Execution
-
-After an EC2 instance is created, we arrange shell scripts to be executed as subsequent tasks (for example, we may want to install gitlab runner to perform CICD task).
-
-```hcl
-provider "aws" {
-  region = "ca-central-1"
-}
-
-resource "aws_default_vpc" "default" {} # This need to be added since AWS Provider v4.29+ to get VPC id
-
-resource "aws_instance" "myserver" {
-  ami                    = "ami-0c9bfc21ac5bf10eb"
-  instance_type          = "t3.nano"
-  vpc_security_group_ids = [aws_security_group.web.id]
-  key_name               = "denis-key-ca-central-1"
-  tags = {
-    Name  = "My EC2 with remote-exec"
-    Owner = "Denis Astahov"
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "mkdir /home/ec2-user/terraform",
-      "cd /home/ec2-user/terraform",
-      "touch hello.txt",
-      "echo 'Terraform was here...' > terraform.txt"
-    ]
-    connection {
-      type        = "ssh"
-      user        = "ec2-user"
-      host        = self.public_ip //Same as: aws_instance.myserver.public_ip
-      private_key = file("denis-key-ca-central-1.pem")
-    }
-  }
-}
-
-
-resource "aws_security_group" "web" {
-  name   = "My-SecurityGroup"
-  vpc_id = aws_default_vpc.default.id # This need to be added since AWS Provider v4.29+ to set VPC id
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  egress {
-    description = "Allow ALL ports"
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  tags = {
-    Name  = "SG by Terraform"
-    Owner = "Denis Astahov"
-  }
-}
-```
-
-#### Conditions and Loops
-
-##### Dynamic Field by Ternary Operator
-
-- `(var.env == "prod") ? true : false`
-
-- whether to create an attribute block:
-  ```hcl
-  dynamic "ebs_block_device" {
-    for_each = var.env == "prod" ? [true] : []
-    content {
-      device_name = "/dev/sdb"
-      volume_size = 40
-      encrypted   = true
-    }
-  }
-  ```
-
-Note that `lookup` has the signature `lookup(map, key, default_value)`, it is an ordinary `get` method of a `Map` object.
-
-- **Full Example.**
-
-  ```hcl
-  resource "aws_instance" "my_server" {
-    ami                    = var.ami_id_per_region[data.aws_region.current.name]
-    instance_type          = lookup(var.server_size, var.env, var.server_size["my_default"])
-    vpc_security_group_ids = [aws_security_group.my_server.id]
-
-    root_block_device {
-      volume_size = 10
-      encrypted   = (var.env == "prod") ? true : false
-    }
-
-    dynamic "ebs_block_device" {
-      for_each = var.env == "prod" ? [true] : []
-      content {
-        device_name = "/dev/sdb"
-        volume_size = 40
-        encrypted   = true
-      }
-    }
-
-    volume_tags = { Name = "Disk-${var.env}" }
-    tags        = { Name = "Server-${var.env}" }
-  }
-  ```
-
-##### Conditionally Create a Resource by Count
-
-Note that the block below can be equivalently created by looping a set:
-
-```hcl
-resource "aws_instance" "bastion_server" {
-  count         = var.create_bastion == true ? 1 : 0
-  ami           = "ami-0e472933a1395e172"
-  instance_type = "t3.micro"
-  tags = {
-    Name  = "Bastion Server"
-    Owner = "Denis Astahov"
-  }
-}
-```
-
-##### Create Multiple Instances by Looping a Set
-
-```hcl
-resource "aws_instance" "my_server" {
-  for_each      = toset(["Dev", "Staging", "Prod"])
-  ami           = "ami-0e472933a1395e172"
-  instance_type = "t3.micro"
-  tags = {
-    Name  = "Server-${each.value}"
-    Owner = "Denis Astahov"
-  }
-}
-```
-
-##### Create Multiple Instances by Looping a Map of Maps
-
-```hcl
-// variables.tf
-variable "servers_settings" {
-  type = map(any)
-  default = {
-    web = {
-      ami           = "ami-0e472933a1395e172"
-      instance_size = "t3.small"
-      root_disksize = 20
-      encrypted     = true
-    }
-    app = {
-      ami           = "ami-07dd19a7900a1f049"
-      instance_size = "t3.micro"
-      root_disksize = 10
-      encrypted     = false
-    }
-  }
-}
-```
-
-```hcl
-// main.tf
-resource "aws_instance" "server" {
-  for_each      = var.servers_settings
-  ami           = each.value["ami"]
-  instance_type = each.value["instance_size"]
-
-  root_block_device {
-    volume_size = each.value["root_disksize"]
-    encrypted   = each.value["encrypted"]
-  }
-
-  volume_tags = {
-    Name = "Disk-${each.key}"
-  }
-  tags = {
-    Name  = "Server-${each.key}"
-    Owner = "Denis Astahov"
-  }
-}
 ```
