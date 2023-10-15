@@ -1,5 +1,5 @@
 ---
-title: "Split our code by Remote State AND Create and Deploy on a Public Subnet of Custom VPC"
+title: "Remote State for Whole Development Team; Create and Deploy on a Public Subnet of Custom VPC"
 date: 2023-10-15
 id: blog0194
 tag: aws, cloud, terraform
@@ -46,11 +46,7 @@ First:
 
 The following code actually repeat what is done in [this video](https://www.youtube.com/watch?v=TUTqYEZZUdc).
 
-- Create an internet gayeway
-- Attach the gateway to the VPC
-- Create a route table
-- Create a route for the gateway
-- Attach that route table to public subnets
+![](/assets/tech/194/image.png)
 
 ```hcl
 provider "aws" {}

@@ -1,13 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.c804feff.chunk.css",
-    "main.js": "/static/js/main.a839065c.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.7d656e2b.js",
+    "main.js": "/static/js/main.b32f1c2b.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.4b9b9605.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.81c2cceb.chunk.js": "/static/js/2.81c2cceb.chunk.js",
-    "static/js/3.fe7b9c91.chunk.js": "/static/js/3.fe7b9c91.chunk.js",
+    "static/js/2.85299297.chunk.js": "/static/js/2.85299297.chunk.js",
+    "static/js/3.feb356fc.chunk.js": "/static/js/3.feb356fc.chunk.js",
+    "static/js/4.61a67984.chunk.js": "/static/js/4.61a67984.chunk.js",
+    "static/js/5.eac3fe44.chunk.js": "/static/js/5.eac3fe44.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.81c2cceb.chunk.js.LICENSE.txt": "/static/js/2.81c2cceb.chunk.js.LICENSE.txt",
+    "static/js/2.85299297.chunk.js.LICENSE.txt": "/static/js/2.85299297.chunk.js.LICENSE.txt",
+    "static/js/3.feb356fc.chunk.js.LICENSE.txt": "/static/js/3.feb356fc.chunk.js.LICENSE.txt",
+    "static/js/4.61a67984.chunk.js.LICENSE.txt": "/static/js/4.61a67984.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.72064d8e.md",
     "static/media/002-closure-of-interior.md": "/static/media/002-closure-of-interior.d61226c6.md",
@@ -120,7 +124,7 @@
     "static/media/191-Audio-recording-in-react-native.md": "/static/media/191-Audio-recording-in-react-native.bfa4d7e2.md",
     "static/media/192-pin-to-zoom-camera.md": "/static/media/192-pin-to-zoom-camera.e2fe98d7.md",
     "static/media/193-terra-form-create.md": "/static/media/193-terra-form-create.5fdc832a.md",
-    "static/media/194-remote-states.md": "/static/media/194-remote-states.b0bdc3ce.md",
+    "static/media/194-remote-states.md": "/static/media/194-remote-states.8f635af0.md",
     "static/media/195-conditions-and-loops.md": "/static/media/195-conditions-and-loops.733be8f5.md",
     "static/media/196-variables-and-remote-execution.md": "/static/media/196-variables-and-remote-execution.01bf0e4b.md",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
@@ -251,10 +255,10 @@
     "static/media/yolo-v3-deep-dive.md": "/static/media/yolo-v3-deep-dive.5fa9bf85.md"
   },
   "entrypoints": [
-    "static/js/runtime-main.7d656e2b.js",
+    "static/js/runtime-main.4b9b9605.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.81c2cceb.chunk.js",
+    "static/js/2.85299297.chunk.js",
     "static/css/main.c804feff.chunk.css",
-    "static/js/main.a839065c.chunk.js"
+    "static/js/main.b32f1c2b.chunk.js"
   ]
 }
