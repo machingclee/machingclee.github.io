@@ -16,8 +16,6 @@ toc: true
   }
 </style>
 
-By storing state remotely we are able to split our code into separate terraform files.
-
 #### Remote State
 
 We create a versioned and Encryped S3 bucket and start our `main.tf` by

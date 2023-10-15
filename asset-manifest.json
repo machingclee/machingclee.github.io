@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.c804feff.chunk.css",
-    "main.js": "/static/js/main.f02f078e.chunk.js",
+    "main.js": "/static/js/main.a839065c.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.7d656e2b.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.81c2cceb.chunk.js": "/static/js/2.81c2cceb.chunk.js",
@@ -120,7 +120,7 @@
     "static/media/191-Audio-recording-in-react-native.md": "/static/media/191-Audio-recording-in-react-native.bfa4d7e2.md",
     "static/media/192-pin-to-zoom-camera.md": "/static/media/192-pin-to-zoom-camera.e2fe98d7.md",
     "static/media/193-terra-form-create.md": "/static/media/193-terra-form-create.5fdc832a.md",
-    "static/media/194-remote-states.md": "/static/media/194-remote-states.e42ca33f.md",
+    "static/media/194-remote-states.md": "/static/media/194-remote-states.b0bdc3ce.md",
     "static/media/195-conditions-and-loops.md": "/static/media/195-conditions-and-loops.733be8f5.md",
     "static/media/196-variables-and-remote-execution.md": "/static/media/196-variables-and-remote-execution.01bf0e4b.md",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
@@ -255,6 +255,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.81c2cceb.chunk.js",
     "static/css/main.c804feff.chunk.css",
-    "static/js/main.f02f078e.chunk.js"
+    "static/js/main.a839065c.chunk.js"
   ]
 }
