@@ -1,7 +1,7 @@
 ---
 title: "Variables and Remote Execution"
 date: 2023-10-13
-id: blog0195
+id: blog0196
 tag: aws, cloud, terraform
 intro: "We discuss how to manipulate variables (dev, prod, etc...) and plan a small section on remote execution of shell scripts once an instance is launched."
 toc: true
