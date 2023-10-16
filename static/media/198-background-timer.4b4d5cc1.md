@@ -30,9 +30,7 @@ In my app I have a third party voice-conferencing service called AgoraRTC which 
 
 ##### AppState Investigation
 
-We can check that:
-
-In invertigation, by using
+We can invertigate the changes in `appState` by using
 
 ```js
 useEffect(() => {
@@ -41,6 +39,8 @@ useEffect(() => {
   });
 });
 ```
+
+Behaviour:
 
 - **Switch to Another app.** appState: `active` > `inactive` > `background`
 - **Lock Screen.** appState: `active` > `inactive` > ...
