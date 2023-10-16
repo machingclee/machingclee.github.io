@@ -1,5 +1,5 @@
 ---
-title: "Long Running Task in Background in Mobile"
+title: "Long Running Task in Background for Mobile App"
 date: 2023-10-17
 id: blog0198
 tag: react-native
