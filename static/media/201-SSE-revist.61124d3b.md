@@ -25,7 +25,6 @@ toc: true
   <video/>
 </center>
 
-
 #### Usages
 
 ##### Frontend
@@ -34,29 +33,35 @@ In my app when I leave a room, I will send an SSE event to the backend, trigger 
 
 ```js
 const leave = () => {
-        dispatch(appSlice.actions.closeAppDialog());
-        setTimeout(() => {
-            router.replace("/(billie)/");
+  dispatch(appSlice.actions.closeAppDialog());
+  setTimeout(() => {
+    router.replace("/(billie)/");
 
-            SSE.createSSE({
-                eventSource: apiRoutes.GET_SSE_EXCEL_STATUS(roomOid),
-                token: token,
-                subscriptions: [{
-                    key: "EXCEL_STATUS",
-                    action: (data: string) => {
-                        dispatch(chatSlice.actions.setRoomExcelStatusOnLeave({ roomOid, status: data }))
-                    }
-                }],
-                endEvent: {
-                    key: "EXCEL_STATUS_END"
-                }
-            })
-        }, 300)
-    }
+    SSE.createSSE({
+      eventSource: apiRoutes.GET_SSE_EXCEL_STATUS(roomOid),
+      token: token,
+      subscriptions: [
+        {
+          key: "EXCEL_STATUS",
+          action: (data: string) => {
+            dispatch(
+              chatSlice.actions.setRoomExcelStatusOnLeave({
+                roomOid,
+                status: data,
+              })
+            );
+          },
+        },
+      ],
+      endEvent: {
+        key: "EXCEL_STATUS_END",
+      },
+    });
+  }, 300);
+};
 ```
 
 When the backend sends an `endEventKey`, we will close our `sse` instance.
-
 
 ##### Backend
 
@@ -65,6 +70,7 @@ Suppose that I have an SSE `GET` route that has the following controller:
 ```js
 export const getExcel = async (req: Request, res: Response) => {
     const excelStatusChannel = new SSEChannel({
+        eventEmitter: chatService.Cache.eventEmitter,
         channelKey: `EXCEL_STATUS_${req.user?.userOid || ""}`,
         SSEMsgKey: "EXCEL_STATUS",
         SSEEndKey: "EXCEL_STATUS_END",
@@ -79,30 +85,34 @@ export const getExcel = async (req: Request, res: Response) => {
 }
 ```
 
-- Note that we also pass a `WriteStream` `res` into `SSE` channel so that 
+- Note that we also pass a `WriteStream` `res` into `SSE` channel so that
 - later our `ssePublisher` can write a stream-response to end the channel (see `ssePublisher.closeChannel()`, which executes `killChannel()` from `SSEChannel`).
 
 Next the final function call is:
 
 ```js
-const generateSaveAndSendExcelReport = async (roomOid: string, ssePublisher: SSEChannelPublisher) => {
-    await requestAndSaveLLMSummaryFromRoomOid(roomOid, ssePublisher);
-    const { excelUrl, room } = await dispatchExcelGenerationTaskToFlask(roomOid, ssePublisher);
-    ssePublisher.emit("Finished");
-    ssePublisher.closeChannel();
+const generateSaveAndSendExcelReport = async (
+  roomOid: string,
+  ssePublisher: SSEChannelPublisher
+) => {
+  await requestAndSaveLLMSummaryFromRoomOid(roomOid, ssePublisher);
+  const { excelUrl, room } = await dispatchExcelGenerationTaskToFlask(
+    roomOid,
+    ssePublisher
+  );
+  ssePublisher.emit("Finished");
+  ssePublisher.closeChannel();
 
-    await sendEmail({ room, excelUrl });
-}
+  await sendEmail({ room, excelUrl });
+};
 ```
 
 Each of `requestAndSaveLLMSummaryFromRoomOid` and `dispatchExcelGenerationTaskToFlask` has a `setInterval` to publish messages to frontend by using `ssePublisher.emit("something")`.
 
-
 #### Code Implementation
 
 - Here we assume access token is passed by header.
-- In case the reader uses cookie to pass token, we just need to modify the function call of the  constructor of `Eventsource` to use `withCredential: true` as an option.
-
+- In case the reader uses cookie to pass token, we just need to modify the function call of the constructor of `Eventsource` to use `withCredential: true` as an option.
 
 ##### On SSE Request Header
 
@@ -110,7 +120,6 @@ Default `EventSource` in `react` and `react-native` does not provide any option 
 
 - For `react`, we use [eventsource](https://www.npmjs.com/package/eventsource)
 - For `react-native` we use [react-native-event-source](https://www.npmjs.com/package/react-native-event-source)
-
 
 ##### Custom SSE Class:
 
@@ -215,10 +224,9 @@ export default {
 };
 ```
 
-
 ##### Code Implementation: SSEChannel class and SSEChannelPublisher class
 
-Let's fix a cached `EventEmitter` instance. Let's identify each ***event emission key*** as a ***channel***.
+Let's fix a cached `EventEmitter` instance. Let's identify each **_event emission key_** as a **_channel_**.
 
 ```js
 // util/SSEChannel.ts
@@ -228,8 +236,34 @@ import { EventEmitter, Writable } from "stream";
 import logger from "./logger";
 import chatService from "../service/chatService";
 
+
+export class SSEChannelPublisher {
+    private channelKey = "";
+    private killChannel = () => { };
+
+    constructor(props: {
+        channelKey: string,
+        killChannel: () => void
+    }) {
+        this.channelKey = props.channelKey;
+        this.killChannel = props.killChannel;
+    }
+
+    public closeChannel = () => {
+        this.killChannel();
+        chatService.Cache.eventEmitter.removeAllListeners(this.channelKey);
+
+    }
+
+    public emit = (data: string) => {
+        chatService.Cache.eventEmitter.emit(this.channelKey, data)
+    }
+}
+
+
 type ChannelProps = {
     res: Response,
+    eventEmitter: EventEmitter,
     channelKey: string
     SSEMsgKey: string
     SSEEndKey: string
@@ -240,18 +274,19 @@ type ChannelProps = {
  */
 class SSEChannel {
     private channelOption: ChannelProps | null = null;
-    private channelEmitter = chatService.Cache.eventEmitter;
+    private channelEmitter: EventEmitter | null = null;
     private eventId: number = 0;
 
     constructor(props: ChannelProps) {
         this.channelOption = props;
+        this.channelEmitter = this.channelOption.eventEmitter;
         this.listen();
     }
 
     private killChannel = () => {
         logger.info("Killing the channel ...");
         this.writeMessage({ message: "", SSEMsgKey: this.channelOption?.SSEEndKey || "" });
-        this.channelEmitter.removeAllListeners(this.channelOption?.channelKey || "");
+        this.channelEmitter?.removeAllListeners(this.channelOption?.channelKey || "");
     }
 
     public getSSEMsgKey = () => {
@@ -301,27 +336,8 @@ class SSEChannel {
     }
 }
 
-export class SSEChannelPublisher {
-    private channelKey = "";
-    private killChannel = () => { };
-
-    constructor(props: {
-        channelKey: string,
-        killChannel: () => void
-    }) {
-        this.channelKey = props.channelKey;
-        this.killChannel = props.killChannel;
-    }
-
-    public closeChannel = () => {
-        this.killChannel();
-        chatService.Cache.eventEmitter.removeAllListeners(this.channelKey);
-    }
-
-    public emit = (data: string) => {
-        chatService.Cache.eventEmitter.emit(this.channelKey, data)
-    }
-}
-
 export default SSEChannel;
+
+
+
 ```
