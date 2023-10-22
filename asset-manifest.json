@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.6bcdb664.chunk.css",
-    "main.js": "/static/js/main.c9547861.chunk.js",
+    "main.js": "/static/js/main.0029281d.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.c6ddb39b.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.80d9c482.chunk.js": "/static/js/2.80d9c482.chunk.js",
@@ -83,7 +83,7 @@
     "static/media/136-mui-css-animation.md": "/static/media/136-mui-css-animation.386bf1f5.md",
     "static/media/137-jsonpipeline-in-java.md": "/static/media/137-jsonpipeline-in-java.8c386571.md",
     "static/media/138-redux-slice-template.md": "/static/media/138-redux-slice-template.f25db875.md",
-    "static/media/153-S3Deployment.md": "/static/media/153-S3Deployment.443c808e.md",
+    "static/media/153-S3Deployment.md": "/static/media/153-S3Deployment.bdfe9a85.md",
     "static/media/154-uwsgi-flask.md": "/static/media/154-uwsgi-flask.d8d0cf15.md",
     "static/media/155-gmail-pubsub.md": "/static/media/155-gmail-pubsub.1e2e196b.md",
     "static/media/156-serverless.md": "/static/media/156-serverless.77ae63e8.md",
@@ -263,6 +263,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.80d9c482.chunk.js",
     "static/css/main.6bcdb664.chunk.css",
-    "static/js/main.c9547861.chunk.js"
+    "static/js/main.0029281d.chunk.js"
   ]
 }
