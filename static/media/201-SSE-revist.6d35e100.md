@@ -33,31 +33,30 @@ In my app when I leave a room, I will send an SSE event to the backend, trigger 
 
 ```js
 const leave = () => {
-  dispatch(appSlice.actions.closeAppDialog());
-  setTimeout(() => {
-    router.replace("/(billie)/");
+    dispatch(appSlice.actions.closeAppDialog());
+    setTimeout(() => {
+        router.replace("/(billie)/");
 
-    SSE.createSSE({
-      eventSource: apiRoutes.GET_SSE_EXCEL_STATUS(roomOid),
-      token: token,
-      subscriptions: [
-        {
-          key: "EXCEL_STATUS",
-          action: (data: string) => {
-            dispatch(
-              chatSlice.actions.setRoomExcelStatusOnLeave({
-                roomOid,
-                status: data,
-              })
-            );
-          },
-        },
-      ],
-      endEvent: {
-        key: "EXCEL_STATUS_END",
-      },
-    });
-  }, 300);
+        SSE.createSSE({
+        eventSource: apiRoutes.GET_SSE_EXCEL_STATUS(roomOid),
+        token: token,
+        subscriptions: [
+            {
+            key: "EXCEL_STATUS",
+            action: (data: string) => {
+                dispatch(
+                chatSlice.actions.setRoomExcelStatusOnLeave({
+                    roomOid,
+                    status: data,
+                })
+                );
+            },
+            },
+        ],
+        endEvent: {
+            key: "EXCEL_STATUS_END",
+        }});
+    }, 300);
 };
 ```
 
@@ -252,7 +251,6 @@ export class SSEChannelPublisher {
     public closeChannel = () => {
         this.killChannel();
         chatService.Cache.eventEmitter.removeAllListeners(this.channelKey);
-
     }
 
     public emit = (data: string) => {
