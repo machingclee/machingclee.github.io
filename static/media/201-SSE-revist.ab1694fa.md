@@ -2,7 +2,7 @@
 title: "Push Data to Frontend by SSE via Event-Driven Approach with NO Short Polling"
 date: 2023-10-22
 id: blog0201
-tag: react-native
+tag: react, react-native, nodejs, express, SSE
 intro: "In the past we have discussed SSE by kind of short polling in the backend (keep looping to see whether a key has message to pop out in redis queue). This time we send messages to frontend by listening subscriptions on EventEmitter, an approach very native to languages in which `channel` is implemented, like `go` and `rust`."
 toc: true
 ---
