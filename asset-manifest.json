@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.6bcdb664.chunk.css",
-    "main.js": "/static/js/main.cf1b986a.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.e7a5eb41.js",
+    "main.js": "/static/js/main.08209f17.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.6afe364e.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.f4463f83.chunk.js": "/static/js/2.f4463f83.chunk.js",
-    "static/js/3.67febcfb.chunk.js": "/static/js/3.67febcfb.chunk.js",
-    "static/js/4.980be002.chunk.js": "/static/js/4.980be002.chunk.js",
-    "static/js/5.d9d7192e.chunk.js": "/static/js/5.d9d7192e.chunk.js",
+    "static/js/2.79c38182.chunk.js": "/static/js/2.79c38182.chunk.js",
+    "static/js/3.1940bfe2.chunk.js": "/static/js/3.1940bfe2.chunk.js",
+    "static/js/4.2274a5dd.chunk.js": "/static/js/4.2274a5dd.chunk.js",
+    "static/js/5.b72c772a.chunk.js": "/static/js/5.b72c772a.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.f4463f83.chunk.js.LICENSE.txt": "/static/js/2.f4463f83.chunk.js.LICENSE.txt",
-    "static/js/3.67febcfb.chunk.js.LICENSE.txt": "/static/js/3.67febcfb.chunk.js.LICENSE.txt",
-    "static/js/4.980be002.chunk.js.LICENSE.txt": "/static/js/4.980be002.chunk.js.LICENSE.txt",
+    "static/js/2.79c38182.chunk.js.LICENSE.txt": "/static/js/2.79c38182.chunk.js.LICENSE.txt",
+    "static/js/3.1940bfe2.chunk.js.LICENSE.txt": "/static/js/3.1940bfe2.chunk.js.LICENSE.txt",
+    "static/js/4.2274a5dd.chunk.js.LICENSE.txt": "/static/js/4.2274a5dd.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.72064d8e.md",
     "static/media/002-closure-of-interior.md": "/static/media/002-closure-of-interior.d61226c6.md",
@@ -133,6 +133,7 @@
     "static/media/200-bototm-sheet.md": "/static/media/200-bototm-sheet.c29fe7a4.md",
     "static/media/201-SSE-revist.md": "/static/media/201-SSE-revist.6d35e100.md",
     "static/media/202-docker-compose-postgre.md": "/static/media/202-docker-compose-postgre.c97cbfcd.md",
+    "static/media/203-golang-sql.md": "/static/media/203-golang-sql.848f0a54.md",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/DefectGAN.md": "/static/media/DefectGAN.c0718f46.md",
     "static/media/EAST.md": "/static/media/EAST.86fb54d8.md",
@@ -261,10 +262,10 @@
     "static/media/yolo-v3-deep-dive.md": "/static/media/yolo-v3-deep-dive.5fa9bf85.md"
   },
   "entrypoints": [
-    "static/js/runtime-main.e7a5eb41.js",
+    "static/js/runtime-main.6afe364e.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.f4463f83.chunk.js",
+    "static/js/2.79c38182.chunk.js",
     "static/css/main.6bcdb664.chunk.css",
-    "static/js/main.cf1b986a.chunk.js"
+    "static/js/main.08209f17.chunk.js"
   ]
 }
