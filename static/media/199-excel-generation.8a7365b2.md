@@ -112,7 +112,6 @@ class ExcelCellUtil:
 ##### Merge Cell
 
 ```python
-
     def merge_cell(self, ws, start: Tuple[int, int], end: Tuple[int, int]):
         start_x = start[0]
         start_y = start[1]
