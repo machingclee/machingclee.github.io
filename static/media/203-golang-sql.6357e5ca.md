@@ -26,7 +26,7 @@ toc: true
     go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
     ```
     and from now on `sqlc generate` will be available in your shell.
-  - **_For windows user_**, the `sqlc` package about wouldn't work, instead we run
+  - **_For windows user_**, the `sqlc` package above wouldn't work, instead we run
     ```text
     docker run --rm -v "%cd%:/src" -w /src sqlc/sqlc generate
     ```
