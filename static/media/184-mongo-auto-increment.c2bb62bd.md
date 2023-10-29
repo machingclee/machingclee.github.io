@@ -11,7 +11,7 @@ toc: true
 
 We start from creating a `Counter` collection:
 
-```json
+```js
 import mongoose, { Document, InferSchemaType, Schema } from "mongoose";
 
 const counterSchema = new Schema({
