@@ -2,7 +2,7 @@
 title: "Goose and Sqlc for Database Migration and Query Function Generation"
 date: 2023-10-28
 id: blog0203
-tag: go sql postgresql
+tag: go, sql, postgresql
 intro: "We record a workflow of using goose and sqlc to work with changes of database schema."
 toc: true
 ---
@@ -92,7 +92,7 @@ ALTER TABLE feeds ALTER COLUMN user_id SET NOT NULL;
 ALTER TABLE feeds ALTER COLUMN user_id DROP NOT NULL;
 ```
 
-###### Execute the Migrations
+##### Apply Changes in DB Migrations by Goose
 
 - After each migration is inserted, we run `sh db_migrate_up.sh`, where
 
@@ -102,6 +102,21 @@ ALTER TABLE feeds ALTER COLUMN user_id DROP NOT NULL;
 
   cd sql/schema
   goose postgres $DB_URL up
+  ```
+
+##### Create sqlc.yaml (Only do it Once)
+
+- Create a `sqlc.yaml` at the root project level:
+
+  ```yml
+  version: "2"
+  sql:
+    - schema: "sql/schema"
+      queries: "sql/queries"
+      engine: "postgresql"
+      gen:
+        go:
+          out: "internal/database"
   ```
 
 ##### sql/queries
@@ -128,21 +143,6 @@ INSERT INTO feeds (id, created_at, updated_at, name, url, user_id)
 VALUES ($1, $2, $3, $4, $5, $6)
 RETURNING *;
 ```
-
-##### Create sqlc.yaml and Apply Changes in Schema and Queries
-
-- Create a `sqlc.yaml` at the root project level:
-
-  ```yml
-  version: "2"
-  sql:
-    - schema: "sql/schema"
-      queries: "sql/queries"
-      engine: "postgresql"
-      gen:
-        go:
-          out: "internal/database"
-  ```
 
 ##### Execute sqlc generate
 
