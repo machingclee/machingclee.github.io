@@ -32,7 +32,9 @@ toc: true
     ```
     in `cmd`.
 
-#### Workflow for Database Migrations
+#### Workflow for Database Migrations in Postgresql
+
+In case the reader use `mySQL`, the only difference will be the `sqlc.yml`.
 
 ##### sql/scehma
 
@@ -118,6 +120,9 @@ ALTER TABLE feeds ALTER COLUMN user_id DROP NOT NULL;
         go:
           out: "internal/database"
   ```
+
+- For `mySQL` the yaml fiile is more or less the same, which can be copied form documentation.
+  - https://docs.sqlc.dev/en/stable/tutorials/getting-started-mysql.html
 
 ##### sql/queries
 
