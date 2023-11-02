@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.6bcdb664.chunk.css",
-    "main.js": "/static/js/main.eca340f1.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.6afe364e.js",
+    "main.js": "/static/js/main.89937adc.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.80531929.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.79c38182.chunk.js": "/static/js/2.79c38182.chunk.js",
-    "static/js/3.1940bfe2.chunk.js": "/static/js/3.1940bfe2.chunk.js",
-    "static/js/4.2274a5dd.chunk.js": "/static/js/4.2274a5dd.chunk.js",
-    "static/js/5.b72c772a.chunk.js": "/static/js/5.b72c772a.chunk.js",
+    "static/js/2.5c7b78f0.chunk.js": "/static/js/2.5c7b78f0.chunk.js",
+    "static/js/3.fe1f02c9.chunk.js": "/static/js/3.fe1f02c9.chunk.js",
+    "static/js/4.2a03813d.chunk.js": "/static/js/4.2a03813d.chunk.js",
+    "static/js/5.eec28f17.chunk.js": "/static/js/5.eec28f17.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.79c38182.chunk.js.LICENSE.txt": "/static/js/2.79c38182.chunk.js.LICENSE.txt",
-    "static/js/3.1940bfe2.chunk.js.LICENSE.txt": "/static/js/3.1940bfe2.chunk.js.LICENSE.txt",
-    "static/js/4.2274a5dd.chunk.js.LICENSE.txt": "/static/js/4.2274a5dd.chunk.js.LICENSE.txt",
+    "static/js/2.5c7b78f0.chunk.js.LICENSE.txt": "/static/js/2.5c7b78f0.chunk.js.LICENSE.txt",
+    "static/js/3.fe1f02c9.chunk.js.LICENSE.txt": "/static/js/3.fe1f02c9.chunk.js.LICENSE.txt",
+    "static/js/4.2a03813d.chunk.js.LICENSE.txt": "/static/js/4.2a03813d.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.72064d8e.md",
     "static/media/002-closure-of-interior.md": "/static/media/002-closure-of-interior.d61226c6.md",
@@ -134,6 +134,9 @@
     "static/media/201-SSE-revist.md": "/static/media/201-SSE-revist.6d35e100.md",
     "static/media/202-docker-compose-postgre.md": "/static/media/202-docker-compose-postgre.c97cbfcd.md",
     "static/media/203-golang-sql.md": "/static/media/203-golang-sql.0dad5bb0.md",
+    "static/media/204-go-chi.md": "/static/media/204-go-chi.5c93585f.md",
+    "static/media/205-pgsql.md": "/static/media/205-pgsql.a620884e.md",
+    "static/media/206-logger.md": "/static/media/206-logger.71597021.md",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/DefectGAN.md": "/static/media/DefectGAN.c0718f46.md",
     "static/media/EAST.md": "/static/media/EAST.86fb54d8.md",
@@ -204,7 +207,7 @@
     "static/media/cxxstandard.md": "/static/media/cxxstandard.3980edac.md",
     "static/media/cycle-gan-tf.md": "/static/media/cycle-gan-tf.517276b8.md",
     "static/media/datetime.md": "/static/media/datetime.e24d8883.md",
-    "static/media/dayjs.md": "/static/media/dayjs.07f3f76d.md",
+    "static/media/dayjs.md": "/static/media/dayjs.473ef4a9.md",
     "static/media/dc-gan-in-python.md": "/static/media/dc-gan-in-python.0c7b14ae.md",
     "static/media/debug.md": "/static/media/debug.e735871c.md",
     "static/media/debugger.md": "/static/media/debugger.c183e127.md",
@@ -262,10 +265,10 @@
     "static/media/yolo-v3-deep-dive.md": "/static/media/yolo-v3-deep-dive.5fa9bf85.md"
   },
   "entrypoints": [
-    "static/js/runtime-main.6afe364e.js",
+    "static/js/runtime-main.80531929.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.79c38182.chunk.js",
+    "static/js/2.5c7b78f0.chunk.js",
     "static/css/main.6bcdb664.chunk.css",
-    "static/js/main.eca340f1.chunk.js"
+    "static/js/main.89937adc.chunk.js"
   ]
 }
