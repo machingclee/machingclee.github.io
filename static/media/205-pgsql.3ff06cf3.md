@@ -38,7 +38,7 @@ CREATE TABLE users(
 	username TEXT UNIQUE,
 	password TEXT NOT NULL,
 	is_admin BOOLEAN
-)
+);
 
 CREATE TABLE employees(
 	id INTEGER PRIMARY KEY,
@@ -47,7 +47,7 @@ CREATE TABLE employees(
 	CONSTRAINT fk_departments -- can be whatever we want, just a name
 	FOREIGN KEY (department_id)
 	REFERENCES departments(id)
-)
+);
 ```
 
 #### Data Insertion
@@ -57,4 +57,10 @@ INSERT INTO users
 	(name, age, contry_code, username, password, is_admin)
 	VALUES
 	("David", 34, "US" "DavidDev", "insertPractice", false);
+```
+
+#### Filtering
+
+```sql
+SELECT username FROM users WHERE is_admin=true;
 ```
