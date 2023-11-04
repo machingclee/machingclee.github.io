@@ -64,3 +64,58 @@ INSERT INTO users
 ```sql
 SELECT username FROM users WHERE is_admin=true;
 ```
+
+#### Updating
+
+```sql
+UPDATE emplyees
+SET job_title = "Backend Engineer", salary = 150000
+WHERE id = 251;
+
+UPDATE users
+SET is_admin = true
+WHERE username = wagslane;
+```
+
+#### IIF (analog of ternary in javascript)
+
+```sql
+SELECT *,
+IIF(was_successful=true,	'No action required.',	'Perform an audit') AS audit
+FROM transactions;
+```
+
+#### BETWEEN
+
+```sql
+SELECT name, age FROM users WHERE age BETWEEN 18 and 30;
+SELECT name, age FROM users WHERE age NOT BETWEEN 18 and 30;
+```
+
+#### DISTINCT
+
+```sql
+SELECT DISTINCT previous_company FROM employees;
+```
+
+#### IN
+
+```sql
+SELECT name, age, country_code FROM users
+WHERE country_code IN ('US', 'CA', 'MX');
+```
+
+#### LIKE
+
+- `%` match zero or more characters
+- `_` only matches a _single_ character
+
+```sql
+SELECT * FROM products
+WHERE product_name LIKE '%banana%' -- ('%banana' or 'banana%', etc)
+```
+
+```sql
+SELECT * FROM products
+WHERE product_name LIKE '_oot' -- (or '__oot' for exactly two characters)
+```
