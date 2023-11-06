@@ -104,6 +104,7 @@ ALTER TABLE feeds ALTER COLUMN user_id DROP NOT NULL;
 
   cd sql/schema
   goose postgres $DB_URL up
+  read -p "Press any key to leave ..."
   ```
 
 ##### Create sqlc.yaml (Only do it Once)
@@ -158,6 +159,7 @@ RETURNING *;
   or in windows cmd prompt (or create a `.bat` file):
   ```text
   docker run --rm -v "%cd%:/src" -w /src sqlc/sqlc generate
+  pause
   ```
 
 #### Outputs from Sqlc Generate

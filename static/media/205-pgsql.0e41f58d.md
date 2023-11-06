@@ -2,7 +2,7 @@
 title: "PostgreSQL Revisit"
 date: 2023-11-04
 id: blog0205
-tag: SQL
+tag: sql
 intro: "Record the standard qureis in SQL."
 toc: true
 ---
