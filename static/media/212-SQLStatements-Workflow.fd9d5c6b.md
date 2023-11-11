@@ -29,7 +29,7 @@ This usually gives rise to the following:
 
 **Problems.** An error `Violation of foreign key constraint`
 
-**Reason.** This is because the existing data in table A has no reference to Table B (as a new table there is not data yet), therefore the reference key constraint must fail **_unless all table has no data_**.
+**Reason.** This is because the existing data in table A has no reference to Table B (as a new table there is no data yet), therefore the reference key constraint must fail **_unless all table has no data_**.
 
 #### Model the Problem with Real SQL Code
 
@@ -216,9 +216,3 @@ Now new and old records will look like:
 [![](/assets/tech/212/image-2.png)](/assets/tech/212/image-2.png)
 
 We will be deleting old records (rows without owner) at a suitable timing.
-
-In case we want to drop a foreign key, let' use:
-
-```sql
-ALTER TABLE table_name DROP CONSTRAINT foreign_key_name;
-```
