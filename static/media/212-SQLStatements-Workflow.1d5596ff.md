@@ -201,13 +201,12 @@ DROP INDEX "owner_currency" ON "accounts"
 
   -- +goose Down
 
-  DROP INDEX "owner_currency" ON "accounts";
-  ALTER TABLE "table_name" DROP CONSTRAINT "owner";
-  DROP TABLE "users";
-  ALTER TABLE "accounts" DROP FOREIGN KEY "owner";
+  ALTER TABLE IF EXISTS "accounts" DROP CONTRAINT IF EXISTS "owner_currency";
+  ALTER TABLE IF EXISTS "accounts" DROP CONTRAINT IF EXISTS "accounts_owner_fkey";
+  DROP TABLE IF EXISTS "users";
   ALTER TABLE "accounts" DROP COLUMN owner;
-  ALTER TABLE "accounts" ALTER COLUMN "\_deprecated_owner" SET NOT NULL;
-  ALTER TABLE "accounts" RENAME COLUMN "\_deprecated_owner" to "owner";
+  ALTER TABLE "accounts" ALTER COLUMN "_deprecated_owner" SET NOT NULL;
+  ALTER TABLE "accounts" RENAME COLUMN "_deprecated_owner" to "owner";
   ```
 
 Now new and old records will look like:
