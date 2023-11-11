@@ -307,7 +307,7 @@ FAIL
 FAIL	github.com/machingclee/2023-11-04-go-gin/internal/db	0.283s
 ```
 
-#### Raw SQL and Transition into Go
+#### Transactions in Raw SQL and Transition into Go
 
 ##### SQL
 
@@ -348,7 +348,7 @@ pgdb=#
 
 The second transaction is now unblocked immediately.
 
-##### Go
+##### Same Scenario in Go
 
 Let's update this raw SQL in our `sql/queries/account` and use `sqlc` to generate new `GetAccountForUpdate` function:
 
