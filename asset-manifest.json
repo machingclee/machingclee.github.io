@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.6bcdb664.chunk.css",
-    "main.js": "/static/js/main.ace325db.chunk.js",
+    "main.js": "/static/js/main.4bd4794b.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.c051e562.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.c90dd450.chunk.js": "/static/js/2.c90dd450.chunk.js",
@@ -141,7 +141,7 @@
     "static/media/208-docker-nodejs.md": "/static/media/208-docker-nodejs.cc35e96d.md",
     "static/media/210-sample-pangesture.md": "/static/media/210-sample-pangesture.c7973c16.md",
     "static/media/211-transactio-in-plain-SQL.md": "/static/media/211-transactio-in-plain-SQL.467fb634.md",
-    "static/media/212-SQLStatements-Workflow.md": "/static/media/212-SQLStatements-Workflow.3176a5e7.md",
+    "static/media/212-SQLStatements-Workflow.md": "/static/media/212-SQLStatements-Workflow.ae976292.md",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/DefectGAN.md": "/static/media/DefectGAN.c0718f46.md",
     "static/media/EAST.md": "/static/media/EAST.86fb54d8.md",
@@ -274,6 +274,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.c90dd450.chunk.js",
     "static/css/main.6bcdb664.chunk.css",
-    "static/js/main.ace325db.chunk.js"
+    "static/js/main.4bd4794b.chunk.js"
   ]
 }

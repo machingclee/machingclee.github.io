@@ -82,9 +82,9 @@ Table transfers{
 }
 ```
 
-##### Create Users That owns Accounts
+##### Create User That owns Accounts
 
-After playing around (like CRUD) with these old tables, our accounts table will be full of record with owner name having no reference to any user data (not yet created).
+After playing around (like CRUD) with these old tables, our accounts table will be full of record with owner field having no reference to any user data (not yet created).
 
 Now in the course of developement we have the following decisions:
 
@@ -170,9 +170,9 @@ DROP INDEX "owner_currency" ON "accounts"
 
 ##### Problem and Resolution
 
-- **Problem.** Now existing owners block the table migrataion becuase creating users table with accounts.owner referencing to users.username is **_impossible_**.
+- **Problem.** Now existing owners block the table migrataion becuase creating users table with `accounts.owner` referencing to `users.username` is **_impossible_**.
 
-- **Solution.** We rename accounts.owner to accounts.deprecated_owner, drop not null constraint, and create an nullable owner column.
+- **Solution.** We rename `accounts.owner` to `accounts.deprecated_owner`, drop not null constraint, and create an nullable `owner` column.
 
   Nullability of both columns is essential to let both columns to exist. When table is stable, we can drop the deprecated column and set not-null constraint to the new ower column.
 
@@ -180,15 +180,9 @@ DROP INDEX "owner_currency" ON "accounts"
 
   ```sql
   -- +goose Up
-
-  ALTER TABLE "accounts"
-  RENAME COLUMN "owner" to "_deprecated_owner";
-
-  ALTER TABLE "accounts"
+  ALTER TABLE "accounts" RENAME COLUMN "owner" to "_deprecated_owner";
   ALTER COLUMN "_deprecated_owner" DROP NOT NULL;
-
-  ALTER TABLE "accounts"
-  ADD "owner" varchar;
+  ALTER TABLE accounts ADD "owner" varchar;
   ```
 
 - **With Old Planing.**
@@ -202,18 +196,18 @@ DROP INDEX "owner_currency" ON "accounts"
   	"password_changed_at" timestamptz NOT NULL DEFAULT '0001-01-01 00:00:00Z',
   	"created_at" timestamptz NOT NULL DEFAULT (now())
   );
-
   ALTER TABLE "accounts" ADD FOREIGN KEY ("owner") REFERENCES "users" ("username");
-
   CREATE UNIQUE INDEX owner_currency ON "accounts" ("owner", "currency");
 
   -- +goose Down
 
-  DROP TABLE "users"
-
+  DROP INDEX "owner_currency" ON "accounts";
+  ALTER TABLE "table_name" DROP CONSTRAINT "owner";
+  DROP TABLE "users";
   ALTER TABLE "accounts" DROP FOREIGN KEY "owner";
-
-  DROP INDEX "owner_currency" ON "accounts"
+  ALTER TABLE "accounts" DROP COLUMN owner;
+  ALTER TABLE "accounts" ALTER COLUMN "\_deprecated_owner" SET NOT NULL;
+  ALTER TABLE "accounts" RENAME COLUMN "\_deprecated_owner" to "owner";
   ```
 
 Now new and old records will look like:
@@ -223,3 +217,9 @@ Now new and old records will look like:
 [![](/assets/tech/212/image-2.png)](/assets/tech/212/image-2.png)
 
 We will be deleting old records (rows without owner) at a suitable timing.
+
+In case we want to drop a foreign key, let' use:
+
+```sql
+ALTER TABLE table_name DROP CONSTRAINT foreign_key_name;
+```
