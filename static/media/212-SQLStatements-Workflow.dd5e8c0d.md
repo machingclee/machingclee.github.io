@@ -181,7 +181,7 @@ DROP INDEX "owner_currency" ON "accounts"
   ```sql
   -- +goose Up
   ALTER TABLE "accounts" RENAME COLUMN "owner" to "_deprecated_owner";
-  ALTER COLUMN "_deprecated_owner" DROP NOT NULL;
+  ALTER TABLE "accounts" ALTER COLUMN "_deprecated_owner" DROP NOT NULL;
   ALTER TABLE accounts ADD "owner" varchar;
   ```
 
