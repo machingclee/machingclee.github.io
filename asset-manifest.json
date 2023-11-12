@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.6bcdb664.chunk.css",
-    "main.js": "/static/js/main.3945f7a4.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.5c2c0096.js",
+    "main.js": "/static/js/main.bc0f0d69.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.9cfccda8.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.a5c783cf.chunk.js": "/static/js/2.a5c783cf.chunk.js",
-    "static/js/3.48aae433.chunk.js": "/static/js/3.48aae433.chunk.js",
-    "static/js/4.af9aa990.chunk.js": "/static/js/4.af9aa990.chunk.js",
-    "static/js/5.81b08da0.chunk.js": "/static/js/5.81b08da0.chunk.js",
+    "static/js/2.42730440.chunk.js": "/static/js/2.42730440.chunk.js",
+    "static/js/3.5df3cdf6.chunk.js": "/static/js/3.5df3cdf6.chunk.js",
+    "static/js/4.8735a8cf.chunk.js": "/static/js/4.8735a8cf.chunk.js",
+    "static/js/5.f70c1c96.chunk.js": "/static/js/5.f70c1c96.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.a5c783cf.chunk.js.LICENSE.txt": "/static/js/2.a5c783cf.chunk.js.LICENSE.txt",
-    "static/js/3.48aae433.chunk.js.LICENSE.txt": "/static/js/3.48aae433.chunk.js.LICENSE.txt",
-    "static/js/4.af9aa990.chunk.js.LICENSE.txt": "/static/js/4.af9aa990.chunk.js.LICENSE.txt",
+    "static/js/2.42730440.chunk.js.LICENSE.txt": "/static/js/2.42730440.chunk.js.LICENSE.txt",
+    "static/js/3.5df3cdf6.chunk.js.LICENSE.txt": "/static/js/3.5df3cdf6.chunk.js.LICENSE.txt",
+    "static/js/4.8735a8cf.chunk.js.LICENSE.txt": "/static/js/4.8735a8cf.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.72064d8e.md",
     "static/media/002-closure-of-interior.md": "/static/media/002-closure-of-interior.d61226c6.md",
@@ -105,7 +105,7 @@
     "static/media/172-restrict-CORS.md": "/static/media/172-restrict-CORS.8fdba459.md",
     "static/media/173-website-route-schema.md": "/static/media/173-website-route-schema.1e8bf602.md",
     "static/media/174-childcomponent.md": "/static/media/174-childcomponent.985612cf.md",
-    "static/media/175-rust-operator-overloading.md": "/static/media/175-rust-operator-overloading.3113c4bd.md",
+    "static/media/175-rust-operator-overloading.md": "/static/media/175-rust-operator-overloading.572447f7.md",
     "static/media/176-rust-fmt.md": "/static/media/176-rust-fmt.56d54a17.md",
     "static/media/177-env.md": "/static/media/177-env.830f3b74.md",
     "static/media/178-socketio.md": "/static/media/178-socketio.07942309.md",
@@ -142,6 +142,7 @@
     "static/media/210-sample-pangesture.md": "/static/media/210-sample-pangesture.c7973c16.md",
     "static/media/211-transactio-in-plain-SQL.md": "/static/media/211-transactio-in-plain-SQL.467fb634.md",
     "static/media/212-SQLStatements-Workflow.md": "/static/media/212-SQLStatements-Workflow.fd9d5c6b.md",
+    "static/media/213-gmail.md": "/static/media/213-gmail.21c1d724.md",
     "static/media/CV_Portfolio.65d96888.pdf": "/static/media/CV_Portfolio.65d96888.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/DefectGAN.md": "/static/media/DefectGAN.c0718f46.md",
@@ -271,10 +272,10 @@
     "static/media/yolo-v3-deep-dive.md": "/static/media/yolo-v3-deep-dive.5fa9bf85.md"
   },
   "entrypoints": [
-    "static/js/runtime-main.5c2c0096.js",
+    "static/js/runtime-main.9cfccda8.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.a5c783cf.chunk.js",
+    "static/js/2.42730440.chunk.js",
     "static/css/main.6bcdb664.chunk.css",
-    "static/js/main.3945f7a4.chunk.js"
+    "static/js/main.bc0f0d69.chunk.js"
   ]
 }

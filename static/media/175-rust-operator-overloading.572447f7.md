@@ -533,11 +533,18 @@ fn test_secp256k1() {
 
 ##### Statement of the Theorem and Proof
 
-Let $G$ be the group of points on an elliptic curve $C: y^2 = x^3+ax+b$ over $\mathbb Z_p$.
+Note that the group of **_all points_** on an elliptic curve is not always cyclic. There are some necessary conditions for that group to be cyclic [in this post](https://math.stackexchange.com/questions/2323595/under-what-conditions-do-all-the-points-on-an-elliptic-curve-form-a-cyclic-group).
 
-> **Theorem.** Let $g\in \mathbb Z_p\times \mathbb Z_p$ be a given generator of the additive group $G$. For a fixed $k_\text{pri}\in \mathbb  Z_p$, define $K_\text{pub} = k_\text{pri} g$, then for every $k,z\in \mathbb Z_{|G|}$, there holds
+> **Theorem.** Let $G$ be a cyclic subgroup of points on an elliptic curve
 >
 > $$
+> C: y^2 = x^3+ax+b\quad\text{over  }\,\mathbb Z_p
+> $$
+>
+> and $g\in \mathbb Z_p\times \mathbb Z_p$ a given generator of $G$. For a fixed $k_\text{pri}\in \mathbb  Z_p$, define $K_\text{pub} = k_\text{pri} g$, then for every $k,z\in \mathbb Z_{|G|}$, there holds
+>
+> $$
+>
 > \begin{aligned}
 > &\qquad \,\,\,\,\begin{cases}
 > R := \pi_x(kg), \\
@@ -545,6 +552,8 @@ Let $G$ be the group of points on an elliptic curve $C: y^2 = x^3+ax+b$ over $\m
 > \end{cases}\\
 > &\implies\pi_x\bigg(\big[S^{-1}z\big]g + \big[S^{-1}R\big]K_\text{pub}\bigg)\equiv \pi_x(kg)\pmod{|G|}.
 > \end{aligned}
+>
+>
 > $$
 >
 > Where $\pi_x$ denotes the canonical projection to the first coordinate.
@@ -552,7 +561,10 @@ Let $G$ be the group of points on an elliptic curve $C: y^2 = x^3+ax+b$ over $\m
 > In other words, if $(R,S)$ defined above is given to the target receiver, then **_necessarily_**
 >
 > $$
+>
 > \pi_x\bigg(\big[S^{-1}z\big]g + \big[S^{-1}R\big]K_\text{pub}\bigg)\equiv R \pmod{|G|}.
+>
+>
 > $$
 >
 > - This **necessary** condition is defined to be the **_valid_** condition of a message, where $z=h(m)$ for some hash $h:\texttt{&str}\to\texttt{u32}$ and string $m: \texttt{&str}$ the message.
