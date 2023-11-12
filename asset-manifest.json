@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.6bcdb664.chunk.css",
-    "main.js": "/static/js/main.bc0f0d69.chunk.js",
+    "main.js": "/static/js/main.5cd78aaf.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.9cfccda8.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.42730440.chunk.js": "/static/js/2.42730440.chunk.js",
@@ -142,7 +142,7 @@
     "static/media/210-sample-pangesture.md": "/static/media/210-sample-pangesture.c7973c16.md",
     "static/media/211-transactio-in-plain-SQL.md": "/static/media/211-transactio-in-plain-SQL.467fb634.md",
     "static/media/212-SQLStatements-Workflow.md": "/static/media/212-SQLStatements-Workflow.fd9d5c6b.md",
-    "static/media/213-gmail.md": "/static/media/213-gmail.21c1d724.md",
+    "static/media/213-gmail.md": "/static/media/213-gmail.a4efe6bd.md",
     "static/media/CV_Portfolio.65d96888.pdf": "/static/media/CV_Portfolio.65d96888.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/DefectGAN.md": "/static/media/DefectGAN.c0718f46.md",
@@ -276,6 +276,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.42730440.chunk.js",
     "static/css/main.6bcdb664.chunk.css",
-    "static/js/main.bc0f0d69.chunk.js"
+    "static/js/main.5cd78aaf.chunk.js"
   ]
 }

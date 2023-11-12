@@ -19,9 +19,9 @@ intro: "We record how to make use of the native gmail api to send email without 
 
 #### Why not Sendgrid?
 ##### How easy is Using Sendgrid?
-Sendgrid is easy to use, we just need plug our email information into there webpage, then it will generate an API key for us. 
+Sendgrid is easy to use, we just need to plug our email information into sendgrid's webpage, then it will generate an API key for us. 
 
-Email can be sent as simply as writing
+Email can then be sent as simply as writing
 
 ```js
 import sgMail from '@sendgrid/mail';
@@ -56,7 +56,7 @@ and I am sure this email-sending feature can be set up ***within less than 15 mi
 
 ##### Problem of Sendgrid
 
-The problem lies in its pricing ([click me](https://sendgrid.com/pricing)). A feature that is supposed to be free (have you ever paid google for sending email?) has a 100 emails/day cap, and uncapping it requires ***19.95 usd*** (approximately ***155.79 hkd***) per month.
+The problem lies in its pricing ([click me](https://sendgrid.com/pricing)). A feature that is supposed to be free (have you ever paid google for sending email?) has a 100 emails/day cap, and uncapping  it (still not unlimited) requires at least ***19.95 usd*** (approximately ***155.79 hkd***) per month.
 
 ##### Problem of Gmail API
 
