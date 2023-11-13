@@ -121,9 +121,10 @@ Let's explain the usage of the 3 environment variables.
   }
   ```
 - `REQUIRE_LOGIN_FOR_NEW_TOKEN=true (initially)`
-  - The first time we run the application we will need to authenticate ourself by using `authorize` function below (line-68).
-  - After authentication succeeds, our login information we have saved in `GOOGLE_API_CREDENTIAL_JSON`.
-  - We can set `REQUIRE_LOGIN_FOR_NEW_TOKEN=false` after the first authentication succeeds and we have made sure the file pointed by `GOOGLE_API_CREDENTIAL_JSON` exists.
+  - At the first time we run the application we will be asked to authenticate ourself by using `authorize` function below (line-68).
+
+  - After authentication succeeds, our login information will be saved in a json file saved at `GOOGLE_API_CREDENTIAL_JSON`.
+  - We can set `REQUIRE_LOGIN_FOR_NEW_TOKEN=false` after the first authentication succeeds given that we have made sure the file pointed by `GOOGLE_API_CREDENTIAL_JSON` exists.
 - `GOOGLE_API_CREDENTIAL_JSON` This is the path of the **_login information_** relative to the root project level. Initially **_we don't have this file yet_**.\
   The login credentials should look like:
   ```json
