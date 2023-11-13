@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.6bcdb664.chunk.css",
-    "main.js": "/static/js/main.61f6e364.chunk.js",
+    "main.js": "/static/js/main.e0187d1c.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.7a629b3e.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.ca98881d.chunk.js": "/static/js/2.ca98881d.chunk.js",
@@ -145,8 +145,8 @@
     "static/media/213-gmail.md": "/static/media/213-gmail.d2290e41.md",
     "static/media/214-complete-go.md": "/static/media/214-complete-go.bc2e9c62.md",
     "static/media/215-docker-run-infinitiy.md": "/static/media/215-docker-run-infinitiy.02680849.md",
-    "static/media/215-docker-weight.md": "/static/media/215-docker-weight.098674e2.md",
-    "static/media/CV_Portfolio.65d96888.pdf": "/static/media/CV_Portfolio.65d96888.pdf",
+    "static/media/215-docker-weight.md": "/static/media/215-docker-weight.04bd2eda.md",
+    "static/media/CV_Portfolio.f18e2f8f.pdf": "/static/media/CV_Portfolio.f18e2f8f.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/DefectGAN.md": "/static/media/DefectGAN.c0718f46.md",
     "static/media/EAST.md": "/static/media/EAST.86fb54d8.md",
@@ -279,6 +279,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.ca98881d.chunk.js",
     "static/css/main.6bcdb664.chunk.css",
-    "static/js/main.61f6e364.chunk.js"
+    "static/js/main.e0187d1c.chunk.js"
   ]
 }

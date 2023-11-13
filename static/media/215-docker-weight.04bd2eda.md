@@ -1,5 +1,5 @@
 ---
-title: "Two Stage Docker Image; Docker-Compose Service B waits for Service A"
+title: "Two Stage Docker Image; Docker-Compose with Service B waiting for the Connection of Service A"
 date: 2023-11-14
 id: blog0216
 tag: docker, go, sql
@@ -112,3 +112,27 @@ services:
 ```
 
 Note that `entrypoint` will override the default entrypoint in the docker image and clear the existing `CMD`.
+
+Result:
+
+```bash
+postgres_1  | PostgreSQL Database directory appears to contain a database; Skipping initialization
+postgres_1  |
+postgres_1  | 2023-11-13 14:34:03.736 UTC [1] LOG:  starting PostgreSQL 16.0 (Debian 16.0-1.pgdg120+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14) 12.2.0, 64-bit
+postgres_1  | 2023-11-13 14:34:03.736 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+postgres_1  | 2023-11-13 14:34:03.736 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+postgres_1  | 2023-11-13 14:34:03.746 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+postgres_1  | 2023-11-13 14:34:03.770 UTC [30] LOG:  database system was shut down at 2023-11-13 14:33:04 UTC
+postgres_1  | 2023-11-13 14:34:03.803 UTC [1] LOG:  database system is ready to accept connections
+api_1       | 2023/11/13 14:34:04 goose: no migrations to run. current version: 4
+api_1       | [GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+api_1       |
+api_1       | [GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+api_1       |  - using env:     export GIN_MODE=release
+api_1       |  - using code:    gin.SetMode(gin.ReleaseMode)
+api_1       | [GIN-debug] POST   /account/transfers        --> github.com/machingclee/2023-11-04-go-gin/api.(*Server).createTransfer-fm (4 handlers)
+api_1       | [GIN-debug] GET    /account/:id              --> github.com/machingclee/2023-11-04-go-gin/api.(*Server).getAccount-fm (4 handlers)
+api_1       | [GIN-debug] GET    /account/list             --> github.com/machingclee/2023-11-04-go-gin/api.(*Server).listAccount-fm (4 handlers)
+api_1       | [GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
+api_1       | Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
+```
