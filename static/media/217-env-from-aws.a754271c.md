@@ -7,13 +7,26 @@ intro: "Methods of sharing environment variabls has always been being diversifie
 toc: true
 ---
 
+<style>
+  img {
+    max-width: 600px;
+  }
+  video {
+    border-radius: 8px;
+  }
+</style>
+
 <Center></Center>
 
 #### Local Aws Secret as Environment Variables
 
 In AWS Secrets Manager we create a secret named `simple_bank_local` (create also the env `simple_bank_dev` and `simple_bank_prod` if they exist in the future).
 
-Next, create `key-value` pairs in the course of creating the secret. Then we load our secret by `aws-sdk`:
+Next, create `key-value` pairs in the course of creating the secret.
+
+[![](/assets/tech/217/image.png)](/assets/tech/217/image.png)
+
+Then we load our secret by `aws-sdk`:
 
 ```go
 package util

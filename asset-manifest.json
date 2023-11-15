@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.6bcdb664.chunk.css",
-    "main.js": "/static/js/main.3f612890.chunk.js",
+    "main.js": "/static/js/main.744d2538.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.dcdaa0af.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.813bbb87.chunk.js": "/static/js/2.813bbb87.chunk.js",
@@ -146,7 +146,7 @@
     "static/media/214-complete-go.md": "/static/media/214-complete-go.bc2e9c62.md",
     "static/media/215-docker-run-infinitiy.md": "/static/media/215-docker-run-infinitiy.02680849.md",
     "static/media/216-docker-weight.md": "/static/media/216-docker-weight.04bd2eda.md",
-    "static/media/217-env-from-aws.md": "/static/media/217-env-from-aws.cd4205bc.md",
+    "static/media/217-env-from-aws.md": "/static/media/217-env-from-aws.a754271c.md",
     "static/media/CV_Portfolio.f18e2f8f.pdf": "/static/media/CV_Portfolio.f18e2f8f.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/DefectGAN.md": "/static/media/DefectGAN.c0718f46.md",
@@ -280,6 +280,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.813bbb87.chunk.js",
     "static/css/main.6bcdb664.chunk.css",
-    "static/js/main.3f612890.chunk.js"
+    "static/js/main.744d2538.chunk.js"
   ]
 }
