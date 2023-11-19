@@ -1,7 +1,7 @@
 ---
 title: "Record Table Migration Script in SQL"
 date: 2023-11-17
-id: blog0217
+id: blog0218
 tag: sql
 intro: "A list of sql script for copy and paste."
 toc: true

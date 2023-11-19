@@ -37,4 +37,4 @@ For example, a `$lookup` usually involves a linkage with another collection thro
 },
 ```
 
-Different mongo engine may use different key to convert a string to an `ObjectId`, in `mongodb-java-driver` it uses `$oid` instead of `$toObjectId``. Aggregation can have slight difference.
+Different mongo engine may use different key to convert a string to an `ObjectId`, in `mongodb-java-driver` it uses `$oid` instead of `$toObjectId`. Aggregation can have slight difference.
