@@ -129,7 +129,7 @@ We also get a full review in an html file:
 ##### Pause
 
 ```scala
-package videogamedb.sriptfundamentals
+package videogamedb.scriptfundamentals
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 
@@ -156,7 +156,7 @@ class AddPauseTime extends Simulation{
 ##### Check Response Code
 
 ```scala
-package videogamedb.sriptfundamentals
+package videogamedb.scriptfundamentals
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 
@@ -193,7 +193,7 @@ class CheckResponseCode extends Simulation{
 ##### Check Response Body
 
 ```scala
-package videogamedb.sriptfundamentals
+package videogamedb.scriptfundamentals
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 
@@ -217,7 +217,7 @@ class CheckResponseBodyAndExtract extends Simulation{
 ##### Save the Result in Variable and Reuse it
 
 ```scala
-package videogamedb.sriptfundamentals
+package videogamedb.scriptfundamentals
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 
@@ -250,7 +250,7 @@ class CheckResponseBodyAndExtract extends Simulation{
 ##### Logging for Debugging
 
 ```scala
-package videogamedb.sriptfundamentals
+package videogamedb.scriptfundamentals
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 
@@ -286,7 +286,7 @@ class CheckResponseBodyAndExtract extends Simulation{
 ##### Code Reuse
 
 ```scala
-package videogamedb.sriptfundamentals
+package videogamedb.scriptfundamentals
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 
@@ -324,7 +324,7 @@ class CodeReuse extends Simulation {
 ##### Repeat Requests Several Times (Single User)
 
 ```scala
-package videogamedb.sriptfundamentals
+package videogamedb.scriptfundamentals
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 
@@ -367,8 +367,18 @@ class CodeReuse extends Simulation {
 
 ##### Authenticate and Use that Token for Post Request
 
+The authentication post request returns the following json
+
+```text
+{
+  "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcwMDQwMjQ0MCwiZXhwIjoxNzAwNDA2MDQwfQ.MgyULBwMTd_Kj13E7UwrMALNctO6NUTL9qxS_sOk39k"
+}
+```
+
+We can use jsonPath `$.token` to extract this value and use it elsewhere.
+
 ```scala
-package videogamedb.sriptfundamentals
+package videogamedb.scriptfundamentals
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 
@@ -402,3 +412,195 @@ class Authenticate extends Simulation {
   setUp(scn.inject(atOnceUsers(users = 1)).protocols(httpProtocol))
 }
 ```
+
+#### Feed Data into the Test
+
+##### CsvFeeder
+
+```scala
+package videogamedb.feeders
+import io.gatling.core.Predef._
+import io.gatling.http.Predef._
+
+import scala.concurrent.duration.DurationInt
+
+class CsvFeeder extends Simulation{
+  val httpProtocol = http.baseUrl("https://videogamedb.uk/api")
+    .acceptHeader("application/json")
+
+  val csvFeeder = csv("data/gameCsvFile.csv").circular
+
+  def getSpecificVideoGame() = {
+    repeat(10){
+      feed(csvFeeder)
+        .exec(http("Get video game with name - #{gameName}")
+        .get("/videogame/#{gameId}")
+          .check(jsonPath("$.name").is("#{gameName}"))
+          .check(status.is(200))
+      )
+        .pause(1)
+    }
+  }
+
+  val scn = scenario("Csv feeder test")
+    .exec(getSpecificVideoGame())
+  setUp(scn.inject(atOnceUsers(users=1)).protocols(httpProtocol))
+}
+```
+
+##### Complex Feeder with Json Template, Random Data (String, Integer, Date)
+
+###### Json Template
+
+Let's create a template here:
+
+<p></p>
+
+<a href="/assets/tech/219/05.png"><img src="/assets/tech/219/05.png" width="340"></a></Center>
+
+<p></p>
+<center></center>
+
+Note that for non-string content we **_should not_** enclose it by `"`'s.
+
+```text
+// resources/bodies/newGameTemplate.txt
+{
+  "id": #{gameId} ,
+  "category": "#{category}",
+  "name": "#{name}",
+  "rating": "#{rating}",
+  "releaseDate": "#{releaseDate}",
+  "reviewScore": #{reviewScore}
+}
+```
+
+###### Script
+
+```scala
+package videogamedb.feeders
+import io.gatling.core.Predef._
+import io.gatling.http.Predef._
+
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import scala.util.Random
+
+class ComplexCustomFeeder extends Simulation{
+  val httpProtocol = http.baseUrl("https://videogamedb.uk/api")
+    .acceptHeader("application/json")
+    .contentTypeHeader("application/json")
+
+  val idNumbers = (1 to 10).iterator
+  val rnd = new Random()
+  val now = LocalDate.now()
+  val pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+
+  def randomString(length:Int) ={
+    rnd.alphanumeric.filter(_.isLetter).take(length).mkString
+  }
+
+  def randomDate(startDate: LocalDate, random:Random):String = {
+    startDate.minusDays(random.nextInt(30)).format(pattern)
+  }
+
+  val customFeeder = Iterator.continually(Map(
+    "gameId" -> idNumbers.next(),
+    "name" -> ("Game-" + randomString(5)),
+    "releaseDate" -> randomDate(now, rnd),
+    "reviewScore" -> rnd.nextInt(100),
+    "category" ->  ("Category-" + randomString(6)),
+    "rating" ->  ("Rating-" + randomString(4)),
+  ))
+
+  def authenticate() = {
+    exec(http("Authenticate")
+      .post("/authenticate")
+      .body(StringBody("{\n  \"password\": \"admin\",\n  \"username\": \"admin\"\n}"))
+      .check(jsonPath("$.token").saveAs("jwtToken"))
+    )
+  }
+
+  def createNewGame()={
+    repeat(10){
+      feed(customFeeder)
+        .exec(http("Create new game - #{name}").
+          post("/videogame")
+          .header("authorization", "Bearer #{jwtToken}")
+          .body(ElFileBody("bodies/newGameTemplate.json")).asJson
+          .check(bodyString.saveAs("responseBody"))
+        )
+        .exec{session => println(session("responseBody").as[String]); session}
+        .pause(1)
+    }
+  }
+
+  val scn = scenario("Csv feeder test")
+    .exec(authenticate())
+    .exec(createNewGame())
+
+  setUp(scn.inject(atOnceUsers(users = 1)).protocols(httpProtocol))
+}
+```
+
+#### Load Test with Scenario: Increase Number of Users Concurrently for a Period
+
+```scala
+package videogamedb.simulations
+
+import io.gatling.core.Predef._
+import io.gatling.http.Predef._
+
+class BasicLoadSimulation extends Simulation {
+
+  val httpProtocol = http.baseUrl("https://videogamedb.uk/api")
+    .acceptHeader("application/json")
+
+  def getAllVideoGames() = {
+    exec(
+      http("Get all video games")
+        .get("/videogame")
+    )
+  }
+
+  def getSpecificGame() = {
+    exec(
+      http("Get specific game")
+        .get("/videogame/2")
+    )
+  }
+
+  val scn = scenario("Basic Load Simulation")
+    .exec(getAllVideoGames())
+    .pause(5)
+    .exec(getSpecificGame())
+    .pause(5)
+    .exec(getAllVideoGames())
+
+  setUp(
+    scn.inject(
+      nothingFor(5),
+      atOnceUsers(5),
+      rampUsers(10).during(10)
+    ).protocols(httpProtocol)
+  )
+}
+```
+
+<p></p>
+
+<a href="/assets/tech/219/07.png"><img src="/assets/tech/219/07.png" width="600"></a></Center>
+
+<p></p>
+<center></center>
+
+<p></p>
+
+<a href="/assets/tech/219/06.png"><img src="/assets/tech/219/06.png" width="600"></a></Center>
+
+<p></p>
+<center></center>
+
+#### More Setup for Different Scenario from Official Documentation
+
+- [Documentation](https://gatling.io/docs/gatling/reference/current/core/injection/#open-model)
