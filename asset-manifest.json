@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.6bcdb664.chunk.css",
-    "main.js": "/static/js/main.099ab232.chunk.js",
+    "main.js": "/static/js/main.f2511e65.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.4b76dd06.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.09dc3062.chunk.js": "/static/js/2.09dc3062.chunk.js",
@@ -36,7 +36,7 @@
     "static/media/022-transferred-learning.md": "/static/media/022-transferred-learning.88ffe757.md",
     "static/media/023-dataset-pipeline-with-augmentation.md": "/static/media/023-dataset-pipeline-with-augmentation.9b696da4.md",
     "static/media/058-json-in-python.md": "/static/media/058-json-in-python.ba4bc11b.md",
-    "static/media/059-ts-debug-config.md": "/static/media/059-ts-debug-config.312edc54.md",
+    "static/media/059-ts-debug-config.md": "/static/media/059-ts-debug-config.cfa48593.md",
     "static/media/060-ssh-download-file.md": "/static/media/060-ssh-download-file.c2b5a099.md",
     "static/media/061-rust-beginner-summary.md": "/static/media/061-rust-beginner-summary.2d7f9e1b.md",
     "static/media/062-DCT.md": "/static/media/062-DCT.a9154a97.md",
@@ -283,6 +283,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.09dc3062.chunk.js",
     "static/css/main.6bcdb664.chunk.css",
-    "static/js/main.099ab232.chunk.js"
+    "static/js/main.f2511e65.chunk.js"
   ]
 }

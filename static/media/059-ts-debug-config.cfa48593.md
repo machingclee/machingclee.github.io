@@ -15,7 +15,7 @@ toc: false
       "type": "node-terminal",
       "name": "Debug Current TS File (ts-node)",
       "request": "launch",
-      "command": "yarn start",
+      "command": "ts-node ${relativeFileDirname}/${fileBasename}",
       "cwd": "${workspaceRoot}"
     }
   ]
