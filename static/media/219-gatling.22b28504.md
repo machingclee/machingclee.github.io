@@ -2,7 +2,7 @@
 title: "Load Test and Stress Test by Gatling"
 date: 2023-11-19
 id: blog0219
-tag: gatling test
+tag: gatling, test
 intro: "Record the steps to run load and stress test."
 toc: true
 ---
