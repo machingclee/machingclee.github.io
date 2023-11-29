@@ -9,13 +9,13 @@ toc: false
 
 #### The Key in Error Interceptor
 
-We may skip to the line that contains `errorMessage === "JWT_EXPIRED"` in the next section, the trick is to set
+The trick is to set
 
 ```js
 const originalConfig = error.config;
 ```
 
-and at the end we return
+in the axios response interceptor, and at the end we return
 
 ```js
 originalConfig._retry = true;
