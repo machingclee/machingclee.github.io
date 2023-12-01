@@ -3,7 +3,7 @@ title: "Prisma, Prisma-Kysely and Kysely "
 date: 2023-11-30
 id: blog0221
 tag: sql
-intro: "Record introduce the workflow of using prisma and kysely."
+intro: "Record and introduce the workflow of using prisma and kysely."
 toc: true
 ---
 
@@ -204,12 +204,14 @@ model Project {
 .select(eb => [
     jsonObjectFrom(
         eb.selectFrom("User")
-            .select("User.companyEmail")
-            .select([(eb) => {
-                const firstName = eb.ref("User.firstName");
-                const lastName = eb.ref("User.lastName");
-                return sql<string>`concat('${firstName}', ' ', '${lastName}')`.as("name")
-            }])
+            .select([
+                "User.companyEmail",
+                (eb) => {
+                    const firstName = eb.ref("User.firstName");
+                    const lastName = eb.ref("User.lastName");
+                    return sql<string>`concat(${firstName}, ' ', ${lastName})`.as("name")
+                }
+            ])
             .whereRef("User.id", "=", "RoomIssue.hostUserId")
     ).as("hostUser")
 ])
