@@ -278,7 +278,7 @@ model Project {
 
 Suppose that inside `Project` table we have a **_text_** column `userId` which should have been **_uuid_**. It is tempting to immediately annotate the type `String` by `@db.Uuid`. However, sometimes `prisma` **_doesn't know_** how we intent to modify a table, and it **_tends to erase all the data_** to make sure the migration must succeed (which is harmful of course).
 
-To manually create a migration `sql` script, first we modify the existing `prisma.schema`, we keep migrating via prisma but **_don't let prisma to run that auto-generated script_** by
+To manually create a migration `sql` script, first we modify the existing `prisma.schema`, we keep migrating via prisma but **_don't let prisma run that auto-generated script_** by
 
 ```text
 npx prisma migrate dev --create-only
@@ -286,7 +286,7 @@ npx prisma migrate dev --create-only
 
 Now a new migration folder has been created for us to modify.
 
-Now we encounter the error that warns us the prisma-generated sql will fail:
+Next we encounter the error that warns us the prisma-generated `sql` will fail:
 
 ```text
 ⚠️ We found changes that cannot be executed:
@@ -294,7 +294,7 @@ Now we encounter the error that warns us the prisma-generated sql will fail:
   • Step 0 Changed the type of `userId` on the `Project` table. No cast exists, the column would be dropped and recreated, which cannot be done since the column is required and there is data in the table.
 ```
 
-Never mind, we are going to change it into functional script.
+Never mind, we are going to change it into working script.
 
 Inside that new migration `sql` file, we write (we need to do experiments to obtain a working script)
 
