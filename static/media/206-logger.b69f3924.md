@@ -56,6 +56,13 @@ export const format = winston.format.printf(info => {
 
 export default (app: Express) => {
     app.use(expressWinston.logger({
+        ignoreRoute: (req, res): boolean => {
+            // ignore the get request emitted from health check from target group in aws.
+            if (req.originalUrl === "/test" || req.url === "/test") {
+                return true;
+            }
+            return false
+        },
         transports: [
             new winston.transports.Console({
                 format: format
