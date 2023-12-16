@@ -41,7 +41,7 @@ In the course of using `prisma` I have developed the following helper commands i
 
   This can happen if our migration has been executed before we apply our migration script (for example, two developers try to do the same migration).
 
-  In such cases, we run `migrate-rollback:dev`to revoke our execution record, make adjustment to our own script or even make adjustment directly to the database (if we want to drop column, then we add a column in the database for the script to delete that column).
+  In such cases, we run `migrate-rollback:dev` to revoke our execution record, make adjustment to our own script or even make adjustment directly to the database (if we want to drop column, then we add a column in the database for the script to delete that column).
 
 #### SQL Migration Scripts
 
