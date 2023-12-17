@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.ef957bd1.chunk.css",
-    "main.js": "/static/js/main.095c7010.chunk.js",
+    "main.js": "/static/js/main.56bb5d78.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.b62b82f0.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.b7f088fc.chunk.js": "/static/js/2.b7f088fc.chunk.js",
@@ -153,7 +153,7 @@
     "static/media/221-prisma-kysely.md": "/static/media/221-prisma-kysely.fded1a67.md",
     "static/media/222-springboot.md": "/static/media/222-springboot.c6315644.md",
     "static/media/223-sql-command-migrate.md": "/static/media/223-sql-command-migrate.09d7d278.md",
-    "static/media/224-jooq.md": "/static/media/224-jooq.4586065c.md",
+    "static/media/224-jooq.md": "/static/media/224-jooq.8c979500.md",
     "static/media/CV_Portfolio.8e45ea76.pdf": "/static/media/CV_Portfolio.8e45ea76.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/DefectGAN.md": "/static/media/DefectGAN.c0718f46.md",
@@ -287,6 +287,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.b7f088fc.chunk.js",
     "static/css/main.ef957bd1.chunk.css",
-    "static/js/main.095c7010.chunk.js"
+    "static/js/main.56bb5d78.chunk.js"
   ]
 }

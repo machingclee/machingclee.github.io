@@ -28,7 +28,9 @@ Later we will add one addtional package `jooq` from `pom.xml` which serves as a 
 
 ##### application.yaml
 
-Note that by default `application.properties`/`application.yaml` will be loaded into `env` varariable. We will reuse some of the `env` values in `poe.xml`.
+Note that by default `application.properties`/`application.yaml` will be loaded into `env` varariable only when we spin up our springboot server.
+
+For code generation to work we still need to input the `url`, `user`, `password` manaully in our `pom.xml`.
 
 ```yaml
 spring:
@@ -174,6 +176,16 @@ server:
 </project>
 ```
 
+##### How to Debug if the Code-Geneation does not work?
+
+We manually trigger the code-generation process with a flag `-X` for debugging
+
+```text
+mvn generate-sources -X
+```
+
+and analyse the root cause.
+
 #### Tables and Operations
 
 ##### prisma/schema.prisma
@@ -203,7 +215,7 @@ model student {
 }
 ```
 
-##### CRUD Examples
+##### CRUD Examples --- Demonstrative DAO
 
 ```java
 package com.machingclee.jooq.dao;
@@ -262,6 +274,65 @@ public class StudentDAO {
 }
 ```
 
+#### Springboot3 Functional Endpoints to get JOOQ's Output
+
+##### StudentController
+
+As usual our controller consists of many handlers, but this time we don't annotate the controller as `@RestController` (which is a combination of `@Controller` and `@ResponseBody`):
+
+```java
+package com.machingclee.experiments.controller;
+
+import static com.machingclee.experiments.generated.Tables.STUDENT;
+import org.jooq.DSLContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.function.ServerRequest;
+import org.springframework.web.servlet.function.ServerResponse;
+import com.machingclee.experiments.dto.StudentDTO;
+
+@Component
+public class StudentController {
+
+    private DSLContext db;
+
+    @Autowired
+    public StudentController(DSLContext ctx) {
+        this.db = ctx;
+    }
+
+    public ServerResponse getStudents(ServerRequest req) {
+        var students = db.select(STUDENT.FIRST_NAME, STUDENT.LAST_NAME, STUDENT.EMAIL)
+                .from(STUDENT)
+                .fetch()
+                .into(StudentDTO.class);
+        return ServerResponse.ok().body(students);
+    }
+}
 ```
 
+##### Configure StudentRouter
+
+```java
+package com.machingclee.experiments.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
+import org.springframework.web.servlet.function.RequestPredicates;
+import org.springframework.web.servlet.function.RouterFunction;
+import org.springframework.web.servlet.function.RouterFunctions;
+import org.springframework.web.servlet.function.ServerResponse;
+
+import com.machingclee.experiments.controller.StudentController;
+
+@Configuration
+public class RoutingConfig {
+    @Bean
+    public RouterFunction<ServerResponse> studentRouter(StudentController studentController) {
+        return RouterFunctions.route()
+                .GET("/students", RequestPredicates.accept(MediaType.ALL), studentController::getStudents)
+                .build();
+    }
+}
 ```
