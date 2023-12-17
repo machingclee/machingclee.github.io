@@ -7,7 +7,69 @@ intro: "We record the config for a starter project in springboot that mimics the
 toc: true
 ---
 
-#### The Entire pom.xml
+#### Overview
+
+##### Prerequisite
+
+The reader is assumed to be familiar with creating database on your own. You may do it:
+
+- via `prisma` (which we do in this article) or;
+- via `flyway` (java package) or;
+- via `gooose` (cli application) or;
+- do it manually if one wishes as long as you know how to maintain the schema across different production environments.
+
+##### From start.springboot.io
+
+We can bring `web`, `lombok` and `pgsql` into our springboot project in `start.springboot.io`. No `jpa` (hiberate) nor any additional database related jars will be needed in our project from that starter page.
+
+Later we will add one addtional package `jooq` from `pom.xml` which serves as a **_type-safe_** sql query builder that runs sql command directly to `pgsql` server without any need of `ORM` library. We don't even need to create entity classes, `jooq` will create a `StudentRecord` class for us by reverse-engineering the table `student` in our database.
+
+#### Configurations with PostgreSQL
+
+##### application.yaml
+
+Note that by default `application.properties`/`application.yaml` will be loaded into `env` varariable. We will reuse some of the `env` values in `poe.xml`.
+
+```yaml
+spring:
+  profiles:
+    active: dev
+    show-sql: true
+logging:
+  level:
+    root: warn
+
+---
+spring:
+  config:
+    activate:
+      on-profile: "dev"
+  datasource:
+    url: jdbc:postgresql://localhost:5432/pgdb
+    username: pguser
+    password: pguser
+
+server:
+  port: 8080
+
+---
+spring:
+  config:
+    activate:
+      on-profile: "uat"
+server:
+  port: 8081
+
+---
+spring:
+  config:
+    activate:
+      on-profile: "prod"
+server:
+  port: 8082
+```
+
+##### pom.xml
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -89,9 +151,9 @@ toc: true
 				<configuration>
 					<jdbc>
 						<driver>org.postgresql.Driver</driver>
-						<url>jdbc:postgresql://localhost:5432/pgdb</url>
-						<user>pguser</user>
-						<password>pguser</password>
+						<url>${spring.datasource.url}</url>
+						<user>${spring.datasource.username}</user>
+						<password>${spring.datasource.password}</password>
 					</jdbc>
 					<generator>
 						<database>
@@ -112,7 +174,36 @@ toc: true
 </project>
 ```
 
-#### CRUD Examples
+#### Tables and Operations
+
+##### prisma/schema.prisma
+
+Note that according to `org.postgresql.Driver`'s definition:
+
+- Table name starts with **_small_** letter and
+- Field name is separated by an `"_"`, i.e,
+  - `first_name` works but
+  - `firstName` will **_fail_**.
+
+```text
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model student {
+  id         String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  first_name String
+  last_name  String
+  email      String
+}
+```
+
+##### CRUD Examples
 
 ```java
 package com.machingclee.jooq.dao;
@@ -169,4 +260,8 @@ public class StudentDAO {
         return result;
     }
 }
+```
+
+```
+
 ```
