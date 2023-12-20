@@ -2,7 +2,7 @@
 title: "Prisma, Prisma-Kysely and Kysely "
 date: 2023-11-30
 id: blog0221
-tag: sql
+tag: sql, nodejs
 intro: "Record and introduce the workflow of using prisma and kysely."
 toc: true
 ---

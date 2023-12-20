@@ -2,7 +2,7 @@
 title: Mongoose in Nodejs and Mongoengine in Python
 date: 2022-03-29
 id: blog054
-tag: python, mongo
+tag: python, nodejs, mongo
 intro: Record everything we should know about mongo with mongoose in nodejs and mongoengine in python.
 ---
 

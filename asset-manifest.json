@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.ef957bd1.chunk.css",
-    "main.js": "/static/js/main.c3affceb.chunk.js",
+    "main.js": "/static/js/main.f0c330e1.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.0e8042a3.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.196e61eb.chunk.js": "/static/js/2.196e61eb.chunk.js",
@@ -150,7 +150,7 @@
     "static/media/218-record-migration-script.md": "/static/media/218-record-migration-script.9da638c2.md",
     "static/media/219-gatling.md": "/static/media/219-gatling.22b28504.md",
     "static/media/220-frontend-refresh-token.md": "/static/media/220-frontend-refresh-token.03785bfb.md",
-    "static/media/221-prisma-kysely.md": "/static/media/221-prisma-kysely.fded1a67.md",
+    "static/media/221-prisma-kysely.md": "/static/media/221-prisma-kysely.f0713af2.md",
     "static/media/222-springboot.md": "/static/media/222-springboot.c6315644.md",
     "static/media/223-sql-command-migrate.md": "/static/media/223-sql-command-migrate.09d7d278.md",
     "static/media/224-jooq.md": "/static/media/224-jooq.8c979500.md",
@@ -247,7 +247,7 @@
     "static/media/makeStyles-in-next-js.md": "/static/media/makeStyles-in-next-js.5341b8bd.md",
     "static/media/mask-in-numpy.md": "/static/media/mask-in-numpy.83a198cb.md",
     "static/media/modulus-of-continuity.md": "/static/media/modulus-of-continuity.837b37f9.md",
-    "static/media/mongo-engine-py.md": "/static/media/mongo-engine-py.95b47056.md",
+    "static/media/mongo-engine-py.md": "/static/media/mongo-engine-py.6b704f26.md",
     "static/media/mongo.md": "/static/media/mongo.5e06cbd6.md",
     "static/media/my_picture_6.33c544db.jpg": "/static/media/my_picture_6.33c544db.jpg",
     "static/media/nextjs-debug.md": "/static/media/nextjs-debug.09beb281.md",
@@ -288,6 +288,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.196e61eb.chunk.js",
     "static/css/main.ef957bd1.chunk.css",
-    "static/js/main.c3affceb.chunk.js"
+    "static/js/main.f0c330e1.chunk.js"
   ]
 }
