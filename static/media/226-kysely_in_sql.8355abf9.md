@@ -11,7 +11,7 @@ toc: false
 <center></center>
 
 
-In express if with log the query built by `kysely` via the config:
+In `express` if with log the query built by `kysely` via the config:
 
 ```js
 export const db = new Kysely<DB>({
@@ -60,4 +60,4 @@ From this we get:
 <p></p>
 <center></center>
 
-Now we get investigate what's wrong with our query.
+Now we can investigate what's wrong with our query.
