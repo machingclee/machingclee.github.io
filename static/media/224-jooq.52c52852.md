@@ -1,5 +1,5 @@
 ---
-title: "Springboot with JOOQ"
+title: "Springboot with JOOQ and Functional Endpoints"
 date: 2023-12-17
 id: blog0224
 tag: sql, java, springboot
