@@ -7,6 +7,10 @@ intro: "Record the implementation of various queues and integrate them with spri
 toc: true
 ---
 
+#### Repository
+
+- https://github.com/machingclee/2023-12-24-Dead-and-Delayed-Queues
+
 #### RabbitMQUtil
 
 ```java
@@ -467,6 +471,34 @@ public class Producer {
 
 #### Integration of Dead and Delayed Queues with Springboot
 
+##### Routing for Experiements (Producer)
+
+```java
+package com.machingclee.rabbitmq.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
+import org.springframework.web.servlet.function.RequestPredicates;
+import org.springframework.web.servlet.function.RouterFunction;
+import org.springframework.web.servlet.function.RouterFunctions;
+import org.springframework.web.servlet.function.ServerResponse;
+
+import com.machingclee.rabbitmq.controller.MessageController;
+
+@Configuration
+public class RoutingConfig {
+    @Bean
+    public RouterFunction<ServerResponse> studentRouter(MessageController msgController) {
+        return RouterFunctions.route()
+                .GET("/ttl/msg/{message}", RequestPredicates.accept(MediaType.ALL), msgController::sendMessage)
+                .GET("/delayed/msg/{ttl}/{msg}", RequestPredicates.accept(MediaType.ALL), msgController::delayedMessage)
+                .POST("/ttl/msg", RequestPredicates.accept(MediaType.ALL), msgController::sendMessageWithTTL)
+                .build();
+    }
+}
+```
+
 ##### TTL (Works Well for Constant TTL)
 
 - In this example we want to provide variable `ttl`'s in `NORMAL_Q_C` but problem occurs as queues cannot be consumed asynchronously.
@@ -604,7 +636,7 @@ public class DeadLetterQueueConsumer {
 }
 ```
 
-###### Endpoints
+###### HTTP Handlers to Publish TTL Messages
 
 ```java
 package com.machingclee.rabbitmq.controller;
@@ -760,7 +792,7 @@ public class DelayedQueueConsumer {
 }
 ```
 
-###### Endpoint
+###### HTTP Handlers to Publish Delayed Messages
 
 ```java
 @Slf4j
