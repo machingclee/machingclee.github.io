@@ -2,7 +2,7 @@
 title: "Event Based System Design for Controlled Number of API Calls and Delayed Schedule Job per Request"
 date: 2023-12-25
 id: blog0228
-tag: sql
+tag: rabbitMQ, message-broker
 intro: "Flow diagram to illustrate how we use RabbitMQ in our mobile application."
 toc: false
 ---

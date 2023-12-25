@@ -1,8 +1,8 @@
 ---
-title: "Dead and Delayed Queues"
+title: "Dead-letter and Delayed Queues"
 date: 2023-12-24
 id: blog0227
-tag: sql
+tag: rabbitMQ, message-broker, springboot
 intro: "Record the implementation of various queues and integrate them with springboot."
 toc: true
 ---
