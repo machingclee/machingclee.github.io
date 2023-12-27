@@ -99,7 +99,9 @@ then choose
     <img src="/assets/tech/153/010.png" width="600"/>
   </a>
 </Center>
+
 <p/>
+
 6. - Prepare a domain or subdomain in route53
    - Fill in alternate domain name and
    - Choose SSL certificate.
@@ -109,16 +111,18 @@ then choose
          <img src="/assets/tech/153/011.png" width="600"/>
          </a>
      </Center>
+
      <p/>
 
    For example, I test the s3-deployment by using:
-     <p/>
-     <Center>
-       <a href="/assets/tech/153/012.png">
-         <img src="/assets/tech/153/012.png" width="600"/>
-       </a>
-     </Center>
-     <p/>
+
+    <p/>
+    <Center>
+    <a href="/assets/tech/153/012.png">
+    <img src="/assets/tech/153/012.png" width="600"/>
+    </a>
+    </Center>
+    <p/>
 
 7. Turn IPv6 Off
 
