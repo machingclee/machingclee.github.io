@@ -25,6 +25,14 @@ export const store = configureStore({
 For reducer whose data we want to persist, we add the corresponding config one by one:
 
 ```js
+import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
+import authSlice from "../slices/authSlice";
+import storage from 'redux-persist/lib/storage'
+// in case for mobile, replace storage by AsyncStorage:
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import autoMergeLevel2 from "redux-persist/es/stateReconciler/autoMergeLevel2";
+
 const userPersistConfig = {
   key: "user",
   storage,
