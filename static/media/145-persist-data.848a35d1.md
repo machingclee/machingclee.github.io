@@ -2,10 +2,11 @@
 title: "Quick Step to Make a Reducer Persist its Data"
 date: 2023-06-21
 id: blog0145
-tag: react
+tag: react, redux
 intro: "Record the use of `redux-persist` for persisting data in redux store."
 toc: false
 ---
+
 #### Step 1
 
 First we `npm install redux-persist`, then we create our store as usual.
@@ -34,15 +35,17 @@ export const store = configureStore({
   )
 });
 ```
+
 #### Step 2
+
 For reducer whose data we want to persist, we add the corresponding config one by one:
 
 ```typescript
 const userPersistConfig = {
-    key: 'user',
-    storage,
-    stateReconciler: autoMergeLevel2
-}
+  key: "user",
+  storage,
+  stateReconciler: autoMergeLevel2,
+};
 ```
 
 Next we change the root reducer part in line 5 accordingly:
@@ -84,10 +87,10 @@ Finaly we wrap our main view component in `App.tsx` by using the `PersistGate` a
 //App.tsx
 
 <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
-        ...
-        <AppRoutes />
-        ...
-    </PersistGate>
+  <PersistGate loading={null} persistor={persistor}>
+    ...
+    <AppRoutes />
+    ...
+  </PersistGate>
 </Provider>
 ```
