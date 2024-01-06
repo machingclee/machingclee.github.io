@@ -2,7 +2,7 @@
 title: "Commonly Used Command in Prisma, and More Table Migration Script"
 date: 2023-12-16
 id: blog0223
-tag: sql
+tag: sql, prisma
 intro: "Record the commonly used migration scripts in prisma and sql."
 toc: true
 ---
