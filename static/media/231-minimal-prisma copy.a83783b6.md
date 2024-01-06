@@ -1,6 +1,6 @@
 ---
 title: "Minimal Code for Setting Prisma as Just a Table Migration tool"
-date: 2024-01-06
+date: 2024-01-05
 id: blog0231
 tag: prisma, nodejs
 intro: "Record minimal code needed to use prisma as just a table migration tool."
