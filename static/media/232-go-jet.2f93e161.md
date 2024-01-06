@@ -13,9 +13,14 @@ toc: true
 
 #### Usage
 
+##### Installations
+
 - We will be using this package: https://github.com/go-jet/jet
 - `go get -u github.com/go-jet/jet/v2`
 - `go install github.com/go-jet/jet/v2/cmd/jet@latest`
+
+##### Makefile
+
 - Create a `Makefile` in root directory with content
 
   ```makefile
@@ -31,19 +36,9 @@ toc: true
 
 - `make from-db`
 
+##### pkg/pgsql/pgsql.go
+
 - `go get github.com/lib/pq` (if we use pgsql)
-
-- we may encounter warning that we should not use dot import, we disable this warning by
-
-  ```json
-    "go.lintTool": "staticcheck",
-    "go.lintFlags": [
-      "-dot-imports=false"
-    ]
-  ```
-
-  in `settings.json`,
-
 - Now in `pkg/pgsql/pgsql`
 
   ```text
@@ -71,36 +66,97 @@ toc: true
   }
   ```
 
-- In our `cmd/api/main.go`:
+##### pkg/user/handler.go
 
-  ```text
+- ```text
+  package user
+
+  import (
+    "authentication/.gen/udemy/public/model"
+    "authentication/.gen/udemy/public/table"
+    "database/sql"
+
+    . "github.com/go-jet/jet/v2/postgres"
+  )
+
+  type HandlerRepo struct {
+    db *sql.DB
+  }
+
+  var Repo *HandlerRepo
+
+  func NewHandler(db *sql.DB) {
+    Repo = &HandlerRepo{
+      db: db,
+    }
+  }
+
+  func (m *HandlerRepo) GetUsers() []model.User {
+    db := m.db
+    statement := SELECT(table.User.AllColumns).FROM(table.User)
+    var users []model.User
+    statement.Query(db, &users)
+    return users
+  }
+
+  ```
+
+##### cmd/api/routes.go
+
+- ```text
   package main
 
   import (
-      "authentication/.gen/udemy/public/model"
-      . "authentication/.gen/udemy/public/table"
-      "authentication/pkg/pgsql"
-      "encoding/json"
+      "authentication/pkg/user"
       "fmt"
-      "log"
+      "net/http"
 
-      . "github.com/go-jet/jet/v2/postgres"
+      "github.com/go-chi/chi/v5"
+      "github.com/go-chi/chi/v5/middleware"
+  )
+
+  func routes() http.Handler {
+      r := chi.NewRouter()
+      r.Use(middleware.Logger)
+      r.Use(middleware.Recoverer)
+
+      r.Route("/user", func(r chi.Router) {
+          r.Get("/", func(w http.ResponseWriter, r *http.Request) {
+              u := user.Repo.GetUsers()
+              fmt.Println(u)
+          })
+      })
+      return r
+  }
+  ```
+
+##### cmd/api/main.go
+
+- ```text
+  package main
+
+  import (
+      "authentication/pkg/pgsql"
+      "authentication/pkg/user"
+      "log"
+      "net/http"
   )
 
   func main() {
       db := pgsql.NewDB()
-      statement := SELECT(Student.AllColumns).FROM(Student).WHERE(Student.ID.EQ(Int(1)))
-      dest := model.Student{}
-      err := statement.Query(db, &dest)
-      if err != nil {
-          log.Fatal(err)
+      user.NewHandler(db)
+
+      srv := http.Server{
+          Addr:    ":8080",
+          Handler: routes(),
       }
-      jsonText, _ := json.MarshalIndent(dest, "", "\t")
-      fmt.Println(string(jsonText))
+
+      err := srv.ListenAndServe()
+      log.Fatal(err)
   }
   ```
 
-  We get:
+- We get:
 
   ```text
   {
