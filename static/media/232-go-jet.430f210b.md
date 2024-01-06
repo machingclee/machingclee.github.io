@@ -4,8 +4,14 @@ date: 2024-01-06
 id: blog0232
 tag: go, jet
 intro: "Record the procedure the reverse-engineer a PGSQL database."
-toc: false
+toc: true
 ---
+
+#### Repository
+
+- https://github.com/machingclee/2024-01-06-experiment-prisma-with-go-jet
+
+#### Usage
 
 - We will be using this package: https://github.com/go-jet/jet
 - `go get -u github.com/go-jet/jet/v2`
