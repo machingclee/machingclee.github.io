@@ -2,7 +2,7 @@
 title: "Reverse Engineer PostgreSQL to Go Structs"
 date: 2024-01-06
 id: blog0232
-tag: go, jet
+tag: go, jet, sql
 intro: "Record the procedure the reverse-engineer a PGSQL database."
 toc: true
 ---
