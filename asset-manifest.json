@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.09332b51.chunk.css",
-    "main.js": "/static/js/main.6b108de9.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.0d929757.js",
+    "main.js": "/static/js/main.490777f8.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.2a13654f.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.b3439b08.chunk.js": "/static/js/2.b3439b08.chunk.js",
-    "static/js/3.2e44cab2.chunk.js": "/static/js/3.2e44cab2.chunk.js",
-    "static/js/4.63da970f.chunk.js": "/static/js/4.63da970f.chunk.js",
-    "static/js/5.f9eddcb9.chunk.js": "/static/js/5.f9eddcb9.chunk.js",
+    "static/js/2.ae1ac0b9.chunk.js": "/static/js/2.ae1ac0b9.chunk.js",
+    "static/js/3.52269fe1.chunk.js": "/static/js/3.52269fe1.chunk.js",
+    "static/js/4.2f063d62.chunk.js": "/static/js/4.2f063d62.chunk.js",
+    "static/js/5.ef6c6b27.chunk.js": "/static/js/5.ef6c6b27.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.b3439b08.chunk.js.LICENSE.txt": "/static/js/2.b3439b08.chunk.js.LICENSE.txt",
-    "static/js/3.2e44cab2.chunk.js.LICENSE.txt": "/static/js/3.2e44cab2.chunk.js.LICENSE.txt",
-    "static/js/4.63da970f.chunk.js.LICENSE.txt": "/static/js/4.63da970f.chunk.js.LICENSE.txt",
+    "static/js/2.ae1ac0b9.chunk.js.LICENSE.txt": "/static/js/2.ae1ac0b9.chunk.js.LICENSE.txt",
+    "static/js/3.52269fe1.chunk.js.LICENSE.txt": "/static/js/3.52269fe1.chunk.js.LICENSE.txt",
+    "static/js/4.2f063d62.chunk.js.LICENSE.txt": "/static/js/4.2f063d62.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.72064d8e.md",
     "static/media/002-Lazy-React-Router.md": "/static/media/002-Lazy-React-Router.48295ca9.md",
@@ -169,7 +169,7 @@
     "static/media/155-gmail-pubsub.md": "/static/media/155-gmail-pubsub.1e2e196b.md",
     "static/media/156-serverless.md": "/static/media/156-serverless.77ae63e8.md",
     "static/media/157-SSE.md": "/static/media/157-SSE.dc84e04a.md",
-    "static/media/158-algolia.md": "/static/media/158-algolia.e7f09cb3.md",
+    "static/media/158-algolia.md": "/static/media/158-algolia.82c12bd7.md",
     "static/media/159-clickoutside.md": "/static/media/159-clickoutside.800d0b58.md",
     "static/media/160-multiselections.md": "/static/media/160-multiselections.04467aa0.md",
     "static/media/161-third-party.md": "/static/media/161-third-party.b90fa561.md",
@@ -243,6 +243,7 @@
     "static/media/231-minimal-prisma copy.md": "/static/media/231-minimal-prisma copy.a83783b6.md",
     "static/media/232-go-jet.md": "/static/media/232-go-jet.81facf63.md",
     "static/media/233-github-actions.md": "/static/media/233-github-actions.8ac4d530.md",
+    "static/media/234-algolia-revisit.md": "/static/media/234-algolia-revisit.07ecdf06.md",
     "static/media/CV_Portfolio.8e45ea76.pdf": "/static/media/CV_Portfolio.8e45ea76.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -292,10 +293,10 @@
     "static/media/transformer-date-fomatter.18a2d3fc.pdf": "/static/media/transformer-date-fomatter.18a2d3fc.pdf"
   },
   "entrypoints": [
-    "static/js/runtime-main.0d929757.js",
+    "static/js/runtime-main.2a13654f.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.b3439b08.chunk.js",
+    "static/js/2.ae1ac0b9.chunk.js",
     "static/css/main.09332b51.chunk.css",
-    "static/js/main.6b108de9.chunk.js"
+    "static/js/main.490777f8.chunk.js"
   ]
 }

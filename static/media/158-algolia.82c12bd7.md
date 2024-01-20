@@ -1,8 +1,8 @@
 ---
-title: "Building Search Functionality"
+title: "Build a Search Function"
 date: 2023-07-26
 id: blog0158
-tag: java, react
+tag: java, react, algolia, fusejs, searching
 intro: "We introduce a service called Algolia which provides an easy search engine integration that helps build quick and accurate search functionality."
 toc: true
 ---
