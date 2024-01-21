@@ -66,9 +66,9 @@ const addRecord = async (newRecord: AlgoliaRecord): Promise<string> => {
 ```
 ##### Initialize Algolia DB for Searching, Define Search and Filter attribute.
 
-- Here we qurey our database by `kysely`, this part of code is project-dependnent
+- Here we qurey our database by `kysely`, this part of code is project-dependnent.
 
-- You should have your own logic to get target document to be searched.
+- You should have your own logic to get target documents to be searched.
 
 - The main point is to exceute `index.saveObject(record)` to save the search target with `objectID` being the search target id (used by algolia as an `id` attribute).
 
@@ -107,11 +107,6 @@ const initAlgoliaDB = async () => {
 
     const oids = allSessions.map(session => session.llmResultMongoOid) as string[];
     const nonnullSummaries = await LLMSummaryModel.find({ _id: { $in: oids } }).lean();
-
-    // const nonnullSummarySessionIdAndResult_ = nonnullSummaries.map(s => ({
-    //     sessionId: s.messagesSessionId,
-    //     result: { enResult: s.result, tcResult: s.zhResult }
-    // }));
     const nonnullSummarySessionIdAndResult = allSessions.map(s => {
         const target = nonnullSummaries.find(summary => summary._id.toString() === s.llmResultMongoOid);
         return {
@@ -331,3 +326,7 @@ export type Hits = SearchResult["results"][0]["hits"];
         setHits(searchResult.results?.[0].hits);
     }, 500), []);
 ```
+
+- Here you can save a more comprehensive search target in algolia db to directly display the searchResult. 
+
+- Or you can make use of the `objectID` to directly fetch desired target from your own database.
