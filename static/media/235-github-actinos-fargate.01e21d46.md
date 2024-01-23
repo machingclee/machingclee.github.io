@@ -37,6 +37,7 @@ jobs:
         with:
           branch_name: ${{ github.ref_name }}
           image-registry: "798404461798.dkr.ecr.ap-southeast-2.amazonaws.com"
+          stage: poc
           image-name: billie-v3-poc
           task-family: billie-chat-poc
           cluster-name: billie-chat-poc
@@ -53,6 +54,9 @@ description: "Build and Deploy an image to AWS fargate"
 inputs:
   branch_name:
     description: The target branch being deployed
+    required: true
+  stage:
+    description: uat, poc or prod
     required: true
   image-registry:
     description: "Image registry"
@@ -103,6 +107,7 @@ const cmd = async (...commands) => {
 
 async function run() {
   const branchName = core.getInput("branch_name", { required: true });
+  const stage = core.getInput("stage", { required: true });
   const IMAGE_REGISTRY = core.getInput("image-registry", { required: true });
   const IMAGE_NAME = core.getInput("image-name", { required: true });
   const TASK_FAMILY = core.getInput("task-family", { required: true });
@@ -116,7 +121,6 @@ async function run() {
   const runNumber = context.runNumber;
   const splitData = branchName.split("/"); // ["release", "v3", "uat"];
   const version = splitData[1];
-  const stage = splitData[2];
   const newTag = `${stage}-${version}-${runNumber}`;
 
   await cmd(
