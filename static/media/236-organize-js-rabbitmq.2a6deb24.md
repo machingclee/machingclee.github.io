@@ -432,8 +432,8 @@ const excelGenReqToFlaskQueue = new MessageQueue<{
     roomId: string, lang: SummaryLangChoice
 }>({
     channel: llmTaskChannel,
-    queueName: QueueName.INSERT_ALGOLIOA,
-    routingKey: RoutingKey.INSERT_ALGOLIOA,
+    queueName: QueueName.FLASK_EXCEL_GENERATION,
+    routingKey: RoutingKey.FLASK_EXCEL_GENERATION,
     consumption: async (msg, decoded) => {
         const { lang, roomId } = decoded;
         try {
