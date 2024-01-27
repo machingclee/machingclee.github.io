@@ -1,8 +1,8 @@
 ---
-title: "Organize Javascript Code for RabbitMQ"
-date: 2024-01-27
+title: "Code Organization for RabbitMQ"
+date: 2024-01-24
 id: blog0236
-tag: rabbitMQ, message-broker
+tag: rabbitMQ, message-broker, nodejs
 intro: "The concept of message queue is easy but writing them can easily be messy due to boilerplate code, we summarize how to organize them into a MessageQueue class."
 toc: true
 ---
