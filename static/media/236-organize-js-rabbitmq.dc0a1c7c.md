@@ -15,7 +15,7 @@ toc: true
 
 #### File Structure
 
-- ![](/assets/img/2024-01-27-03-38-57.png)
+- ![](/assets/img/2024-01-28-00-46-02.png)
 
 - Here our exchanges are defined in `channels.ts` (it would be better if we extract them into a single files).
 
