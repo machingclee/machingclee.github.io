@@ -1,5 +1,5 @@
 ---
-title: "Autohoykey Config for Vscode Switching (Windows)"
+title: "Auto-hotkey Config for Vscode Switching (Windows)"
 date: 2024-01-26
 id: blog0237
 tag: autohotkey

@@ -15,7 +15,7 @@ toc: true
 
 #### File Structure 
 
-- Similar to [Code Organization for RabbitMQ](/blog/article/Organize-Javascript-Code-for-RabbitMQ), we will declare everything related to caching in side `caching` folder.
+- Similar to [Code Organization for RabbitMQ](/blog/article/Code-Organization-for-RabbitMQ), we will declare everything related to caching in side `caching` folder.
 
   ![](/assets/img/2024-01-27-17-21-45.png)
 
