@@ -17,7 +17,7 @@ toc: true
 
 - ![](/assets/img/2024-01-28-00-46-02.png)
 
-- Here our exchanges are defined in `channels.ts` (it would be better if we extract them into a single files).
+- Here our exchanges are defined in `channels.ts` (it would be better if we extract them into a single file).
 
 - Let's explore these files one by one
 
