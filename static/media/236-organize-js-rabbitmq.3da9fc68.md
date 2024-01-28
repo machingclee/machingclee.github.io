@@ -264,23 +264,24 @@ import snoozeAndPinQueue from "./snoozeAndPinQueue";
 import llmImpactUpdateQueue from "./llmImpactUpdateQueue";
 
 export default [
-    algoliaUpdateQueue.initConsumption,
-    excelGenReqToFlaskQueue.initConsumption,
-    llmReplyQueue.initConsumption,
-    llmSummaryQueue.initConsumption,
-    llmTranslationQueue.initConsumption,
-    llmUsageLogQueue.initConsumption,
-    snoozeAndPinDeadLetterQueue.initConsumption,
-    snoozeAndPinQueue.initConsumption,
-    llmImpactUpdateQueue.initConsumption
-]
+  algoliaUpdateQueue.initConsumption,
+  excelGenReqToFlaskQueue.initConsumption,
+  llmReplyQueue.initConsumption,
+  llmSummaryQueue.initConsumption,
+  llmTranslationQueue.initConsumption,
+  llmUsageLogQueue.initConsumption,
+  snoozeAndPinDeadLetterQueue.initConsumption,
+  snoozeAndPinQueue.initConsumption,
+  llmImpactUpdateQueue.initConsumption,
+];
 ```
+
 `initConsumption` is a method of our custom `MessageQueue` class which simplify our code by templating the boilerplate code:
 
 ##### MessageQueue Class (model/MessageQueue.ts)
 
 ```js
-import { Channel, ConsumeMessage } from "amqplib";
+import { Channel } from "amqplib";
 import { MessageErrorModel } from "../../db/mongo/models/MessageErrorLog";
 import gmailService from "../../service/gmailService";
 import logger from "../../util/logger";
@@ -295,14 +296,14 @@ export default class MessageQueue<MessageType> {
     private queueName: QueueName;
     private routingKey: RoutingKey;
     private channel: () => (Channel | null);
-    private exchange: string;
-    private consumption?: (msg: ConsumeMessage, decoded: MessageType) => void | Promise<void>;
+    private exchange = NORMAL_EXCHANGE;
+    public consumption?: (decoded: MessageType) => void | Promise<void>;
 
     constructor(args: {
         queueName: QueueName,
         routingKey: RoutingKey,
         channel: () => (Channel | null),
-        consumption?: (msg: ConsumeMessage, decoded: MessageType) => void | Promise<void>
+        consumption?: (decoded: MessageType) => void | Promise<void>,
         exchange?: string
     }) {
         const { exchange = NORMAL_EXCHANGE } = args
@@ -342,34 +343,39 @@ export default class MessageQueue<MessageType> {
             }
             try {
                 logger.info(`[${this.routingKey}]: processing msg ${msg_}`)
-                const result = this.consumption?.(msg, decodedMsg);
+                const result = this.consumption?.(decodedMsg);
                 if (result instanceof Promise) {
                     // synchronous call cannot catch the error thrown inside a promise.
-                    result.catch(err => {
-                        const errorLog = new MessageErrorModel({
-                            msg: {
-                                err: err?.message || "",
-                                step: (decodedMsg as { routingKey?: string }).routingKey || "",
-                                param: decodedMsg
-                            }
-                        })
-                        gmailService.sendEmail({
-                            to: ERROR_EMAIL_RECEIVER || "",
-                            html: `<div>
+                    result
+                        .then(() => {
+                            this.channel()?.ack(msg);
+                        }).catch(err => {
+                            const errorLog = new MessageErrorModel({
+                                msg: {
+                                    err: err?.message || "",
+                                    step: (decodedMsg as { routingKey?: string }).routingKey || "",
+                                    param: decodedMsg
+                                }
+                            })
+                            gmailService.sendEmail({
+                                to: ERROR_EMAIL_RECEIVER || "",
+                                html: `<div>
                         <div>Error Message:
                             <p/>
                             <div>
                                 ${JSON.stringify(decodedMsg, null, 2)}
                             </div>
-                            <p>THe same message is also logged in mongodb</p>
+                            <p>The same message is also logged in mongodb.</p>
                         </div>`,
-                            subject: `Error message from ${env?.toUpperCase()} environment`,
-                            text: `Error message from ${env?.toUpperCase()} environment`
-                        })
-                        errorLog.save().then(() => {
-                            this.channel()?.nack(msg, false, false);
-                        })
-                    });
+                                subject: `Error message from ${env?.toUpperCase()} environment`,
+                                text: `Error message from ${env?.toUpperCase()} environment`
+                            })
+                            errorLog.save().then(() => {
+                                this.channel()?.nack(msg, false, false);
+                            })
+                        });
+                } else {
+                    this.channel()?.ack(msg);
                 }
             } catch (err) {
                 const errorLog = new MessageErrorModel({
@@ -387,7 +393,7 @@ export default class MessageQueue<MessageType> {
                             <div>
                                 ${JSON.stringify(decodedMsg, null, 2)}
                             </div>
-                            <p>THe same message is also logged in mongodb</p>
+                            <p>The same message is also logged in mongodb.</p>
                         </div>`,
                     subject: `Error message from ${env?.toUpperCase()} environment`,
                     text: `Error message from ${env?.toUpperCase()} environment`
@@ -400,8 +406,11 @@ export default class MessageQueue<MessageType> {
     }
 }
 ```
-- Here the `try-catch` logic is a bit repeatitive. 
-- Note that a normal `try-catch` would not catch the error thrown inside a promise, therefore we need to repeatedly catch the error.
+
+- Here the `try-catch` logic seems a bit repetitive.
+- But note that a normal `try-catch` would not catch the error thrown inside a promise, therefore we need to repeatedly catch the error.
+- Here we reject a message by either throwing an error explicitly (for example, we might want to try catch to execute custom logging logic, and then throw the error again)
+- or by letting the program throw any error.
 
 #### Example of Queues
 
@@ -413,7 +422,6 @@ Note that by using `MessageQueue` class we can pay all our attention to writing 
 import LLMStatus from "../../constants/LLMStatus";
 import { db } from "../../db/kysely/database";
 
-import { ConsumeMessage } from "amqplib";
 import { MessageErrorModel } from "../../db/mongo/models/MessageErrorLog";
 import { SummaryLangChoice } from "../../dto/dto";
 import chatService from "../../service/chatService";
@@ -424,9 +432,6 @@ import channels from "../channels";
 import MessageQueue from "../model/MessageQueue";
 
 const llmTaskChannel = () => channels.getLLMTaskChannel();
-const ack = (msg: ConsumeMessage) => {
-    llmTaskChannel()?.ack(msg);
-}
 
 const excelGenReqToFlaskQueue = new MessageQueue<{
     roomId: string, lang: SummaryLangChoice
@@ -434,12 +439,11 @@ const excelGenReqToFlaskQueue = new MessageQueue<{
     channel: llmTaskChannel,
     queueName: QueueName.FLASK_EXCEL_GENERATION,
     routingKey: RoutingKey.FLASK_EXCEL_GENERATION,
-    consumption: async (msg, decoded) => {
+    consumption: async (decoded) => {
         const { lang, roomId } = decoded;
         try {
             await chatService.dispatchExcelGenerationTaskToFlask(roomId, lang);
             await RedisUtil.setLLMStatus(roomId, LLMStatus.FINISHED);
-            ack(msg);
         } catch (err) {
             const errorLog = new MessageErrorModel({
                 msg: {
@@ -458,13 +462,12 @@ const excelGenReqToFlaskQueue = new MessageQueue<{
     }
 })
 
-export default excelGenReqToFlaskQueue
+export default excelGenReqToFlaskQueue;
 ```
 
 ##### snoozeAndPinQueue.ts
 
 Note that this queue is supposed to be a delayed task queue, no consumption should be inited. Otherwise we have to at least `ack`, `nack`, `reject` which violates our purpose to let the message expire automatically.
-
 
 ```js
 import { SnoozeAndPinMessage } from "../../dto/dto";
@@ -475,11 +478,14 @@ import MessageQueue from "../model/MessageQueue";
 
 const normalTaskChannel = () => channels.getNormalTaskChannel();
 
-const snoozeAndPinQueue = new MessageQueue<SnoozeAndPinMessage>({
+const snoozeAndPinQueue =
+  new MessageQueue() <
+  SnoozeAndPinMessage >
+  {
     channel: normalTaskChannel,
     queueName: QueueName.SNOOZE_AND_PIN,
     routingKey: RoutingKey.SNOOZE_AND_PIN,
-})
+  };
 
 export default snoozeAndPinQueue;
 ```
@@ -487,7 +493,6 @@ export default snoozeAndPinQueue;
 ##### snoozeAndPinDeadLetterQueue.ts
 
 According to our configuration in `queueBinding.ts`, after `SNOOZE_PIN_TTL` ms, the message from `QueueName.SNOOZE_AND_PIN` will be redirected to `RoutingKey.SNOOZE_AND_PIN_DEAD_LETTER` via `GENERAL_DEAD_EXCHANGE` exchange.
-
 
 ```js
 import nonDraftsCache from "../../caching/nonDraftsCache";
@@ -504,7 +509,7 @@ const snoozeAndPinDeadLetterQueue = new MessageQueue<SnoozeAndPinMessage>({
     channel: normalTaskChannel,
     queueName: QueueName.SNOOZE_AND_PIN_DEAD_LETTER,
     routingKey: RoutingKey.SNOOZE_AND_PIN_DEAD_LETTER,
-    consumption: async (msg, decoded) => {
+    consumption: async (decoded) => {
         const { sessionId, channelId, isAdmin } = decoded;
         await db.updateTable("MessagesSession")
             .set({
@@ -518,7 +523,6 @@ const snoozeAndPinDeadLetterQueue = new MessageQueue<SnoozeAndPinMessage>({
 
         const { customClearCache } = nonDraftsCache.setCacheKey({ channelId, isAdmin });
         await customClearCache();
-        normalTaskChannel()?.ack(msg);
     }
 });
 
