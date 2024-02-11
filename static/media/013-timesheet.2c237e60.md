@@ -66,9 +66,14 @@ Time arrangement is always an headache, each group uses different strategies to 
 
   ![](/assets/img/2024-02-11-20-56-19.png)
 
+- Some may also make a check-list using google sheet which is quite similar to my web-based solution presented in the last section:
+
+  ![](/assets/img/2024-02-11-21-57-41.png)
+
 - Some may react to a sentence (which is a timeslot) by "icons" provided by discord and confirm a timeslot until there are 8 icons
 
   ![](/assets/img/2024-02-11-20-59-52.png)
+
 
 - As FFXIV is a game full of people with ***diversified*** national background, such method is confusing for players of ***different timezones***.
 
