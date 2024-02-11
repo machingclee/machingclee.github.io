@@ -87,3 +87,9 @@ Time arrangement is always an headache, each group uses different strategies to 
   [![](/assets/img/2024-02-11-21-28-39.png)](/assets/img/2024-02-11-21-28-39.png)
 
 - Moreover, my solution is ***timezone-independent***, HK-player who fills 7:00 pm will appear to be 8:00 pm for a JP-player.
+
+#### Tables Design
+
+- Schema of the system:
+
+  ![](/assets/img/2024-02-11-23-09-58.png)
