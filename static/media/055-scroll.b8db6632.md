@@ -65,7 +65,7 @@ Recently I have implemented a floating TOC (as shown in the picture or LHS of th
 <p/>
 <center></center>
 
-But when there are too many titles, for example: in <a href="https://machingclee.github.io/blog/article/Nextjs-with-Electron">this article</a>, then it is natural to wish the floating TOC can highlight and **_scroll to that title_** automatically.
+But when there are too many titles, for example: in <a href="/blog/article/Nextjs-with-Electron">this article</a>, then it is natural to wish the floating TOC can highlight and **_scroll to that title_** automatically.
 
 For highlighting title, behind the scene we calculate at which position we have scrolled to and assign the corresponding active anchor in the floating TOC an active `className`. We now focus on how to get the **_relative position_** of our _active anchor_ from the top of its parent --- the floating TOC.
 

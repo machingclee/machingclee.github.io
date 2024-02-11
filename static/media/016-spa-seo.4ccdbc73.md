@@ -102,11 +102,11 @@ In `package.json` we add/replace the value of `homepage`:
 ```json
 {
   ...,
-  "homepage": "https://machingclee.github.io",
+  "homepage": "https://machingclee.com",
 }
 ```
 
-this will provide `process.env.PUBLIC_URL` a value `"https://machingclee.github.io"` when `process.env.NODE_ENV === "production"`, and otherwise an empty string so that it does nothing in development mode.
+this will provide `process.env.PUBLIC_URL` a value `"https://machingclee.com"` when `process.env.NODE_ENV === "production"`, and otherwise an empty string so that it does nothing in development mode.
 
 Next in our routing:
 
@@ -221,14 +221,13 @@ My final addtional routes file is like this, which gets imported from `config-ov
 
 ##### Show Contents by Pre-rendered Html
 
-Navigation to `https://machingclee.github.io/skills`:
+Navigation to `https://machingclee.com/skills`:
 
   <center>
     <a href="/assets/tech/005.png"><img width="460" src="/assets/tech/005.png"/></a>
   </center>
   <br/>
   which is exactly <a href="https://github.com/machingclee/machingclee.github.io/blob/master/skills/index.html"><strong><i>this file</i></strong></a>. Moreover, it becomes a standard react app when user starts to navigate anywhere in the app (no html will be downloaded any more). It can be thought of as having 10 entry points rather than 1 in the past.<br/><br/>
-
 
 ##### Show Contents by Javascript Rendering
 

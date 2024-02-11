@@ -88,7 +88,6 @@ If you don't have `types.ts` yet, run `npx prisma generate`, which will trigger 
 ```prisma
 model User {
     id        Int     @id @default(autoincrement())
-/// id        String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid <-- if uuid is needed
     firstName String  @db.Text
     lastName  String  @db.Text
     companyId Int     @db.Integer
