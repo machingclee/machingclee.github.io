@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.6c58432f.chunk.css",
-    "main.js": "/static/js/main.4ae96797.chunk.js",
+    "main.js": "/static/js/main.657fb332.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.ac005bda.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.1cd2530a.chunk.js": "/static/js/2.1cd2530a.chunk.js",
@@ -23,7 +23,7 @@
     "static/media/004-countability-discontinuity.md": "/static/media/004-countability-discontinuity.82a19b79.md",
     "static/media/004-emotion_vgg.md": "/static/media/004-emotion_vgg.bb035d26.md",
     "static/media/005-conda-useful-commands.md": "/static/media/005-conda-useful-commands.58923fe0.md",
-    "static/media/005-yolo-custom-training.md": "/static/media/005-yolo-custom-training.7ae998d4.md",
+    "static/media/005-yolo-custom-training.md": "/static/media/005-yolo-custom-training.a27fe757.md",
     "static/media/006-qt-project-starter.md": "/static/media/006-qt-project-starter.7645e50e.md",
     "static/media/007-electron-next.md": "/static/media/007-electron-next.481a7c76.md",
     "static/media/007-redux-saga.md": "/static/media/007-redux-saga.f840908f.md",
@@ -35,9 +35,9 @@
     "static/media/011-translate-custom-model copy.md": "/static/media/011-translate-custom-model copy.fecdd379.md",
     "static/media/011-typescript-typetrick.md": "/static/media/011-typescript-typetrick.0e546903.md",
     "static/media/012-libtorch_deployment.md": "/static/media/012-libtorch_deployment.4bad3ba0.md",
-    "static/media/013-timesheet.md": "/static/media/013-timesheet.fed0b2e3.md",
+    "static/media/013-timesheet.md": "/static/media/013-timesheet.767f5762.md",
     "static/media/015-disquz.md": "/static/media/015-disquz.8b4defa2.md",
-    "static/media/016-spa-seo.md": "/static/media/016-spa-seo.4ccdbc73.md",
+    "static/media/016-spa-seo.md": "/static/media/016-spa-seo.5a2ff53d.md",
     "static/media/017-pytorch-study-notes.md": "/static/media/017-pytorch-study-notes.ac795ee2.md",
     "static/media/018-tensorflow-revisit.md": "/static/media/018-tensorflow-revisit.dbb44eac.md",
     "static/media/019-colab.md": "/static/media/019-colab.87b0566b.md",
@@ -302,6 +302,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.1cd2530a.chunk.js",
     "static/css/main.6c58432f.chunk.css",
-    "static/js/main.4ae96797.chunk.js"
+    "static/js/main.657fb332.chunk.js"
   ]
 }

@@ -16,7 +16,7 @@ date: 2021-03-08
 
 #### Study Notes on Yolo Algorithm
 
-- https://machingclee.com/blog/article/YOLOv3-Deep-Dive
+- https://machingclee.github.io//blog/article/YOLOv3-Deep-Dive
 
 #### Result
 

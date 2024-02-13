@@ -50,19 +50,64 @@ toc: true
 
   [![](/assets/img/2024-02-12-16-55-07.png)](/assets/img/2024-02-12-16-55-07.png)
 
+  ```
+- Dependencies: 
+  ```json
+  {
+      "@prisma/client": "^5.9.0",
+      "@types/cors": "^2.8.13",
+      "@types/express": "^4.17.17",
+      "@types/express-session": "^1.17.7",
+      "@types/jsonwebtoken": "^9.0.2",
+      "@types/node": "^20.11.17",
+      "cors": "^2.8.5",
+      "dayjs": "^1.11.10",
+      "env-cmd": "^10.1.0",
+      "express": "^4.18.2",
+      "express-async-errors": "^3.1.1",
+      "googleapis": "^124.0.0",
+      "jsonwebtoken": "^9.0.1",
+      "kysely": "^0.27.2",
+      "nodemon": "^3.0.1",
+      "pg": "^8.11.3",
+      "prisma": "^5.9.0",
+      "prisma-kysely": "^1.7.1",
+      "server": "^1.0.38",
+      "serverless-http": "^3.2.0",
+      "serverless-plugin-common-excludes": "^4.0.0",
+      "serverless-plugin-typescript-express": "^1.0.8",
+      "ts-node": "^10.9.1",
+      "typescript": "^5.1.6"
+  }
+  ```
+  with Prisma removed:
+  ```yaml
+  package:
+    patterns:
+      - '!node_modules/.prisma/client/libquery_engine-*'
+      - '!node_modules/prisma/**'
+      - '!node_modules/@prisma/**'
+  ```
+
 #### Tech Stack and Some of My Technical Consideration for the Stack
 ##### Next.js
 ###### Choose to use External Backend Instead of Using `app/api/` Folder in Nextjs
 - Unlike usual middlewares in `express.js`, middlewares in `next.js` cannot modify the `req` object, and therefore not able to equip `req` with desired new properties along the chain of middlewares.
 
-- Each api call is handled by a single file and each file exports  `GET, POST, PUT, DELETE` methods.
+- In `next.js` each api call is handled by a single file and each file exports  `GET`, `POST`, `PUT`, `DELETE` methods.
 
-  However, I am used to functional way of defining handlers using  `app.get, app.post`, etc, that can be organized ***in a single file***.
+  However, I am used to functional way of defining handlers using  `app.get`, `app.post`, ..., etc, that can be organized ***in a single file***.
 
-- More refined error handling by customized middleware.
+- External backend has more refined error handling by customized middleware.
 
-###### Then Why Nextjs anyway?
-- Love the file-based router, deployed as a vercel.app.
+###### Then Why Nextjs Anyway?
+
+- ***File-based*** routing alone is worth our decision to using it.
+
+- Huge flexibility of using-server and client-component. We can even mix them, i.e., a page is a server-component (when we want SEO for that part), of which, there can be client-component (for delicated frontend interactivity).
+
+
+
 
 ##### Lambda Functions
    
