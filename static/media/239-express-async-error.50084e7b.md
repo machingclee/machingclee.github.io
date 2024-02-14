@@ -1,9 +1,9 @@
 ---
 title: "express-async-errors"
-date: 2024-01-27
+date: 2024-02-12
 id: blog0239
 tag: nodejs, express
-intro: "Record the usage of a package called express-async-errors"
+intro: "Record the usage of a package called express-async-errors."
 toc: false
 ---
 

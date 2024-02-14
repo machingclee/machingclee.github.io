@@ -3,7 +3,7 @@ title: "Code Organization for Redis"
 date: 2024-01-27
 id: blog0238
 tag: redis, nodejs
-intro: "We study how to organize code for redis caching in a nodejs project"
+intro: "We study how to organize code for redis caching in a nodejs project."
 toc: true
 ---
 
