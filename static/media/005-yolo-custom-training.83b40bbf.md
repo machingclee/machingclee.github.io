@@ -6,7 +6,7 @@ thumbnail: /assets/portfolios/thumbnails/yolov3custom.png
 tech: Python, Tensorflow
 thumbWidth: 400
 thumbTransX: 0
-thumbTransY: 0
+thumbTransY: -60
 date: 2021-03-08
 ---
 
@@ -16,7 +16,7 @@ date: 2021-03-08
 
 #### Study Notes on Yolo Algorithm
 
-- https://machingclee.github.io//blog/article/YOLOv3-Deep-Dive
+- https://machingclee.com/blog/article/YOLOv3-Deep-Dive
 
 #### Result
 

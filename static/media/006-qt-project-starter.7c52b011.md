@@ -6,7 +6,7 @@ thumbnail: /assets/portfolios/thumbnails/qt_proj_starter.png
 tech: C++, Qt
 thumbWidth: 500 
 thumbTransX: 0
-thumbTransY: -10
+thumbTransY: -100
 date: 2021-06-23
 ---
 

@@ -6,7 +6,7 @@ thumbnail: /assets/portfolios/images/rust_detections.png
 tech: Python, Pytorch
 thumbWidth: 400 
 thumbTransX: -10
-thumbTransY: 0
+thumbTransY: -100
 date: 2022-06-29
 ---
 

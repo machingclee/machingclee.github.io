@@ -6,7 +6,7 @@ thumbnail: /assets/portfolios/thumbnails/retinaface.png
 tech: Python, Pytorch
 thumbWidth: 400
 thumbTransX: -100
-thumbTransY: -50
+thumbTransY: -180
 date: 2022-11-10
 ---
 

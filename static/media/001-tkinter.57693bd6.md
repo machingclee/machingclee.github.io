@@ -6,7 +6,7 @@ thumbnail: /assets/portfolios/thumbnails/tkinter.jpg
 tech: Python, tkinter
 thumbWidth: 350
 thumbTransX: -20
-thumbTransY: -45
+thumbTransY: -300
 date: 2019-12-29
 ---
 

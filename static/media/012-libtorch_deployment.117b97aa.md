@@ -6,7 +6,7 @@ thumbnail: /assets/portfolios/thumbnails/libtorch_deployment.png
 tech: Pytorch (python), Libtorch (C++)
 thumbWidth: 300
 thumbTransX: -22
-thumbTransY: -40
+thumbTransY: -350
 date: 2023-04-02
 ---
 

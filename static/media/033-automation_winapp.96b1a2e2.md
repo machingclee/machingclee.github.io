@@ -253,21 +253,15 @@ Return
 #IfWinActive
 
 #IfWinActive ahk_exe Photoshop.exe
-  MButton::
-    Send {Space Down}
-    Send {LButton Down}
-    KeyWait, MButton
-    Send {LButton Up}
-    Send {Space Up}
-  Return
-#IfWinActive
-
-#IfWinActive ahk_exe Photoshop.exe
   #!LButton::#!RButton
   !^RButton::!^LButton
-#IfWinActive
 
-#IfWinActive ahk_exe Photoshop.exe
+  MButton::
+    While GetKeyState("MButton", "P") {
+      Send {Space down}{LButton}
+    }
+  Return
+
   $^z::
     while(GetKeyState("CTRL", "p") && GetKeyState("z", "p"))
     {
@@ -283,19 +277,17 @@ Return
       }
     }
   Return
-#IfWinActive
 
-#IfWinActive ahk_exe Photoshop.exe
   $^y::
     While (GetKeyState("CTRL", "p") && GetKeyState("y", "p"))
     {
       If (A_TimeSinceThisHotkey < 250)
       {
-        Sendinput ^y                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
-        sleep, 250     
-      } 
+        Sendinput ^y
+        sleep, 250
+      }
       else
-      { 
+      {
         SendInput ^y
         Sleep, 100
       }
@@ -309,16 +301,21 @@ Return
     KeyWait, MButton
 
     Send {Space up}{LButton up}
-  Return   
-#ifWinActive   
+  Return
+#ifWinActive
 
-#IfWinActive ahk_exe ffxiv_dx11.exe 
-  NumpadEnd::l   
+#IfWinActive ahk_exe ffxiv_dx11.exe
+  NumpadEnd::l
 
-
-  NumpadSub::
+  NumpadAdd::
     Send {CtrlDown}{F1}
-    KeyWait, NumpadSub
+    KeyWait, NumpadAdd
+    Send {CtrlUp}
+  Return
+
+  +NumpadAdd::
+    Send {CtrlDown}{F4}
+    KeyWait, NumpadAdd
     Send {CtrlUp}
   Return
 
@@ -328,23 +325,25 @@ Return
     Send {CtrlUp}
   Return
 
-  NumpadMult::
+  NumLock::Return
+
+  NumpadSub::
     Send {CtrlDown}{F3}
+    KeyWait, NumpadSub
+    Send {CtrlUp}
+  Return
+
+  +NumpadSub::
+    Send {CtrlDown}{F5}
+    KeyWait, NumpadSub
+    Send {CtrlUp}
+  Return
+
+  NumpadMult::
+    Send {CtrlDown}{F6}
     KeyWait, NumpadMult
     Send {CtrlUp}
   Return
-
-
-  NumpadAdd::
-    Send {CtrlDown}{F4}
-    KeyWait, NumpadAdd
-    Send {CtrlUp}
-  Return
-
-
-
-  NumLock::Return
-
 
   Numpad0::
     Send {CtrlDown}{F7}
@@ -352,15 +351,8 @@ Return
     Send {CtrlUp}
   Return
 
-  NumpadDiv::
-    Send {CtrlDown}{F6}
-    KeyWait, NumpadDiv
-    Send {CtrlUp}
-  Return
-
-
   NumpadDot::
-    Send {CtrlDown}{F5}
+    Send {CtrlDown}{F8}
     KeyWait, NumpadDot
     Send {CtrlUp}
   Return

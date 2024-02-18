@@ -6,7 +6,7 @@ thumbnail: /assets/portfolios/thumbnails/emotion.png
 tech: Python, Tensorflow
 thumbWidth: 320 
 thumbTransX: -40
-thumbTransY: -40
+thumbTransY: -250
 date: 2020-12-29
 ---
 
