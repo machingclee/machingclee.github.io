@@ -1,6 +1,6 @@
 ---
-title: "Commonly Used Command in Prisma, and More Table Migration Script"
-date: 2023-12-16
+title: "Prisma Migration Script"
+date: 2023-02-25
 id: blog0223
 tag: sql, prisma
 intro: "Record the commonly used migration scripts in prisma and sql."
@@ -14,11 +14,14 @@ In the course of using `prisma` I have developed the following helper commands i
 ```json
 "scripts": {
     "migrate": "env-cmd -f .env-cmdrc -e default,dev npx prisma migrate dev",
-    "migrate-create-only": "env-cmd -f .env-cmdrc -e default,dev npx prisma migrate dev --create-only",
-    "migrate-deploy:uat": "env-cmd -f .env-cmdrc -e default,uat npx prisma migrate deploy",
+    "migrate:create-only": "env-cmd -f .env-cmdrc -e default,dev npx prisma migrate dev --create-only",
+    "migrate:resolve": "env-cmd -f .env-cmdrc -e default,dev npx prisma migrate resolve --applied",
+    "migrate:deploy:uat": "env-cmd -f .env-cmdrc -e default,uat npx prisma migrate deploy",
+    "migrate:deploy:poc": "env-cmd -f .env-cmdrc -e default,poc npx prisma migrate deploy",
+    "migrate:deploy:prod": "env-cmd -f .env-cmdrc -e default,prod npx prisma migrate deploy",
     "migrate-resolve:uat": "env-cmd -f .env-cmdrc -e default,uat npx prisma migrate resolve --applied",
-    "migrate-rollback:dev": "env-cmd -f .env-cmdrc -e default,dev npx prisma migrate resolve --rolled-back",
-    "migrate-rollback:uat": "env-cmd -f .env-cmdrc -e default,uat npx prisma migrate resolve --rolled-back",
+    "migrate-resolve:poc": "env-cmd -f .env-cmdrc -e default,poc npx prisma migrate resolve --applied",
+    "migrate-resolve:prod": "env-cmd -f .env-cmdrc -e default,prod npx prisma migrate resolve --applied",
 }
 ```
 
@@ -29,19 +32,13 @@ In the course of using `prisma` I have developed the following helper commands i
 
   We keep updating the `schema.prisma`, `yarn migrate-create-only` to obtain faulty migration script, **_correct it_**, and `yarn migrate`.
 
-- `migrate-deploy:uat` \
+- `migrate:deploy:uat` \
   Apply all migration scripts to production server. The scripts are well tested in local development.
 - `migrate-resolve:uat` \
   Used when we have manaully updated the table (due to incorrect procedures).
 
   We record the changes in migration file and run `migrate-resolve:uat <migration-name>` to indicate that the changes has been applied.
 
-- `migrate-rollback:dev`/`migrate-rollback:dev` \
-  Sometimes a migration fails, but it still be logged in the table `_prisma_migrations` of our database.
-
-  This can happen if our migration has been executed before we apply our migration script (for example, two developers try to do the same migration).
-
-  In such cases, we run `migrate-rollback:dev` to revoke our execution record, make adjustment to our own script or even make adjustment directly to the database (if we want to drop column, then we add a column in the database for the script to delete that column).
 
 #### SQL Migration Scripts
 
