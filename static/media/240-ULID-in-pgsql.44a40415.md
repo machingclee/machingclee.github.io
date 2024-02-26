@@ -90,6 +90,8 @@ toc: true
 
 - Next we turn `01HQGKW8ZK4FVKT8N5WYEQNB7F` into the stand `uuid` format:
   ```sql
+  CREATE EXTENSION pgcrypto;
+
   CREATE OR REPLACE FUNCTION parse_ulid(ulid text) RETURNS bytea AS $$
   DECLARE
     -- 16byte 
@@ -183,4 +185,4 @@ we get
 
 - [SQL Function to get ULID](https://github.com/geckoboard/pgulid/blob/master/pgulid.sql)
 
-- [Parse ULID to UUID] (https://github.com/scoville/pgsql-ulid/blob/main/ulid-to-uuid.sql)
+- [Parse ULID to UUID](https://github.com/scoville/pgsql-ulid/blob/main/ulid-to-uuid.sql)
