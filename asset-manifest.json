@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.0c42d739.chunk.css",
-    "main.js": "/static/js/main.48a0b49f.chunk.js",
+    "main.js": "/static/js/main.e888f7be.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.b9ca4c3e.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.79ff7a6d.chunk.js": "/static/js/2.79ff7a6d.chunk.js",
@@ -23,7 +23,7 @@
     "static/media/004-countability-discontinuity.md": "/static/media/004-countability-discontinuity.82a19b79.md",
     "static/media/004-emotion_vgg.md": "/static/media/004-emotion_vgg.da8b1ae1.md",
     "static/media/005-conda-useful-commands.md": "/static/media/005-conda-useful-commands.58923fe0.md",
-    "static/media/005-yolo-custom-training.md": "/static/media/005-yolo-custom-training.83b40bbf.md",
+    "static/media/005-yolo-custom-training.md": "/static/media/005-yolo-custom-training.ab4ddfe2.md",
     "static/media/006-qt-project-starter.md": "/static/media/006-qt-project-starter.7c52b011.md",
     "static/media/007-electron-next.md": "/static/media/007-electron-next.481a7c76.md",
     "static/media/007-redux-saga.md": "/static/media/007-redux-saga.f840908f.md",
@@ -37,7 +37,7 @@
     "static/media/012-libtorch_deployment.md": "/static/media/012-libtorch_deployment.117b97aa.md",
     "static/media/013-timesheet.md": "/static/media/013-timesheet.b9dbcad8.md",
     "static/media/015-disquz.md": "/static/media/015-disquz.8b4defa2.md",
-    "static/media/016-spa-seo.md": "/static/media/016-spa-seo.4ccdbc73.md",
+    "static/media/016-spa-seo.md": "/static/media/016-spa-seo.4895dc0f.md",
     "static/media/017-pytorch-study-notes.md": "/static/media/017-pytorch-study-notes.ac795ee2.md",
     "static/media/018-tensorflow-revisit.md": "/static/media/018-tensorflow-revisit.dbb44eac.md",
     "static/media/019-colab.md": "/static/media/019-colab.87b0566b.md",
@@ -306,6 +306,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.79ff7a6d.chunk.js",
     "static/css/main.0c42d739.chunk.css",
-    "static/js/main.48a0b49f.chunk.js"
+    "static/js/main.e888f7be.chunk.js"
   ]
 }
