@@ -88,7 +88,13 @@ toc: true
 
 #### Page to Create Access Token
 
-- [Visit Here](https://expo.dev/accounts/machingclee/settings/access-tokens)
+By default everyone who owns the device's `expo-push-notification-token`  can send push-notification to that device. Expo provides one additional layer to prevent malacious use of a notification token (just in case someone gets the token for some reason)
+
+
+- [Get Access Token Here](https://expo.dev/accounts/machingclee/settings/access-tokens)
+
+You can use this token in <a href="#pushNotificationUtil.ts" target="_self">pushNotificationUtil.ts</a> section.
+
 
 ##### Personal Access Tokens
 ```text
