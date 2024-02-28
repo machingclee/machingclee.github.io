@@ -16,7 +16,7 @@ toc: true
 
 #### To Receive Push Notification
 
-##### Android 
+##### Android (Configure Firebase Project)
 
 
 - [Firebase Console](https://console.firebase.google.com/u/0/)
@@ -82,80 +82,8 @@ toc: true
 
 
 
-##### iOS
+##### iOS (Nothong)
 - Nothing to add as we are using EAS-build. 
-
-
-#### To Get Client-side Notification Token
-##### Frontend
-
-- [Full resource](https://docs.expo.dev/push-notifications/sending-notifications)
-
-- In order for server to send notification to a user, the user must first provide his/her own `push-notificaton-token` via the following function:
-
-    ```js
-    async function getNotificationTokenAsync(userId: string) {
-        if (Platform.OS === 'android') {
-            Notifications.setNotificationChannelAsync('default', {
-                name: 'default',
-                importance: Notifications.AndroidImportance.MAX,
-                vibrationPattern: [0, 250, 250, 250],
-                lightColor: '#FF231F7C',
-            });
-        }
-
-        if (Device.isDevice) {
-            const { status: existingStatus } = await Notifications.getPermissionsAsync();
-            let finalStatus = existingStatus;
-            console.log("finalStatusfinalStatusfinalStatus", finalStatus);
-            if (existingStatus !== 'granted') {
-                const { status } = await Notifications.requestPermissionsAsync();
-                finalStatus = status;
-            }
-            if (finalStatus !== 'granted') {
-                alert('Failed to get push token for push notification!');
-                return;
-            }
-            const token = await Notifications.getExpoPushTokenAsync({
-                projectId: Constants?.expoConfig?.extra?.eas.projectId || "",
-            });
-
-            return token.data;
-        } else {
-            throw new Error("Must use physical device for Push Notifications");
-        }
-    }
-
-    const token = await getNotificationTokenAsync(userId);
-    ```
-  This token should be provided on each successfully login action, we can create an `POST`-endpoint for loginned user to upload their `push-notification-token`.
-
-##### Backend (Upsert)
-
-```js
-// controller: 
-
-const providePushNotificationToken = async (req: Request, res: Response) => {
-    const userEmail = req.user?.email || "";
-    const { pushNotificationToken } = req.body as { pushNotificationToken: string };
-
-    await db.insertInto("PushNotification")
-        .values({ userEmail, token: pushNotificationToken })
-        .onConflict(oc => oc
-            // `userEmail` is the only unique-key constraint
-            .columns(["userEmail"])
-            .doUpdateSet(eb => ({ token: eb.ref("excluded.token") }))
-        )
-        .execute();
-    res.json({ success: true });
-}
-```
-
-
-[![](/assets/img/2024-02-28-07-57-43.png)](/assets/img/2024-02-28-07-57-43.png)
-
-
-
 
 
 #### Page to Create Access Token
@@ -189,9 +117,14 @@ After that any naked `POST` request cannot send notification to your user even t
 
 #### Receive Notification in Mobile
  
+##### Frontend
+###### Create a PushNotification Token at Entrypoint
+
 We use the following hook 
 
 ```js
+// hooks/usePushNotification.ts
+
 import { useState, useEffect, useRef } from 'react';
 import { Text, View, Button, Platform } from 'react-native';
 import * as Device from 'expo-device';
@@ -246,7 +179,7 @@ async function getNotificationTokenAsync(userId: string) {
     }
 }
 
-export default function initiatePushNotification() {
+export default function usePushNotification() {
     const dispatch = useAppDispatch();
     const router = useRouter();
     configNotificationHandler();
@@ -291,19 +224,79 @@ export default function initiatePushNotification() {
 }
 ```
 
-We will call `subscribeNotification()` whenever we try to login. Note that `action A` and `action B` have different behaviour:
 
 
 
-##### Control the User's Behaviour (User being Passive)
+We will call `subscribeNotification()` whenever we try to login. 
+
+For example, in the entrypoint of our application:
+
+```js
+export default () => {
+    const [_, setHydrated] = useState(false); // force rerendering only
+    const { accessToken, userId } = useAppSelector(s => s.auth);
+    const dispatch = useAppDispatch();
+    const { subscribeNotification } = usePushNotification();
+   
+    ...
+
+    useEffect(() => {
+        if (!accessToken) {
+            router.push("/login")
+        } else {
+            subscribeNotification(userId);
+        }
+    }, [accessToken]);
+
+    useEffect(() => {
+        setTimeout(() => {
+            setHydrated(true);
+        }, 1);
+    }, [])
+
+    return (
+        ...
+    )
+}
+```
+This effect will be executed everytime we login or launch the application.
+
+
+Note that `action A` and `action B` inside `subscribeNotification` have different behaviour:
+
+###### Control the User's Behaviour (User being Passive)
 
 - Look at the hook ahove, `actionA` will be executed only when user is in-app, moreover, the action will take place without user's consent.
 
-##### User Controles the Behaviour (User being Active)
+###### User Controles the Behaviour (User being Active)
 
 - Look at the hook above, `actionB` will be executed when user ***tap into*** the application.
 
 
+
+##### Backend (Receive Push Notification Token via Upsert)
+
+```js
+// controller: 
+
+const providePushNotificationToken = async (req: Request, res: Response) => {
+    const userEmail = req.user?.email || "";
+    const { pushNotificationToken } = req.body as { pushNotificationToken: string };
+
+    await db.insertInto("PushNotification")
+        .values({ userEmail, token: pushNotificationToken })
+        .onConflict(oc => oc
+            // `userEmail` is the only unique-key constraint
+            .columns(["userEmail"])
+            .doUpdateSet(eb => ({ token: eb.ref("excluded.token") }))
+        )
+        .execute();
+    res.json({ success: true });
+}
+```
+
+
+[![](/assets/img/2024-02-28-07-57-43.png)](/assets/img/2024-02-28-07-57-43.png)
 
 #### Send Notification via Backend
 ##### Nodejs Library to Send Notification 

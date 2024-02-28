@@ -23,7 +23,7 @@ toc: true
 - Example Result of this Function: `01HQGKW8ZK4FVKT8N5WYEQNB7F`
 
 - ```sql
-  CREATE EXTENSION pgcrypto;
+  CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
   CREATE OR REPLACE FUNCTION generate_ulid()
   RETURNS TEXT
