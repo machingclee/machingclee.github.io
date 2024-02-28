@@ -3,7 +3,7 @@ title: "Use ULID in PostgreSQL"
 date: 2024-02-26
 id: blog0240
 tag:  sql, prisma
-intro: "We record how to use ULID instead of uuid in PGSQL"
+intro: "We record how to use ULID instead of UUID in PostgreSQL"
 toc: true
 ---
 
@@ -23,6 +23,8 @@ toc: true
 - Example Result of this Function: `01HQGKW8ZK4FVKT8N5WYEQNB7F`
 
 - ```sql
+  CREATE EXTENSION pgcrypto;
+
   CREATE OR REPLACE FUNCTION generate_ulid()
   RETURNS TEXT
   AS $$
@@ -88,10 +90,8 @@ toc: true
 
 - [Source](https://github.com/scoville/pgsql-ulid/blob/main/ulid-to-uuid.sql)
 
-- Next we turn `01HQGKW8ZK4FVKT8N5WYEQNB7F` into the stand `uuid` format:
+- Next we turn `01HQGKW8ZK4FVKT8N5WYEQNB7F` into the standard `UUID` format:
   ```sql
-  CREATE EXTENSION pgcrypto;
-
   CREATE OR REPLACE FUNCTION parse_ulid(ulid text) RETURNS bytea AS $$
   DECLARE
     -- 16byte 
@@ -174,7 +174,7 @@ LANGUAGE plpgsql;
 
 Now by 
 ```sql
-select ulid_as_uuid();
+SELECT ulid_as_uuid();
 ```
 we get 
 ```sql
