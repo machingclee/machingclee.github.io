@@ -13,13 +13,16 @@ toc: true
   }
 </style>
 
+#### Queues Structure
+
+[![](/assets/img/2024-03-02-23-57-02.png)](/assets/img/2024-03-02-23-57-02.png)
+
+
 #### File Structure
 
-- ![](/assets/img/2024-01-28-00-46-02.png)
+![](/assets/img/2024-01-28-00-46-02.png)
 
-- Here our exchanges are defined in `channels.ts` (it would be better if we extract them into a single file).
-
-- Let's explore these files one by one
+Let's explore these files one by one.
 
 ##### QueueName.ts
 
@@ -489,7 +492,7 @@ const snoozeAndPinQueue =  new MessageQueue<SnoozeAndPinMessage> ({
 
 export default snoozeAndPinQueue;
 ```
-Note that we have leave the `consumption` field empty and we have not put it inside the list of  `consumptions.ts`.
+Here we have leave the `consumption` field empty and we have not put it inside the list of  `consumptions.ts`.
 
 ###### snoozeAndPinDeadLetterQueue.ts
 
