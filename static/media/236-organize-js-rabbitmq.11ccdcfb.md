@@ -271,7 +271,7 @@ export default [
   llmTranslationQueue.initConsumption,
   llmUsageLogQueue.initConsumption,
   snoozeAndPinDeadLetterQueue.initConsumption,
-  snoozeAndPinQueue.initConsumption,
+  // snoozeAndPinQueue.initConsumption,  <---- don't add this 
   llmImpactUpdateQueue.initConsumption,
 ];
 ```
@@ -416,7 +416,8 @@ export default class MessageQueue<MessageType> {
 
 Note that by using `MessageQueue` class we can pay all our attention to writing `consumption` logic.
 
-##### excelGenReqToFlaskQueue
+##### Normal Task Queue
+###### excelGenReqToFlaskQueue
 
 ```js
 import LLMStatus from "../../constants/LLMStatus";
@@ -465,9 +466,11 @@ const excelGenReqToFlaskQueue = new MessageQueue<{
 export default excelGenReqToFlaskQueue;
 ```
 
-##### snoozeAndPinQueue.ts
+##### Dead-Letter Queues
 
-Note that this queue is supposed to be a delayed task queue, no consumption should be inited. Otherwise we have to at least `ack`, `nack`, `reject` which violates our purpose to let the message expire automatically.
+###### snoozeAndPinQueue.ts
+
+Note that this queue is supposed to be a delayed task queue, ***no consumption should be inited***. Otherwise we have to at least `ack`, `nack`, `reject` which violates our purpose to let the message expire automatically.
 
 ```js
 import { SnoozeAndPinMessage } from "../../dto/dto";
@@ -478,19 +481,17 @@ import MessageQueue from "../model/MessageQueue";
 
 const normalTaskChannel = () => channels.getNormalTaskChannel();
 
-const snoozeAndPinQueue =
-  new MessageQueue() <
-  SnoozeAndPinMessage >
-  {
+const snoozeAndPinQueue =  new MessageQueue<SnoozeAndPinMessage> ({
     channel: normalTaskChannel,
     queueName: QueueName.SNOOZE_AND_PIN,
     routingKey: RoutingKey.SNOOZE_AND_PIN,
-  };
+});
 
 export default snoozeAndPinQueue;
 ```
+Note that we have leave the `consumption` field empty and we have not put it inside the list of  `consumptions.ts`.
 
-##### snoozeAndPinDeadLetterQueue.ts
+###### snoozeAndPinDeadLetterQueue.ts
 
 According to our configuration in `queueBinding.ts`, after `SNOOZE_PIN_TTL` ms, the message from `QueueName.SNOOZE_AND_PIN` will be redirected to `RoutingKey.SNOOZE_AND_PIN_DEAD_LETTER` via `GENERAL_DEAD_EXCHANGE` exchange.
 
