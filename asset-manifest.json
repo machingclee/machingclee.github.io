@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.0c42d739.chunk.css",
-    "main.js": "/static/js/main.9f2780c3.chunk.js",
+    "main.js": "/static/js/main.bccbf305.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.9b664135.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.2efd0dfd.chunk.js": "/static/js/2.2efd0dfd.chunk.js",
@@ -54,7 +54,7 @@
     "static/media/030-chrome_automation.md": "/static/media/030-chrome_automation.64f09c74.md",
     "static/media/031-automation_winapp.md": "/static/media/031-automation_winapp.ecb96c7d.md",
     "static/media/032-python-import.md": "/static/media/032-python-import.e0321524.md",
-    "static/media/033-automation_winapp.md": "/static/media/033-automation_winapp.96b1a2e2.md",
+    "static/media/033-automation_winapp.md": "/static/media/033-automation_winapp.812d67ed.md",
     "static/media/034-debugger.md": "/static/media/034-debugger.c183e127.md",
     "static/media/035-decompose-a-class.md": "/static/media/035-decompose-a-class.bd1fe2cd.md",
     "static/media/036-threading.md": "/static/media/036-threading.336c175a.md",
@@ -245,16 +245,16 @@
     "static/media/233-github-actions.md": "/static/media/233-github-actions.8ac4d530.md",
     "static/media/234-algolia-revisit.md": "/static/media/234-algolia-revisit.a0b9aa1f.md",
     "static/media/235-github-actinos-fargate copy.md": "/static/media/235-github-actinos-fargate copy.01e21d46.md",
-    "static/media/236-organize-js-rabbitmq.md": "/static/media/236-organize-js-rabbitmq.d5b1c1d3.md",
-    "static/media/237-auto-hot-key-for-vscode copy.md": "/static/media/237-auto-hot-key-for-vscode copy.22bdad75.md",
-    "static/media/238-redis-code-organization copy.md": "/static/media/238-redis-code-organization copy.c04af1cf.md",
-    "static/media/239-forcefully-migrate-prisma copy.md": "/static/media/239-forcefully-migrate-prisma copy.0a13c364.md",
+    "static/media/236-organize-js-rabbitmq.md": "/static/media/236-organize-js-rabbitmq.5f59cc79.md",
+    "static/media/237-auto-hot-key-for-vscode.md": "/static/media/237-auto-hot-key-for-vscode.22bdad75.md",
+    "static/media/238-redis-code-organization.md": "/static/media/238-redis-code-organization.c04af1cf.md",
+    "static/media/239-forcefully-migrate-prisma.md": "/static/media/239-forcefully-migrate-prisma.0a13c364.md",
     "static/media/240-ULID-in-pgsql.md": "/static/media/240-ULID-in-pgsql.2f92ac49.md",
-    "static/media/241-timestamp-in-pgsql copy.md": "/static/media/241-timestamp-in-pgsql copy.10220442.md",
-    "static/media/242-as-with-clause copy.md": "/static/media/242-as-with-clause copy.8bf53071.md",
-    "static/media/243-push-notification copy.md": "/static/media/243-push-notification copy.444886bf.md",
-    "static/media/244-sql-function-to-generate-date copy.md": "/static/media/244-sql-function-to-generate-date copy.fcb1fc7c.md",
-    "static/media/245-custom-node-script copy.md": "/static/media/245-custom-node-script copy.98accf48.md",
+    "static/media/241-timestamp-in-pgsql.md": "/static/media/241-timestamp-in-pgsql.10220442.md",
+    "static/media/242-as-with-clause.md": "/static/media/242-as-with-clause.8bf53071.md",
+    "static/media/243-push-notification.md": "/static/media/243-push-notification.444886bf.md",
+    "static/media/244-sql-function-to-generate-date.md": "/static/media/244-sql-function-to-generate-date.fcb1fc7c.md",
+    "static/media/245-custom-node-script.md": "/static/media/245-custom-node-script.98accf48.md",
     "static/media/CV_Portfolio.c337795e.pdf": "/static/media/CV_Portfolio.c337795e.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -308,6 +308,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.2efd0dfd.chunk.js",
     "static/css/main.0c42d739.chunk.css",
-    "static/js/main.9f2780c3.chunk.js"
+    "static/js/main.bccbf305.chunk.js"
   ]
 }
