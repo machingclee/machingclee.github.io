@@ -2,7 +2,7 @@
 title: "Algorithm: Merge Sort and its Time Complexity"
 date: 2021-07-25
 id: blog0009
-tag: coding
+tag: algorithm
 intro: Study the implementation of sorting algorithms
 ---
 

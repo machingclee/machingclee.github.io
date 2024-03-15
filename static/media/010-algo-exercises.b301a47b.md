@@ -2,7 +2,7 @@
 title: Exercises on Algorithms
 date: 2021-07-26
 id: blog0010
-tag: coding
+tag: algorithm
 intro: A note to solved problems and calculate the related time complexities.
 ---
 
