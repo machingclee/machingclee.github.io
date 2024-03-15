@@ -25,7 +25,7 @@ We divide notifications into two types:
 
 - Without that, we would have to sub-query all the data using an `userId`, making an API non-cachable.
 
-- `IndividualUserNotificationType` indicates the ***notication purpose*** of that notification. 
+- `IndividualUserNotificationType` indicates the ***notification purpose*** of that notification. 
 
   - For example, type: `NEW_ISSUE`  means that we want to notify `userEmail` there is a new issue. 
 
@@ -33,7 +33,7 @@ We divide notifications into two types:
 
   - Similarly, type: `NEW_CHANNEL_TO_JOIN` means that we want to notify `userEmail` there is a new channel available.
 
-    **Which channel is it?** which is the channel corr. to `channelId`.
+    **Which channel is it?** Which is the channel corr. to `channelId`.
   
 
 
@@ -91,7 +91,7 @@ model GlobalNotification {
 
 
 
-##### What to receive in frontend?
+##### What to Receive in Frontend?
 
 
 - First of all we need to know from business logic:
