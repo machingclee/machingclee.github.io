@@ -151,7 +151,7 @@ model GlobalNotification {
 
 ##### How Frontend Consume the Data?
 
-What store the data inside `state.inappNotification` of some slice.
+We store the data inside `state.inappNotification` of some slice.
 
 ```js
 ...
