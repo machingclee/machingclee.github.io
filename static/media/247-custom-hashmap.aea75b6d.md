@@ -1,7 +1,7 @@
 ---
 title: "Custom HashTable by Separate Chaining"
 date: 2024-03-15
-id: blog0246
+id: blog0247
 tag: go, data-structure
 intro: "We implement a simple hashtable by using golang."
 toc: true
