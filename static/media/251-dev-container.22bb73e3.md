@@ -15,7 +15,7 @@ toc: true
 
 #### Why 
 
-- By looking at the `Dockerfile` clearly we wouldn't want to install them at the developer's machine because some may use windows, some may use mac. 
+- By looking at the `Dockerfile` clearly we wouldn't want to install those dependencies at the developer's machine because some may use windows, some may use mac. 
 
 - By using dev container, we can unify the dev environment.
 

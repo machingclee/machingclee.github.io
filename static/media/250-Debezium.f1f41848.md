@@ -55,7 +55,7 @@ toc: true
 
   ![](/assets/img/2024-03-29-23-45-35.png)
 
-  We are call them ***source connector***.
+  We call them ***source connector***.
 
 - In case we need to ***output*** those record into other storage, we use ***sink connector***.
 
