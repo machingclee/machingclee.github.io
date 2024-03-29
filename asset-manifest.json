@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.0c42d739.chunk.css",
-    "main.js": "/static/js/main.64784bcf.chunk.js",
+    "main.js": "/static/js/main.93e11421.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.f477ba55.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.2b24e365.chunk.js": "/static/js/2.2b24e365.chunk.js",
@@ -32,7 +32,7 @@
     "static/media/009-text-detection-and-erase.md": "/static/media/009-text-detection-and-erase.6650e307.md",
     "static/media/010-algo-exercises.md": "/static/media/010-algo-exercises.b301a47b.md",
     "static/media/010-classifier-by-means-of-detection copy.md": "/static/media/010-classifier-by-means-of-detection copy.fc4a57c1.md",
-    "static/media/011-translate-custom-model copy.md": "/static/media/011-translate-custom-model copy.11051c14.md",
+    "static/media/011-translate-custom-model copy.md": "/static/media/011-translate-custom-model copy.648d443c.md",
     "static/media/011-typescript-typetrick.md": "/static/media/011-typescript-typetrick.0e546903.md",
     "static/media/012-libtorch_deployment.md": "/static/media/012-libtorch_deployment.117b97aa.md",
     "static/media/013-timesheet.md": "/static/media/013-timesheet.b9dbcad8.md",
@@ -314,6 +314,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.2b24e365.chunk.js",
     "static/css/main.0c42d739.chunk.css",
-    "static/js/main.64784bcf.chunk.js"
+    "static/js/main.93e11421.chunk.js"
   ]
 }

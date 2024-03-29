@@ -1,6 +1,6 @@
 ---
 id: portfolio011
-title: Deploy Custom Pytorch Model to Frontend
+title: Deploy Custom Pytorch Model to Web Frontend
 intro: This project attempts to deploy custom trained model in pytorch into browser.
 thumbnail: /assets/portfolios/thumbnails/retinaface.png
 tech: Python, Pytorch
