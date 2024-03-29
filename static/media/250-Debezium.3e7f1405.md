@@ -3,7 +3,7 @@ title: "CDC, Debezium"
 date: 2024-03-28
 id: blog0250
 tag: cdc, confluent, debezium, kafka
-intro: "We study read lock and write lock."
+intro: "We study how to configure Debezium in Confluent to listen changes of database, which is very helpful in streaming real-time changes to frontend."
 toc: true
 ---
 
