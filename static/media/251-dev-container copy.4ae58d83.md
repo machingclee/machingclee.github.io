@@ -56,7 +56,7 @@ RUN apk add --no-cache --virtual .build-deps gcc zlib-dev libc-dev bsd-compat-he
 
 - Even we `mkdir -p` and `WORKDIR` at a directory and successfully  `npm install`, but inside container we are at the workspace defined by the vscode extention `Remote Development` rather than the directory specified by `WORKDIR`.
 
-- The correct procedure should be simply install all the native linux libraries, and we install runtime-specific library ***inside*** the container.
+- The correct procedure should be to install just the native linux libraries, and then we install runtime-specific library ***inside*** the container.
 
 - Note that the `node_modules` installed inside the container will be linux-specific, running it in windows will fail.
 
