@@ -73,3 +73,8 @@ RUN apk add --no-cache --virtual .build-deps gcc zlib-dev libc-dev bsd-compat-he
 3.  Choose the configuration we have just named:
 
     ![](/assets/img/2024-03-29-23-31-12.png)
+
+
+#### VPCs & Subnets
+
+![](/assets/img/2024-03-31-02-55-58.png)

@@ -5,6 +5,7 @@ id: blog0252
 tag: AWS
 intro: "Study notes on AWS-Certified-Cloud-Practitioner Exam."
 toc: false
+wip: true
 ---
 
 <style>
