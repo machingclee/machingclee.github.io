@@ -2,7 +2,7 @@
 title: "Create Custom Layer for Lambda Functions in Python"
 date: 2024-04-12
 id: blog0254
-tag: AWS
+tag: aws
 intro: "We record a standard procedure to create a custom layer for 3rd party libraries."
 toc: false
 ---

@@ -2,7 +2,7 @@
 title: "More About Lambda Functions, Thottling, Concurrency, RDS Proxy and Integration with CloudWatch Events"
 date: 2024-04-04
 id: blog0253
-tag: AWS
+tag: aws
 intro: "We study the concurrency models in lambda functions to avoid unexpected failure."
 toc: true
 ---

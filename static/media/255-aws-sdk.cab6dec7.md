@@ -2,7 +2,7 @@
 title: "AWS CDK in Typescript and Python with Application in S3, Lambda Functions with Debugging, API Gateway and DynamoDB"
 date: 2024-04-15
 id: blog0255
-tag: AWS
+tag: aws
 intro: "We study how to create stack of aws resources and how they can interact with each other."
 toc: true
 ---

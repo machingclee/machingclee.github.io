@@ -2,7 +2,7 @@
 title: "AWS-Certified-Cloud-Practitioner Study Notes"
 date: 2024-03-30
 id: blog0252
-tag: AWS
+tag: aws
 intro: "Study notes on AWS-Certified-Cloud-Practitioner Exam."
 toc: false
 wip: true

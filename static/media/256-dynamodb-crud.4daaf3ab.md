@@ -2,7 +2,7 @@
 title: "CRUD in DynamoDB"
 date: 2024-04-17
 id: blog0256
-tag: AWS
+tag: aws
 intro: "Basic CRUD with DynamoDB"
 toc: true
 ---
@@ -21,7 +21,7 @@ We continue from section
 - handler --- spaces/handler.ts (CRUD with DynamoDB)
 in [**this post**](/blog/article/AWS-CDK-in-Typescript-and-Python-with-Application-in-S3-Lambda-Functions-API-Gateway-and-DynamoDB#handler-----spaces/handler.ts-(CRUD-with-DynamoDB))
 
-Suppose that we have initiated an ddbClient by 
+Suppose that we have initiated a `ddbClient` by 
 ```ts
 const ddbClient = new DynamoDBClient({});
 ```
