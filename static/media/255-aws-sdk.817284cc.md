@@ -1,5 +1,5 @@
 ---
-title: "AWS CDK in Typescript and Python with Application in S3, Lambda Functions with Debugging, API Gateway and DynamoDB"
+title: "AWS CDK in Typescript and Python with ① Application in S3 ② Lambda Functions with Debugging ③ API Gateway and ④ DynamoDB"
 date: 2024-04-15
 id: blog0255
 tag: aws

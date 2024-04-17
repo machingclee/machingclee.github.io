@@ -19,7 +19,7 @@ toc: true
 
 We continue from section
 - handler --- spaces/handler.ts (CRUD with DynamoDB)
-in [**this post**](/blog/article/AWS-CDK-in-Typescript-and-Python-with-Application-in-S3-Lambda-Functions-API-Gateway-and-DynamoDB#handler-----spaces/handler.ts-(CRUD-with-DynamoDB))
+in [**this post**](/blog/article/AWS-CDK-in-Typescript-and-Python-with-Application-in-S3-Lambda-Functions-with-Debugging-API-Gateway-and-DynamoDB#handler-----spaces/handler.ts-(CRUD-with-DynamoDB))
 
 Suppose that we have initiated a `ddbClient` by 
 ```ts

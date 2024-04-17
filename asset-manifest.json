@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.0c42d739.chunk.css",
-    "main.js": "/static/js/main.9b08fbf1.chunk.js",
+    "main.js": "/static/js/main.76ce3ad6.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.5691ce21.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.ff5c0ae0.chunk.js": "/static/js/2.ff5c0ae0.chunk.js",
@@ -264,8 +264,8 @@
     "static/media/252-AWS-practitioner-study-notes.md": "/static/media/252-AWS-practitioner-study-notes.e0c8c7a9.md",
     "static/media/253-Lambda-deep-dive.md": "/static/media/253-Lambda-deep-dive.c5a64c0f.md",
     "static/media/254-create-lambda-layer.md": "/static/media/254-create-lambda-layer.5086bd40.md",
-    "static/media/255-aws-sdk.md": "/static/media/255-aws-sdk.e26ddd8c.md",
-    "static/media/256-dynamodb-crud.md": "/static/media/256-dynamodb-crud.58029008.md",
+    "static/media/255-aws-sdk.md": "/static/media/255-aws-sdk.817284cc.md",
+    "static/media/256-dynamodb-crud.md": "/static/media/256-dynamodb-crud.a5b91637.md",
     "static/media/257-eas-update.md": "/static/media/257-eas-update.9a844577.md",
     "static/media/CV_Portfolio.da536289.pdf": "/static/media/CV_Portfolio.da536289.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
@@ -320,6 +320,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.ff5c0ae0.chunk.js",
     "static/css/main.0c42d739.chunk.css",
-    "static/js/main.9b08fbf1.chunk.js"
+    "static/js/main.76ce3ad6.chunk.js"
   ]
 }
