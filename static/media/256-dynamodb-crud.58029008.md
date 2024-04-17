@@ -1,6 +1,6 @@
 ---
 title: "CRUD in DynamoDB"
-date: 2024-04-17
+date: 2024-04-16
 id: blog0256
 tag: aws
 intro: "Basic CRUD with DynamoDB"

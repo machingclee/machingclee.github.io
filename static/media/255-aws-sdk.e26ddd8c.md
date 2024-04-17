@@ -391,7 +391,7 @@ export class APIStack extends cdk.Stack {
 
 ##### .vscode/launch.json
 
-Note that if your lambda function uses an `env` variable provided by other stack, then you may need to hard-code it for debugging.
+Note that if our lambda function uses an `env` variable provided by other stack, then we may need to hard-code it for debugging.
 
 
 ```json
