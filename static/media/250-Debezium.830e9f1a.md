@@ -1,8 +1,8 @@
 ---
-title: "CDC, Debezium"
+title: "CDC in Confluent and Kafka"
 date: 2024-03-28
 id: blog0250
-tag: cdc, confluent, debezium, kafka
+tag: cdc, confluent, kafka
 intro: "We study how to configure Debezium in Confluent to listen changes of database, which is very helpful in streaming real-time changes to frontend."
 toc: true
 ---
