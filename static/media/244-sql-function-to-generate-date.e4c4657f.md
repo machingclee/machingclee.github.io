@@ -1,10 +1,10 @@
 ---
-title: "SQL Functions to Generate `created_at` and human-readable `Date`"
+title: "SQL Functions to Generate created_at, human-readable created_at and updated_at"
 date: 2024-03-01
 id: blog0244
 tag: sql
 intro: "Convenient simple functions to set as default in SQL."
-toc: false
+toc: true
 ---
 
 <style>
@@ -14,7 +14,22 @@ toc: false
 </style>
 
 #### Scripts
+##### Automatic updatedAt
+```sql
+DROP TRIGGER IF EXISTS upd_trig on "MessagesSession";
 
+create or replace FUNCTION upd_trig() RETURNS trigger
+   LANGUAGE plpgsql AS
+$$BEGIN
+   NEW."updatedAt" := gen_created_at();
+   RETURN NEW;
+END;$$;
+
+CREATE TRIGGER upd_trig BEFORE UPDATE ON "MessagesSession"
+   FOR EACH ROW EXECUTE PROCEDURE upd_trig();
+```
+
+##### Automatic createdAt
 ```sql
 CREATE OR REPLACE FUNCTION gen_created_at() RETURNS float as $$
 BEGIN
@@ -22,7 +37,9 @@ BEGIN
 END
 $$
 LANGUAGE plpgsql;
-
+```
+##### Automatic human readble createdAt in HK
+```sql
 CREATE OR REPLACE FUNCTION gen_created_at_hk_timestr() RETURNS text as $$
 BEGIN
 	return TO_CHAR((NOW()::TIMESTAMPTZ AT TIME ZONE 'UTC' AT TIME ZONE 'GMT+8'), 'YYYY-MM-DD HH24:MI:SS');

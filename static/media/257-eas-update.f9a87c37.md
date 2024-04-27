@@ -3,7 +3,7 @@ title: "EAS Update"
 date: 2024-04-17
 id: blog0257
 tag: eas, expo
-intro: "We discuss the technical detail of OTA (Over The Air) update which avoid updating the mobile application without unnecessary rebuild."
+intro: "We discuss the technical detail of OTA (Over The Air) update which avoid unnecessary rebuild for updating a mobile application."
 toc: true
 ---
 
