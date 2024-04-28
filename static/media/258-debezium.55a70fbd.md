@@ -3,7 +3,7 @@ title: "Kafka and Debezium with Everything Hosted Locally Without Confluent"
 date: 2024-04-28
 id: blog0258
 tag: kafka, debezium
-intro: "In the past we have studied CDC with the help of confluent [***here***](/blog/article/CDC-in-Confluent-and-Kafka). This time we host everything locally to prepare ourselves to host CDC inside a single EC2 instance."
+intro: "In the past we have studied CDC with the help of confluent [***here***](/blog/article/CDC-in-Confluent-and-Kafka). This time we host everything locally to prepare ourselves to host CDC without the dependency on confluent."
 toc: true
 ---
 
@@ -12,6 +12,11 @@ toc: true
     max-width: 660px;
   }
 </style>
+
+#### Repository
+
+- https://github.com/machingclee/2024-04-28-debezium-pgsql-monitoring-template
+
 
 #### Docker-Compose File and Registration of Debezium Connector
 
@@ -67,9 +72,7 @@ services:
     depends_on: [ zookeeper, kafka ]
 ```
 
-##### Register Debezium to Kafka
-
-###### project-root/debezium.json
+##### Configure a project-root/debezium.json for an Instance of Connector
 
 ```json
 {
@@ -99,41 +102,43 @@ For example, we will be having
 
 as our topics to listen. 
 
-###### Post Request to Create Source Connector from Debezium
+##### Create Debezium Source Connector from the Configuration
 
+###### Post Request to Create a Connector
 
-- Let's execute the following in a bash shell:
-  ```bash
-  curl -i -X POST -H "Accept:application/json" -H "Content-Type:application/json" 127.0.0.1:8083/connectors/ --data "@debezium.json"
-  ```
+Let's execute the following in a bash shell:
+```bash
+curl -i -X POST -H "Accept:application/json" -H "Content-Type:application/json" 127.0.0.1:8083/connectors/ --data "@debezium.json"
+```
+###### Health-check the connector
+Let's health-check the latest connector:
+```bash
+curl -H "Accept:application/json" localhost:8083/connectors/billie-connector/status
+```
+###### List all Topics Created
+Note that the name of the running container ***depends on*** your ***working directory name***.
+```bash
+docker exec -it <directory-name>-kafka-1 bash
+```
+and then run
+```bash
+/usr/bin/kafka-topics --bootstrap-server localhost:9092 --list
+```
 
-- Let's health-check the latest connector:
-  ```bash
-  curl -H "Accept:application/json" localhost:8083/connectors/billie-connector/status
-  ```
-- To Check the Topics Created, let's
-  ```bash
-  docker exec -it debezium-kafka-1 bash
-  ```
-  and then run
-  ```bash
-  /usr/bin/kafka-topics --bootstrap-server localhost:9092 --list
-  ```
-
-- in my case I get:
-  ```text
-  __confluent.support.metrics
-  __consumer_offsets
-  _schemas
-  connect-status
-  connect_configs
-  connect_offsets
-  postgres.public.LLMSummary
-  postgres.public.MessagesSession
-  postgres.public.SummaryFollow
-  postgres.public.UserToChannel
-  postgres.public.UserToProject
-  ```
+In my case I get:
+```text
+__confluent.support.metrics
+__consumer_offsets
+_schemas
+connect-status
+connect_configs
+connect_offsets
+postgres.public.LLMSummary
+postgres.public.MessagesSession
+postgres.public.SummaryFollow
+postgres.public.UserToChannel
+postgres.public.UserToProject
+```
 
 
 #### Adjust the Logical Replication Level
@@ -197,7 +202,7 @@ process.on('uncaughtException', function (err) {
 
 ##### Results
 
-Suppose that I have done an action in our frontend, then it is very clear what happens in the backend:
+Suppose that I have done an action in our frontend, then it is very clear what happened in the backend:
 
 [![](/assets/img/2024-04-28-03-57-11.png)](/assets/img/2024-04-28-03-57-11.png)
 
