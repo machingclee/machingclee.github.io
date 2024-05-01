@@ -1,7 +1,7 @@
 ---
 id: portfolio001
 title: Desktop App to Capture Text From Images
-intro: A desktop app by python using google's vison api.
+intro: A desktop app by python using google's vision api.
 thumbnail: /assets/portfolios/thumbnails/tkinter.jpg
 tech: Python, tkinter
 thumbWidth: 350

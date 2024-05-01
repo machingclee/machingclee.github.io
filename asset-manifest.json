@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.0c42d739.chunk.css",
-    "main.js": "/static/js/main.bc0b665f.chunk.js",
+    "main.js": "/static/js/main.4d6275f4.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.6754c9c1.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.612f793a.chunk.js": "/static/js/2.612f793a.chunk.js",
@@ -13,7 +13,7 @@
     "static/js/3.91d216b9.chunk.js.LICENSE.txt": "/static/js/3.91d216b9.chunk.js.LICENSE.txt",
     "static/js/4.14705b3d.chunk.js.LICENSE.txt": "/static/js/4.14705b3d.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
-    "static/media/001-tkinter.md": "/static/media/001-tkinter.57693bd6.md",
+    "static/media/001-tkinter.md": "/static/media/001-tkinter.bcac1da2.md",
     "static/media/002-Lazy-React-Router.md": "/static/media/002-Lazy-React-Router.48295ca9.md",
     "static/media/002-closure-of-interior.md": "/static/media/002-closure-of-interior.d61226c6.md",
     "static/media/002-wpf.md": "/static/media/002-wpf.04d51fb5.md",
@@ -34,7 +34,7 @@
     "static/media/010-classifier-by-means-of-detection.md": "/static/media/010-classifier-by-means-of-detection.4703d175.md",
     "static/media/011-translate-custom-model.md": "/static/media/011-translate-custom-model.648d443c.md",
     "static/media/011-typescript-typetrick.md": "/static/media/011-typescript-typetrick.0e546903.md",
-    "static/media/012-libtorch_deployment.md": "/static/media/012-libtorch_deployment.117b97aa.md",
+    "static/media/012-libtorch_deployment.md": "/static/media/012-libtorch_deployment.6e6c9863.md",
     "static/media/013-timesheet.md": "/static/media/013-timesheet.b9dbcad8.md",
     "static/media/014-mobileapp.md": "/static/media/014-mobileapp.7428cf26.md",
     "static/media/015-disquz.md": "/static/media/015-disquz.8b4defa2.md",
@@ -322,6 +322,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.612f793a.chunk.js",
     "static/css/main.0c42d739.chunk.css",
-    "static/js/main.bc0b665f.chunk.js"
+    "static/js/main.4d6275f4.chunk.js"
   ]
 }
