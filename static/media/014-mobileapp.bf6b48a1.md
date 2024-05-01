@@ -76,7 +76,7 @@ This is a full-stack project for Wonderbricks Limited in which I am in charge of
 
 ###### Top Tab Navigation
 <video controls width="300">
-  <source  src="/assets/react-native-app-demo/008_transitoin_pages.mp4" type="video/mp4">
+  <source  src="/assets/react-native-app-demo/008_transitoin_pages.MP4" type="video/mp4">
   Sorry, your browser doesn't support embedded videos.
 </video>
 
