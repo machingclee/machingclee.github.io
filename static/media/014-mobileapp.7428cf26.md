@@ -98,7 +98,9 @@ This is a full-stack project for Wonderbricks Limited in which I am in charge of
 
 #### Enforce Good Practice to let Developer Contribute Easily
 
-As in web development, targeting the component in code base for modification is a tedious and frustrating task as everyone has their (or even weird) naming convention, by enforcing the rule to name all major components we have reduced huge amount of time in development.
+As in web development, targeting the component in code base for modification is a tedious and frustrating task as everyone has their (or even weird) naming convention. 
+
+By enforcing the rule to display a hint (component name, indicative string, etc) for all major components, we have reduced huge amount of time in development.
 
 <a href="/assets/img/2024-05-01-19-20-20.png"><img src="/assets/img/2024-05-01-19-20-20.png" width="300"/></a>
 
