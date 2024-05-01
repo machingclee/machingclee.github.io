@@ -1,7 +1,7 @@
 ---
 id: portfolio006
 title: Multiple Projects Starter
-intro: First trial to train yolo v3 on custom data set.
+intro: This project spins up all projects in vscode and start the backend servers automatically.
 thumbnail: /assets/portfolios/thumbnails/qt_proj_starter.png
 tech: C++, Qt
 thumbWidth: 500 

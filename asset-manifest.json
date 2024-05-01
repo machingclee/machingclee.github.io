@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.0c42d739.chunk.css",
-    "main.js": "/static/js/main.873a51a5.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.c8df77c8.js",
+    "main.js": "/static/js/main.a9457513.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.6754c9c1.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.534b1d01.chunk.js": "/static/js/2.534b1d01.chunk.js",
-    "static/js/3.9133c332.chunk.js": "/static/js/3.9133c332.chunk.js",
-    "static/js/4.b265432e.chunk.js": "/static/js/4.b265432e.chunk.js",
-    "static/js/5.2f22baa5.chunk.js": "/static/js/5.2f22baa5.chunk.js",
+    "static/js/2.612f793a.chunk.js": "/static/js/2.612f793a.chunk.js",
+    "static/js/3.91d216b9.chunk.js": "/static/js/3.91d216b9.chunk.js",
+    "static/js/4.14705b3d.chunk.js": "/static/js/4.14705b3d.chunk.js",
+    "static/js/5.11f12879.chunk.js": "/static/js/5.11f12879.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.534b1d01.chunk.js.LICENSE.txt": "/static/js/2.534b1d01.chunk.js.LICENSE.txt",
-    "static/js/3.9133c332.chunk.js.LICENSE.txt": "/static/js/3.9133c332.chunk.js.LICENSE.txt",
-    "static/js/4.b265432e.chunk.js.LICENSE.txt": "/static/js/4.b265432e.chunk.js.LICENSE.txt",
+    "static/js/2.612f793a.chunk.js.LICENSE.txt": "/static/js/2.612f793a.chunk.js.LICENSE.txt",
+    "static/js/3.91d216b9.chunk.js.LICENSE.txt": "/static/js/3.91d216b9.chunk.js.LICENSE.txt",
+    "static/js/4.14705b3d.chunk.js.LICENSE.txt": "/static/js/4.14705b3d.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.57693bd6.md",
     "static/media/002-Lazy-React-Router.md": "/static/media/002-Lazy-React-Router.48295ca9.md",
@@ -24,7 +24,7 @@
     "static/media/004-emotion_vgg.md": "/static/media/004-emotion_vgg.da8b1ae1.md",
     "static/media/005-conda-useful-commands.md": "/static/media/005-conda-useful-commands.58923fe0.md",
     "static/media/005-yolo-custom-training.md": "/static/media/005-yolo-custom-training.ab4ddfe2.md",
-    "static/media/006-qt-project-starter.md": "/static/media/006-qt-project-starter.7c52b011.md",
+    "static/media/006-qt-project-starter.md": "/static/media/006-qt-project-starter.b79f5151.md",
     "static/media/007-electron-next.md": "/static/media/007-electron-next.481a7c76.md",
     "static/media/007-redux-saga.md": "/static/media/007-redux-saga.f840908f.md",
     "static/media/008-defectGAN.md": "/static/media/008-defectGAN.e9815e56.md",
@@ -318,10 +318,10 @@
     "static/media/transformer-date-fomatter.18a2d3fc.pdf": "/static/media/transformer-date-fomatter.18a2d3fc.pdf"
   },
   "entrypoints": [
-    "static/js/runtime-main.c8df77c8.js",
+    "static/js/runtime-main.6754c9c1.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.534b1d01.chunk.js",
+    "static/js/2.612f793a.chunk.js",
     "static/css/main.0c42d739.chunk.css",
-    "static/js/main.873a51a5.chunk.js"
+    "static/js/main.a9457513.chunk.js"
   ]
 }
