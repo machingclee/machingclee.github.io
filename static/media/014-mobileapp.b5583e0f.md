@@ -61,7 +61,7 @@ This is a full-stack project for Wonderbricks Limited in which I am in charge of
 
 ##### Custom Reusable Page Transitioning Component (among 2 or 3 pages)
 
-##### Main Screen
+###### Main Screen
 
 <video controls width="300">
   <source  src="/assets/react-native-app-demo/003_custom_page_transitioning_component.mp4" type="video/mp4">
