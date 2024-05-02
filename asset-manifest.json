@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.0c42d739.chunk.css",
-    "main.js": "/static/js/main.c412927c.chunk.js",
+    "main.js": "/static/js/main.d407d77f.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.6754c9c1.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.612f793a.chunk.js": "/static/js/2.612f793a.chunk.js",
@@ -36,7 +36,7 @@
     "static/media/011-typescript-typetrick.md": "/static/media/011-typescript-typetrick.0e546903.md",
     "static/media/012-libtorch_deployment.md": "/static/media/012-libtorch_deployment.6e6c9863.md",
     "static/media/013-timesheet.md": "/static/media/013-timesheet.b9dbcad8.md",
-    "static/media/014-mobileapp.md": "/static/media/014-mobileapp.78b67498.md",
+    "static/media/014-mobileapp.md": "/static/media/014-mobileapp.37aae9fd.md",
     "static/media/015-disquz.md": "/static/media/015-disquz.8b4defa2.md",
     "static/media/016-spa-seo.md": "/static/media/016-spa-seo.4895dc0f.md",
     "static/media/017-pytorch-study-notes.md": "/static/media/017-pytorch-study-notes.ac795ee2.md",
@@ -322,6 +322,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.612f793a.chunk.js",
     "static/css/main.0c42d739.chunk.css",
-    "static/js/main.c412927c.chunk.js"
+    "static/js/main.d407d77f.chunk.js"
   ]
 }
