@@ -12,6 +12,15 @@ date: 2024-06-11
 <style>
     table td {
       background-color: white;
+      vertical-align: top;
+      padding-top: 20px !important;
+    }
+    table tr {
+      border-bottom: 3px solid rgba(0,0,0,0.15);
+    }
+    table td:nth-child(2), table th:nth-child(2) {
+      padding-left: 20px !important;
+      text-align: center
     }
     table th, table td {
       padding-left: 0px !important;
@@ -51,19 +60,23 @@ This is a full-stack project for Wonderbricks Limited in which I am in charge of
 - All visual effects for frontend and
 - All business logic in backend with appropriate data model for the frontend.
 
-#### Custom Components
+#### Custom Animated Components and Components Wrapped as a Class
 
 
 <table>
  <thead>
     <tr>
-      <th style="width: 300px">Description</th>
-      <th >Demo</th>
+      <th style="width: 320px">Description</th>
+      <th> Video Demo</th>
     </tr>
 <tbody>
 
 <tr>
-<td>Swipe to Dispatch Action</td>
+<td>
+<b>Swipe to Dispatch Action.</b>
+
+Custom component to trigger an action when we slide over a threshold
+</td>
 <td>
 <video controls width="300">
   <source  src="/assets/react-native-app-demo/001_swipe_to_dispatch.mp4" type="video/mp4">
@@ -73,7 +86,11 @@ This is a full-stack project for Wonderbricks Limited in which I am in charge of
 </tr>
 
 <tr>
-<td>Swipe to show Hidden Buttons</td>
+<td>
+<b>Swipe to show Hidden Buttons.</b>
+
+Custom component to show hidden buttons when we slide over a threshold
+</td>
 <td>
 <video controls width="300">
   <source  src="/assets/react-native-app-demo/002_swipe_to_show.mp4" type="video/mp4">
@@ -83,7 +100,16 @@ This is a full-stack project for Wonderbricks Limited in which I am in charge of
 </tr>
 
 <tr>
-<td>Custom Reusable Page Transitioning Component (3 pages)</td>
+<td>
+<b>3-Pages Transition Component.</b>
+
+Custom Component to transit over 3 pages freely. It is implemented as a class with the following
+- scroll lock
+- scroll left/right
+- scroll center
+- onScrollCenter 
+etc functionalites.
+</td>
 <td>
 <video controls width="300">
   <source  src="/assets/react-native-app-demo/003_custom_page_transitioning_component.mp4" type="video/mp4">
@@ -93,7 +119,11 @@ This is a full-stack project for Wonderbricks Limited in which I am in charge of
 </tr>
 
 <tr>
-<td>Custom Reusable Page Transitioning Component (2 pages)</td>
+<td>
+<b>2-Pages Transition Component.</b>
+
+It is the same component as  above without providing left/right page as a props.
+</td>
 <td>
 <video controls width="300">
   <source  src="/assets/react-native-app-demo/006_custom_page_transition_usecase.mp4" type="video/mp4">
@@ -103,7 +133,20 @@ This is a full-stack project for Wonderbricks Limited in which I am in charge of
 </tr>
 
 <tr>
-<td>Tab Navigations on Top</td>
+<td>
+<b>Custom Top Tab Navigation.</b>
+
+For sure there is an alternative called *Material Top Tabs Navigator*, we decide to ***make our own one*** because
+
+- This area is supposed to be scrollable only by our 3-pages transition component
+
+  <a href="/assets/img/2024-05-03-01-32-52.png"><img src="/assets/img/2024-05-03-01-32-52.png" width="180"/></a>
+
+- We want this part to be scrollable instead:
+
+  <a href="/assets/img/2024-05-03-01-37-25.png"><img src="/assets/img/2024-05-03-01-37-25.png" width="180"/></a>
+
+</td>
 <td>
 <video controls width="300">
   <source  src="/assets/react-native-app-demo/008_transitoin_pages.MP4" type="video/mp4">
@@ -113,7 +156,10 @@ This is a full-stack project for Wonderbricks Limited in which I am in charge of
 </tr>
 
 <tr>
-<td>Reusable Bottomsheet Class and Communication Among Them</td>
+<td>
+<b>Reusable Bottomsheet Class and Communication Among Them.</b>
+
+</td>
 <td>
 <video controls width="300">
   <source  src="/assets/react-native-app-demo/005_communicate_among_bottom_sheets.mp4" type="video/mp4">
@@ -123,7 +169,7 @@ This is a full-stack project for Wonderbricks Limited in which I am in charge of
 </tr>
 
 <tr>
-<td>Voice Recording, Native Voice Recognition and File Uploading</td>
+<td><b>Voice Recording, Native Voice Recognition and File Uploading.</b></td>
 <td>
 <video controls width="300">
   <source  src="/assets/react-native-app-demo/004_native_file_uploading.mp4" type="video/mp4">
@@ -141,7 +187,8 @@ As in web development, targeting the component in codebase for modification is a
 
 By enforcing the rule to display a hint (component name, indicative string, etc) for all major components, we have reduced huge amount of time in development.
 
-<a href="/assets/img/2024-05-01-19-20-20.png"><img src="/assets/img/2024-05-01-19-20-20.png" width="300"/></a>
+
+<a href="/assets/img/2024-05-01-19-20-20.png"><img src="/assets/img/2024-05-01-19-20-20.png" width="300" style="margin-top: 20px"/></a>
 
 
 
