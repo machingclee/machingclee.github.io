@@ -11,9 +11,14 @@ date: 2024-06-11
 ---
 <style>
     video{
+      box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+      cursor: pointer;
       border-radius:8px;
       overflow: hidden;
       border: 1px solid rgba(0,0,0,0.2);
+    }
+    video:hover{
+      box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,rgba(9, 30, 66, 0.08) 0px 0px 10px 10px;
     }
     img{
         max-width: 660px;
@@ -96,9 +101,9 @@ This is a full-stack project for Wonderbricks Limited in which I am in charge of
   Sorry, your browser doesn't support embedded videos.
 </video>
 
-#### Enforce Good Practice to let Developer Contribute Easily
+#### Enforce Good Practice to let Developers Contribute Easily
 
-As in web development, targeting the component in code base for modification is a tedious and frustrating task as everyone has their (or even weird) naming convention. 
+As in web development, targeting the component in codebase for modification is a tedious and frustrating task as everyone has their (or even weird) naming convention. 
 
 By enforcing the rule to display a hint (component name, indicative string, etc) for all major components, we have reduced huge amount of time in development.
 
@@ -109,12 +114,12 @@ By enforcing the rule to display a hint (component name, indicative string, etc)
 
 #### Deployment and App Distribution Experience
 ##### App in Different Stages with TestFlight for Internal Tests and External Tests
-<img src="/assets/img/2024-05-01-19-06-19.png" width="300"/>
+<a href="/assets/img/2024-05-01-19-06-19.png"><img src="/assets/img/2024-05-01-19-06-19.png" width="300"/></a>
 
 ##### App in App Store for Production
 
-![](/assets/img/2024-05-01-19-13-23.png)
+<a href="/assets/img/2024-05-01-19-13-23.png">![](/assets/img/2024-05-01-19-13-23.png)</a>
 
 ##### OTA Update for Application Patching Without Rebuilding an Entire App
 
-![](/assets/img/2024-05-01-19-09-08.png)
+<a href="/assets/img/2024-05-01-19-09-08.png">![](/assets/img/2024-05-01-19-09-08.png)</a>
