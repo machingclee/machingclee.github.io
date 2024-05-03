@@ -101,7 +101,13 @@ We also pass an object to avoid copying the base64 encoded string (which is huge
 
 ##### Backend: Process the String Stream: Base64 to Uint8, From m4a To mp3, Pass Resulting Stream to azureClient.uploadStream()
 
+We import a duplex to transform the base64-string-stream into a bytes-stream:
+
 ```js
+... // other dependencies
+import { Base64Decode } from "base64-stream";
+import multiparty from 'multiparty';
+
 const voiceUpload = async (req: Request, res: Response) => {
     const { roomOid } = req.query as { roomOid: string }
     const form = new multiparty.Form();
