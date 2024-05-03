@@ -66,8 +66,9 @@ date: 2024-06-11
 #### My Role to This Project
 
 This is a full-stack project for Wonderbricks Limited in which I am in charge of **85% ~ 90%** of the work including 
-- All visual effects for frontend and
-- All business logic in backend with appropriate data model for the frontend.
+- All visual effects for frontend 
+- All business logic in backend with appropriate data model for the frontend and
+- Debugging of the work from junior developers
 
 #### Custom Animated Components and Components Wrapped as a Class
 
