@@ -7,9 +7,18 @@ tech: React-Native, expo-cli
 thumbWidth: 600
 thumbTransX: -300
 thumbTransY: -420
+hoverImageHeight: 200
 date: 2024-06-11
 ---
 <style>
+    td {
+      b {
+        padding-left: 10px;
+        border-left: 4px solid #7bb9d1;
+        font-weight: 600;
+        padding: 2px 8px 2px 8px;
+      }
+    }
     table td {
       background-color: white;
       vertical-align: top;

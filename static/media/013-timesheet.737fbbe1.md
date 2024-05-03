@@ -7,6 +7,7 @@ tech: Next.js, Express, PostgreSQL, Lambda Function
 thumbWidth: 600
 thumbTransX: -200
 thumbTransY: -220
+hoverImageHeight: 160
 date: 2024-03-11
 ---
 

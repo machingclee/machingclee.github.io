@@ -7,6 +7,7 @@ tech: Pytorch (python), Libtorch (C++)
 thumbWidth: 300
 thumbTransX: -22
 thumbTransY: -350
+hoverImageHeight: 185
 date: 2023-04-02
 ---
 

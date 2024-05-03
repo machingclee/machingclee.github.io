@@ -7,6 +7,7 @@ tech: Python, Tensorflow
 thumbWidth: 320 
 thumbTransX: -40
 thumbTransY: -250
+hoverImageHeight: 220
 date: 2020-12-29
 ---
 

@@ -7,6 +7,7 @@ tech: React-Native, Spring-Boot, Docker
 thumbWidth: 180 
 thumbTransX: 25
 thumbTransY: -820
+hoverImageHeight: 340
 date: 2020-08-30
 ---
 

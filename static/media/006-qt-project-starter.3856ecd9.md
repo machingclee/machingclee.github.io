@@ -7,6 +7,7 @@ tech: C++, Qt
 thumbWidth: 500 
 thumbTransX: 0
 thumbTransY: -100
+hoverImageHeight: 115
 date: 2021-06-23
 ---
 

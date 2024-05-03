@@ -7,6 +7,7 @@ tech: Typescript, Next.js, Electron.js
 thumbWidth: 380 
 thumbTransX: 0
 thumbTransY: 0
+hoverImageHeight: 120
 date: 2021-12-04
 ---
 

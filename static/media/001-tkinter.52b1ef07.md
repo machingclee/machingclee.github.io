@@ -7,6 +7,7 @@ tech: Python, tkinter
 thumbWidth: 350
 thumbTransX: -20
 thumbTransY: -300
+hoverImageHeight: 160
 date: 2019-12-29
 ---
 

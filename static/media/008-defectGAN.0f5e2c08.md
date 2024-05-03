@@ -7,6 +7,7 @@ tech: Python, Pytorch, Tensorflow
 thumbWidth: 650
 thumbTransX: -320
 thumbTransY: -25
+hoverImageHeight: 78
 date: 2022-04-23
 ---
 
