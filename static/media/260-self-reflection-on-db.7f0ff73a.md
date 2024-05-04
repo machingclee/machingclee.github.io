@@ -3,7 +3,7 @@ title: "Self-Reflection on Database Schema Design"
 date: 2024-05-02
 id: blog0260
 tag: sql
-intro: "Record some mistake they can be avoid when designing a database schema."
+intro: "Record some mistake that can be avoided when designing a database schema."
 toc: true
 ---
 

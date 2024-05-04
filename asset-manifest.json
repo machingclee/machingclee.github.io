@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.0c42d739.chunk.css",
-    "main.js": "/static/js/main.c9b7619b.chunk.js",
+    "main.js": "/static/js/main.ef2d55fd.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.4bb87912.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.a44a991d.chunk.js": "/static/js/2.a44a991d.chunk.js",
@@ -36,7 +36,7 @@
     "static/media/011-typescript-typetrick.md": "/static/media/011-typescript-typetrick.0e546903.md",
     "static/media/012-libtorch_deployment.md": "/static/media/012-libtorch_deployment.40d7772b.md",
     "static/media/013-timesheet.md": "/static/media/013-timesheet.1c9185c2.md",
-    "static/media/014-mobileapp.md": "/static/media/014-mobileapp.d7425c87.md",
+    "static/media/014-mobileapp.md": "/static/media/014-mobileapp.82700c58.md",
     "static/media/015-disquz.md": "/static/media/015-disquz.8b4defa2.md",
     "static/media/016-spa-seo.md": "/static/media/016-spa-seo.4895dc0f.md",
     "static/media/017-pytorch-study-notes.md": "/static/media/017-pytorch-study-notes.ac795ee2.md",
@@ -269,8 +269,8 @@
     "static/media/256-dynamodb-crud.md": "/static/media/256-dynamodb-crud.a5b91637.md",
     "static/media/257-eas-update copy.md": "/static/media/257-eas-update copy.f9a87c37.md",
     "static/media/258-debezium.md": "/static/media/258-debezium.55a70fbd.md",
-    "static/media/259-k8s copy.md": "/static/media/259-k8s copy.b35de87b.md",
-    "static/media/260-self-reflection-on-db.md": "/static/media/260-self-reflection-on-db.d614b6ad.md",
+    "static/media/259-k8s.md": "/static/media/259-k8s.09571b30.md",
+    "static/media/260-self-reflection-on-db.md": "/static/media/260-self-reflection-on-db.7f0ff73a.md",
     "static/media/CV_Portfolio.ee6d8ae7.pdf": "/static/media/CV_Portfolio.ee6d8ae7.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -324,6 +324,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.a44a991d.chunk.js",
     "static/css/main.0c42d739.chunk.css",
-    "static/js/main.c9b7619b.chunk.js"
+    "static/js/main.ef2d55fd.chunk.js"
   ]
 }
