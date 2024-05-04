@@ -20,22 +20,22 @@ Recently I have developed a mobile application for the company I am working at. 
 <a href="/assets/img/2024-05-04-20-39-27.png">![](/assets/img/2024-05-04-20-39-27.png)</a>
 
 #### What I failed
-- **Sparsity of Table.** Even some data looks identitcal, I have tried to mix data of two interfaces into one table, for example:
+- **Sparsity of Table.** Some data looks identitcal, I have therefore tried to mix two interfaces into one table, for example:
 
   <a href="/assets/img/2024-05-04-18-42-15.png"><img src="/assets/img/2024-05-04-18-42-15.png" width="180"/></a>
 
-  where the type of this record depends on `SessionType`. It causes some of the column being always `null` (i.e., ***sparsity***), and it causes confusion when do we use this variable. 
+  where the type of this record depends on `SessionType`, which determines whether we use `isDraftInstantIssue` or `isDraftReply`. It causes some of the column being always `null` (i.e., ***sparsity***), and it causes confusion when do we use these booleans.
   
   From this lesson I should have made additional two tables named 
   - `InstantIssueDetail` and
   - `ReplyDetail`, 
   
-  and link to these two tables via 
+  and link these two tables to the original table via 
   - `InstantIssueDetail.session_id` and 
   - `ReplyDetail.session_id`   
   respectively. The new tables group all the `type`-specific data.
 
-- Similar case such as message can be of type `Image`, `Voice`, `Text`, and forturnately I can avoid the sparsity timely:
+- Similar to the above case. A message can be of type `Image`, `Voice`, `Text`, and forturnately I can avoid the sparsity timely:
 
   <a href="/assets/img/2024-05-04-20-44-21.png"><img src="/assets/img/2024-05-04-20-44-21.png" width="400"/></a>
 
@@ -47,13 +47,13 @@ Recently I have developed a mobile application for the company I am working at. 
   If we want to select data, we need to `case, when, then, else, end` many times.
 
 #### What I succeeded
-Researched on various methods, orm, youtube videos for database adminstration, eventually 
+Researched on various ORMs, youtube videos on those frameworks, pros and cons, combining the experience with sql tutorial from other languages, eventually 
 
 - Adopted **Prisma** as a table migration tool in light of `Flyway` in spring boot and `Goose` in golang.
 
-- Use **Kysely** as a ***type-safe*** query builder.
+- Used **Kysely** as a ***type-safe*** query builder.
 
-- Standardize the approach to ***version*** all the schema changes in database, and reproduce all the changes to different environments.
+- Standardized the approach to ***version*** all the schema changes in database, and reproduce all the changes to different environments.
 
 Our product works well with the database and developers can easily write their query with good semantic meaning, for example: 
 
