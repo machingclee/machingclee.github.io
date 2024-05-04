@@ -68,7 +68,8 @@ date: 2024-06-11
 
 This is a full-stack project for Wonderbricks Limited in which I am in charge of **85% ~ 90%** of the work including 
 - All visual effects for frontend 
-- All business logic in backend with appropriate data model for the frontend and
+- All business logic in backend with appropriate data model for the frontend
+- DevOps for Frontend and backend deployments
 - Debugging of the work from junior developers
 
 #### Custom Animated Components and Components Wrapped as a Class
@@ -217,3 +218,32 @@ By enforcing the rule to display a hint (component name, indicative string, etc)
 ##### OTA Update
 
 <a href="/assets/img/2024-05-04-17-34-38.png">![](/assets/img/2024-05-04-17-34-38.png)</a>
+
+#### Lessons After this Project
+
+##### First Time to Manage a Database from Scratch
+[My self-reflection on the work I have done so far](/blog/article/Self-Reflection-on-Database-Schema-Design#What-I-failed).
+
+##### Native Knowledge is Essential
+
+Since images in react-native flicker when its parent component gets rerendered, we need to make use of a package [react-native-fast-image](https://github.com/DylanVann/react-native-fast-image) to solve this problem. 
+
+However, this package has not been maintained for 2 years, and some native API has been deprecated in ios17.
+I have spent tones of time browsing the discussion on github issues, folk the repo of possible solution, and make my own changes in my folked repository.
+
+Finally I adopt my repository as the source of the package:
+
+```json
+{
+    ...
+    "react-native-fast-image": "https://github.com/Ching-Cheong-Lee/react-native-fast-image#fa4a38e",
+}
+```
+in order to solve this error
+
+<a href="/assets/img/2024-05-04-21-03-30.png">![](/assets/img/2024-05-04-21-03-30.png)</a>
+
+In this lesson my problem can be solved timely because
+
+- I am lucky to have someone who has the native knowledge to ***change the native code***.
+- I am lucky I have had experience managing my own npm package.
