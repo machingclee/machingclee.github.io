@@ -67,10 +67,11 @@ date: 2024-06-11
 #### My Role to This Project
 
 This is a full-stack project for Wonderbricks Limited in which I am in charge of **85% ~ 90%** of the work including 
+
 - All visual effects for frontend 
+
 - All business logic in backend with appropriate data model for the frontend
 - DevOps for frontend and backend deployments
-- Debugging of the work from junior developers
 
 #### Custom Animated Components and Components Wrapped as a Class
 
@@ -226,7 +227,7 @@ By enforcing the rule to display a hint (component name, indicative string, etc)
 
 ##### Native Knowledge is Essential
 
-Since images in react-native flicker when its parent component gets rerendered, we need to make use of a package [react-native-fast-image](https://github.com/DylanVann/react-native-fast-image) to solve this problem. 
+Since images in react-native flicker when their parent component gets rerendered, we need to make use of a package [react-native-fast-image](https://github.com/DylanVann/react-native-fast-image) to avoid this phenomenon. 
 
 However, this package has not been maintained for 2 years, and some native API has been deprecated in ios17.
 I have spent tones of time browsing the discussion on github issues, folk the repo of possible solution, and make my own changes in my folked repository.
