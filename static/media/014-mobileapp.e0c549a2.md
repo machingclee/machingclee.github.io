@@ -35,6 +35,7 @@ date: 2024-06-11
       padding-left: 0px !important;
     }
     img, video{
+      transition: box-shadow 0.1s ease-in-out;
       box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
       cursor: pointer;
       border-radius:8px;
@@ -208,9 +209,11 @@ By enforcing the rule to display a hint (component name, indicative string, etc)
 <a href="/assets/img/2024-05-01-19-06-19.png"><img src="/assets/img/2024-05-01-19-06-19.png" width="300"/></a>
 
 ##### App Store Distribution
+<a href="/assets/img/2024-05-04-17-34-14.png">![](/assets/img/2024-05-04-17-34-14.png)</a>
 
-<a href="/assets/img/2024-05-01-19-13-23.png">![](/assets/img/2024-05-01-19-13-23.png)</a>
+##### Goolge Play Distribution
+<a href="/assets/img/2024-05-04-17-35-09.png">![](/assets/img/2024-05-04-17-35-09.png)</a>
 
 ##### OTA Update
 
-<a href="/assets/img/2024-05-01-19-09-08.png">![](/assets/img/2024-05-01-19-09-08.png)</a>
+<a href="/assets/img/2024-05-04-17-34-38.png">![](/assets/img/2024-05-04-17-34-38.png)</a>

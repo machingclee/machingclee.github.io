@@ -35,7 +35,7 @@ date: 2024-03-11
 
 - https://github.com/machingclee/2024-01-31-FFXIV-Timesheet-System
 
-#### The Layout
+#### The Layout of the Webpage
 
 - Light and Dark Mode
 
@@ -46,11 +46,11 @@ date: 2024-03-11
 
 #### Deployment 
 
-##### Frontend
+##### Frontend with Demonstration Links
 - https://ffxiv-timesheet.vercel.app/timesheet
-- [Specific Example of Timesheets](https://ffxiv-timesheet.vercel.app/timesheet/detail?weeklyId=9f084019-29b2-4ca9-ab4a-638713583cb0)
+- [Specific Example of Timesheets](https://ffxiv-timesheet.vercel.app/timesheet/detail?weeklyId=018e2741-6b5d-550f-85aa-fd4bd28fc891)
 
-##### Backend
+##### Backend by Lambda Function
 
 - Lambda Service Provided by AWS
 

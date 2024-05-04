@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.0c42d739.chunk.css",
-    "main.js": "/static/js/main.fc36d90d.chunk.js",
+    "main.js": "/static/js/main.742b99ef.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.2175670d.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.ef237b73.chunk.js": "/static/js/2.ef237b73.chunk.js",
@@ -35,8 +35,8 @@
     "static/media/011-translate-custom-model.md": "/static/media/011-translate-custom-model.ca834a20.md",
     "static/media/011-typescript-typetrick.md": "/static/media/011-typescript-typetrick.0e546903.md",
     "static/media/012-libtorch_deployment.md": "/static/media/012-libtorch_deployment.40d7772b.md",
-    "static/media/013-timesheet.md": "/static/media/013-timesheet.737fbbe1.md",
-    "static/media/014-mobileapp.md": "/static/media/014-mobileapp.7da2ec8b.md",
+    "static/media/013-timesheet.md": "/static/media/013-timesheet.1c9185c2.md",
+    "static/media/014-mobileapp.md": "/static/media/014-mobileapp.e0c549a2.md",
     "static/media/015-disquz.md": "/static/media/015-disquz.8b4defa2.md",
     "static/media/016-spa-seo.md": "/static/media/016-spa-seo.4895dc0f.md",
     "static/media/017-pytorch-study-notes.md": "/static/media/017-pytorch-study-notes.ac795ee2.md",
@@ -323,6 +323,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.ef237b73.chunk.js",
     "static/css/main.0c42d739.chunk.css",
-    "static/js/main.fc36d90d.chunk.js"
+    "static/js/main.742b99ef.chunk.js"
   ]
 }
