@@ -40,9 +40,9 @@ Recently I have developed a mobile application for the company I am working at. 
   <a href="/assets/img/2024-05-04-20-44-21.png"><img src="/assets/img/2024-05-04-20-44-21.png" width="400"/></a>
 
 
-- **Didn't Stop Bad Design at the Beginning.** In the past we had a tech lead designing a `UserRegistration` table (where `User` table has been made) which serves as an intermediate table before `User`.
+- **Didn't Stop Bad Design at the Beginning (Data Duplication).** In the past we had a tech lead designing a `UserRegistration` table (where `User` table has been made already) which serves as an intermediate table before `User`.
 
-  However 90% of data are the same. As the working experience of the lead is 5 to 6-years more than me therefore I am afraid to oppose this idea, which results in unpredictable extra amount of works as every time we deal with registration we need to look at two tables. 
+  However ***90% of data are the same***. This results in unpredictable extra amount of works as every time we deal with registration we need to look at two tables. 
 
   If we want to select data, we need to `case, when, then, else, end` many times.
 

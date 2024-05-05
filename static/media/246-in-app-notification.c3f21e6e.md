@@ -190,12 +190,49 @@ const numOfNotification = (() => {
 
 
 ##### Backend Handler that Responses Desired Prototype
+###### General Idea
+
+
+The general idea is to form an object that contains all the notification.
+
+**Notification Due to Session Level Information.**
+
+```json
+{
+  [projectId] : {
+    [channelId]: {
+      [sessionId]: {
+        NEW_ISSUE: 1
+        NEW_DRAFT: 3
+        ...
+      }
+    }
+  }
+}
+```
+**Notification Due to Channel Level Information.**
+```json
+{
+  [projectId] : {
+    [channelId]: {
+      NEW_CHANNEL: 1
+    }
+  }
+}
+```
+
+###### Code Implementation
 
 This is a little bit long processing. 
 
 Since we want to get all data in one single query. If it is hard to read, it is suggested to separate individual notifications into two separate queries for channels and for sessions respectively.
 
-```js
+In what follows notification = notifying:
+
+
+
+
+```js-1
 const getInappNotifications = async (req: Request, res: Response) => {
     const userEmail = req.user?.email || "";
 
@@ -226,6 +263,19 @@ const getInappNotifications = async (req: Request, res: Response) => {
         ])
         .where("UserToChannel.userEmail", "=", userEmail)
         .execute(),
+```
+In what follows:
+- `NotificationChannel` = channel being notified
+- `NotificationSessionChannel` =  the channel of the session being notified
+- `NotificationProject` = project being notified
+- `NotificationSessionProject` = project of session being notified (forget to add Notification at the prefix)
+
+This will introduce sparsities (nulls) to each selected row.
+Just recall that project contains many channel, channel contains many messagesSession, then the nullity check will make sense
+
+
+In frontend each issue card (session) and each project will calculate what notification to show based on these informations
+```js-31
     db.selectFrom("IndividualUserNotification")
         .leftJoin("MessagesSession", "MessagesSession.id", "IndividualUserNotification.sessionId")
         .leftJoin("Channel as NotificationChannel", "NotificationChannel.id", "IndividualUserNotification.channelId")
@@ -243,7 +293,6 @@ const getInappNotifications = async (req: Request, res: Response) => {
         .where("IndividualUserNotification.userEmail", "=", userEmail)
         .execute()
     ])
-
     const globalChannels: {
         [projectId in string]?: {
             [channelId in string]?: {
