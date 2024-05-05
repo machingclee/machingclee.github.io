@@ -195,42 +195,37 @@ const numOfNotification = (() => {
 
 The general idea is to form an object that contains all the notification.
 
-**Notification Due to Session Level Information.**
+- **Notification Due to Session Level Information.**
 
-```json
-{
-  [projectId] : {
-    [channelId]: {
-      [sessionId]: {
-        NEW_ISSUE: 1
-        NEW_DRAFT: 3
-        ...
+  ```json
+  {
+    [projectId] : {
+      [channelId]: {
+        [sessionId]: {
+          NEW_ISSUE: 1
+          NEW_DRAFT: 3
+          ...
+        }
       }
     }
   }
-}
-```
-**Notification Due to Channel Level Information.**
-```json
-{
-  [projectId] : {
-    [channelId]: {
-      NEW_CHANNEL: 1
+  ```
+- **Notification Due to Channel Level Information.**
+  ```json
+  {
+    [projectId] : {
+      [channelId]: {
+        NEW_CHANNEL: 1
+      }
     }
   }
-}
-```
+  ```
 
 ###### Code Implementation
 
 This is a little bit long processing. 
 
 Since we want to get all data in one single query. If it is hard to read, it is suggested to separate individual notifications into two separate queries for channels and for sessions respectively.
-
-In what follows notification = notifying:
-
-
-
 
 ```js-1
 const getInappNotifications = async (req: Request, res: Response) => {
@@ -251,7 +246,7 @@ const getInappNotifications = async (req: Request, res: Response) => {
         "NEW_CHANNEL_TO_JOIN"
     ];
 
-    const [globalChannelsResult, individualSessionsResult] = await Promise.all([
+    const [globalChannelsResult, notificationBySessionsResult] = await Promise.all([
     db.selectFrom("GlobalNotification")
         .leftJoin("UserToChannel", "UserToChannel.channelId", "GlobalNotification.channelId")
         .leftJoin("Channel", "Channel.id", "GlobalNotification.channelId")
@@ -264,17 +259,19 @@ const getInappNotifications = async (req: Request, res: Response) => {
         .where("UserToChannel.userEmail", "=", userEmail)
         .execute(),
 ```
-In what follows:
+In the follwoing query we make the following aliases:
+
 - `NotificationChannel` = channel being notified
 - `NotificationSessionChannel` =  the channel of the session being notified
 - `NotificationProject` = project being notified
 - `NotificationSessionProject` = project of session being notified (forget to add Notification at the prefix)
 
 This will introduce sparsities (nulls) to each selected row.
+
 Just recall that project contains many channel, channel contains many messagesSession, then the nullity check will make sense
 
 
-In frontend each issue card (session) and each project will calculate what notification to show based on these informations
+In frontend each session, channeland  project will calculate what notification to show based on these informations
 ```js-31
     db.selectFrom("IndividualUserNotification")
         .leftJoin("MessagesSession", "MessagesSession.id", "IndividualUserNotification.sessionId")
@@ -301,7 +298,7 @@ In frontend each issue card (session) and each project will calculate what notif
         }
     } = {};
 
-    const individualChannels: {
+    const notificationByChannels: {
         [projectId in string]?: {
             [channelId in string]?: {
                 [type in IndividualUserNotification["type"]]?: number
@@ -309,7 +306,7 @@ In frontend each issue card (session) and each project will calculate what notif
         }
     } = {};
 
-    const individualSessions: {
+    const notificationBySessions: {
         [sectionId in string]?: {
             [projectId in string]?: {
                 [channelId in string]?: {
@@ -330,7 +327,7 @@ In frontend each issue card (session) and each project will calculate what notif
     }
 
     // set individual sessions and channels notifications
-    for (const result of individualSessionsResult) {
+    for (const result of notificationBySessionsResult) {
         const {
             notificationChannelId = "",
             notificationSessionChannelId = "",
@@ -346,15 +343,15 @@ In frontend each issue card (session) and each project will calculate what notif
         if (individualChannel.includes(notificationType)) {
             if (notificationChannelProjectId && notificationChannelId && notificationType) {
                 const key = `[${notificationChannelProjectId}][${notificationChannelId}][${notificationType}]`;
-                const count = lodash.get(individualChannels, key, 0) as number;
-                lodash.set(individualChannels, key, count + 1);
+                const count = lodash.get(notificationByChannels, key, 0) as number;
+                lodash.set(notificationByChannels, key, count + 1);
             }
         }
         if (individualSession.includes(notificationType)) {
             if (notificationSessionProjectId && notificationSessionChannelId && sessionId && notificationType) {
                 const key = `[${notificationSessionProjectId}][${notificationSessionChannelId}][${sessionId}][${notificationType}]`;
-                const count = lodash.get(individualSessions, key, 0) as number;
-                lodash.set(individualSessions, key, count + 1);
+                const count = lodash.get(notificationBySessions, key, 0) as number;
+                lodash.set(notificationBySessions, key, count + 1);
             }
         }
     }
@@ -366,8 +363,8 @@ In frontend each issue card (session) and each project will calculate what notif
                 channels: globalChannels
             },
             individual: {
-                channels: individualChannels,
-                sessions: individualSessions
+                channels: notificationByChannels,
+                sessions: notificationBySessions
             }
         }
     })
