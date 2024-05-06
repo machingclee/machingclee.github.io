@@ -30,8 +30,34 @@ const useStyles = makeStyles((
   },
   { name:"custom-fade-in" }
 )
+```
+or in latest tss framework:
+```js
+import React, { ReactNode, useEffect, useState } from "react";
+import classnames from "classnames";
+import { tss } from "tss-react/mui";
+import { keyframes } from "tss-react";
 
-
+const useStyles = tss.create(() => ((
+    {
+        customFadein: {
+            "&.fade-in": {
+                height: "100%",
+                animation: `${keyframes`
+                0% {
+                    opacity: 0;
+                },
+                100% {
+                    opacity: 1;
+                }
+                `} 0.3s ease-in-out`
+            }
+        }
+    })
+));
+```
+then: 
+```js
 export default function FadeIn({ children, dependencies = [] }:
   {
     children: ReactNode

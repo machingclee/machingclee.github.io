@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.0c42d739.chunk.css",
-    "main.js": "/static/js/main.cd654924.chunk.js",
+    "main.js": "/static/js/main.0aa204ca.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.4bb87912.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.a44a991d.chunk.js": "/static/js/2.a44a991d.chunk.js",
@@ -85,7 +85,7 @@
     "static/media/060-ssh-download-file.md": "/static/media/060-ssh-download-file.c2b5a099.md",
     "static/media/061-rust-beginner-summary.md": "/static/media/061-rust-beginner-summary.2d7f9e1b.md",
     "static/media/062-DCT.md": "/static/media/062-DCT.a9154a97.md",
-    "static/media/063-fadein.md": "/static/media/063-fadein.20c7825d.md",
+    "static/media/063-fadein.md": "/static/media/063-fadein.e939a27a.md",
     "static/media/064-residue-block.md": "/static/media/064-residue-block.cec6dd6c.md",
     "static/media/065-pandoc.md": "/static/media/065-pandoc.1405492f.md",
     "static/media/065-yolo-v3-deep-dive.md": "/static/media/065-yolo-v3-deep-dive.5fa9bf85.md",
@@ -324,6 +324,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.a44a991d.chunk.js",
     "static/css/main.0c42d739.chunk.css",
-    "static/js/main.cd654924.chunk.js"
+    "static/js/main.0aa204ca.chunk.js"
   ]
 }
