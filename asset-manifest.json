@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.d4dde9fa.chunk.css",
-    "main.js": "/static/js/main.ff79d8d9.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.4bb87912.js",
+    "main.js": "/static/js/main.8086750e.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.14342f16.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.a44a991d.chunk.js": "/static/js/2.a44a991d.chunk.js",
-    "static/js/3.a05ea12c.chunk.js": "/static/js/3.a05ea12c.chunk.js",
-    "static/js/4.4113439a.chunk.js": "/static/js/4.4113439a.chunk.js",
-    "static/js/5.1e6be0a8.chunk.js": "/static/js/5.1e6be0a8.chunk.js",
+    "static/js/2.f19953f7.chunk.js": "/static/js/2.f19953f7.chunk.js",
+    "static/js/3.2937b8aa.chunk.js": "/static/js/3.2937b8aa.chunk.js",
+    "static/js/4.8f0a20c7.chunk.js": "/static/js/4.8f0a20c7.chunk.js",
+    "static/js/5.06e8a12e.chunk.js": "/static/js/5.06e8a12e.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.a44a991d.chunk.js.LICENSE.txt": "/static/js/2.a44a991d.chunk.js.LICENSE.txt",
-    "static/js/3.a05ea12c.chunk.js.LICENSE.txt": "/static/js/3.a05ea12c.chunk.js.LICENSE.txt",
-    "static/js/4.4113439a.chunk.js.LICENSE.txt": "/static/js/4.4113439a.chunk.js.LICENSE.txt",
+    "static/js/2.f19953f7.chunk.js.LICENSE.txt": "/static/js/2.f19953f7.chunk.js.LICENSE.txt",
+    "static/js/3.2937b8aa.chunk.js.LICENSE.txt": "/static/js/3.2937b8aa.chunk.js.LICENSE.txt",
+    "static/js/4.8f0a20c7.chunk.js.LICENSE.txt": "/static/js/4.8f0a20c7.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.52b1ef07.md",
     "static/media/002-Lazy-React-Router.md": "/static/media/002-Lazy-React-Router.48295ca9.md",
@@ -36,7 +36,7 @@
     "static/media/011-typescript-typetrick.md": "/static/media/011-typescript-typetrick.0e546903.md",
     "static/media/012-libtorch_deployment.md": "/static/media/012-libtorch_deployment.40d7772b.md",
     "static/media/013-timesheet.md": "/static/media/013-timesheet.1c9185c2.md",
-    "static/media/014-mobileapp.md": "/static/media/014-mobileapp.a0d22593.md",
+    "static/media/014-mobileapp.md": "/static/media/014-mobileapp.21e88c7a.md",
     "static/media/015-disquz.md": "/static/media/015-disquz.8b4defa2.md",
     "static/media/016-spa-seo.md": "/static/media/016-spa-seo.4895dc0f.md",
     "static/media/017-pytorch-study-notes.md": "/static/media/017-pytorch-study-notes.ac795ee2.md",
@@ -151,7 +151,7 @@
     "static/media/132-redux-thunk.md": "/static/media/132-redux-thunk.e550738d.md",
     "static/media/133-Review-FileUpload.md": "/static/media/133-Review-FileUpload.6f1c65d3.md",
     "static/media/134-Data-Scrapping.md": "/static/media/134-Data-Scrapping.be0c0928.md",
-    "static/media/136-mui-css-animation.md": "/static/media/136-mui-css-animation.386bf1f5.md",
+    "static/media/136-mui-css-animation.md": "/static/media/136-mui-css-animation.01287101.md",
     "static/media/137-jsonpipeline-in-java.md": "/static/media/137-jsonpipeline-in-java.8c386571.md",
     "static/media/138-redux-slice-template.md": "/static/media/138-redux-slice-template.f25db875.md",
     "static/media/139-lookup-from-array-of-objects.md": "/static/media/139-lookup-from-array-of-objects.ef6a1a6b.md",
@@ -271,6 +271,7 @@
     "static/media/258-debezium.md": "/static/media/258-debezium.55a70fbd.md",
     "static/media/259-k8s.md": "/static/media/259-k8s.e7342d2a.md",
     "static/media/260-self-reflection-on-db.md": "/static/media/260-self-reflection-on-db.87db2c19.md",
+    "static/media/261-cloudwatch-log.md": "/static/media/261-cloudwatch-log.0c6f97f4.md",
     "static/media/CV_Portfolio.ee6d8ae7.pdf": "/static/media/CV_Portfolio.ee6d8ae7.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -320,10 +321,10 @@
     "static/media/transformer-date-fomatter.18a2d3fc.pdf": "/static/media/transformer-date-fomatter.18a2d3fc.pdf"
   },
   "entrypoints": [
-    "static/js/runtime-main.4bb87912.js",
+    "static/js/runtime-main.14342f16.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.a44a991d.chunk.js",
+    "static/js/2.f19953f7.chunk.js",
     "static/css/main.d4dde9fa.chunk.css",
-    "static/js/main.ff79d8d9.chunk.js"
+    "static/js/main.8086750e.chunk.js"
   ]
 }

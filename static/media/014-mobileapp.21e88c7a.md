@@ -91,7 +91,7 @@ This is a full-stack project for Wonderbricks Limited in which I am in charge of
 Custom component to trigger an action when we slide over a threshold
 </td>
 <td>
-<video controls width="300">
+<video controls width="340">
   <source  src="/assets/react-native-app-demo/001_swipe_to_dispatch.mp4" type="video/mp4">
   Sorry, your browser doesn't support embedded videos.
 </video> 
@@ -105,7 +105,7 @@ Custom component to trigger an action when we slide over a threshold
 Custom component to show hidden buttons when we slide over a threshold
 </td>
 <td>
-<video controls width="300">
+<video controls width="340">
   <source  src="/assets/react-native-app-demo/002_swipe_to_show.mp4" type="video/mp4">
   Sorry, your browser doesn't support embedded videos.
 </video>
@@ -124,7 +124,7 @@ Custom Component to transit over 3 pages freely. It is implemented as a class wi
 etc functionalites.
 </td>
 <td>
-<video controls width="300">
+<video controls width="340">
   <source  src="/assets/react-native-app-demo/003_custom_page_transitioning_component.mp4" type="video/mp4">
   Sorry, your browser doesn't support embedded videos.
 </video>
@@ -138,7 +138,7 @@ etc functionalites.
 It is the same component as  above without providing left/right page as a props.
 </td>
 <td>
-<video controls width="300">
+<video controls width="340">
   <source  src="/assets/react-native-app-demo/006_custom_page_transition_usecase.mp4" type="video/mp4">
   Sorry, your browser doesn't support embedded videos.
 </video>
@@ -161,7 +161,7 @@ For sure there is an alternative called *Material Top Tabs Navigator*, we decide
 
 </td>
 <td>
-<video controls width="300">
+<video controls width="340">
   <source  src="/assets/react-native-app-demo/008_transitoin_pages.MP4" type="video/mp4">
   Sorry, your browser doesn't support embedded videos.
 </video>
@@ -174,7 +174,7 @@ For sure there is an alternative called *Material Top Tabs Navigator*, we decide
 
 </td>
 <td>
-<video controls width="300">
+<video controls width="340">
   <source  src="/assets/react-native-app-demo/005_communicate_among_bottom_sheets.mp4" type="video/mp4">
   Sorry, your browser doesn't support embedded videos.
 </video>
@@ -184,7 +184,7 @@ For sure there is an alternative called *Material Top Tabs Navigator*, we decide
 <tr>
 <td><b>Voice Recording, Native Voice Recognition and File Uploading.</b></td>
 <td>
-<video controls width="300">
+<video controls width="340">
   <source  src="/assets/react-native-app-demo/004_native_file_uploading.mp4" type="video/mp4">
   Sorry, your browser doesn't support embedded videos.
 </video>
@@ -201,14 +201,14 @@ As in web development, targeting the component in codebase for modification is a
 By enforcing the rule to display a hint (component name, indicative string, etc) for all major components, we have reduced huge amount of time in development.
 
 
-<a href="/assets/img/2024-05-01-19-20-20.png"><img src="/assets/img/2024-05-01-19-20-20.png" width="300" style="margin-top: 20px"/></a>
+<a href="/assets/img/2024-05-01-19-20-20.png"><img src="/assets/img/2024-05-01-19-20-20.png" width="340" style="margin-top: 20px"/></a>
 
 
 
 
 #### Deployment and App Distribution Experience
 ##### Different Stages with TestFlight for Internal and External Tests
-<a href="/assets/img/2024-05-01-19-06-19.png"><img src="/assets/img/2024-05-01-19-06-19.png" width="300"/></a>
+<a href="/assets/img/2024-05-01-19-06-19.png"><img src="/assets/img/2024-05-01-19-06-19.png" width="340"/></a>
 
 ##### App Store Distribution
 <a href="/assets/img/2024-05-04-17-34-14.png">![](/assets/img/2024-05-04-17-34-14.png)</a>
@@ -240,11 +240,18 @@ Finally I adopt my repository as the source of the package:
     "react-native-fast-image": "https://github.com/Ching-Cheong-Lee/react-native-fast-image#fa4a38e",
 }
 ```
-in order to solve this error
+in order to solve this error.
 
 <a href="/assets/img/2024-05-04-21-03-30.png">![](/assets/img/2024-05-04-21-03-30.png)</a>
 
+- We need to run `npx tsc` to build a `/dist` folder with target in `CommonJS`, for which the error complains about. 
+
+- Existing solutions that aim at solving this problem have skipped this step for unknown reason.
+
+
 In this lesson my problem can be solved timely because
 
-- I am lucky to have someone who has the native knowledge to ***change the native code***.
-- I am lucky I have had experience managing my own npm package.
+- We have someone who has the native knowledge to ***change the native code***.
+
+- We have had experience managing our own npm package.
+
