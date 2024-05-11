@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.d4dde9fa.chunk.css",
-    "main.js": "/static/js/main.127affb4.chunk.js",
+    "main.js": "/static/js/main.e524635f.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.14342f16.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.f19953f7.chunk.js": "/static/js/2.f19953f7.chunk.js",
@@ -34,7 +34,7 @@
     "static/media/010-classifier-by-means-of-detection.md": "/static/media/010-classifier-by-means-of-detection.74f93395.md",
     "static/media/011-translate-custom-model.md": "/static/media/011-translate-custom-model.ca834a20.md",
     "static/media/011-typescript-typetrick.md": "/static/media/011-typescript-typetrick.0e546903.md",
-    "static/media/012-libtorch_deployment.md": "/static/media/012-libtorch_deployment.40d7772b.md",
+    "static/media/012-libtorch_deployment.md": "/static/media/012-libtorch_deployment.28882c4c.md",
     "static/media/013-timesheet.md": "/static/media/013-timesheet.1c9185c2.md",
     "static/media/014-mobileapp.md": "/static/media/014-mobileapp.21e88c7a.md",
     "static/media/015-disquz.md": "/static/media/015-disquz.8b4defa2.md",
@@ -325,6 +325,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.f19953f7.chunk.js",
     "static/css/main.d4dde9fa.chunk.css",
-    "static/js/main.127affb4.chunk.js"
+    "static/js/main.e524635f.chunk.js"
   ]
 }
