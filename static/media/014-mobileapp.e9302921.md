@@ -226,7 +226,7 @@ By enforcing the rule to display a hint (component name, indicative string, etc)
 [My self-reflection on the work I have done so far](/blog/article/Self-Reflection-on-Database-Schema-Design#What-I-failed).
 
 ##### Native Knowledge is Essential
-
+###### Description of the our Encounter Problem
 Since images in react-native flicker when their parent component gets rerendered, we need to make use of a package [react-native-fast-image](https://github.com/DylanVann/react-native-fast-image) to avoid this phenomenon. 
 
 However, this package has not been maintained for 2 years, and some native API has been deprecated in ios17.
@@ -244,14 +244,18 @@ in order to solve this error.
 
 <a href="/assets/img/2024-05-04-21-03-30.png">![](/assets/img/2024-05-04-21-03-30.png)</a>
 
+What we have solved:
+
 - We need to run `npx tsc` to build a `/dist` folder with target in `CommonJS`, for which the error complains about. 
 
-- Existing solutions that aim at solving this problem have skipped this step for unknown reason.
+- Existing solutions that aim at solving iOS17 SDK problem have skipped the step of building `CommonJS` entrypoint for unknown reason.
+
+###### Lessons
 
 
 In this lesson my problem can be solved timely because
 
-- We have someone who has the native knowledge to ***change the native code***.
+- We have someone who has the native knowledge to ***change the native code***, this will be the field of knowledge to which I have to enrich.
 
-- We have had experience managing our own npm package.
+- We can manage our own npm package, solid knowledge in `npm` ecosystem is essential.
 
