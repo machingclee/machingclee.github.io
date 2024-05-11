@@ -57,8 +57,6 @@ img_dim = 28*28*1
 batch_size = 32
 num_epochs = 50
 
-
-
 disc = Discriminator(img_dim).to(device)
 gen = Generator(z_dim, img_dim).to(device)
 fixed_noise = torch.randn(batch_size, z_dim).to(device)
@@ -340,7 +338,7 @@ for epoch in range(NUM_EPOCHS):
 
 In the train loop of our simple GAN:
 
-```python
+```python-1
 disc = Discriminator(img_dim).to(device)
 gen = Generator(z_dim, img_dim).to(device)
 
@@ -374,7 +372,7 @@ for epoch in range(num_epoch):
 
 And we want to discuss the following 3 lines:
 
-```python
+```python-24
     disc.zero_grad()
     lossD.backward()
     opt_disc.step()
