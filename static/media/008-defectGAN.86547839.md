@@ -1,6 +1,6 @@
 ---
 id: portfolio008
-title: DefectGAN - a Synthetic Data Generation Model
+title: DefectGAN, a Synthetic Data Generation Model
 intro: A GAN model that generates defect data for object detection model.
 thumbnail: /assets/portfolios/thumbnails/defectGANthumb.png
 tech: Python, Pytorch, Tensorflow

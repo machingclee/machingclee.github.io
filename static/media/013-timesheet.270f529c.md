@@ -1,7 +1,7 @@
 ---
 id: portfolio013
 title: "Event Time Confirmation System"
-intro: This projects attempts to confirm times available to all members of an event.
+intro: This project attempts to confirm times available to all members of an event.
 thumbnail: /assets/portfolios/thumbnails/time-confirmation.png
 tech: Next.js, Express, PostgreSQL, Lambda Function
 thumbWidth: 600
