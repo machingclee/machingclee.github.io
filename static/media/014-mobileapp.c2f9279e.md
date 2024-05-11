@@ -1,6 +1,6 @@
 ---
 id: portfolio014
-title: "Mobile Application with Custom Animated Components and Concret Deployment Experience"
+title: "Mobile Application with Custom Animated Components and Deployment Experience"
 intro: Demontrate the ability to create custom animated components to fulfill complicated requirements.
 thumbnail: /assets/portfolios/thumbnails/mobileapp.png
 tech: React-Native, expo-cli
@@ -226,10 +226,10 @@ By enforcing the rule to display a hint (component name, indicative string, etc)
 [My self-reflection on the work I have done so far](/blog/article/Self-Reflection-on-Database-Schema-Design#What-I-failed).
 
 ##### Native Knowledge is Essential
-###### Description of the our Encounter Problem
+###### Description of our Encountered Problem
 Since images in react-native flicker when their parent component gets rerendered, we need to make use of a package [react-native-fast-image](https://github.com/DylanVann/react-native-fast-image) to avoid this phenomenon. 
 
-However, this package has not been maintained for 2 years, and some native API has been deprecated in ios17.
+However, this package has not been maintained for 2 years, and some native API has been deprecated in iOS17.
 I have spent tones of time browsing the discussion on github issues, folk the repo of possible solution, and make my own changes in my folked repository.
 
 Finally I adopt my repository as the source of the package:
