@@ -6,7 +6,7 @@ tag: python
 intro: Create a console log that freeze the position but keep updating the numerics in training.
 ---
 
-#### What we can Archive:
+#### What we can Achieve:
 
 <center>
 <img src="/assets/tech/054.gif"/>
