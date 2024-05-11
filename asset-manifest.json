@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.d4dde9fa.chunk.css",
-    "main.js": "/static/js/main.c1fac117.chunk.js",
+    "main.js": "/static/js/main.ae9a5c61.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.14342f16.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.f19953f7.chunk.js": "/static/js/2.f19953f7.chunk.js",
@@ -96,7 +96,7 @@
     "static/media/072-DefectGAN.md": "/static/media/072-DefectGAN.c0718f46.md",
     "static/media/073-install-tensorflow-gpu.md": "/static/media/073-install-tensorflow-gpu.d4a52327.md",
     "static/media/075-shell-script.md": "/static/media/075-shell-script.65c4ae1d.md",
-    "static/media/076-pytorch-summary.md": "/static/media/076-pytorch-summary.1e0a19b1.md",
+    "static/media/076-pytorch-summary.md": "/static/media/076-pytorch-summary.48fe9d3a.md",
     "static/media/077-continuous-logging.md": "/static/media/077-continuous-logging.b5f96942.md",
     "static/media/079progress-bar.md": "/static/media/079progress-bar.948cb527.md",
     "static/media/080-mask-in-numpy.md": "/static/media/080-mask-in-numpy.83a198cb.md",
@@ -325,6 +325,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.f19953f7.chunk.js",
     "static/css/main.d4dde9fa.chunk.css",
-    "static/js/main.c1fac117.chunk.js"
+    "static/js/main.ae9a5c61.chunk.js"
   ]
 }
