@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.d4dde9fa.chunk.css",
-    "main.js": "/static/js/main.5a07d89c.chunk.js",
+    "main.js": "/static/js/main.b6bfcd39.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.14342f16.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.f19953f7.chunk.js": "/static/js/2.f19953f7.chunk.js",
@@ -25,7 +25,7 @@
     "static/media/005-conda-useful-commands.md": "/static/media/005-conda-useful-commands.58923fe0.md",
     "static/media/005-yolo-custom-training.md": "/static/media/005-yolo-custom-training.a36d90b8.md",
     "static/media/006-qt-project-starter.md": "/static/media/006-qt-project-starter.3856ecd9.md",
-    "static/media/007-electron-next.md": "/static/media/007-electron-next.387d3f6e.md",
+    "static/media/007-electron-next.md": "/static/media/007-electron-next.89f3e17c.md",
     "static/media/007-redux-saga.md": "/static/media/007-redux-saga.f840908f.md",
     "static/media/008-defectGAN.md": "/static/media/008-defectGAN.86547839.md",
     "static/media/009-algorithms.md": "/static/media/009-algorithms.28c44e56.md",
@@ -271,7 +271,7 @@
     "static/media/258-debezium.md": "/static/media/258-debezium.55a70fbd.md",
     "static/media/259-k8s.md": "/static/media/259-k8s.e7342d2a.md",
     "static/media/260-self-reflection-on-db.md": "/static/media/260-self-reflection-on-db.87db2c19.md",
-    "static/media/261-cloudwatch-log.md": "/static/media/261-cloudwatch-log.0f269b23.md",
+    "static/media/261-cloudwatch-log.md": "/static/media/261-cloudwatch-log.8cf6d15c.md",
     "static/media/CV_Portfolio.ee6d8ae7.pdf": "/static/media/CV_Portfolio.ee6d8ae7.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -325,6 +325,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.f19953f7.chunk.js",
     "static/css/main.d4dde9fa.chunk.css",
-    "static/js/main.5a07d89c.chunk.js"
+    "static/js/main.b6bfcd39.chunk.js"
   ]
 }

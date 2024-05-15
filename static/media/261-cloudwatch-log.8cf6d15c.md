@@ -193,7 +193,7 @@ python cloudwatch.py \
     -n=10
 ```
 
-where `n` is the number of `log_stream`'s count from the top:
+where `n` is the number of `log_stream`'s counted from the top:
 
 <a href="/assets/img/2024-05-09-22-32-51.png">![](/assets/img/2024-05-09-22-32-51.png)</a>
 
