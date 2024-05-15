@@ -34,7 +34,8 @@ date: 2024-06-11
     table th, table td {
       padding-left: 0px !important;
     }
-    img, video{
+    img, .custom-video{
+      position: relative;
       transition: box-shadow 0.1s ease-in-out;
       box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
       cursor: pointer;
@@ -45,7 +46,7 @@ date: 2024-06-11
     img:hover, video:hover{
       box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,rgba(9, 30, 66, 0.08) 0px 0px 10px 10px;
     }
-    img, video{
+    img, .custom-video{
         max-width: 660px;
         margin-bottom: 10px;
     }
@@ -91,10 +92,7 @@ This is a full-stack project for Wonderbricks Limited in which I am in charge of
 Custom component to trigger an action when we slide over a threshold
 </td>
 <td>
-<video controls width="340">
-  <source  src="/assets/react-native-app-demo/001_swipe_to_dispatch.mp4" type="video/mp4">
-  Sorry, your browser doesn't support embedded videos.
-</video> 
+    <customvideo src="/assets/react-native-app-demo/001_swipe_to_dispatch.mp4" width="340"/>
 </td>
 </tr>
 
@@ -105,10 +103,7 @@ Custom component to trigger an action when we slide over a threshold
 Custom component to show hidden buttons when we slide over a threshold
 </td>
 <td>
-<video controls width="340">
-  <source  src="/assets/react-native-app-demo/002_swipe_to_show.mp4" type="video/mp4">
-  Sorry, your browser doesn't support embedded videos.
-</video>
+<customvideo src="/assets/react-native-app-demo/002_swipe_to_show.mp4" width="340"/>
 </td>
 </tr>
 
@@ -124,10 +119,7 @@ Custom Component to transit over 3 pages freely. It is implemented as a class wi
 etc functionalites.
 </td>
 <td>
-<video controls width="340">
-  <source  src="/assets/react-native-app-demo/003_custom_page_transitioning_component.mp4" type="video/mp4">
-  Sorry, your browser doesn't support embedded videos.
-</video>
+  <customvideo src="/assets/react-native-app-demo/003_custom_page_transitioning_component.mp4" width="340"/>
 </td>
 </tr>
 
@@ -138,10 +130,7 @@ etc functionalites.
 It is the same component as  above without providing left/right page as a props.
 </td>
 <td>
-<video controls width="340">
-  <source  src="/assets/react-native-app-demo/006_custom_page_transition_usecase.mp4" type="video/mp4">
-  Sorry, your browser doesn't support embedded videos.
-</video>
+<customvideo src="/assets/react-native-app-demo/006_custom_page_transition_usecase.mp4" width="340"/>
 </td>
 </tr>
 
@@ -161,10 +150,7 @@ For sure there is an alternative called *Material Top Tabs Navigator*, we decide
 
 </td>
 <td>
-<video controls width="340">
-  <source  src="/assets/react-native-app-demo/008_transitoin_pages.MP4" type="video/mp4">
-  Sorry, your browser doesn't support embedded videos.
-</video>
+<customvideo src="/assets/react-native-app-demo/008_transitoin_pages.MP4" width="340">
 </td>
 </tr>
 
@@ -174,20 +160,14 @@ For sure there is an alternative called *Material Top Tabs Navigator*, we decide
 
 </td>
 <td>
-<video controls width="340">
-  <source  src="/assets/react-native-app-demo/005_communicate_among_bottom_sheets.mp4" type="video/mp4">
-  Sorry, your browser doesn't support embedded videos.
-</video>
+<customvideo src="/assets/react-native-app-demo/008_transitoin_pages.MP4" width="340"/>
 </td>
 </tr>
 
 <tr>
 <td><b>Voice Recording, Native Voice Recognition and File Uploading.</b></td>
 <td>
-<video controls width="340">
-  <source  src="/assets/react-native-app-demo/004_native_file_uploading.mp4" type="video/mp4">
-  Sorry, your browser doesn't support embedded videos.
-</video>
+<customvideo src="/assets/react-native-app-demo/004_native_file_uploading.mp4" width="340"/>
 </td>
 </tr>
 

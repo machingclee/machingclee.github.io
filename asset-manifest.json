@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.d4dde9fa.chunk.css",
-    "main.js": "/static/js/main.b6bfcd39.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.14342f16.js",
+    "main.js": "/static/js/main.60e266c2.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.7777e23d.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.f19953f7.chunk.js": "/static/js/2.f19953f7.chunk.js",
-    "static/js/3.2937b8aa.chunk.js": "/static/js/3.2937b8aa.chunk.js",
-    "static/js/4.8f0a20c7.chunk.js": "/static/js/4.8f0a20c7.chunk.js",
-    "static/js/5.06e8a12e.chunk.js": "/static/js/5.06e8a12e.chunk.js",
+    "static/js/2.49e97ee3.chunk.js": "/static/js/2.49e97ee3.chunk.js",
+    "static/js/3.bf4d8c8a.chunk.js": "/static/js/3.bf4d8c8a.chunk.js",
+    "static/js/4.0786d6aa.chunk.js": "/static/js/4.0786d6aa.chunk.js",
+    "static/js/5.2f22baa5.chunk.js": "/static/js/5.2f22baa5.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.f19953f7.chunk.js.LICENSE.txt": "/static/js/2.f19953f7.chunk.js.LICENSE.txt",
-    "static/js/3.2937b8aa.chunk.js.LICENSE.txt": "/static/js/3.2937b8aa.chunk.js.LICENSE.txt",
-    "static/js/4.8f0a20c7.chunk.js.LICENSE.txt": "/static/js/4.8f0a20c7.chunk.js.LICENSE.txt",
+    "static/js/2.49e97ee3.chunk.js.LICENSE.txt": "/static/js/2.49e97ee3.chunk.js.LICENSE.txt",
+    "static/js/3.bf4d8c8a.chunk.js.LICENSE.txt": "/static/js/3.bf4d8c8a.chunk.js.LICENSE.txt",
+    "static/js/4.0786d6aa.chunk.js.LICENSE.txt": "/static/js/4.0786d6aa.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.52b1ef07.md",
     "static/media/002-Lazy-React-Router.md": "/static/media/002-Lazy-React-Router.48295ca9.md",
@@ -36,7 +36,7 @@
     "static/media/011-typescript-typetrick.md": "/static/media/011-typescript-typetrick.0e546903.md",
     "static/media/012-libtorch_deployment.md": "/static/media/012-libtorch_deployment.28882c4c.md",
     "static/media/013-timesheet.md": "/static/media/013-timesheet.cc4cdbdd.md",
-    "static/media/014-mobileapp.md": "/static/media/014-mobileapp.c2f9279e.md",
+    "static/media/014-mobileapp.md": "/static/media/014-mobileapp.f21b9ae7.md",
     "static/media/015-disquz.md": "/static/media/015-disquz.8b4defa2.md",
     "static/media/016-spa-seo.md": "/static/media/016-spa-seo.4895dc0f.md",
     "static/media/017-pytorch-study-notes.md": "/static/media/017-pytorch-study-notes.c40bf7d6.md",
@@ -321,10 +321,10 @@
     "static/media/transformer-date-fomatter.18a2d3fc.pdf": "/static/media/transformer-date-fomatter.18a2d3fc.pdf"
   },
   "entrypoints": [
-    "static/js/runtime-main.14342f16.js",
+    "static/js/runtime-main.7777e23d.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.f19953f7.chunk.js",
+    "static/js/2.49e97ee3.chunk.js",
     "static/css/main.d4dde9fa.chunk.css",
-    "static/js/main.b6bfcd39.chunk.js"
+    "static/js/main.60e266c2.chunk.js"
   ]
 }
