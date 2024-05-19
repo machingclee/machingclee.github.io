@@ -158,11 +158,35 @@ For sure there is an alternative called *Material Top Tabs Navigator*, we decide
 <td>
 <b>Reusable Bottomsheet Class and Communication Among Them.</b>
 
+In JS each `const = T * const` in `C` sense with auto-deferencing, we instantiate our bottomsheet in this way:
+
+```js
+const CameraBottomSheet = new WbBottomSheet({
+    index: 0,
+    nullHandle: true,
+    noRoundedCorner: true,
+    enableBackdrop: false,
+    snapPoints: ["100%"],
+});
+
+export CameraBottomSheet;
+```
+All the actions related to this bottomsheet will be controlled by this export (which is cached thanks to the `nodejs` mechanism for each export).
+
+We have 4 main methods exposed by `WbBottomSheet`:
+- `render: () => JSX.Element`
+- `open: () => void`
+- `close: () => void`
+- `setContent: (content: () => () => JSX.Element) => void`
+Therefore the effect in the video is achieved by `open()` and `close()` within two bottomsheets (with redux to update the state).
 </td>
+
 <td>
-<customvideo src="/assets/react-native-app-demo/008_transitoin_pages.MP4" width="340"/>
+<customvideo src="/assets/react-native-app-demo/005_communicate_among_bottom_sheets.mp4" width="340"/>
 </td>
 </tr>
+<tr>
+
 
 <tr>
 <td><b>Voice Recording, Native Voice Recognition and File Uploading.</b></td>

@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.d4dde9fa.chunk.css",
-    "main.js": "/static/js/main.60e266c2.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.7777e23d.js",
+    "main.js": "/static/js/main.f92771ca.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.82e7651b.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.49e97ee3.chunk.js": "/static/js/2.49e97ee3.chunk.js",
-    "static/js/3.bf4d8c8a.chunk.js": "/static/js/3.bf4d8c8a.chunk.js",
-    "static/js/4.0786d6aa.chunk.js": "/static/js/4.0786d6aa.chunk.js",
-    "static/js/5.2f22baa5.chunk.js": "/static/js/5.2f22baa5.chunk.js",
+    "static/js/2.edf62be0.chunk.js": "/static/js/2.edf62be0.chunk.js",
+    "static/js/3.2a7c2415.chunk.js": "/static/js/3.2a7c2415.chunk.js",
+    "static/js/4.a5c1f646.chunk.js": "/static/js/4.a5c1f646.chunk.js",
+    "static/js/5.7f4db1c5.chunk.js": "/static/js/5.7f4db1c5.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.49e97ee3.chunk.js.LICENSE.txt": "/static/js/2.49e97ee3.chunk.js.LICENSE.txt",
-    "static/js/3.bf4d8c8a.chunk.js.LICENSE.txt": "/static/js/3.bf4d8c8a.chunk.js.LICENSE.txt",
-    "static/js/4.0786d6aa.chunk.js.LICENSE.txt": "/static/js/4.0786d6aa.chunk.js.LICENSE.txt",
+    "static/js/2.edf62be0.chunk.js.LICENSE.txt": "/static/js/2.edf62be0.chunk.js.LICENSE.txt",
+    "static/js/3.2a7c2415.chunk.js.LICENSE.txt": "/static/js/3.2a7c2415.chunk.js.LICENSE.txt",
+    "static/js/4.a5c1f646.chunk.js.LICENSE.txt": "/static/js/4.a5c1f646.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.52b1ef07.md",
     "static/media/002-Lazy-React-Router.md": "/static/media/002-Lazy-React-Router.48295ca9.md",
@@ -36,7 +36,7 @@
     "static/media/011-typescript-typetrick.md": "/static/media/011-typescript-typetrick.0e546903.md",
     "static/media/012-libtorch_deployment.md": "/static/media/012-libtorch_deployment.28882c4c.md",
     "static/media/013-timesheet.md": "/static/media/013-timesheet.cc4cdbdd.md",
-    "static/media/014-mobileapp.md": "/static/media/014-mobileapp.f21b9ae7.md",
+    "static/media/014-mobileapp.md": "/static/media/014-mobileapp.ecd97772.md",
     "static/media/015-disquz.md": "/static/media/015-disquz.8b4defa2.md",
     "static/media/016-spa-seo.md": "/static/media/016-spa-seo.4895dc0f.md",
     "static/media/017-pytorch-study-notes.md": "/static/media/017-pytorch-study-notes.c40bf7d6.md",
@@ -92,7 +92,7 @@
     "static/media/066-WGAN.md": "/static/media/066-WGAN.c1dc70b3.md",
     "static/media/068-coco.md": "/static/media/068-coco.4c27ee6c.md",
     "static/media/069-PCA.md": "/static/media/069-PCA.cb420266.md",
-    "static/media/070-SVD.md": "/static/media/070-SVD.73a6ea8c.md",
+    "static/media/070-SVD.md": "/static/media/070-SVD.abab3d9e.md",
     "static/media/072-DefectGAN.md": "/static/media/072-DefectGAN.c0718f46.md",
     "static/media/073-install-tensorflow-gpu.md": "/static/media/073-install-tensorflow-gpu.d4a52327.md",
     "static/media/075-shell-script.md": "/static/media/075-shell-script.65c4ae1d.md",
@@ -171,7 +171,7 @@
     "static/media/155-gmail-pubsub.md": "/static/media/155-gmail-pubsub.1e2e196b.md",
     "static/media/156-serverless.md": "/static/media/156-serverless.77ae63e8.md",
     "static/media/157-SSE.md": "/static/media/157-SSE.dc84e04a.md",
-    "static/media/158-algolia.md": "/static/media/158-algolia.82c12bd7.md",
+    "static/media/158-algolia.md": "/static/media/158-algolia.1c74db61.md",
     "static/media/159-clickoutside.md": "/static/media/159-clickoutside.800d0b58.md",
     "static/media/160-multiselections.md": "/static/media/160-multiselections.04467aa0.md",
     "static/media/161-third-party.md": "/static/media/161-third-party.2282681e.md",
@@ -321,10 +321,10 @@
     "static/media/transformer-date-fomatter.18a2d3fc.pdf": "/static/media/transformer-date-fomatter.18a2d3fc.pdf"
   },
   "entrypoints": [
-    "static/js/runtime-main.7777e23d.js",
+    "static/js/runtime-main.82e7651b.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.49e97ee3.chunk.js",
+    "static/js/2.edf62be0.chunk.js",
     "static/css/main.d4dde9fa.chunk.css",
-    "static/js/main.60e266c2.chunk.js"
+    "static/js/main.f92771ca.chunk.js"
   ]
 }
