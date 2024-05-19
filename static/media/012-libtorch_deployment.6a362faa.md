@@ -1,6 +1,6 @@
 ---
 id: portfolio012
-title: "Translate Pytorch Model and Weight into Libtorch Model for Cpp Project"
+title: "Translate Pytorch Model and Weight into Libtorch Model for C++ Project"
 intro: This project attempts to apply weights trained from pytorch (Python) model to libtorch (C++) model by constructing the same model structure.
 thumbnail: /assets/portfolios/thumbnails/libtorch_deployment.png
 tech: Pytorch (python), Libtorch (C++)

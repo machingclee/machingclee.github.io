@@ -271,7 +271,7 @@ This will introduce sparsities (nulls) to each selected row.
 Just recall that project contains many channel, channel contains many messagesSession, then the nullity check will make sense
 
 
-In frontend each session, channel and project will calculate what notification to show based on these informations
+In frontend each session, channeland  project will calculate what notification to show based on these informations
 ```js-31
     db.selectFrom("IndividualUserNotification")
         .leftJoin("MessagesSession", "MessagesSession.id", "IndividualUserNotification.sessionId")

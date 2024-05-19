@@ -1,6 +1,6 @@
 ---
 id: portfolio007
-title: Dictionary App with Nextjs and Electronjs
+title: Dictionary App with Next.js and Electron.js
 intro: Second trial of building dictionary desktop app using electron and next.js.
 thumbnail: /assets/portfolios/thumbnails/electron_and_next.png
 tech: Typescript, Next.js, Electron.js

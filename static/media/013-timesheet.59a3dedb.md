@@ -1,7 +1,7 @@
 ---
 id: portfolio013
 title: "Event Time Confirmation System"
-intro: This project attempts to confirm times available to all members of an event.
+intro: This projects attempts to confirm times available to all members of an event.
 thumbnail: /assets/portfolios/thumbnails/time-confirmation.png
 tech: Next.js, Express, PostgreSQL, Lambda Function
 thumbWidth: 600
@@ -31,11 +31,11 @@ date: 2024-03-11
     }
 </style>
 
-#### Frontend Deployment with Demonstration Links
+#### Repository
 
-- https://ffxiv-timesheet.vercel.app/timesheet
+- https://github.com/machingclee/2024-01-31-FFXIV-Timesheet-System
 
-- [Specific Example of Timesheets](https://ffxiv-timesheet.vercel.app/timesheet/detail?weeklyId=018e2741-6b5d-550f-85aa-fd4bd28fc891)
+#### The Layout of the Webpage
 
 - Light and Dark Mode
 
@@ -43,14 +43,14 @@ date: 2024-03-11
 
 
 
-#### Repository
 
-- https://github.com/machingclee/2024-01-31-FFXIV-Timesheet-System
+#### Deployment 
 
+##### Frontend with Demonstration Links
+- https://ffxiv-timesheet.vercel.app/timesheet
+- [Specific Example of Timesheets](https://ffxiv-timesheet.vercel.app/timesheet/detail?weeklyId=018e2741-6b5d-550f-85aa-fd4bd28fc891)
 
-
-
-#### Backend Deployment by Lambda Function
+##### Backend by Lambda Function
 
 - Lambda Service Provided by AWS
 

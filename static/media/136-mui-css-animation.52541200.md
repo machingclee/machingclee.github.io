@@ -7,9 +7,7 @@ intro: "Record how to write CSS animation with keyframes in mui `makeStyles`."
 toc: false
 ---
 
-In traditional `mui`: 
-
-```js
+```text
 const useStyles = makeStyles((theme) => ({
   grow: {
     animation: `$growAnimation 2000ms ease-in-out`,
@@ -27,34 +25,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 ```
-
-In latest `tss`:
-
-```js
-import React, { ReactNode, useEffect, useState } from "react";
-import classnames from "classnames";
-import { tss } from "tss-react/mui";
-import { keyframes } from "tss-react";
-
-const useStyles = tss.create(() => ((
-    {
-        customFadein: {
-            "&.fade-in": {
-                height: "100%",
-                animation: `${keyframes`
-                0% {
-                    opacity: 0;
-                },
-                100% {
-                    opacity: 1;
-                }
-                `} 0.3s ease-in-out`
-            }
-        }
-    })
-));
-```
-
 
 After animation is triggered, make sure to toggle off the corresponding flag
 
