@@ -14,7 +14,7 @@ The output shape of
 tf.keras.layers.Conv2D(channels, kernel_size, s, padding="same")
 ```
 
-in tensorflow is more predictable because it always takes an input of shape `(N, H, W, C)` into an output of shape `(N, H//s, W//s, channels)`. Unfortunately in pytorch `padding="same"` will fail if `s > 1`, but we usually need such an option to downsize the spatial dimenion by a constant multiple (usually that multiple is `stride=2`).
+in tensorflow is more predictable because it always takes an input of shape `(N, H, W, C)` into an output of shape `(N, H//s, W//s, channels)`. Unfortunately in pytorch `padding="same"` will fail if $\texttt{s} > 1$, but we usually need such an option to downsize the spatial dimenion by a constant multiple (usually that multiple is `stride=2`).
 
 Therefore we create an equivalent version in pytorch:
 
