@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.e0834fde.chunk.css",
-    "main.js": "/static/js/main.ec071a58.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.d619c304.js",
+    "main.js": "/static/js/main.eb34d222.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.0fe2d14a.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.54982c87.chunk.js": "/static/js/2.54982c87.chunk.js",
-    "static/js/3.2a7e5d76.chunk.js": "/static/js/3.2a7e5d76.chunk.js",
-    "static/js/4.4113439a.chunk.js": "/static/js/4.4113439a.chunk.js",
-    "static/js/5.1e6be0a8.chunk.js": "/static/js/5.1e6be0a8.chunk.js",
+    "static/js/2.6063f5e4.chunk.js": "/static/js/2.6063f5e4.chunk.js",
+    "static/js/3.cab39d8e.chunk.js": "/static/js/3.cab39d8e.chunk.js",
+    "static/js/4.ffeabcce.chunk.js": "/static/js/4.ffeabcce.chunk.js",
+    "static/js/5.17419c18.chunk.js": "/static/js/5.17419c18.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.54982c87.chunk.js.LICENSE.txt": "/static/js/2.54982c87.chunk.js.LICENSE.txt",
-    "static/js/3.2a7e5d76.chunk.js.LICENSE.txt": "/static/js/3.2a7e5d76.chunk.js.LICENSE.txt",
-    "static/js/4.4113439a.chunk.js.LICENSE.txt": "/static/js/4.4113439a.chunk.js.LICENSE.txt",
+    "static/js/2.6063f5e4.chunk.js.LICENSE.txt": "/static/js/2.6063f5e4.chunk.js.LICENSE.txt",
+    "static/js/3.cab39d8e.chunk.js.LICENSE.txt": "/static/js/3.cab39d8e.chunk.js.LICENSE.txt",
+    "static/js/4.ffeabcce.chunk.js.LICENSE.txt": "/static/js/4.ffeabcce.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.e65e1f05.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.9c673438.md",
     "static/media/002-Lazy-React-Router.md": "/static/media/002-Lazy-React-Router.08885309.md",
@@ -92,7 +92,7 @@
     "static/media/066-WGAN.md": "/static/media/066-WGAN.9e4a12ea.md",
     "static/media/068-coco.md": "/static/media/068-coco.8f819ee0.md",
     "static/media/069-PCA.md": "/static/media/069-PCA.661c5a30.md",
-    "static/media/070-SVD.md": "/static/media/070-SVD.929ce632.md",
+    "static/media/070-SVD.md": "/static/media/070-SVD.20b4697a.md",
     "static/media/072-DefectGAN.md": "/static/media/072-DefectGAN.19e3437a.md",
     "static/media/073-install-tensorflow-gpu.md": "/static/media/073-install-tensorflow-gpu.4b648761.md",
     "static/media/075-shell-script.md": "/static/media/075-shell-script.bbcb64fb.md",
@@ -320,10 +320,10 @@
     "static/media/transformer-date-fomatter.18a2d3fc.pdf": "/static/media/transformer-date-fomatter.18a2d3fc.pdf"
   },
   "entrypoints": [
-    "static/js/runtime-main.d619c304.js",
+    "static/js/runtime-main.0fe2d14a.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.54982c87.chunk.js",
+    "static/js/2.6063f5e4.chunk.js",
     "static/css/main.e0834fde.chunk.css",
-    "static/js/main.ec071a58.chunk.js"
+    "static/js/main.eb34d222.chunk.js"
   ]
 }
