@@ -1,6 +1,6 @@
 ---
 id: portfolio014
-title: "Mobile Application with Custom Animated Components and Concret Deployment Experience"
+title: "Mobile Application with Custom Animated Components and Deployment Experience"
 intro: Demontrate the ability to create custom animated components to fulfill complicated requirements.
 thumbnail: /assets/portfolios/thumbnails/mobileapp.png
 tech: React-Native, expo-cli
@@ -34,7 +34,8 @@ date: 2024-06-11
     table th, table td {
       padding-left: 0px !important;
     }
-    img, video{
+    img, .custom-video{
+      position: relative;
       transition: box-shadow 0.1s ease-in-out;
       box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
       cursor: pointer;
@@ -45,7 +46,7 @@ date: 2024-06-11
     img:hover, video:hover{
       box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,rgba(9, 30, 66, 0.08) 0px 0px 10px 10px;
     }
-    img, video{
+    img, .custom-video{
         max-width: 660px;
         margin-bottom: 10px;
     }
@@ -91,10 +92,7 @@ This is a full-stack project for Wonderbricks Limited in which I am in charge of
 Custom component to trigger an action when we slide over a threshold
 </td>
 <td>
-<video controls width="300">
-  <source  src="/assets/react-native-app-demo/001_swipe_to_dispatch.mp4" type="video/mp4">
-  Sorry, your browser doesn't support embedded videos.
-</video> 
+    <customvideo src="/assets/react-native-app-demo/001_swipe_to_dispatch.mp4" width="340"/>
 </td>
 </tr>
 
@@ -105,10 +103,7 @@ Custom component to trigger an action when we slide over a threshold
 Custom component to show hidden buttons when we slide over a threshold
 </td>
 <td>
-<video controls width="300">
-  <source  src="/assets/react-native-app-demo/002_swipe_to_show.mp4" type="video/mp4">
-  Sorry, your browser doesn't support embedded videos.
-</video>
+<customvideo src="/assets/react-native-app-demo/002_swipe_to_show.mp4" width="340"/>
 </td>
 </tr>
 
@@ -124,10 +119,7 @@ Custom Component to transit over 3 pages freely. It is implemented as a class wi
 etc functionalites.
 </td>
 <td>
-<video controls width="300">
-  <source  src="/assets/react-native-app-demo/003_custom_page_transitioning_component.mp4" type="video/mp4">
-  Sorry, your browser doesn't support embedded videos.
-</video>
+  <customvideo src="/assets/react-native-app-demo/003_custom_page_transitioning_component.mp4" width="340"/>
 </td>
 </tr>
 
@@ -138,10 +130,7 @@ etc functionalites.
 It is the same component as  above without providing left/right page as a props.
 </td>
 <td>
-<video controls width="300">
-  <source  src="/assets/react-native-app-demo/006_custom_page_transition_usecase.mp4" type="video/mp4">
-  Sorry, your browser doesn't support embedded videos.
-</video>
+<customvideo src="/assets/react-native-app-demo/006_custom_page_transition_usecase.mp4" width="340"/>
 </td>
 </tr>
 
@@ -161,10 +150,7 @@ For sure there is an alternative called *Material Top Tabs Navigator*, we decide
 
 </td>
 <td>
-<video controls width="300">
-  <source  src="/assets/react-native-app-demo/008_transitoin_pages.MP4" type="video/mp4">
-  Sorry, your browser doesn't support embedded videos.
-</video>
+<customvideo src="/assets/react-native-app-demo/008_transitoin_pages.MP4" width="340">
 </td>
 </tr>
 
@@ -196,14 +182,7 @@ Therefore the effect in the video is achieved by `open()` and `close()` within t
 </td>
 
 <td>
-<<<<<<<< HEAD:static/media/014-mobileapp.ecd97772.md
 <customvideo src="/assets/react-native-app-demo/005_communicate_among_bottom_sheets.mp4" width="340"/>
-========
-<video controls width="300">
-  <source  src="/assets/react-native-app-demo/005_communicate_among_bottom_sheets.mp4" type="video/mp4">
-  Sorry, your browser doesn't support embedded videos.
-</video>
->>>>>>>> 89ac1228d92d879ed747f3110b4ab76cd67add9e:static/media/014-mobileapp.ce052003.md
 </td>
 </tr>
 <tr>
@@ -212,10 +191,7 @@ Therefore the effect in the video is achieved by `open()` and `close()` within t
 <tr>
 <td><b>Voice Recording, Native Voice Recognition and File Uploading.</b></td>
 <td>
-<video controls width="300">
-  <source  src="/assets/react-native-app-demo/004_native_file_uploading.mp4" type="video/mp4">
-  Sorry, your browser doesn't support embedded videos.
-</video>
+<customvideo src="/assets/react-native-app-demo/004_native_file_uploading.mp4" width="340"/>
 </td>
 </tr>
 
@@ -229,14 +205,14 @@ As in web development, targeting the component in codebase for modification is a
 By enforcing the rule to display a hint (component name, indicative string, etc) for all major components, we have reduced huge amount of time in development.
 
 
-<a href="/assets/img/2024-05-01-19-20-20.png"><img src="/assets/img/2024-05-01-19-20-20.png" width="300" style="margin-top: 20px"/></a>
+<a href="/assets/img/2024-05-01-19-20-20.png"><img src="/assets/img/2024-05-01-19-20-20.png" width="340" style="margin-top: 20px"/></a>
 
 
 
 
 #### Deployment and App Distribution Experience
 ##### Different Stages with TestFlight for Internal and External Tests
-<a href="/assets/img/2024-05-01-19-06-19.png"><img src="/assets/img/2024-05-01-19-06-19.png" width="300"/></a>
+<a href="/assets/img/2024-05-01-19-06-19.png"><img src="/assets/img/2024-05-01-19-06-19.png" width="340"/></a>
 
 ##### App Store Distribution
 <a href="/assets/img/2024-05-04-17-34-14.png">![](/assets/img/2024-05-04-17-34-14.png)</a>
@@ -254,10 +230,10 @@ By enforcing the rule to display a hint (component name, indicative string, etc)
 [My self-reflection on the work I have done so far](/blog/article/Self-Reflection-on-Database-Schema-Design#What-I-failed).
 
 ##### Native Knowledge is Essential
-
+###### Description of our Encountered Problem
 Since images in react-native flicker when their parent component gets rerendered, we need to make use of a package [react-native-fast-image](https://github.com/DylanVann/react-native-fast-image) to avoid this phenomenon. 
 
-However, this package has not been maintained for 2 years, and some native API has been deprecated in ios17.
+However, this package has not been maintained for 2 years, and some native API has been deprecated in iOS17.
 I have spent tones of time browsing the discussion on github issues, folk the repo of possible solution, and make my own changes in my folked repository.
 
 Finally I adopt my repository as the source of the package:
@@ -268,11 +244,22 @@ Finally I adopt my repository as the source of the package:
     "react-native-fast-image": "https://github.com/Ching-Cheong-Lee/react-native-fast-image#fa4a38e",
 }
 ```
-in order to solve this error
+in order to solve this error.
 
 <a href="/assets/img/2024-05-04-21-03-30.png">![](/assets/img/2024-05-04-21-03-30.png)</a>
 
+What we have solved:
+
+- We need to run `npx tsc` to build a `/dist` folder with target in `CommonJS`, for which the error complains about. 
+
+- Existing solutions that aim at solving iOS17 SDK problem have skipped the step of building `CommonJS` entrypoint for unknown reason.
+
+###### Lessons
+
+
 In this lesson my problem can be solved timely because
 
-- I am lucky to have someone who has the native knowledge to ***change the native code***.
-- I am lucky I have had experience managing my own npm package.
+- We have someone who has the native knowledge to ***change the native code***, this will be the field of knowledge to which I have to enrich.
+
+- We can manage our own npm package, solid knowledge in `npm` ecosystem is essential.
+
