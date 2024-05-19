@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.e0834fde.chunk.css",
-    "main.js": "/static/js/main.24c51bb1.chunk.js",
+    "main.js": "/static/js/main.ec071a58.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.d619c304.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.54982c87.chunk.js": "/static/js/2.54982c87.chunk.js",
@@ -171,7 +171,7 @@
     "static/media/155-gmail-pubsub.md": "/static/media/155-gmail-pubsub.29b4f035.md",
     "static/media/156-serverless.md": "/static/media/156-serverless.5ca27c58.md",
     "static/media/157-SSE.md": "/static/media/157-SSE.5d29d2f0.md",
-    "static/media/158-algolia.md": "/static/media/158-algolia.fc6bca73.md",
+    "static/media/158-algolia.md": "/static/media/158-algolia.324bc5a1.md",
     "static/media/159-clickoutside.md": "/static/media/159-clickoutside.0ef16d71.md",
     "static/media/160-multiselections.md": "/static/media/160-multiselections.bd84d998.md",
     "static/media/161-third-party.md": "/static/media/161-third-party.cc036ea9.md",
@@ -324,6 +324,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.54982c87.chunk.js",
     "static/css/main.e0834fde.chunk.css",
-    "static/js/main.24c51bb1.chunk.js"
+    "static/js/main.ec071a58.chunk.js"
   ]
 }

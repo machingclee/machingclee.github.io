@@ -11,9 +11,7 @@ toc: true
 
 Recently I am responsible for building search functions in frontend. I come up with the following in my mind:
 
-- We create a list of `{type: string, key: string}`'s, for different matched `key` we create a query based on different `type` (where data may come from different tables or collections).
-
-- We sends **_everything_** we want from backend to frontend, and we may either use standard regular expression or dedicated library like `Fuse.js` to query for desired results. This works perfectly fine for static web pages (such as this blog).
+- We sends **_everything_** we want from backend to frontend, and we may either use standard regular expression or dedicated library like `Fuse.js` or `lunr.js` to query for desired results. This works perfectly fine for static web pages (such as this blog).
 
 - We build Elastic Stack, such as Elastic Search and Kibana, which in essense also save results in `Document` and index the fields for searching the documents.
 
@@ -106,6 +104,10 @@ const main = () => {
 main();
 ```
 
+##### Search Component
+
+###### Fuse.js (Deprecated as the result is not satisfactory)
+
 Next in the our search component:
 
 ```tsx
@@ -152,6 +154,82 @@ export default function SearchComponent() {
 
 - The `Fuse` object can be created anywhere and imported into the component.
 - In my case I simply use `useRef` as it is going to be aways static and unchanged in the life cycle of the `SearchComponent`.
+
+###### lunr.js, A much more Powerful Version of Fuse.js
+
+The implementation is very similar to `Fuse.js`:
+
+```js
+export default function SearchComponent() {
+  const [searchResults, setSearchedResults] = useState<
+    { title: string; intro: string; tag: string; tags: string }[]
+  >([]);
+  const [searchText, setSearchText] = useState("");
+  const searchBarRef = useRef<HTMLInputElement>(null);
+  const lunrSearch = useRef<lunr.Index | null>(null);
+  const searchMapping = useRef<{
+    [id: string]: {
+      content: string,
+      title: string,
+      intro: string,
+      tag: string,
+      tags: string
+    }
+  }>({});
+
+  useState(() => {
+    lunrSearch.current = lunr(function () {
+      this.field("tag");
+      this.field("tags");
+      this.field("title");
+      this.field("intro");
+      this.field("content");
+
+      console.log("indexing ...");
+
+      (searchJson as { content: string, title: string, date: string, id: string, tag?: string, tags?: string, intro: string, toc: boolean }[]).forEach(
+        (searchTarget, index) => {
+          const id = index.toString();
+          const { intro, tag = "", tags = "", title, content } = searchTarget;
+          const searchJson = { intro, tag, tags, title, content };
+          searchMapping.current[id] = searchJson
+          this.add({ ...searchJson, id })
+        }
+      );
+    })})
+
+  const handleSearchChange = debounce((e: ChangeEvent<HTMLInputElement>) => {
+    setSearchText(e.target.value);
+    const searchValue = e.target.value;
+    if (searchValue) {
+      const result = lunrSearch?.current?.search(searchValue);
+      const displayResult = result?.sort((r1, r2) => r2.score - r1.score).map(r => {
+        const { ref } = r;
+        const doc = searchMapping.current?.[ref];
+        // we dont' need to return content in the search field
+        return {
+          intro: doc.intro,
+          tag: doc.tag,
+          tags: doc.tags,
+          title: doc.title
+        }
+      }) || [];
+        setSearchedResults(displayResult);
+      }
+      else {
+        setSearchedResults([]);
+      }
+    }, 300);
+
+  return (
+    <SearchBar
+      placeholder="Tag, title or content"
+      onChange={handleSearchChange}
+      inputRef={searchBarRef}
+    />
+  );
+}
+```
 
 #### Code Implementation for Algolia
 
