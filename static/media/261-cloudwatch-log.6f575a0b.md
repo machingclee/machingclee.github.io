@@ -1,7 +1,5 @@
 ---
-title: "Download the Entire CloudWatch Log 
-
-"
+title: "Download the Entire CloudWatch Log"
 date: 2024-05-09
 id: blog0261
 tag: aws
