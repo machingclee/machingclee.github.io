@@ -1,5 +1,5 @@
 ---
-title: "Role and User Management PostgreSQL"
+title: "Role and User Management in PostgreSQL"
 date: 2024-06-07
 id: blog0265
 tag: sql
