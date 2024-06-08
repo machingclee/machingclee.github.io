@@ -109,7 +109,7 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA public REVOKE SELECT, INSERT, UPDATE, DELETE 
 in order to delete this role. 
 
 
-#### Created a User with Limited Rights for Backend's CRUD Service
+#### Create a User with Limited Rights for Backend's CRUD Service
 ##### Creation
 ```sql
 CREATE USER testuser WITH PASSWORD 'aaaabbb';
@@ -140,7 +140,7 @@ REVOKE USAGE ON SCHEMA public FROM testuser;
 DROP USER IF EXISTS testuser;
 ```
 
-#### Useful SQLs for Querying Priviledges
+#### Useful SQL for Querying Users and Their Priviledges
 ##### View a list of Database Users
 
 ```sql
@@ -175,3 +175,5 @@ WHERE grantee = 'testuser';
 ```
 
 ![](/assets/img/2024-06-08-18-53-56.png)
+
+Now we can `REVOKE` the right one by one.
