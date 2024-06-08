@@ -23,7 +23,7 @@ CREATE USER testuser WITH PASSWORD 'testpassword123321';
 DROP USER IF EXISTS testuser;
 ```
 
-#### Role = User + Login Persmission
+#### User = Role + Login Persmission
 From [AWS Documentation](https://aws.amazon.com/blogs/database/managing-postgresql-users-and-roles):
 
 - **Users**, **groups**, and **roles** ***are the same thing*** in PostgreSQL, with the only difference being that users have permission to log in by default. The `CREATE USER` and `CREATE GROUP` statements are actually aliases for the `CREATE ROLE` statement.
