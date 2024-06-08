@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.d4dde9fa.chunk.css",
-    "main.js": "/static/js/main.3755cf3b.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.20428adf.js",
+    "main.js": "/static/js/main.301faee2.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.2a0da749.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.ffbc2e9c.chunk.js": "/static/js/2.ffbc2e9c.chunk.js",
-    "static/js/3.66eac043.chunk.js": "/static/js/3.66eac043.chunk.js",
-    "static/js/4.57c6cddd.chunk.js": "/static/js/4.57c6cddd.chunk.js",
-    "static/js/5.d620e83a.chunk.js": "/static/js/5.d620e83a.chunk.js",
+    "static/js/2.dfcbf74c.chunk.js": "/static/js/2.dfcbf74c.chunk.js",
+    "static/js/3.2ffbbb14.chunk.js": "/static/js/3.2ffbbb14.chunk.js",
+    "static/js/4.fd6c1b24.chunk.js": "/static/js/4.fd6c1b24.chunk.js",
+    "static/js/5.544f75b6.chunk.js": "/static/js/5.544f75b6.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.ffbc2e9c.chunk.js.LICENSE.txt": "/static/js/2.ffbc2e9c.chunk.js.LICENSE.txt",
-    "static/js/3.66eac043.chunk.js.LICENSE.txt": "/static/js/3.66eac043.chunk.js.LICENSE.txt",
-    "static/js/4.57c6cddd.chunk.js.LICENSE.txt": "/static/js/4.57c6cddd.chunk.js.LICENSE.txt",
+    "static/js/2.dfcbf74c.chunk.js.LICENSE.txt": "/static/js/2.dfcbf74c.chunk.js.LICENSE.txt",
+    "static/js/3.2ffbbb14.chunk.js.LICENSE.txt": "/static/js/3.2ffbbb14.chunk.js.LICENSE.txt",
+    "static/js/4.fd6c1b24.chunk.js.LICENSE.txt": "/static/js/4.fd6c1b24.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.52b1ef07.md",
     "static/media/002-Lazy-React-Router.md": "/static/media/002-Lazy-React-Router.48295ca9.md",
@@ -274,6 +274,8 @@
     "static/media/261-cloudwatch-log.md": "/static/media/261-cloudwatch-log.6f575a0b.md",
     "static/media/262-cicd-serverless copy.md": "/static/media/262-cicd-serverless copy.84a06ac3.md",
     "static/media/263-complete-hints.md": "/static/media/263-complete-hints.dc4bad23.md",
+    "static/media/264-intellij-setting.md": "/static/media/264-intellij-setting.6573de9d.md",
+    "static/media/265-role-and-account-management.md": "/static/media/265-role-and-account-management.53bd7d4b.md",
     "static/media/CV_Portfolio.383239ad.pdf": "/static/media/CV_Portfolio.383239ad.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -323,10 +325,10 @@
     "static/media/transformer-date-fomatter.18a2d3fc.pdf": "/static/media/transformer-date-fomatter.18a2d3fc.pdf"
   },
   "entrypoints": [
-    "static/js/runtime-main.20428adf.js",
+    "static/js/runtime-main.2a0da749.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.ffbc2e9c.chunk.js",
+    "static/js/2.dfcbf74c.chunk.js",
     "static/css/main.d4dde9fa.chunk.css",
-    "static/js/main.3755cf3b.chunk.js"
+    "static/js/main.301faee2.chunk.js"
   ]
 }
