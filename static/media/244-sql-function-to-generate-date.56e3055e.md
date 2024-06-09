@@ -24,8 +24,10 @@ $$BEGIN
    NEW."updatedAt" := gen_created_at();
    RETURN NEW;
 END;$$;
-
-CREATE TRIGGER upd_trig BEFORE UPDATE ON "MessagesSession"
+```
+And for every table that you want an updatedAt column:
+```sql
+CREATE TRIGGER upd_trig BEFORE UPDATE ON your_table
    FOR EACH ROW EXECUTE PROCEDURE upd_trig();
 ```
 
