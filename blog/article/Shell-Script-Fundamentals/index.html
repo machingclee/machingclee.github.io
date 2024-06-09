@@ -1074,9 +1074,9 @@ done
 <a class="md-title" id="Point-to-Values-in-an-Array"></a><h4><div class="h4-left-block" style="height: 100%; display: inline;"></div>Point to Values in an Array</h4>
 <p>Take <code node="[object Object]">images_arr=($STOCK/*.jpg)</code> as in the example of iterables above, we can get specific element by:</p>
 <ul>
-<li><code node="[object Object]">${images_arr[k]}</code> the -th element</li>
+<li><code node="[object Object]">${images_arr[k]}</code> the <span><script type="math/tex; ">(k+1)</script></span>-th element</li>
 <li><code node="[object Object]">${images_arr[-1]}</code> the last element</li>
-<li><code node="[object Object]">${images_arr[@]:0:k}</code> the first  elements</li>
+<li><code node="[object Object]">${images_arr[@]:0:k}</code> the first <span><script type="math/tex; ">k</script></span> elements</li>
 </ul>
 <a class="md-title" id="Read-First-few/Last-few-Lines-or-Skip-Lines-in-std-out"></a><h4><div class="h4-left-block" style="height: 100%; display: inline;"></div>Read First few/Last few Lines or Skip Lines in std-out</h4>
 <p>Suppose I am going read a file by <code node="[object Object]">cat main.py</code>, then:</p>
@@ -1094,8 +1094,8 @@ done
 <a class="md-title" id="Try-Catch-in-Bash"></a><h4><div class="h4-left-block" style="height: 100%; display: inline;"></div>Try-Catch in Bash</h4>
 <p>We mix iterable and try-catch in this example. The principles are</p>
 <ul>
-<li><code node="[object Object]">command_1 &amp;&amp; command_2</code>  if <code node="[object Object]">command_1</code> succeeds, run <code node="[object Object]">command_2</code>.</li>
-<li><code node="[object Object]">command_1 || command_2</code>  if <code node="[object Object]">command_1</code> fails, run <code node="[object Object]">command_2</code>.</li>
+<li><code node="[object Object]">command_1 &amp;&amp; command_2</code> <span><script type="math/tex; ">\implies</script></span> if <code node="[object Object]">command_1</code> succeeds, run <code node="[object Object]">command_2</code>.</li>
+<li><code node="[object Object]">command_1 || command_2</code> <span><script type="math/tex; ">\implies</script></span> if <code node="[object Object]">command_1</code> fails, run <code node="[object Object]">command_2</code>.</li>
 </ul>
 <pre><div class="jss31"><pre class="" node="[object Object]" style="color: black; background: rgb(245, 242, 240); text-shadow: white 0px 1px; font-family: Consolas, Monaco, &quot;Andale Mono&quot;, &quot;Ubuntu Mono&quot;, monospace; font-size: 1em; text-align: left; white-space: pre; word-spacing: normal; word-break: normal; overflow-wrap: normal; line-height: 1.5; tab-size: 4; hyphens: none; padding: 1em; margin: 0.5em 0px; overflow: auto;"><code class="language-python" style="color: black; background: none; text-shadow: white 0px 1px; font-family: Consolas, Monaco, &quot;Andale Mono&quot;, &quot;Ubuntu Mono&quot;, monospace; font-size: 1em; text-align: left; white-space: pre; word-spacing: normal; word-break: normal; overflow-wrap: normal; line-height: 1.5; tab-size: 4; hyphens: none;"><span>trip01</span><span class="token" style="color: rgb(154, 110, 58); background: rgba(255, 255, 255, 0.5);">=</span><span>some</span><span class="token" style="color: rgb(154, 110, 58); background: rgba(255, 255, 255, 0.5);">/</span><span>other</span><span class="token" style="color: rgb(154, 110, 58); background: rgba(255, 255, 255, 0.5);">/</span><span>folder</span><span class="token" style="color: rgb(154, 110, 58); background: rgba(255, 255, 255, 0.5);">/</span><span>w0m8fnyb
 </span><span>trip02</span><span class="token" style="color: rgb(154, 110, 58); background: rgba(255, 255, 255, 0.5);">=</span><span>some</span><span class="token" style="color: rgb(154, 110, 58); background: rgba(255, 255, 255, 0.5);">/</span><span>other</span><span class="token" style="color: rgb(154, 110, 58); background: rgba(255, 255, 255, 0.5);">/</span><span>folder</span><span class="token" style="color: rgb(154, 110, 58); background: rgba(255, 255, 255, 0.5);">/</span><span>i8y6v_yn

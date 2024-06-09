@@ -936,15 +936,15 @@
 <p>However, some model is well-trained for annotating target object already, but it fails to spot diversified target that cause missing detection, then IoU is not our concern, we can simply use <strong><em>F1- score</em></strong>.</p>
 <a class="md-title" id="F1-Score"></a><h4><div class="h4-left-block" style="height: 100%; display: inline;"></div>F1-Score</h4>
 <p>Define</p>
-<div class="display-math"></div>
+<div class="display-math"><div><script type="math/tex; mode=display">\texttt{Precision} := \frac{TP}{TP+FP}\quad \text{and}\quad \texttt{Recall} := \frac{TP}{TP+FN},</script></div></div>
 <p>then we define <code node="[object Object]">F1-score</code> to be</p>
-<div class="display-math"></div>
+<div class="display-math"><div><script type="math/tex; mode=display">\texttt{F1-score} := \frac{2}{\displaystyle\frac{1}{ \texttt{Precision}}  + \frac{1}{\texttt{Recall}}} = \frac{2\times \texttt{Precision}\times \texttt{Recall}}{ \texttt{Precision}+\texttt{Recall}}.</script></div></div>
 <p></p>
-<p>I refer to <strong>[ZL]</strong> for more detail on F1-score and how it behaves compared to arithmetic mean and geometric mean. In short summary,  penalizes <strong><em>unbalanced</em></strong>  and .</p>
+<p>I refer to <strong>[ZL]</strong> for more detail on F1-score and how it behaves compared to arithmetic mean and geometric mean. In short summary, <span><script type="math/tex; ">\texttt{F1-score}</script></span> penalizes <strong><em>unbalanced</em></strong> <span><script type="math/tex; ">\texttt{Precision}</script></span> and <span><script type="math/tex; ">\texttt{Recall}</script></span>.</p>
 <a class="md-title" id="mAP"></a><h4><div class="h4-left-block" style="height: 100%; display: inline;"></div>mAP</h4>
 <a class="md-title" id="Precision-and-Recall"></a><h5><div class="h5-left-block" style="height: 100%; display: inline;"></div>Precision and Recall</h5>
-<p>Given that we have fixed a label  to work with, say , we need the following table with</p>
-<div class="display-math"></div>
+<p>Given that we have fixed a label <span><script type="math/tex; ">\mathcal L</script></span> to work with, say <span><script type="math/tex; ">\mathcal L = \texttt{damaged_display}</script></span>, we need the following table with</p>
+<div class="display-math"><div><script type="math/tex; mode=display">\text{Recall} = \frac{\text{acc. }TP}{\text{Total number of signboard of class $\mathcal L$}}.</script></div></div>
 <p>Note that the denominator is actually the total number of ground truths from <strong><em>all</em></strong> images, not just from a single image.</p>
 <p>By sorting the results using objectiveness/confidence score, we get a table like:</p>
 <center>
@@ -954,7 +954,7 @@
 </center>
 <p>
 </p><a class="md-title" id="Why-Recall"></a><h5><div class="h5-left-block" style="height: 100%; display: inline;"></div>Why Recall</h5>
-<p>Precision  (where  is the number of boxes identified as  in correctly) is not enough as it doesn't count undetected signboard.</p>
+<p>Precision <span><script type="math/tex; ">\displaystyle \frac{TP}{TP+FP}</script></span> (where <span><script type="math/tex; ">FP</script></span> is the number of boxes identified as <span><script type="math/tex; ">\mathcal L</script></span> in correctly) is not enough as it doesn't count undetected signboard.</p>
 <a class="md-title" id="Calculation-of-mAP-from-the-Graph"></a><h5><div class="h5-left-block" style="height: 100%; display: inline;"></div>Calculation of mAP from the Graph</h5>
 <p>By using the precision and recall columns we should be able to graph it as follows:</p>
 <center>
@@ -971,10 +971,10 @@
 </a>
 </center>
 <p>
-</p><p>The new dots is exactly the same as the value , where  is the recall, our approximated precision is</p>
-<div class="display-math"></div>
+</p><p>The new dots is exactly the same as the value <span><script type="math/tex; ">p(r)=\max_{r'\ge r}p(r')</script></span>, where <span><script type="math/tex; ">r</script></span> is the recall, our approximated precision is</p>
+<div class="display-math"><div><script type="math/tex; mode=display">\frac{1}{\text{number of rows in table}} \times \sum_{r\ge 0} p(r)</script></div></div>
 <p>which is, for example,</p>
-<div class="display-math"></div>
+<div class="display-math"><div><script type="math/tex; mode=display">\frac{1}{11}(1+0.6666+0.4285+0.4285+0.4285+0+0+0+0+0+0) = 26.84\%</script></div></div>
 <p>in the figure above.</p>
 <a class="md-title" id="References"></a><h4><div class="h4-left-block" style="height: 100%; display: inline;"></div>References</h4>
 <ul>
