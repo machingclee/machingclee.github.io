@@ -25,7 +25,7 @@ $$BEGIN
    RETURN NEW;
 END;$$;
 ```
-And for every table that you want an updatedAt column:
+And for every table that you want an `updatedAt` column:
 ```sql
 CREATE TRIGGER upd_trig BEFORE UPDATE ON your_table
    FOR EACH ROW EXECUTE PROCEDURE upd_trig();
