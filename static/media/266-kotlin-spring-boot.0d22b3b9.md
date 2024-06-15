@@ -1,9 +1,9 @@
 ---
 title: "Spring boot in Kotlin with JOOQ and Prisma; Integration and Unit Tests"
 date: 2024-06-15
-id: blog0265
+id: blog0266
 tag: kotlin, springboot, sql, jooq, test
-intro: "Record SQL script for managing db user persmissions"
+intro: "Record the setup of a spring boot project with JOOQ."
 toc: true
 ---
 
