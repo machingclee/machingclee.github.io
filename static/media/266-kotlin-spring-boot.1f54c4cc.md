@@ -1,5 +1,5 @@
 ---
-title: "Spring boot in Kotlin with JOOQ and Prisma; Integration and Unit Tests"
+title: "① Spring boot in Kotlin with JOOQ and Prisma ② Simple Commands for Gradles ③ Integration and Unit Tests"
 date: 2024-06-15
 id: blog0266
 tag: kotlin, springboot, sql, jooq, test
@@ -148,7 +148,7 @@ sourceSets {
   ```text
   choco install gradle
   ```
-- Note that installation of `gradle` is not compulsory, alternatively we can run `gradle` inside the spring boot project by 
+- Note that the installation of `gradle` is not compulsory, alternatively we can run `gradle` inside the spring boot project by 
   ```text
   /gradlew -q :<the-command>
   ```
@@ -162,7 +162,7 @@ sourceSets {
   ./gradlew -q :generate
   gradle generate
   ```
-  to generate code in kotlin
+  to generate code in kotlin. Where `generate` is a task defined in `tasks.create("generate") { ... }` inside `build.gradle.kt`.
  
 
 #### Prisma and JOOQ
