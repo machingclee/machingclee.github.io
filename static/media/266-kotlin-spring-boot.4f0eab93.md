@@ -112,6 +112,7 @@ tasks.create("generate") {
                             .withPojos(true)
                             .withDaos(true)
                             .withSpringAnnotations(true)
+                            .withJpaAnnotations(true)
                     )
                     .withTarget(
                         Target()
@@ -194,7 +195,7 @@ model Teacher {
 }
 ```
 
-##### JOOQ Code Generation
+##### JOOQ Code Generation and JPA Annotation for Data Validation
 After we have executed `gradle generate`, the following will be generated:
 
 ![](/assets/img/2024-06-15-22-27-25.png)
@@ -205,7 +206,11 @@ In case you are curious about the detail inside the files, see [***this link***]
 - We can make use of `DAO`'s to perform very simple and basic `CRUD`.
 - For complicated query we make use of classes inside `references/{Course, Teacher}` in the next section
 
-##### Data Persistence with DAO.insert() or db.inserInto()
+The resulting geneated POJO is of the form:
+
+![](/assets/img/2024-06-16-18-17-10.png)
+
+##### Data Persistence with DAO.insert() or db.insertInto()
 Consider the folloing `CourseService` class:
 ```java
 @Service
