@@ -113,6 +113,8 @@ tasks.create("generate") {
                             .withDaos(true)
                             .withSpringAnnotations(true)
                             .withJpaAnnotations(true)
+                            .withKotlinNotNullPojoAttributes(true)
+                            .withKotlinDefaultedNullablePojoAttributes(true)
                     )
                     .withTarget(
                         Target()
