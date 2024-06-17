@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.d4dde9fa.chunk.css",
-    "main.js": "/static/js/main.ed1115bc.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.deb31499.js",
+    "main.js": "/static/js/main.1bbdfda7.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.7a41ab72.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.c07af7f5.chunk.js": "/static/js/2.c07af7f5.chunk.js",
-    "static/js/3.b81bff84.chunk.js": "/static/js/3.b81bff84.chunk.js",
-    "static/js/4.8f0a20c7.chunk.js": "/static/js/4.8f0a20c7.chunk.js",
-    "static/js/5.06e8a12e.chunk.js": "/static/js/5.06e8a12e.chunk.js",
+    "static/js/2.29f57f6f.chunk.js": "/static/js/2.29f57f6f.chunk.js",
+    "static/js/3.72c06b41.chunk.js": "/static/js/3.72c06b41.chunk.js",
+    "static/js/4.03085448.chunk.js": "/static/js/4.03085448.chunk.js",
+    "static/js/5.9e04776d.chunk.js": "/static/js/5.9e04776d.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.c07af7f5.chunk.js.LICENSE.txt": "/static/js/2.c07af7f5.chunk.js.LICENSE.txt",
-    "static/js/3.b81bff84.chunk.js.LICENSE.txt": "/static/js/3.b81bff84.chunk.js.LICENSE.txt",
-    "static/js/4.8f0a20c7.chunk.js.LICENSE.txt": "/static/js/4.8f0a20c7.chunk.js.LICENSE.txt",
+    "static/js/2.29f57f6f.chunk.js.LICENSE.txt": "/static/js/2.29f57f6f.chunk.js.LICENSE.txt",
+    "static/js/3.72c06b41.chunk.js.LICENSE.txt": "/static/js/3.72c06b41.chunk.js.LICENSE.txt",
+    "static/js/4.03085448.chunk.js.LICENSE.txt": "/static/js/4.03085448.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.52b1ef07.md",
     "static/media/002-Lazy-React-Router.md": "/static/media/002-Lazy-React-Router.48295ca9.md",
@@ -277,7 +277,10 @@
     "static/media/264-intellij-setting.md": "/static/media/264-intellij-setting.5899e2d9.md",
     "static/media/265-role-and-account-management.md": "/static/media/265-role-and-account-management.f8873078.md",
     "static/media/266-kotlin-spring-boot.md": "/static/media/266-kotlin-spring-boot.41f232b2.md",
-    "static/media/267-event-driven-design.md": "/static/media/267-event-driven-design.64091c5d.md",
+    "static/media/267-event-driven-design.md": "/static/media/267-event-driven-design.ff3eb385.md",
+    "static/media/268-global-exception copy.md": "/static/media/268-global-exception copy.b0cb5b22.md",
+    "static/media/269-Transaction copy.md": "/static/media/269-Transaction copy.6973ba18.md",
+    "static/media/270-JWT-authentication.md": "/static/media/270-JWT-authentication.b94c4e75.md",
     "static/media/CV_Portfolio.6fada13f.pdf": "/static/media/CV_Portfolio.6fada13f.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -327,10 +330,10 @@
     "static/media/transformer-date-fomatter.18a2d3fc.pdf": "/static/media/transformer-date-fomatter.18a2d3fc.pdf"
   },
   "entrypoints": [
-    "static/js/runtime-main.deb31499.js",
+    "static/js/runtime-main.7a41ab72.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.c07af7f5.chunk.js",
+    "static/js/2.29f57f6f.chunk.js",
     "static/css/main.d4dde9fa.chunk.css",
-    "static/js/main.ed1115bc.chunk.js"
+    "static/js/main.1bbdfda7.chunk.js"
   ]
 }
