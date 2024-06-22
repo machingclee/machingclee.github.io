@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/static/css/main.d4dde9fa.chunk.css",
-    "main.js": "/static/js/main.1bbdfda7.chunk.js",
+    "main.js": "/static/js/main.7171fa8a.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.7a41ab72.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.29f57f6f.chunk.js": "/static/js/2.29f57f6f.chunk.js",
+    "static/js/2.c38c5f05.chunk.js": "/static/js/2.c38c5f05.chunk.js",
     "static/js/3.72c06b41.chunk.js": "/static/js/3.72c06b41.chunk.js",
     "static/js/4.03085448.chunk.js": "/static/js/4.03085448.chunk.js",
     "static/js/5.9e04776d.chunk.js": "/static/js/5.9e04776d.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.29f57f6f.chunk.js.LICENSE.txt": "/static/js/2.29f57f6f.chunk.js.LICENSE.txt",
+    "static/js/2.c38c5f05.chunk.js.LICENSE.txt": "/static/js/2.c38c5f05.chunk.js.LICENSE.txt",
     "static/js/3.72c06b41.chunk.js.LICENSE.txt": "/static/js/3.72c06b41.chunk.js.LICENSE.txt",
     "static/js/4.03085448.chunk.js.LICENSE.txt": "/static/js/4.03085448.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
@@ -35,7 +35,7 @@
     "static/media/011-translate-custom-model.md": "/static/media/011-translate-custom-model.ca834a20.md",
     "static/media/011-typescript-typetrick.md": "/static/media/011-typescript-typetrick.0e546903.md",
     "static/media/012-libtorch_deployment.md": "/static/media/012-libtorch_deployment.28882c4c.md",
-    "static/media/013-timesheet.md": "/static/media/013-timesheet.cc4cdbdd.md",
+    "static/media/013-timesheet.md": "/static/media/013-timesheet.368172ad.md",
     "static/media/014-mobileapp.md": "/static/media/014-mobileapp.ecd97772.md",
     "static/media/015-disquz.md": "/static/media/015-disquz.8b4defa2.md",
     "static/media/016-spa-seo.md": "/static/media/016-spa-seo.4895dc0f.md",
@@ -281,7 +281,7 @@
     "static/media/268-global-exception copy.md": "/static/media/268-global-exception copy.b0cb5b22.md",
     "static/media/269-Transaction copy.md": "/static/media/269-Transaction copy.6973ba18.md",
     "static/media/270-JWT-authentication.md": "/static/media/270-JWT-authentication.b94c4e75.md",
-    "static/media/CV_Portfolio.6fada13f.pdf": "/static/media/CV_Portfolio.6fada13f.pdf",
+    "static/media/CV_Portfolio.29bbfdf7.pdf": "/static/media/CV_Portfolio.29bbfdf7.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
     "static/media/Midterm_Review_limsupinf.1e2193c7.pdf": "/static/media/Midterm_Review_limsupinf.1e2193c7.pdf",
@@ -332,8 +332,8 @@
   "entrypoints": [
     "static/js/runtime-main.7a41ab72.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.29f57f6f.chunk.js",
+    "static/js/2.c38c5f05.chunk.js",
     "static/css/main.d4dde9fa.chunk.css",
-    "static/js/main.1bbdfda7.chunk.js"
+    "static/js/main.7171fa8a.chunk.js"
   ]
 }

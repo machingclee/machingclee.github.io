@@ -33,9 +33,10 @@ date: 2024-03-11
 
 #### Frontend Deployment with Demonstration Links
 
-- https://ffxiv-timesheet.vercel.app/timesheet
-
 - [Specific Example of Timesheets](https://ffxiv-timesheet.vercel.app/timesheet/detail?weeklyId=018e2741-6b5d-550f-85aa-fd4bd28fc891)
+
+- [The Timesheet System (google-login required)](https://ffxiv-timesheet.vercel.app/timesheet)
+
 
 - Light and Dark Mode
 
