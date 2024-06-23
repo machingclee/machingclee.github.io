@@ -245,7 +245,7 @@ For concrete example of each layer we can refer to the following repository:
 > [Leave-Application](https://github.com/xlorne/springboot-ddd-examples/tree/master/12-leave-parent)
 
 - `User Interface Module` This is like our controllers in MVC. The entrypoint of our spring boot application is also here.
-- `Application Module` This is like our services in MVC, you may implement it as `command` + `command-executor`. We may also add a service layer here which in turn pulls the logic from our domain-module.
+- `Application Module` This is like our services in MVC, you may implement it as `command` + `command-executor`. Service layer in the past will be replaced by domain sevices in the next module:
 - `Domain Module` This module provides domain-specific logic such as 
   - domain events, 
   - domain event handlers,
