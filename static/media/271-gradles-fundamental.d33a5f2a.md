@@ -52,7 +52,30 @@ repositories {
       ```
       to run that build task.
 
-##### Step 3. Create another module called `domain`
+
+
+##### Step 3. Traps for Modularized Spring Application
+
+Now to successfully run the task `bootRun` and the build `bootJar` we still need extra configruation.
+
+```text{11-13}
+// springboot-restapi/build.gradle.kts
+...
+sourceSets {
+    test {
+        java {
+            setSrcDirs(listOf("src/test/integration", "src/test/unit"))
+        }
+    }
+}
+
+springBoot  {
+    mainClass = "com.kotlinspring.CourseCatelogServiceApplicationKt"
+}
+```
+Note the extra **Kt** as a suffix of our main application classname.
+
+##### Step 4. Create another module called `domain`
 
 1.  In root level let's create a directory named `domain/`
 2.  In that folder let's create a file in 
@@ -90,7 +113,7 @@ repositories {
     ![](/assets/img/2024-06-23-13-15-14.png)
 
 
-##### Step 4. Include `domain` in the `springboot-restapi` (i.e., restapi depends on domain)
+##### Step 5. Include `domain` in the `springboot-restapi` (i.e., restapi depends on domain) and try to run bootRun and bootJar
 
 Add the following in `springboot-restapi/build.gradle.kts`:
 
@@ -103,33 +126,12 @@ dependencies {
 
 
 
-##### Step 5. Traps for Modularized Spring Application
-
-Now to successfully run the task `bootRun` and the build `bootJar` we still need extra configruation.
-
-```text{11-13}
-// springboot-restapi/build.gradle.kts
-...
-sourceSets {
-    test {
-        java {
-            setSrcDirs(listOf("src/test/integration", "src/test/unit"))
-        }
-    }
-}
-
-springBoot  {
-    mainClass = "com.kotlinspring.CourseCatelogServiceApplicationKt"
-}
-```
-Note the extra **Kt** as a suffix of our main application classname.
-
 Now we are free to run these two gradle commands:
 
 ![](/assets/img/2024-06-23-16-50-53.png)
 
 
-##### Try to import from other modules
+##### Try to import and unimport other modules to check dependencies constraint
 
 Let's experiment! Suppose that I have created a `User` class in `domain.model`: 
 
@@ -233,6 +235,34 @@ Look we cannot import `User` from `domain.model` any more:
     ```
 
 
+#### More Simple way to Create Modules via IntelliJ
+
+After solid understanding on how gradle works, let's investigate how intelliJ provides shortcuts for generating new modules:
+
+1.  Look at project structure:
+
+    ![](/assets/img/2024-06-24-00-32-13.png)
+
+2.  New Module:
+
+    ![](/assets/img/2024-06-24-00-32-31.png) 
+
+3.  Choose gradle with kotlin DSL, choose suitable groupId, and click create:
+
+    ![](/assets/img/2024-06-24-00-33-53.png)
+
+4.   Note that `domain` has been added automatically in `settings.gradle.kts`:
+
+      ![](/assets/img/2024-06-24-00-35-03.png)
+
+5.  Unforturnately we don't have `dependency control` UI among modules, we need to add 
+    ```text{2}
+    dependencies {
+        implementation(project(":module-name"))
+        testImplementation(kotlin("test"))
+    }
+    ```
+    ourselves in `build.gradle.kts`.
 
 #### DDD (WIP)
 

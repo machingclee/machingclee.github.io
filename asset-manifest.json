@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.d4dde9fa.chunk.css",
-    "main.js": "/static/js/main.20d5c489.chunk.js",
+    "main.js": "/static/js/main.8175113c.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.90feb7b6.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.45432a69.chunk.js": "/static/js/2.45432a69.chunk.js",
@@ -281,7 +281,7 @@
     "static/media/268-global-exception copy.md": "/static/media/268-global-exception copy.b0cb5b22.md",
     "static/media/269-Transaction copy.md": "/static/media/269-Transaction copy.4c6796dd.md",
     "static/media/270-JWT-authentication.md": "/static/media/270-JWT-authentication.0736edd9.md",
-    "static/media/271-gradles-fundamental.md": "/static/media/271-gradles-fundamental.d9a33edb.md",
+    "static/media/271-gradles-fundamental.md": "/static/media/271-gradles-fundamental.d33a5f2a.md",
     "static/media/CV_Portfolio.29bbfdf7.pdf": "/static/media/CV_Portfolio.29bbfdf7.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -335,6 +335,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.45432a69.chunk.js",
     "static/css/main.d4dde9fa.chunk.css",
-    "static/js/main.20d5c489.chunk.js"
+    "static/js/main.8175113c.chunk.js"
   ]
 }
