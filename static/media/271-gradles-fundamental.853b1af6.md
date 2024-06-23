@@ -2,7 +2,7 @@
 title: "Gradle Fundamentals: Modules and Dependencies Control"
 date: 2024-06-22
 id: blog0271
-tag: kotlin, gradle
+tag: kotlin, gradle, springboot
 intro: "This is a study on gradle to help understand how to manage a project by modules. In java this helps separate the dependencies precisely, i.e., no one can access resource from incorrect layer. This makes creating unit tests much more easily (in case you have written queries directly in controller layer, you know what I mean)."
 toc: true
 ---
@@ -37,6 +37,10 @@ repositories {
 
     pluginManagement {
         repositories.gradlePluginPortal()
+    }
+
+    dependencyResolutionManagement{
+        repositories.mavenCentral()
     }
 
     include("springboot-restapi")
@@ -74,6 +78,10 @@ repositories {
         repositories.gradlePluginPortal()
     }
 
+    dependencyResolutionManagement{
+        repositories.mavenCentral()
+    }
+
     include("springboot-restapi")
     include("domain")
     ```
@@ -86,7 +94,7 @@ repositories {
 
 Add the following in `springboot-restapi/build.gradle.kts`:
 
-```text
+```text{2}
 dependencies {
     implementation(project(":domain"))
     ...
@@ -94,13 +102,22 @@ dependencies {
 ```
 
 
+
 ##### Step 5. Traps for Modularized Spring Application
 
 Now to successfully run the task `bootRun` and the build `bootJar` we still need extra configruation.
 
-```text
+```text{11-13}
 // springboot-restapi/build.gradle.kts
 ...
+sourceSets {
+    test {
+        java {
+            setSrcDirs(listOf("src/test/integration", "src/test/unit"))
+        }
+    }
+}
+
 springBoot  {
     mainClass = "com.kotlinspring.CourseCatelogServiceApplicationKt"
 }
@@ -130,6 +147,90 @@ Look we cannot import `User` from `domain.model` any more:
 
 ![](/assets/img/2024-06-23-13-40-02.png)
 
+
+#### Custom Gradle Plugin
+
+1.  Let's create the following structure for adding plugins:
+
+
+    ![](/assets/img/2024-06-23-22-54-29.png)
+
+2.  Add the following in the ***global*** `settings.gradle.kts`
+
+    ```text{5}
+    rootProject.name = "course-catelog-service"
+
+    pluginManagement {
+        repositories.gradlePluginPortal()
+        includeBuild("gradle/plugins")
+    }
+
+    dependencyResolutionManagement{
+        repositories.mavenCentral()
+    }
+
+    include("springboot-restapi")
+    include("domain")
+    ```
+
+3.  Next create `gradle/plugins/` and then `gradle/plugins/settings.gradle.kts` with
+
+    ```kotlin
+    // gradle/plugins/settings.gradle.kts
+    dependencyResolutionManagement{
+        repositories.gradlePluginPortal()
+    }
+
+    include("java-plugins")
+    ```
+4.  We then aims at creating a module `java-plugins` with the following structure:
+
+    ![](/assets/img/2024-06-23-23-04-23.png)
+
+4.  As directory `java-plugins` is included as a (candidate of) module, we create `gradle/plugins/java-plugins/`, let's turn this `java-plugins` into a module by adding
+
+    ```kotlin
+    // gradle/plugins/java-plugins/build.gradle.kts
+    plugins{
+        `kotlin-dsl`
+    }
+    ```
+
+5.  Let's add a file in this module:
+
+    ```text
+    gradle/plugins/java-plugins/src/main/kotlin/custom-java-base.gradle.kts
+    ```
+
+    ***custom-java-base*** will be our new ***plugin name***.
+
+7.  Add the logic into this new plugin that we want to share ***across all modules***:
+
+    ```text
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+
+    plugins{
+        id("java-library")
+    }
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(21)
+        }
+    }
+    ```
+
+8.  Finally, we import this plugin into our `domain` module:
+    ```kotlin
+    // domain/build.gradle.kts
+    plugins{
+        id("custom-java-base")
+    }
+    ```
 
 
 

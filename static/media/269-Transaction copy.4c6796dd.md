@@ -64,7 +64,7 @@ class CreateCourseListener(
 }
 ```
 
-By throwing `Exception`, we let `@ControllerAdvice` to catch the error and response a standardized result to the frontemd:
+By throwing `Exception`, we let `@ControllerAdvice` to catch the error and response a standardized result to the frontend:
 
 ```json
 {
