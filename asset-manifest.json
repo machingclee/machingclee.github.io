@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.d4dde9fa.chunk.css",
-    "main.js": "/static/js/main.9dcb0220.chunk.js",
+    "main.js": "/static/js/main.55e55c3d.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.b7310886.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.1b8a5f1c.chunk.js": "/static/js/2.1b8a5f1c.chunk.js",
@@ -280,8 +280,8 @@
     "static/media/267-event-driven-design.md": "/static/media/267-event-driven-design.ff3eb385.md",
     "static/media/268-global-exception copy.md": "/static/media/268-global-exception copy.b0cb5b22.md",
     "static/media/269-Transaction copy.md": "/static/media/269-Transaction copy.6973ba18.md",
-    "static/media/270-JWT-authentication.md": "/static/media/270-JWT-authentication.b94c4e75.md",
-    "static/media/271-gradles-fundamental.md": "/static/media/271-gradles-fundamental.a6585c90.md",
+    "static/media/270-JWT-authentication.md": "/static/media/270-JWT-authentication.0736edd9.md",
+    "static/media/271-gradles-fundamental.md": "/static/media/271-gradles-fundamental.653cb231.md",
     "static/media/CV_Portfolio.29bbfdf7.pdf": "/static/media/CV_Portfolio.29bbfdf7.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -335,6 +335,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.1b8a5f1c.chunk.js",
     "static/css/main.d4dde9fa.chunk.css",
-    "static/js/main.9dcb0220.chunk.js"
+    "static/js/main.55e55c3d.chunk.js"
   ]
 }

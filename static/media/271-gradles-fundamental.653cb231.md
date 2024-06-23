@@ -1,9 +1,9 @@
 ---
-title: "Gradle Fundamentals"
+title: "Gradle Fundamentals: Modules and Dependencies Control"
 date: 2024-06-22
 id: blog0271
 tag: kotlin, gradle
-intro: "This is a study on gradle to help understand spring boot projects."
+intro: "This is a study on gradle to help understand how to manage a project by modules. In java this helps separate the dependencies precisely, i.e., no one can access resource from incorrect layer. This makes creating unit tests much more easily (in case you have written queries directly in controller layer, you know what I mean)."
 toc: true
 ---
 
@@ -13,19 +13,21 @@ toc: true
   }
 </style>
 
-#### Setp up subprojects
+#### Setp up modules
 
 ##### Step 1. Set where to find Repositories 
 
-```text
-// settings.gradle.kts
+For every `build.gradle.kts` in each of modules we can add:
 
-dependencyResolutionManagement {
-    repositories.mavenCentral()
-    repositories.google()
+```text
+// build.gradle.kts
+
+repositories {
+    google()
+    mavenCentral()
 }
 ```
-##### Step 2. Let's Transform spring boot project into a subproject called `springboot-restapi`
+##### Step 2. Let's Transform spring boot project into a module called `springboot-restapi`
 
 1. Create a `sprintboot-restapi` folder
 2. Move `src/`, `build.gradle.kts` into that folder
@@ -46,7 +48,7 @@ dependencyResolutionManagement {
       ```
       to run that build task.
 
-##### Step 3. Create another subproject called `domain`
+##### Step 3. Create another module called `domain`
 
 1.  In root level let's create a directory named `domain/`
 2.  In that folder let's create a file in 
@@ -64,7 +66,7 @@ dependencyResolutionManagement {
         kotlin("jvm") version "1.9.24"
     }
     ```
-4.  Include this subproject in root's `settings.gradle.kts`
+4.  Include this module in root's `settings.gradle.kts`
     ```text
     rootProject.name = "course-catelog-service"
 
@@ -91,7 +93,26 @@ dependencies {
 }
 ```
 
-##### Try to import from other subprojects
+
+##### Step 5. Traps for Modularized Spring Application
+
+Now to successfully run the task `bootRun` and the build `bootJar` we still need extra configruation.
+
+```text
+// springboot-restapi/build.gradle.kts
+...
+springBoot  {
+    mainClass = "com.kotlinspring.CourseCatelogServiceApplicationKt"
+}
+```
+Note the extra **Kt** as a suffix of our main application classname.
+
+Now we are free to run these two gradle commands:
+
+![](/assets/img/2024-06-23-16-50-53.png)
+
+
+##### Try to import from other modules
 
 Let's experiment! Suppose that I have created a `User` class in `domain.model`: 
 
@@ -108,6 +129,9 @@ Suppose that I remove the dependency as follows:
 Look we cannot import `User` from `domain.model` any more:
 
 ![](/assets/img/2024-06-23-13-40-02.png)
+
+
+
 
 #### DDD (WIP)
 

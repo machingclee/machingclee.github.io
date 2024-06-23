@@ -1,5 +1,5 @@
 ---
-title: "JWT Authentication in Spring boot"
+title: "JWT Authentication in Spring boot I --- Via Spring-Security Using Filter"
 date: 2024-06-17
 id: blog0270
 tag: springboot, kotlin
