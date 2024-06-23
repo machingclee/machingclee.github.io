@@ -167,6 +167,10 @@ sourceSets {
   ```
   to generate code in kotlin. Where `generate` is a task defined in `tasks.create("generate") { ... }` inside `build.gradle.kt`.
  
+- Clear resinstall all dependencies:
+  ```text
+  gradle build --refresh-dependencies
+  ```
 
 #### Prisma and JOOQ
 ##### The Simple Schema
