@@ -1,6 +1,6 @@
 ---
-title: "JWT Authentication in Spring boot I --- Via Spring-Security Using Filter"
-date: 2024-06-17
+title: "JWT Authentication in Spring boot I: Using Spring-Security"
+date: 2024-06-23
 id: blog0270
 tag: springboot, kotlin
 intro: "We try to implement a JWT authentication and study how to construct custom token payload for the backend."
@@ -12,6 +12,16 @@ toc: true
     max-width: 660px;
   }
 </style>
+
+
+#### Preface
+
+- This blog post will be full of configuration/util classes and no explanation will be provided.
+
+- The `spring-security` is notoriously difficult to use (for no good reason), I am recording it for the shere purpose of study and ***not intent to use it*** in any of my project.
+
+- If you come from other background such as `nodejs`, you can realize how stupid and clunky the way that `spring-boot-security` provides us.
+
 
 #### TokenParams
 
@@ -400,3 +410,16 @@ class UserService {
         }
 }
 ```
+
+
+#### Conclusion 
+
+- We have seen that using Spring-Security forces us to create plenty of counter-intuitive configurations. Not a few, it is ***plenty***. 
+
+- The configuration is highly non-resuable as the logic highly depends on your database structure and what `extra-claims` you want to add into.
+
+  Note that a jwt-token with just the `username`/`userId` is ***meaningless*** (which we usually set as `subject` in `spring-security`). 
+  
+  Note the `extractClaim` method with a *limited* number of `claims::getXXX`. 
+
+- The best strategy to implement JWT authentication is "not to use `spring-boot-starter-security`", which we will introduce in the next post.

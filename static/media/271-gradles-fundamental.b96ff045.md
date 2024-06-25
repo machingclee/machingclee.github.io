@@ -13,9 +13,9 @@ toc: true
   }
 </style>
 
-#### Setp up modules
+#### Setp up Modules
 
-##### Step 1. Set where to find Repositories 
+##### Set Where to find Repositories 
 
 For every `build.gradle.kts` in each of modules we can add:
 
@@ -27,7 +27,7 @@ repositories {
     mavenCentral()
 }
 ```
-##### Step 2. Let's Transform spring boot project into a module called `springboot-restapi`
+##### Transform Spring boot Project into a Module Called `springboot-restapi`
 
 1. Create a `sprintboot-restapi` folder
 2. Move `src/`, `build.gradle.kts` into that folder
@@ -54,7 +54,7 @@ repositories {
 
 
 
-##### Step 3. Traps for Modularized Spring Application
+##### Add springBoot mainClass for Modularized Spring Application
 
 Now to successfully run the task `bootRun` and the build `bootJar` we still need extra configruation.
 
@@ -75,7 +75,7 @@ springBoot  {
 ```
 Note the extra **Kt** as a suffix of our main application classname.
 
-##### Step 4. Create another module called `domain`
+##### Create Another Module Called `domain`
 
 1.  In root level let's create a directory named `domain/`
 2.  In that folder let's create a file in 
@@ -113,7 +113,7 @@ Note the extra **Kt** as a suffix of our main application classname.
     ![](/assets/img/2024-06-23-13-15-14.png)
 
 
-##### Step 5. Include `domain` in the `springboot-restapi` (i.e., restapi depends on domain) and try to run bootRun and bootJar
+##### Include `domain` in the `springboot-restapi` (i.e., restapi depends on domain) and try to run bootRun and bootJar
 
 Add the following in `springboot-restapi/build.gradle.kts`:
 
@@ -131,7 +131,7 @@ Now we are free to run these two gradle commands:
 ![](/assets/img/2024-06-23-16-50-53.png)
 
 
-##### Try to import and unimport other modules to check dependencies constraint
+##### Try to Import and Unimport Other Modules to Check Dependencies Constraint
 
 Let's experiment! Suppose that I have created a `User` class in `domain.model`: 
 
@@ -152,40 +152,50 @@ Look we cannot import `User` from `domain.model` any more:
 
 #### Custom Gradle Plugin
 
-1.  Let's create the following structure for adding plugins:
+##### Plugin Project Sturcture
 
+Let's create the following structure for adding plugins:
 
-    ![](/assets/img/2024-06-23-22-54-29.png)
+![](/assets/img/2024-06-23-22-54-29.png)
 
-2.  Add the following in the ***global*** `settings.gradle.kts`
+##### Gradle Config
 
-    ```text{5}
-    rootProject.name = "course-catelog-service"
+###### Global settings.gradle.kts
 
-    pluginManagement {
-        repositories.gradlePluginPortal()
-        includeBuild("gradle/plugins")
-    }
+Add the following in the ***global*** `settings.gradle.kts`
 
-    dependencyResolutionManagement{
-        repositories.mavenCentral()
-    }
+```text{5}
+rootProject.name = "course-catelog-service"
 
-    include("springboot-restapi")
-    include("domain")
-    ```
+pluginManagement {
+    repositories.gradlePluginPortal()
+    includeBuild("gradle/plugins")
+}
 
-3.  Next create `gradle/plugins/` and then `gradle/plugins/settings.gradle.kts` with
+dependencyResolutionManagement{
+    repositories.mavenCentral()
+}
 
-    ```kotlin
-    // gradle/plugins/settings.gradle.kts
-    dependencyResolutionManagement{
-        repositories.gradlePluginPortal()
-    }
+include("springboot-restapi")
+include("domain")
+```
 
-    include("java-plugins")
-    ```
-4.  We then aims at creating a module `java-plugins` with the following structure:
+###### Local settings.gradle.kts in `gradle/plugins/`
+
+Next create `gradle/plugins/` and then `gradle/plugins/settings.gradle.kts` with
+
+```kotlin
+// gradle/plugins/settings.gradle.kts
+dependencyResolutionManagement{
+    repositories.gradlePluginPortal()
+}
+
+include("java-plugins")
+```
+
+###### build.gradle.kts
+
+1. We then aims at creating a module `java-plugins` with the following structure:
 
     ![](/assets/img/2024-06-23-23-04-23.png)
 
