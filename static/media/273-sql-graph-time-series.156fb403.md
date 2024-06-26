@@ -360,11 +360,17 @@ width_bucket  length
 </details>
 
 <p></p>
+For the query ***only the highlighted part*** is important, the rest is just a business logic.
 
-- For the query ***only the highlighted part*** is important, the rest is just a business logic.
-- We want to  partition the range into 30 buckets but there are 0, 1, ..., 30, a total of ***31 values***, why? 
-- There are so many `width_bucket` ***indexed 0***, why?
+###### Wait ..., `WIDTH_BUCKET(..., 30)` but there are 31 values?!
 
+When we look at the query result it is natural to think of the following problems
+
+- **Problem 1.** We want to  partition the range into 30 buckets but there are 0, 1, ..., 30, a total of ***31 values*** from the query result.
+
+- **Problem 2.** There are so many `width_bucket` ***indexed by 0***.
+
+###### Investigation
 
 Let's explain:
 
@@ -392,7 +398,7 @@ Let's explain:
   $$
   The closeness and openness of the ends in $I_k$ are referred from  [this page](https://www.postgresqltutorial.com/postgresql-math-functions/postgresql-width_bucket/). 
   
-- Note also that from our `WHERE` clause our data is ***striclty less than*** $E$. Therefore the partition above completely covers the range of our possible values.
+- Note also that from our `WHERE` clause our data is ***strictly less than*** $E$. Therefore the partition above completely covers the range of our possible values.
 
 ##### Conclusion
 
@@ -539,7 +545,7 @@ In conclusion:
   {x: string, y1: number, y2: number, y3: number}[]
   ```
 
-##### More from Documentation:
+##### More from Documentation
 
 https://charts.ag-grid.com/react/axes-secondary/
 

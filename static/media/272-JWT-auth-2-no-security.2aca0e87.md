@@ -1,5 +1,5 @@
 ---
-title: "JWT Authentication in Spring boot II: Get rid of Spring-Security"
+title: "JWT in Spring boot II: Get rid of Spring-Security"
 date: 2024-06-24
 id: blog0272
 tag: kotlin, gradle, springboot
