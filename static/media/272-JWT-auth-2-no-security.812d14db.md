@@ -1,7 +1,7 @@
 ---
 title: "JWT Authentication in Spring boot II: Get rid of Spring-Security"
 date: 2024-06-24
-id: blog0271
+id: blog0272
 tag: kotlin, gradle, springboot
 intro: "A JWT authentication should be simple and straight-forward. Let's forget about spring-security and starts with the intrinsic idea."
 toc: true

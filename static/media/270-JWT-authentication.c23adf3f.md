@@ -416,10 +416,10 @@ class UserService {
 
 - We have seen that using Spring-Security forces us to create plenty of counter-intuitive configurations. Not a few, it is ***plenty***. 
 
-- The configuration is highly non-resuable as the logic highly depends on your database structure and what `extra-claims` you want to add into.
+- The configuration is highly non-resuable as the logic highly depends on your database structure and what `extraClaims` you want to add into.
 
-  Note that a jwt-token with just the `username`/`userId` is ***meaningless*** (which we usually set as `subject` in `spring-security`). 
+- Note that a jwt-token with just the `username`/`userId` is ***meaningless*** (which we usually set as `subject` in `spring-security`). 
   
-  Note the `extractClaim` method with a *limited* number of `claims::getXXX`. 
+  Consider `extractClaim` method with a *limited* number of `claims::getXXX`'s, it is not suited to the purpose of avoiding frequent DB connections just for retrieving user information. 
 
-- The best strategy to implement JWT authentication is "not to use `spring-boot-starter-security`", which we will introduce in the next post.
+- The best strategy to implement JWT authentication is "***not to use*** `spring-boot-starter-security`", which we will introduce in the next post.
