@@ -39,6 +39,7 @@ If `expr` is numeric, `minExpr` and `maxExpr` must also be numeric.
 
 ##### SQL Experiment and Explanation
 
+###### SQL Explains
 
 Consider the following SQL which basically calculates the ***daily usage*** of our voice recognition API whose cost is calculated directly by the total length of the audioes:
 
@@ -69,8 +70,10 @@ WHERE
 ) SELECT * FROM tmp
 ```
 
+###### SQL Query Result
+
 <details>
-<summary> <b>Click to see Complete Query Result</b> </summary>
+<summary> Click to see Complete Query Result </summary>
 
 ```text
 width_bucket  length
@@ -360,6 +363,10 @@ width_bucket  length
 </details>
 
 <p></p>
+
+
+
+
 For the query ***only the highlighted part*** is important, the rest is just a business logic.
 
 ###### Wait ..., `WIDTH_BUCKET(..., 30)` but there are 31 values?!
@@ -390,15 +397,15 @@ Let's explain:
   ```
   *hashes* the value `"Message"."createdAt"` into one of the `index`'s as follows:
   $$
-  \underbrace{(-\infty, E-30D)}_{\to 0}, \quad\underbrace{ I_{30}}_{\to 1}, \quad \underbrace{ I_{29}}_{\to 2},\quad \dots, \quad \underbrace{ I_1}_{\to 30} 
+  \underbrace{(-\infty, e-30d)}_{\to 0}, \quad\underbrace{ I_{30}}_{\to 1}, \quad \underbrace{ I_{29}}_{\to 2},\quad \dots, \quad \underbrace{ I_1}_{\to 30} 
   $$
-  where $I_k = \bigg[E-kD, E-(k-1) D\bigg)$  with $E$ the end-day and $D$ the day-length:
+  where $I_k = \bigg[e-kd, e-(k-1) d\bigg)$  with $e$ the end-day and $d$ the day-length:
   $$
-  E = 1719417599999\quad \text{and}\quad D=86400000.
+  e = 1719417599999\quad \text{and}\quad d = 86400000.
   $$
   The closeness and openness of the ends in $I_k$ are referred from  [this page](https://www.postgresqltutorial.com/postgresql-math-functions/postgresql-width_bucket/). 
   
-- Note also that from our `WHERE` clause our data is ***strictly less than*** $E$. Therefore the partition above completely covers the range of our possible values.
+- Note also that from our `WHERE` clause our data is ***strictly less than*** $e$. Therefore the partition above completely covers the range of our possible values.
 
 ##### Conclusion
 
@@ -411,7 +418,7 @@ produces $n+1$ indexes given that $\texttt{expr} < \texttt{max}$.
 
 #### Multi-Column Bar-Chart
 
-##### Adjust the SQL
+##### Adjust the SQL Using `With temp AS (...)`
 
 Let's slightly adjust the SQL to completely give summed values in each partition:
 
