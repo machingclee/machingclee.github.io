@@ -1,5 +1,5 @@
 ---
-title: "Gradle Fundamentals: Modules and Dependencies Control"
+title: "Gradle Fundamentals: Modularization of Spring Boot Project and Dependencies Control"
 date: 2024-06-22
 id: blog0271
 tag: kotlin, gradle, springboot
@@ -12,6 +12,10 @@ toc: true
     max-width: 660px;
   }
 </style>
+
+#### Repository
+
+- https://github.com/machingclee/2024-06-25-Modularized-Springboot-JOOQ
 
 #### Setp up Modules
 

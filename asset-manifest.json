@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.7031a9ea.chunk.css",
-    "main.js": "/static/js/main.2632db6e.chunk.js",
+    "main.js": "/static/js/main.ab886d0e.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.3bae525d.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.5c740f04.chunk.js": "/static/js/2.5c740f04.chunk.js",
@@ -279,9 +279,9 @@
     "static/media/266-kotlin-spring-boot.md": "/static/media/266-kotlin-spring-boot.2cb05564.md",
     "static/media/267-event-driven-design.md": "/static/media/267-event-driven-design.ff3eb385.md",
     "static/media/268-global-exception copy.md": "/static/media/268-global-exception copy.b0cb5b22.md",
-    "static/media/269-Transaction copy.md": "/static/media/269-Transaction copy.4c6796dd.md",
+    "static/media/269-Transaction.md": "/static/media/269-Transaction.4c6796dd.md",
     "static/media/270-JWT-authentication.md": "/static/media/270-JWT-authentication.419dad68.md",
-    "static/media/271-gradles-fundamental.md": "/static/media/271-gradles-fundamental.b96ff045.md",
+    "static/media/271-gradles-fundamental.md": "/static/media/271-gradles-fundamental.b4843bc4.md",
     "static/media/272-JWT-auth-2-no-security.md": "/static/media/272-JWT-auth-2-no-security.2aca0e87.md",
     "static/media/273-sql-graph-time-series.md": "/static/media/273-sql-graph-time-series.6fa02ea8.md",
     "static/media/CV_Portfolio.29bbfdf7.pdf": "/static/media/CV_Portfolio.29bbfdf7.pdf",
@@ -337,6 +337,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.5c740f04.chunk.js",
     "static/css/main.7031a9ea.chunk.css",
-    "static/js/main.2632db6e.chunk.js"
+    "static/js/main.ab886d0e.chunk.js"
   ]
 }
