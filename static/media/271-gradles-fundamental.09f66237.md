@@ -58,7 +58,7 @@ repositories {
 
 
 
-##### Add springBoot mainClass for Modularized Spring Application
+##### Add springBoot mainClass for Modularized Spring boot Application
 
 Now to successfully run the task `bootRun` and the build `bootJar` we still need extra configruation.
 
