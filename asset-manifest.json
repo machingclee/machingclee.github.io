@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.7031a9ea.chunk.css",
-    "main.js": "/static/js/main.02b4c499.chunk.js",
+    "main.js": "/static/js/main.7505e1e1.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.16271e77.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.5725180d.chunk.js": "/static/js/2.5725180d.chunk.js",
@@ -269,7 +269,7 @@
     "static/media/256-dynamodb-crud.md": "/static/media/256-dynamodb-crud.a5b91637.md",
     "static/media/257-eas-update copy.md": "/static/media/257-eas-update copy.f9a87c37.md",
     "static/media/258-debezium.md": "/static/media/258-debezium.55a70fbd.md",
-    "static/media/259-k8s.md": "/static/media/259-k8s.b4cc0dc8.md",
+    "static/media/259-k8s.md": "/static/media/259-k8s.3458b2a0.md",
     "static/media/260-self-reflection-on-db.md": "/static/media/260-self-reflection-on-db.87db2c19.md",
     "static/media/261-cloudwatch-log.md": "/static/media/261-cloudwatch-log.6f575a0b.md",
     "static/media/262-cicd-serverless copy.md": "/static/media/262-cicd-serverless copy.84a06ac3.md",
@@ -284,8 +284,8 @@
     "static/media/271-gradles-fundamental.md": "/static/media/271-gradles-fundamental.09f66237.md",
     "static/media/272-JWT-auth-2-no-security.md": "/static/media/272-JWT-auth-2-no-security.2aca0e87.md",
     "static/media/273-sql-graph-time-series copy.md": "/static/media/273-sql-graph-time-series copy.6fa02ea8.md",
-    "static/media/274-k8s-II.md": "/static/media/274-k8s-II.66c0b8d6.md",
-    "static/media/275-k8s-III.md": "/static/media/275-k8s-III.ee532919.md",
+    "static/media/274-k8s-II.md": "/static/media/274-k8s-II.9148d1d1.md",
+    "static/media/275-k8s-III.md": "/static/media/275-k8s-III.72e0c0b6.md",
     "static/media/CV_Portfolio.29bbfdf7.pdf": "/static/media/CV_Portfolio.29bbfdf7.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -339,6 +339,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.5725180d.chunk.js",
     "static/css/main.7031a9ea.chunk.css",
-    "static/js/main.02b4c499.chunk.js"
+    "static/js/main.7505e1e1.chunk.js"
   ]
 }
