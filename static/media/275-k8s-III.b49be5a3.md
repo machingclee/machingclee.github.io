@@ -1,5 +1,5 @@
 ---
-title: "K8S Basics Part III: EKS and Pod Container Logging in CloudWatch"
+title: "K8S Basics Part III: EKS and Container Logging of Pods in CloudWatch via Fluentbit"
 date: 2024-06-29
 id: blog0275
 tag: k8s
@@ -80,8 +80,7 @@ Select public and private and next as some pod will be private and some pod will
 
   ![](/assets/img/2024-06-30-00-29-26.png)
 
-  This role must be ***created by us***, any default selection will eventually fail in the creation step.
-Create a role > EC2:
+  This role must be ***created by us***, any default selection will eventually fail in the creation step, let's create it in the next section:
 
 ##### Create an `EksNodeGroup` Role
 
@@ -89,11 +88,11 @@ Create a role > EC2:
 
   ![](/assets/img/2024-06-29-20-58-30.png)
 
-- In the next step, we need to add these 3 roles for the nodes in the node group
+- In the next step, we need to add these 4 roles for the nodes in the node group
 
-  ![](/assets/img/2024-06-29-20-05-33.png)
+  ![](/assets/img/2024-07-01-00-10-48.png)
 
-  Here CNI stands for Container Network Interface.
+  Here CNI stands for Container Network Interface. The `CloudWatchLogsFullAccess` is used to let worker nodes to forward the application log of each pod to cloudwatch.
 
 ##### Back to Add Node Group
 
@@ -142,8 +141,17 @@ Create a role > EC2:
   kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.15.1/cert-manager.yaml
   ```
 
-- We download and modify the `configMap` as follows:
+- As instructed from the quick-start we download the yaml file by 
+  ```text
+  https://raw.githubusercontent.com/aws-samples/amazon-cloudwatch-container-insights/main/k8s-quickstart/cwagent-operator-rendered.yaml
+  ```
+  However, we modify it to get rid of all ***metrics-related logging*** since our primary focuses are the logging of the applications inside of the pods. 
+  
+- The modified `configMap` now becomes:
 
+  <details>
+  <summary> <b><i>Click To View the Large YAML</i></b> </summary>
+  
   ```yml
   # cloudwatch.yml
   ---
@@ -1063,6 +1071,10 @@ Create a role > EC2:
     sideEffects: None
     timeoutSeconds: 10
   ```
+  </details>
+
+  <p></p>
+
 - Create `configMap` by
   ```shell
   ClusterName='kub-dep-demo'
@@ -1080,6 +1092,6 @@ Create a role > EC2:
   # curl https://raw.githubusercontent.com/aws-samples/amazon-cloudwatch-container-insights/main/k8s-quickstart/cwagent-custom-resource-definitions.yaml | kubectl delete -f -
   ```
 
-Now the logging will be as usual ECS or Lambda:
+- Now go to `cloudwatch`, the logging will be exactly the same as usual ***ECS*** or ***Lambda***:
 
-![](/assets/img/2024-06-30-19-55-03.png)
+  ![](/assets/img/2024-06-30-19-55-03.png)
