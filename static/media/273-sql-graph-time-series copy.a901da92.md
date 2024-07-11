@@ -508,10 +508,10 @@ export default () => {
         const issue = issueData[index];
         const session = sessionData[index];
         const reply = replyData[index];
-        const day = dayjs(instant?.day).format("YYYY-MM-DD");
+        const day = dayjs(issue?.day).format("YYYY-MM-DD");
         return {
             day,
-            Issue: (instant?.total || 0) / 60,
+            Issue: (issue?.total || 0) / 60,
             Walk: (session?.total || 0) / 60,
             Reply: (reply?.total || 0) / 60
         }
