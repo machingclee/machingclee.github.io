@@ -3,7 +3,6 @@ title: "Correct way of Implementing Chatroom Input Field in React Native"
 date: 2024-07-13
 id: blog0277
 tag: react-native
-wip: true
 intro: "It is easy to make input field, but building one in chatroom is a bit different."
 ---
 
