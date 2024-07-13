@@ -28,7 +28,7 @@ To get a full hint:
     here `<vscode-installation>` can be found via `where code`.
   - **For Mac.** Go to 
     ```text
-    /Applications/Visual Studio Code.app/Contents/Resources/app/extensions/node_modules/typescript/lib/tsserver.js
+    /Applications/Visual Studio Code.app/Contents/Resources/app/extensions/node_modules/typescript/lib/
     ``` 
 - Open `tsserver.js`
 - Search for `defaultMaximumTruncationLength` and change this line from `160` to `800`
