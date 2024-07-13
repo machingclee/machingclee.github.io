@@ -15,11 +15,6 @@ intro: "It is easy to make input field, but building one in chatroom is a bit di
 
 #### KeyboardAvoidingView
 
-When building mobile application, the main headache of using an input field is that the keyboard can hide your form. 
-
-
-The first thing we learn is `KeyboardAvoidingView`, which in the past I have created one component to abstract every detail that I don't want to care again:
-
 ##### Demo Video 1
 
 <div>
@@ -28,6 +23,10 @@ The first thing we learn is `KeyboardAvoidingView`, which in the past I have cre
 
 ##### Implementation
 
+When building mobile application, the main headache of using an input field is that the keyboard can hide your form. 
+
+
+The first thing we learn is `KeyboardAvoidingView`, which in the past I have created one component to abstract every detail that I don't want to care again:
 
 ```tsx
 // KeyboardPushedView
@@ -140,7 +139,6 @@ const MultiChat = ({
 ```tsx-24{72}
     const dispatch = useAppDispatch();
     const { addPageCount, count, resetPageCount } = usePageCount();
-    // -15 is used to offset the height added to deal with the lack of height for the bottom input bar 
 
     const { flatListRef, messages, audioStartPlay } = useInitChatroom({
         quitRoomAction,
@@ -265,10 +263,8 @@ In line 72 we need to set `automaticallyAdjustKeyboardInsets={true}` to let the 
 
 ###### Implementation with Highlights
 
-- Now the input element is part of the `FlatList`, and it can be animated by the pan-gesture handler. We don't need to worry about the ***blockage of the keyboard to other views controlled by pan-guesture transition***.
 
-
-- With the same code as above, we replace the `FlatList` element with emphasis on the highlighted lines:
+With the same code as above, we replace the `FlatList` element with emphasis on the highlighted lines:
 
 ```tsx-68{71-73,75}
                 <FlatList
@@ -317,6 +313,8 @@ In line 72 we need to set `automaticallyAdjustKeyboardInsets={true}` to let the 
                     }}
                 />
 ```
+
+Now the input element is part of the `FlatList`, and it can be animated by the pan-gesture handler. We don't need to worry about the ***blockage of the keyboard to other views controlled by pan-guesture transition***.
 
 
 #### Conclusion 
