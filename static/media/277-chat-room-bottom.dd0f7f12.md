@@ -136,7 +136,7 @@ const MultiChat = ({
   We save that boolean in the redux store in order to control it wherever we want.
 
 - A similar example can be found in discord mobile app, in which you swipe to the center to chat, and you swipe to the left to view channels and the keyboard is closed automatically.
-```tsx-24{72}
+```tsx-25{72}
     const dispatch = useAppDispatch();
     const { addPageCount, count, resetPageCount } = usePageCount();
 
@@ -187,7 +187,7 @@ const MultiChat = ({
                     automaticallyAdjustKeyboardInsets={true}
                     showsVerticalScrollIndicator={true}
 ```
-In line 72 we need to set `automaticallyAdjustKeyboardInsets={true}` to let the height of `ScrollView` be adjustable when keyboard popups.
+- In line 72 we need to set `automaticallyAdjustKeyboardInsets={true}` to let the height of `ScrollView` be adjustable when keyboard popups.
 ```tsx-74{110-117}
                     onEndReachedThreshold={0.2}
                     onEndReached={async() => {
@@ -314,7 +314,7 @@ With the same code as above, we replace the `FlatList` element with emphasis on 
                 />
 ```
 
-Now the input element is part of the `FlatList`, and it can be animated by the pan-gesture handler. We don't need to worry about the ***blockage of the keyboard to other views controlled by pan-guesture transition***.
+Now the input element is part of the `FlatList`, and it can be animated by the pan-gesture handler. We don't need to worry about the ***blockage of the keyboard to other views transitted  by pan-guesture*** any more.
 
 
 #### Conclusion 
