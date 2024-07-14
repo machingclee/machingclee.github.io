@@ -2,7 +2,7 @@
 title: "K8S Basics Part III: EKS and Container Logging of Pods in CloudWatch via Fluentbit"
 date: 2024-06-29
 id: blog0275
-tag: k8s
+tag: k8s, aws
 intro: "We continue the previous study on k8s, this time the EKS."
 ---
 

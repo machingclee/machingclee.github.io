@@ -26,6 +26,7 @@ To get a full hint:
     <vscode-installation>/resources/app/extensions/node_modules/typescript/lib/
     ```
     here `<vscode-installation>` can be found via `where code`.
+    
   - **For Mac.** Go to 
     ```text
     /Applications/Visual Studio Code.app/Contents/Resources/app/extensions/node_modules/typescript/lib/
