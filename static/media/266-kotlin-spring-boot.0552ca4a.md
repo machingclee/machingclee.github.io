@@ -29,9 +29,9 @@ import org.jooq.codegen.GenerationTool
 import org.jooq.meta.jaxb.Target
 
 val jooqVersion = "3.19.9"
-val srcPackage = "com.kotlinspring"
+val srcPackage = "com.<company-name>.infrastructure"
 
-group = "com.kotlinspring"
+group = "com.<company-name>.infrastructure"
 version = "0.0.1-SNAPSHOT"
 
 buildscript {

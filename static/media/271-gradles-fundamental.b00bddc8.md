@@ -277,32 +277,3 @@ After solid understanding on how gradle works, let's investigate how intelliJ pr
     }
     ```
     ourselves in `build.gradle.kts`.
-
-#### DDD (WIP)
-
-Let's refer to this diagram of layers in our DDD model:
-
-![](/assets/img/2024-06-22-22-38-50.png)
-
-For concrete example of each layer we can refer to the following repository:
-
-> [Leave-Application](https://github.com/xlorne/springboot-ddd-examples/tree/master/12-leave-parent)
-
-- `User Interface Module` This is like our controllers in MVC. The entrypoint of our spring boot application is also here.
-- `Application Module` This is like our services in MVC, you may implement it as `command` + `command-executor`. Service layer in the past will be replaced by domain sevices in the next module:
-- `Domain Module` This module provides domain-specific logic such as 
-  - domain events, 
-  - domain event handlers,
-  - domain services (that contains logic that cannot be part of the aggregate root),
-  - and the interfaces of repositories for infrastructure module.
-
-  Note that the ***logic*** of domain modules also depend on the infrastructures (yes, from the arrows domain module just provides interface, but it uses the interface to programme the logic domain logic, and the resulting code uses dependency injection to get a repository instance).
-
-
-
-
-- `Infrastructure Module` It depends on the domain module because our domain object will be created here. Each domain object will be equipped with functionalities that rely on the domain module.
-
-  In this layer we implement both `DAO`'s and `Respository`'s. Most of the time we would see that `Repository` $\to$ `DAO`'s and we call the objects obtained from `DAO` as `POJO`. The User Interface layer also directly return `DAO` to the frontend. 
-  
-  In case more complex query is needed, we extent `JOOQ`'s auto-generated `DAO` and add extra query method.
