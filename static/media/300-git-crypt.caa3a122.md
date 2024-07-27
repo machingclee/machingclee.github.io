@@ -28,7 +28,7 @@ There are multiple reasons for encrpyting important files in order not to expose
     ```text
     serverless.yml filter=git-crypt diff=git-crypt
     ```
-    which usually contains import secrets.
+    which usually contains important secrets.
 
 3. Run `git-crypt init` to initiate the encrpytion config.
 
@@ -42,7 +42,7 @@ There are multiple reasons for encrpyting important files in order not to expose
     ```
 5. The encryption only takes place when we git commit.
 
-6.  Since someone in your team needs to credential, let's create a key for decrpytion:
+6.  Since someone in your team needs the credential, let's create a key for decrpytion:
     ```text
     git-crypt export-key ./git-crypt-key
     ```
@@ -55,7 +55,7 @@ There are multiple reasons for encrpyting important files in order not to expose
 
 1. Pull the repository.
 
-2. Send the `git-crypt-key` file to people you trust.
+2. Get the `git-crypt-key` file from repository owner.
 
 3. Run `git-crypt unlock ./git-crypt-key` in the working directory.
 

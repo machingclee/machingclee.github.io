@@ -393,7 +393,7 @@ public:
 
 - In libtorch all modules are created by producing a `shared_ptr` pointing to an `nn::Module`.
 - For example, `auto net1 = nn::Conv2d(...)` and `auto net2 = nn::Relu(...)` are both pointers.
-- `nn::Sequential()` only except smart pointers like `nn::Sequential(net1, net2)`.
+- `nn::Sequential()` only accepts smart pointers like `nn::Sequential(net1, net2)`.
 
 For custom module, we can create such a pointer-factory by `TORCH_MODULE` macro. The principles are
 
