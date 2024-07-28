@@ -1,7 +1,7 @@
 ---
 title: "Git-Crypt Study"
 date: 2024-07-27
-id: blog0279
+id: blog0300
 tag: git
 toc: true
 intro: "Sometimes it is much more convenient to save multiple config files in a repository than to git-ignore it. We study the encrpytion of those files using git-crypt."
