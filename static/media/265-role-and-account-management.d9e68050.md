@@ -111,18 +111,25 @@ in order to delete this role.
 
 #### Create a User with Limited Rights for Backend's CRUD Service
 ##### Creation
-```sql
+
+```sql-1{4,7-10}
 CREATE USER testuser WITH PASSWORD 'aaaabbb';
 
 GRANT CONNECT ON DATABASE billie TO testuser;
+GRANT USAGE ON SCHEMA public TO testuser;
 GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO testuser;
+
 ALTER DEFAULT PRIVILEGES IN SCHEMA public 
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO testuser;
+  GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO testuser;
+--or
+  REVOKE SELECT ON TABLES FROM testuser
 ```
+
+- Line 4 is necessary, without that `testuser` can view the tables but ***cannot*** even `select` within the table.
+- Lines 7-10 are needed only when you want to adjust the right of `testuser`.
 
 If you need to grant `CREATE` right of a schema to a person (e.g., table creation, usually a trusted person who performs well), add:
 ```sql
-GRANT USAGE ON SCHEMA public TO testuser;
 GRANT USAGE, CREATE ON SCHEMA public TO testuser;
 ```
 
@@ -130,7 +137,7 @@ GRANT USAGE, CREATE ON SCHEMA public TO testuser;
 
 
 ##### Deletion 
-```sql
+```sql-1
 ALTER DEFAULT PRIVILEGES IN SCHEMA public REVOKE 
 SELECT, INSERT, UPDATE, DELETE ON TABLES FROM testuser;
 
@@ -139,6 +146,8 @@ REVOKE ALL PRIVILEGES ON DATABASE billie FROM testuser;
 REVOKE USAGE ON SCHEMA public FROM testuser;
 DROP USER IF EXISTS testuser;
 ```
+
+- Lines 4-7 should be executed one by one. Running in batch may fail.
 
 #### Useful SQL for Querying Users and Their Priviledges
 ##### View a list of Database Users
