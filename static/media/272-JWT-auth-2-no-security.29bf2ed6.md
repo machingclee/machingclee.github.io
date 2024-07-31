@@ -13,6 +13,16 @@ toc: true
   }
 </style>
 
+#### Depenencies Needed
+
+```text
+implementation("io.fusionauth:fusionauth-jwt:5.3.3")
+implementation("at.favre.lib:bcrypt:0.10.2")
+```
+
+- `bcrypt` is responsible for hashing tasks which is usually used in login and signup process.
+- `fusionauth-jwt` is by-far, from my experiement, the only functioning package to parse the JWT-token come from `node.js`.
+
 #### Interceptor
 
 JWT authentication is usually handled by ***middlewares***. The closest possible analog in the world of spring boot is ***interceptors***.
@@ -31,11 +41,11 @@ import com.kotlinspring.restapi.jwt.Jwt
 
 @Configuration
 class JwtWebMvcConfigurer(
-    private val jwt: Jwt
+    private val jwtHandlerInterceptor: JwtHandlerInterceptor
 ) : WebMvcConfigurer {
 
     override fun addInterceptors(registry: InterceptorRegistry) {
-        registry.addInterceptor(JwtHandlerInterceptor(jwt)).addPathPatterns("/course/**")
+        registry.addInterceptor(jwtHandlerInterceptor).addPathPatterns("/course/**")
     }
 }
 ```
@@ -52,25 +62,18 @@ Let's define the remaining missing pieces,
 package com.kotlinspring.restapi.jwt
 
 import at.favre.lib.crypto.bcrypt.BCrypt
-import com.alibaba.fastjson.JSONObject
-import io.jsonwebtoken.Claims
-import io.jsonwebtoken.Jws
-import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.security.Keys
+import com.billie.payment.model.JwtPayload
+import io.fusionauth.jwt.Verifier
+import io.fusionauth.jwt.domain.JWT
+import io.fusionauth.jwt.hmac.HMACSigner
+import io.fusionauth.jwt.hmac.HMACVerifier
+import kotlinx.serialization.json.Json
+import org.jooq.tools.json.JSONObject
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
-import java.util.*
-import javax.crypto.SecretKey
-
-data class TokenPayload(
-    val id: UUID,
-    val username: String,
-    val email: String,
-    val expiredAt: Long
-)
 
 @Service
-class Jwt private constructor() {
+class JwtService private constructor() {
     @Value("\${jwt.secretKey}")
     var secretKey: String? = null
 
@@ -78,7 +81,7 @@ class Jwt private constructor() {
     var expirationTime: Long = 0L
 
     private val saltLength = 10
-    var secret: SecretKey? = null
+    var jwtDecode: ((token: String) -> JwtPayload)? = null
 
     fun hashPassword(password: String): String {
         return BCrypt.withDefaults().hashToString(saltLength, password.toCharArray())
@@ -88,40 +91,33 @@ class Jwt private constructor() {
         return BCrypt.verifyer().verify(password.toCharArray(), bcryptHash).verified
     }
 
-    private fun initSecret() {
-        if (secret == null) {
+    fun createToken(obj: Map<String, Any>): String? {
+        val signer = HMACSigner.newSHA256Signer(this.secretKey)
+        val jwt = JWT()
+        obj.forEach { entry ->
+            jwt.addClaim(entry.key, entry.value)
+        }
+        return JWT.getEncoder().encode(jwt, signer)
+    }
+
+    private fun initDecoder() {
+        if (jwtDecode == null) {
             secretKey?.let {
-                secret = Keys.hmacShaKeyFor(it.toByteArray(Charsets.UTF_8))
-                println("inited! $it")
+                val verifier: Verifier = HMACVerifier.newVerifier(it)
+                jwtDecode = { token ->
+                    val jwt = JWT.getDecoder().decode(token, verifier)
+                    val strinyPayload = JSONObject(jwt.otherClaims).toString()
+                    val tokenPayload = Json.decodeFromString<JwtPayload>(strinyPayload)
+                    tokenPayload
+                }
             }
         }
     }
 
-    fun createToken(userId: UUID, username: String, email: String): Pair<String, TokenPayload> {
-        val expiredAt = expirationTime + System.currentTimeMillis()
-        val payload = TokenPayload(
-            userId,
-            username,
-            email,
-            expiredAt,
-        )
-        val json = JSONObject.toJSON(payload).toString()
-        initSecret()
-        return Pair<String, TokenPayload>(
-            Jwts.builder().setSubject(json).signWith(secret).compact(),
-            payload
-        )
-    }
-
-    fun parseAndVerifyToken(token: String?): TokenPayload {
-        initSecret()
-        val jws: Jws<Claims> = Jwts.parserBuilder().setSigningKey(secret).build().parseClaimsJws(token)
-        val subject = jws.body.subject
-        val tokenPayload = JSONObject.parseObject(subject, TokenPayload::class.java)
-        if (System.currentTimeMillis() > tokenPayload.expiredAt) {
-            throw Exception("token expired")
-        }
-        return tokenPayload
+    //    documentation: https://github.com/FusionAuth/fusionauth-jwt#verify-and-decode-a-jwt-using-hmac
+    fun parseAndVerifyToken(token: String?): JwtPayload? {
+        initDecoder()
+        return jwtDecode?.let { decoder -> token?.let { token -> decoder(token) } }
     }
 }
 ```
@@ -156,7 +152,7 @@ class UserContext {
 }
 ```
 
-###### In Spring Security
+###### On the Contrary, In Spring Security
 
 We save those data using `TheadLocal`, which is used in one of the implementations of `SecurityContextHolder` with which in `spring-security` we assign and get user data by:
 
@@ -181,6 +177,7 @@ import jakarta.servlet.http.HttpServletResponse
 import org.springframework.web.servlet.HandlerInterceptor
 
 
+@Component
 class JwtHandlerInterceptor(
     private val jwt: Jwt
 ) : HandlerInterceptor {
@@ -199,14 +196,25 @@ class JwtHandlerInterceptor(
 ```
 
 
-
-#### We are done! Let's make a Request with Header
+#### Parse the Token From Header
+##### Result: Let's make a Simple Request with Authorization Header
 
 How simple it is? Now when I make a request with `Authorization: Bearer <token>` I immediately get the user info:
 
+![](/assets/img/2024-08-01-01-17-48.png)
 
-![](/assets/img/2024-06-25-14-21-39.png)
 
+##### More on the Token
+
+- Our token is generated from a `node.js` backend and therefore we don't expect to have attributes like `audience`, `exp`, `iat`, `iss`, etc, keys that are usually pre-defined in `java` ecosystem. 
+
+  ![](/assets/img/2024-08-01-01-23-32.png)
+
+- Conversely our `Jwt.createToken` converts a map into a JWT token. Especially when the keys are not among the predefined ones:
+
+  ![](/assets/img/2024-08-01-01-21-35.png)
+
+  They will fall into `otherClaims`.
 
 #### Back to `authController/{signup, login}`
 
