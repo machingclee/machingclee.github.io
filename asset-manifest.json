@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.7031a9ea.chunk.css",
-    "main.js": "/static/js/main.3e28c173.chunk.js",
+    "main.js": "/static/js/main.debadf9f.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.337bc7cc.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.058188df.chunk.js": "/static/js/2.058188df.chunk.js",
@@ -282,7 +282,7 @@
     "static/media/269-Transaction.md": "/static/media/269-Transaction.4c6796dd.md",
     "static/media/270-JWT-authentication.md": "/static/media/270-JWT-authentication.419dad68.md",
     "static/media/271-gradles-fundamental.md": "/static/media/271-gradles-fundamental.b00bddc8.md",
-    "static/media/272-JWT-auth-2-no-security.md": "/static/media/272-JWT-auth-2-no-security.29bf2ed6.md",
+    "static/media/272-JWT-auth-2-no-security.md": "/static/media/272-JWT-auth-2-no-security.0e7b5aa7.md",
     "static/media/273-sql-graph-time-series copy.md": "/static/media/273-sql-graph-time-series copy.2c6d75b5.md",
     "static/media/274-k8s-II.md": "/static/media/274-k8s-II.9148d1d1.md",
     "static/media/275-k8s-III.md": "/static/media/275-k8s-III.f0ef30ae.md",
@@ -346,6 +346,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.058188df.chunk.js",
     "static/css/main.7031a9ea.chunk.css",
-    "static/js/main.3e28c173.chunk.js"
+    "static/js/main.debadf9f.chunk.js"
   ]
 }

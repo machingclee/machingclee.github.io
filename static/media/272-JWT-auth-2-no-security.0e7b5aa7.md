@@ -1,5 +1,5 @@
 ---
-title: "JWT in Spring boot II: Get rid of Spring-Security"
+title: "JWT in Spring boot II: Get rid of Spring-Security. More on Parsing Json String into Pojo"
 date: 2024-06-24
 id: blog0272
 tag: kotlin, gradle, springboot
@@ -16,12 +16,26 @@ toc: true
 #### Depenencies Needed
 
 ```text
-implementation("io.fusionauth:fusionauth-jwt:5.3.3")
-implementation("at.favre.lib:bcrypt:0.10.2")
-```
+plugins {
+    kotlin("plugin.serialization") version "2.0.0"
+}
 
+dependencies {
+    implementation("org.json:json:20240303")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.1")
+    implementation("io.fusionauth:fusionauth-jwt:5.3.3")
+    implementation("at.favre.lib:bcrypt:0.10.2")
+}
+```
+- `org.json:json` is to import `JSONObject` which can take a `Map` to `Json` string via `toString()` method.
+
+- `kotlinx-serialization-json` is to use `Json.decodeFromString<JwtPayload>(str)`  to transform a json string into a `Pojo`.
 - `bcrypt` is responsible for hashing tasks which is usually used in login and signup process.
-- `fusionauth-jwt` is by-far, from my experiement, the only functioning package to parse the JWT-token come from `node.js`.
+- `fusionauth-jwt` is by far, from my experiment, the only functioning package to parse the JWT-token generate by  `node.js` using `HS256` algorithm. 
+- Knowing the following will be helpful to make sense of the APIs in `fusionauth-jwt` (like the use of `HMACVerifier`): 
+  - `HS256` stands for `HMAC-SHA256`
+  - `HMAC` stands for Hash-based Message Authentication Code and 
+  - `SHA256` is an hashing algorithm
 
 #### Interceptor
 
@@ -68,7 +82,7 @@ import io.fusionauth.jwt.domain.JWT
 import io.fusionauth.jwt.hmac.HMACSigner
 import io.fusionauth.jwt.hmac.HMACVerifier
 import kotlinx.serialization.json.Json
-import org.jooq.tools.json.JSONObject
+import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
