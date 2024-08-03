@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.7031a9ea.chunk.css",
-    "main.js": "/static/js/main.debadf9f.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.337bc7cc.js",
+    "main.js": "/static/js/main.6979df0b.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.944f1a2f.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.058188df.chunk.js": "/static/js/2.058188df.chunk.js",
-    "static/js/3.1af52ee5.chunk.js": "/static/js/3.1af52ee5.chunk.js",
-    "static/js/4.a39355ad.chunk.js": "/static/js/4.a39355ad.chunk.js",
-    "static/js/5.42a847e9.chunk.js": "/static/js/5.42a847e9.chunk.js",
+    "static/js/2.ddd50337.chunk.js": "/static/js/2.ddd50337.chunk.js",
+    "static/js/3.17899a48.chunk.js": "/static/js/3.17899a48.chunk.js",
+    "static/js/4.bbaf25d0.chunk.js": "/static/js/4.bbaf25d0.chunk.js",
+    "static/js/5.7007cb6f.chunk.js": "/static/js/5.7007cb6f.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.058188df.chunk.js.LICENSE.txt": "/static/js/2.058188df.chunk.js.LICENSE.txt",
-    "static/js/3.1af52ee5.chunk.js.LICENSE.txt": "/static/js/3.1af52ee5.chunk.js.LICENSE.txt",
-    "static/js/4.a39355ad.chunk.js.LICENSE.txt": "/static/js/4.a39355ad.chunk.js.LICENSE.txt",
+    "static/js/2.ddd50337.chunk.js.LICENSE.txt": "/static/js/2.ddd50337.chunk.js.LICENSE.txt",
+    "static/js/3.17899a48.chunk.js.LICENSE.txt": "/static/js/3.17899a48.chunk.js.LICENSE.txt",
+    "static/js/4.bbaf25d0.chunk.js.LICENSE.txt": "/static/js/4.bbaf25d0.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.52b1ef07.md",
     "static/media/002-Lazy-React-Router.md": "/static/media/002-Lazy-React-Router.48295ca9.md",
@@ -289,10 +289,12 @@
     "static/media/276-k8s-IIV.md": "/static/media/276-k8s-IIV.09366e87.md",
     "static/media/277-chat-room-bottom.md": "/static/media/277-chat-room-bottom.dd0f7f12.md",
     "static/media/278-vite-react-app.md": "/static/media/278-vite-react-app.d424a4b5.md",
-    "static/media/279-DDD.md": "/static/media/279-DDD.bb3ce36c.md",
+    "static/media/279-DDD.md": "/static/media/279-DDD.a64fc3e6.md",
     "static/media/300-git-crypt.md": "/static/media/300-git-crypt.4522b9c3.md",
     "static/media/301-react-router.md": "/static/media/301-react-router.cc52686a.md",
     "static/media/302-minimal-example-dnd.md": "/static/media/302-minimal-example-dnd.52d8492d.md",
+    "static/media/303-logger-in-kotlin.md": "/static/media/303-logger-in-kotlin.1051cac5.md",
+    "static/media/304-error-handling-in-command-handler-axon.md": "/static/media/304-error-handling-in-command-handler-axon.dc69f3fb.md",
     "static/media/CV_Portfolio.6f62730f.pdf": "/static/media/CV_Portfolio.6f62730f.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -342,10 +344,10 @@
     "static/media/transformer-date-fomatter.18a2d3fc.pdf": "/static/media/transformer-date-fomatter.18a2d3fc.pdf"
   },
   "entrypoints": [
-    "static/js/runtime-main.337bc7cc.js",
+    "static/js/runtime-main.944f1a2f.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.058188df.chunk.js",
+    "static/js/2.ddd50337.chunk.js",
     "static/css/main.7031a9ea.chunk.css",
-    "static/js/main.debadf9f.chunk.js"
+    "static/js/main.6979df0b.chunk.js"
   ]
 }
