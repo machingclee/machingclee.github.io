@@ -17,7 +17,7 @@ intro: "Study the error handling for Subscription Query"
 
 - Almost every request from frontend will require the latest information from backend. 
 
-- Therefore it is crucial to implement a "waiting mechanism" to await for the outcome of ***multiple events*** trggered by a single command.
+- Therefore it is crucial to implement a "waiting mechanism" to await for the eventual outcome of ***multiple events*** triggered by a single command.
 
 #### Controller Side with Subscription Query
 
