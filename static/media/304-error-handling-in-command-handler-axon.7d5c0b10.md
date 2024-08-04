@@ -2,9 +2,9 @@
 title: "Subscription Query and Error Handling of API Calls"
 date: 2024-08-03
 id: blog0304
-tag: springboot, axon-framework
+tag: kotlin, springboot, axon-framework
 toc: true
-intro: "Study the error handling for Subscription Query"
+intro: "Study the error handling for Subscription Query."
 ---
 
 <style>

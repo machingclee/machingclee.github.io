@@ -2,7 +2,7 @@
 title: "Logger in Kotlin"
 date: 2024-08-01
 id: blog0303
-tag: springboot
+tag: kotlin, springboot
 toc: false
 intro: "Record the minimal code template for KotlinLogger."
 ---

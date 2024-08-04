@@ -1,10 +1,10 @@
 ---
-title: "Send Gmail in Kotlin "
+title: "Send Gmail in Kotlin"
 date: 2024-08-04
 id: blog0305
-tag: springboot
+tag: kotlin, springboot
 toc: true
-intro: "We study how to send email again in kotlin"
+intro: "We study how to send email again in kotlin."
 ---
 
 <style>
@@ -35,7 +35,7 @@ dependencies {
       ![](/assets/img/2024-08-05-00-10-23.png)
 
     - Choose the privilege we want:
-    
+
       ![](/assets/img/2024-08-05-00-10-49.png)
 
   - And make sure that when we create a credential we choose **Desktop app** (then we don't need to provide the `return_url` which is not needed in backend application)
