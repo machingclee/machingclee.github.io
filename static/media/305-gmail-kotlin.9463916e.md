@@ -1,0 +1,151 @@
+---
+title: "Send Gmail in Kotlin "
+date: 2024-08-04
+id: blog0305
+tag: springboot
+toc: true
+intro: "We study how to send email again in kotlin"
+---
+
+<style>
+  img {
+    max-width: 660px;
+  }
+</style>
+
+#### Dependencies 
+
+```text
+dependencies {
+    implementation("com.google.api-client:google-api-client:2.0.0")
+    implementation("com.google.oauth-client:google-oauth-client-jetty:1.34.1")
+    implementation("com.google.apis:google-api-services-gmail:v1-rev20220404-2.0.0")
+    implementation("javax.mail:mail:1.4.7")
+}
+```
+
+#### OAuth Credential and Code Implementation
+
+- In the past we have studied Gmail API (not just sending email) from [this post](/blog/article/Gmail-and-Inbox-Push-Notification). 
+
+- - This time we assume that we have all got the `credential.json` in the same way, make sure that in the **OAuth Consent Screen** session we choose the scope correctly:
+
+    - Filter the scope:
+
+      ![](/assets/img/2024-08-05-00-10-23.png)
+
+    - Choose the privilege we want:
+    
+      ![](/assets/img/2024-08-05-00-10-49.png)
+
+  - And make sure that when we create a credential we choose **Desktop app** (then we don't need to provide the `return_url` which is not needed in backend application)
+
+    ![](/assets/img/2024-08-05-00-21-36.png)
+
+- Let's translate the code in [Gmail API Documentation](https://developers.google.com/gmail/api/quickstart/java) into `kotlin`, then we get the following:
+
+  ```kotlin
+  import com.google.api.client.auth.oauth2.Credential
+  import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp
+  import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver
+  import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow
+  import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets
+  import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport
+  import com.google.api.client.googleapis.json.GoogleJsonResponseException
+  import com.google.api.client.http.javanet.NetHttpTransport
+  import com.google.api.client.json.gson.GsonFactory
+  import com.google.api.client.util.store.FileDataStoreFactory
+  import com.google.api.services.gmail.Gmail
+  import com.google.api.services.gmail.GmailScopes
+  import com.google.api.services.gmail.model.Message
+  import org.apache.commons.codec.binary.Base64
+  import org.springframework.beans.factory.annotation.Value
+
+  import org.springframework.stereotype.Service
+  import java.io.*
+  import java.nio.file.Paths
+  import java.util.*
+  import javax.mail.Session
+  import javax.mail.internet.InternetAddress
+  import javax.mail.internet.MimeMessage
+
+
+  @Service
+  class GmailService(
+      @Value("\${gmail.sender}") private val sender: String,
+      @Value("\${gmail.credential-path}") private val credentialPath: String
+  ) {
+
+
+      private val httpTransport = GoogleNetHttpTransport.newTrustedTransport()
+      private val jsonFactory = GsonFactory.getDefaultInstance()
+
+      private val tokenPath = "tokens"
+
+      init {
+          println("Sender: $sender")
+          println("credentialPath: $credentialPath")
+      }
+
+      @Throws(IOException::class)
+      private fun getCredentials(httpTransport: NetHttpTransport, jsonFactory: GsonFactory): Credential {
+          // Load client secrets.
+          val inputStream: InputStream = GmailService::class.java.getResourceAsStream(credentialPath)
+              ?: throw FileNotFoundException("Resource not found: $credentialPath")
+          val clientSecrets =
+              GoogleClientSecrets.load(jsonFactory, InputStreamReader(inputStream))
+
+          // Build flow and trigger user authorization request.
+          val flow = GoogleAuthorizationCodeFlow.Builder(
+              httpTransport, jsonFactory, clientSecrets, setOf(GmailScopes.GMAIL_SEND)
+          )
+              .setDataStoreFactory(FileDataStoreFactory(Paths.get(tokenPath).toFile()))
+              .setAccessType("offline")
+              .build()
+          val receiver = LocalServerReceiver.Builder().setPort(8888).build()
+          val credential: Credential = AuthorizationCodeInstalledApp(flow, receiver).authorize("user")
+          // returns an authorized Credential object.
+          return credential
+      }
+
+      fun sendEmail(subject: String, bodyText: String, toEmail: String): Message? {
+          val service = Gmail.Builder(httpTransport, jsonFactory, getCredentials(httpTransport, jsonFactory))
+              .setApplicationName("payment")
+              .build()
+
+          val props = Properties()
+          val session: Session = Session.getDefaultInstance(props, null)
+          val email: MimeMessage = MimeMessage(session)
+          email.setFrom(InternetAddress(sender))
+          email.addRecipient(
+              javax.mail.Message.RecipientType.TO,
+              InternetAddress(toEmail)
+          )
+          email.subject = subject
+          email.setText(bodyText)
+
+          val buffer = ByteArrayOutputStream()
+          email.writeTo(buffer)
+          val rawMessageBytes = buffer.toByteArray()
+          val encodedEmail = Base64.encodeBase64URLSafeString(rawMessageBytes)
+          var message = Message()
+          message.setRaw(encodedEmail)
+
+          try {
+              // Create send message
+              message = service.users().messages().send("me", message).execute()
+              println("Message id: " + message.id)
+              println(message.toPrettyString())
+              return message
+          } catch (e: GoogleJsonResponseException) {
+              val error = e.details
+              if (error.code == 403) {
+                  println("Unable to create draft: " + e.details)
+                  throw Exception("403 not found")
+              } else {
+                  throw e
+              }
+          }
+      }
+  }
+  ```
