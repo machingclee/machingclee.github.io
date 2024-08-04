@@ -1,5 +1,5 @@
 ---
-title: "Subscription Query and its Error Handling"
+title: "Subscription Query and Error Handling of API Calls"
 date: 2024-08-03
 id: blog0304
 tag: springboot, axon-framework
@@ -18,6 +18,173 @@ intro: "Study the error handling for Subscription Query"
 - Almost every request from frontend will require the latest information from backend. 
 
 - Therefore it is crucial to implement a "waiting mechanism" to await for the eventual outcome of ***multiple events*** triggered by a single command.
+
+#### API Calls  in Aggregate, Regular EventHandler or Saga (SagaEventHandler)?
+
+
+##### Reference 
+- https://discuss.axoniq.io/t/call-external-api-in-axon/4775
+
+##### Important Takeaways
+
+>  If you want the command to fail in case the call fails, you should do it on the command side, or with a subscribing event handler
+
+
+#### No Please, Don't try to split commands and events in different folders
+
+- Most of the courses in the internet suggest splitting commands and events in two ***separate*** files or packages, which I **strongly disagree**.
+
+- Commands and Events usually spawn in pair, most of them are sequential, naming the commands and events by Step1, Step2, ... alone is not enough. 
+
+- If the order needs to be rearranged, we are going to change the naming of classes in two files, why not just group all of them into one file?
+
+  We suggest the following pattern instead!
+
+  ```kotlin
+  import com.billie.payment.enums.PaymentPlan
+  import org.axonframework.modelling.command.TargetAggregateIdentifier
+
+  class CommandAndEvents {
+      class SubscriptionPlanOrder {
+          class Step1 {
+              data class CreateCustomerCommand(
+                  @TargetAggregateIdentifier
+                  val orderId: String,
+                  val userEmail: String,
+                  val userName: String,
+                  val paymentPlan: PaymentPlan,
+                  val numOfPersons: Int
+              )
+
+              data class CustomerCreatedEvent(
+                  val orderId: String,
+                  val userEmail: String,
+                  val paymentPlan: PaymentPlan,
+                  val numOfPersons: Int,
+                  val customerId: String
+              )
+
+              class Failed {
+                  data class CancelCreateCustomerCommand(
+                      @TargetAggregateIdentifier
+                      val orderId: String,
+                      val reason: String
+                  )
+
+                  data class CreateCustomerCancelledEvent(
+                      val orderId: String,
+                      val reason: String
+                  )
+              }
+          }
+
+          class Step2 {
+              data class OrderSubscriptionPlanCommand(
+                  @TargetAggregateIdentifier
+                  val orderId: String,
+              )
+
+              data class SubscriptionPlanOrderedEvent(
+                  val orderId: String,
+                  val email: String
+              )
+
+              class Failed {
+                  data class CancelOrderPlanCommand(
+                      @TargetAggregateIdentifier
+                      val orderId: String,
+                      val reason: String
+                  )
+
+                  data class OrderPlanCancelledEvent(
+                      val orderId: String,
+                      val reason: String
+                  )
+              }
+          }
+
+          class Step3 {
+              data class CreateSessionIdCommand(
+                  @TargetAggregateIdentifier
+                  val orderId: String,
+              )
+
+              data class SessionIdCreatedEvent(
+                  val orderId: String,
+                  val sessionId: String
+              )
+
+              class Failed {
+                  data class CancelCreateSessionIdCommand(
+                      @TargetAggregateIdentifier
+                      val orderId: String,
+                      val reason: String
+                  )
+
+                  data class CreateSessionIdCancelledEvent(
+                      val orderId: String,
+                      val reason: String
+                  )
+              }
+
+          }
+
+          class Step4 {
+              data class DoStripePaymentCommand(
+                  @TargetAggregateIdentifier
+                  val orderId: String,
+              )
+
+              data class StripePaymentDoneEvent(
+                  val orderId: String,
+              )
+
+
+              class Failed {
+                  data class CancelStripePaymentCommand(
+                      @TargetAggregateIdentifier
+                      val orderId: String,
+                      val reason: String
+                  )
+
+                  data class StripePaymentCancelledCommand(
+                      val orderId: String,
+                      val reason: String
+                  )
+              }
+
+
+          }
+
+          class Step5 {
+              data class SAdjustDBPermissionCommand(
+                  @TargetAggregateIdentifier
+                  val orderId: String,
+              )
+
+              data class DBPermissionAdjustedEvent(
+                  val orderId: String,
+              )
+
+              class Failed {
+                  data class CancelAdjustDBPermissionCommand(
+                      @TargetAggregateIdentifier
+                      val orderId: String,
+                      val reason: String
+                  )
+
+                  data class AdjustDBPermissionCancelledEvent(
+                      val orderId: String,
+                      val reason: String
+                  )
+              }
+          }
+      }
+  }
+  ```
+  In this way our CQRS flow is much more managible.
+
+
 
 #### Controller Side with Subscription Query
 
@@ -110,7 +277,8 @@ class SubscriptionPlanOrderAggregate() {
             }, e
         )
     }
-```
+  ```
+
 - Here we define `cancelCheckoutSubscriptionQuery` and propagate the exception via `queryResult` channel. This channel is identified by the query object `CheckoutOrderQuery` and the `orderId` parameter.
 
 - Now the `sessoinId` is supposed to be published to the `queryResult` channel by the `sagaEventHandler` handling `Step3.SessionIdCreatedEvent`.
@@ -221,6 +389,23 @@ Let's study the try-catch blocks below:
 }
 ```
 - Note that we also dispatch the related ***compensating*** events with reason. 
-- Some entity in our database may also record the error arised. Some of the state may also need to be adjusted. We save all of them in database.
+- Some entity in our database may also record the error arised. thus we save all of them in database in regular `eventHandler`'s.
 
-- We trigger the database adjustments by the regular `eventHandler`'s, and dispatch compensating actions of the ***previous*** command  via `sagaEventHandler`.
+- We dispatch compensating actions of the ***previous*** command  via `sagaEventHandler`.
+
+  For example, if `Step3.DoSomethingCommand` fails, then we dispatch the following chain of actions:
+  $$
+  \begin{aligned}
+  &{\color{white}\to} \texttt{Step3.DoSomethingFailedEvent (from Aggregate)} \\
+  &\to \texttt{Step2.Failed.CancelSomethingCommand (from Saga)} \\
+  &\to \texttt{Step2.Failed.SomethingCancelledEvent (from Aggregate)} \\
+  &\to \texttt{Step1.Failed.CancelAnotherThingCommand (from Saga)} \\
+  &\to \texttt{Step1.Failed.AnotherThingCancelledEvent (from Aggregate)} \\
+  
+  \end{aligned}
+  $$
+
+- In regular `eventHandler` we handle the state change for error messages (if any). 
+
+- In the last step we also end the lifecycle of `saga`. 
+- Not only that, we listen on `Step1.Failed.AnotherThingCancelledEvent` in regular event handler to send alert to stakeholders.
