@@ -1,6 +1,6 @@
 ---
 title: "Prisma Migration Script"
-date: 2023-02-25
+date: 2024-02-25
 id: blog0223
 tag: sql, prisma
 intro: "Record the commonly used migration scripts in prisma and sql."
