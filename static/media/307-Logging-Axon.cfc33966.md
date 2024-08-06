@@ -2,7 +2,7 @@
 title: "Logging in Axon Framework"
 date: 2024-08-06
 id: blog0306
-tag: kotlin, springboot
+tag: kotlin, springboot, axon-framework
 toc: true
 intro: "We record how to introduce reusuable interceptor in kotlin."
 ---
