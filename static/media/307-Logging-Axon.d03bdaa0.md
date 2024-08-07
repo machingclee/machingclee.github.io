@@ -1,10 +1,10 @@
 ---
-title: "Logging in Axon Framework"
+title: "Logging of Commands and Events in Axon Framework"
 date: 2024-08-06
-id: blog0306
+id: blog0307
 tag: kotlin, springboot, axon-framework
 toc: true
-intro: "We record how to introduce reusuable interceptor in kotlin."
+intro: "We record how to use interceptor and custom annotation to record the flow of commands and events."
 ---
 
 <style>
