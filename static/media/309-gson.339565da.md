@@ -13,7 +13,7 @@ intro: "We study some example of deserialization of json strings using Gson and 
   }
 </style>
 
-#### Arbitrary Json String into Pojo
+#### Arbitrary JSON String into POJO
 
 ##### Dependencies of Gson
 
@@ -21,7 +21,7 @@ intro: "We study some example of deserialization of json strings using Gson and 
 implementation("com.google.code.gson:gson:2.11.0")
 ```
 
-##### Example 
+##### Example 1
 Let's take an example of `Event` from `Stripe` sdk, in which I want to access the value of key  `orderId` in
 ```json
 // via event.dataObjectDeserializer.`object`.get().toJson()
@@ -70,6 +70,7 @@ dependencies {
 }
 ```
 
+##### Example 2
 
 ```kotlin
 import org.json.JSONObject
