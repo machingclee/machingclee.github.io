@@ -1,6 +1,6 @@
 ---
 title: "Access Nested Properties from Json String in Kotlin"
-date: 2024-08-09
+date: 2024-08-08
 id: blog0309
 tag: kotlin
 toc: true
@@ -13,7 +13,7 @@ intro: "We study some example of deserialization of json strings using Gson and 
   }
 </style>
 
-#### Arbitrary JSON String into POJO
+#### Gson: JSON String into POJO
 
 ##### Dependencies of Gson
 
@@ -54,7 +54,7 @@ Let's take an example of `Event` from `Stripe` sdk, in which I want to access th
   ```
 
 
-#### Arbitrary Map $\to$ JSON String $\to$ POJO
+#### JSONObject and kotlinx.serialization: Map $\to$ JSON String $\to$ POJO
 
 This is intensively used in my `jwt` util class in this [blog post](/blog/article/JWT-in-Spring-boot-II-Get-rid-of-Spring-Security-More-on-Parsing-Json-String-into-Pojo#Jwt).
 
