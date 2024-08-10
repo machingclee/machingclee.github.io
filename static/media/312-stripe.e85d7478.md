@@ -13,7 +13,7 @@ intro: "When creating a transaction we need to wait for the checkout-session-com
   }
 </style>
 
-#### Setup Webhook Forwarding Entpoint
+#### Setup Forwarding Endpoint for Stripe Webhook
 
 ##### Install CLI
 
@@ -30,7 +30,7 @@ stripe listen --forward-to http://localhost:8080/event/webhook
 ```
 
 
-#### Set up metadata in Creating Checkout Session for Subscription
+#### Construct metadata in Creating Checkout Session for Subscription
 
 ```kotlin{26-30}
 @Service
@@ -71,7 +71,7 @@ class StripeService(
 }
 ```
 
-#### Webhook's checkout.session.completed Event: Get Subscription and its metadata 
+#### Get Subscription and its metadata from Webhook's `checkout.session.completed` Event
 ##### Strategy
 
 - Since our `metadata` is embedded into `Subscription` object, there is no metadata in our checkout session events.
@@ -109,7 +109,7 @@ class EventController(
 }
 ```
 
-##### The `stripeService.getOrderIdFromStripeCheckoutCompletedEventId`
+##### Get orderId from metadata in Subscription via Checkout Completed Event
 
 ```kotlin{25}
 data class EventDataObject(val subscription: String)

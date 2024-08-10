@@ -88,5 +88,5 @@ val tokenPayload = Json.decodeFromString<JwtPayload>(stringPayload)
   ```
   instead of simply `Json`. This is a usual case because sometimes we are just concerned about certain keys inside a json, we don't intent to completely list all of them.
 
-- The `Gson.fromJson()`  and `Json{ ignoreUnknownKeys = true }` approaches are interchangiable.
+- The `Gson.fromJson()`  and `Json{ ignoreUnknownKeys = true }` approaches are interchangeable.
 

@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.65249aed.chunk.css",
-    "main.js": "/static/js/main.4111c39e.chunk.js",
+    "main.js": "/static/js/main.b8a51368.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.4a210816.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.49acc9b8.chunk.js": "/static/js/2.49acc9b8.chunk.js",
@@ -296,13 +296,13 @@
     "static/media/303-logger-in-kotlin.md": "/static/media/303-logger-in-kotlin.3b8316ae.md",
     "static/media/304-error-handling-in-command-handler-axon.md": "/static/media/304-error-handling-in-command-handler-axon.7d5c0b10.md",
     "static/media/305-gmail-kotlin.md": "/static/media/305-gmail-kotlin.c8430bb5.md",
-    "static/media/306-AOP.md": "/static/media/306-AOP.53c07517.md",
+    "static/media/306-AOP.md": "/static/media/306-AOP.04e3c07d.md",
     "static/media/307-Logging-Axon.md": "/static/media/307-Logging-Axon.d03bdaa0.md",
     "static/media/308-spring-cors.md": "/static/media/308-spring-cors.888263e8.md",
-    "static/media/309-gson.md": "/static/media/309-gson.cade0e0c.md",
+    "static/media/309-gson.md": "/static/media/309-gson.655a146f.md",
     "static/media/310-json-query-pgsql.md": "/static/media/310-json-query-pgsql.47dc69db.md",
     "static/media/311-deadline-manager.md": "/static/media/311-deadline-manager.44ef1a53.md",
-    "static/media/312-stripe.md": "/static/media/312-stripe.886cf5a8.md",
+    "static/media/312-stripe.md": "/static/media/312-stripe.e85d7478.md",
     "static/media/CV_Portfolio.fec75f01.pdf": "/static/media/CV_Portfolio.fec75f01.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -356,6 +356,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.49acc9b8.chunk.js",
     "static/css/main.65249aed.chunk.css",
-    "static/js/main.4111c39e.chunk.js"
+    "static/js/main.b8a51368.chunk.js"
   ]
 }
