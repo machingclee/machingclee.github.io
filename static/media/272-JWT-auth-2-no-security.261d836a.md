@@ -181,30 +181,49 @@ SecurityContextHolder.getContext().authentication
 
 ##### JwtHandlerInterceptor 
 ```kotlin 
-package com.kotlinspring.restapi.interceptor
-
-import com.kotlinspring.restapi.jwt.Jwt
-import com.kotlinspring.restapi.jwt.TokenPayload
-import com.kotlinspring.restapi.jwt.UserContext
+import com.billie.payment.service.JwtService
+import com.billie.payment.model.JwtPayload
+import com.billie.payment.model.UserContext
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import io.fusionauth.jwt.JWTExpiredException
+import io.github.oshai.kotlinlogging.KLogger
+import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import org.springframework.stereotype.Component
 import org.springframework.web.servlet.HandlerInterceptor
 
-
 @Component
-class JwtHandlerInterceptor(
-    private val jwt: Jwt
-) : HandlerInterceptor {
-    private val authHeader: String = "Authorization"
+class JwtHandlerInterceptor(private val jwtService: JwtService) : HandlerInterceptor {
+    private val authHeader: String = "authorization"
+
+    companion object {
+        var logger: KLogger = KotlinLogging.logger {}
+    }
+
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
         UserContext.instance.clear()
-        val accessToken = request.getHeader(authHeader).replace("Bearer ", "")
-        if (accessToken.isEmpty()) {
-            throw Exception("AccessToken cannot be empty")
+        try {
+            val accessToken = request.getHeader(authHeader).replace("Bearer ", "")
+            if (accessToken.isEmpty()) {
+                throw Exception("AccessToken cannot be empty")
+            }
+            val payload: JwtPayload = jwtService.parseAndVerifyToken(accessToken)!!
+            UserContext.instance.setUser(payload)
+            return true
+        } catch (exception: Exception) {
+            val errorMessage = when (exception) {
+                is JWTExpiredException -> "JWT_EXPIRED"
+                else -> exception.toString()
+            }
+            response.contentType = "application/json"
+            response.status = HttpServletResponse.SC_UNAUTHORIZED
+            val error = mapOf("success" to false, "errorMessage" to errorMessage)
+            val objectMapper = jacksonObjectMapper()
+            val jsonString = objectMapper.writeValueAsString(error)
+            response.writer.write(jsonString)
+            return false
         }
-        val payload: TokenPayload = jwt.parseAndVerifyToken(accessToken)
-        UserContext.instance.setUser(payload)
-        return true
     }
 }
 ```
