@@ -13,18 +13,18 @@ intro: "There are two ways for DDD Project in spring boot: DDD using ORM and tha
   }
 </style>
 
+#### Separation of Data and Domain Behaviour
+##### Data
 
-#### Data Part: Repository
+###### AbstractRepository
 
-##### AbstractRepository
-
-- A repository should only manage data and should have just two purposes:
+- A repository should only manage data and should only have two purposes:
   1. Get the aggregate
   2. Save the aggregate
 - But if we implement `repository.save(aggregate)`, then we need to expose 
   - `aggregate.domainEvents`
-  - `aggregate.clearEvents`
-  - `aggregate.registerEvent` 
+  - `aggregate.clearEvents()`
+  - `aggregate.registerEvent()` 
   for the `repository` to act with. 
 - But these attributes and methods **should not** be exposed to any one except for the repository, this is not achievable.
 - We therefore move the `save` method to the domain object itself. 
@@ -48,7 +48,7 @@ abstract class AbstractRepository<T, ID> {
 
 
 
-##### OrderRepository that extends AbstractRepository
+###### OrderRepository: AbstractRepository
 
 Now we create our concret repository with "micro-orm" such as type-safed query builder. In this article we use `JOOQ`.
 
@@ -82,12 +82,13 @@ class OrderRepository(
 }
 ```
 
-Let's define the `OrderDomain` object.
+Let's define the `OrderDomain` object in the next section right below.
 
 Recall that an aggregate is a domain object, we name the aggregate by its aggregate root. In our case, our root is `Order`, thus the name `OrderDomain`.
 
 
-#### Domain Behaviour: Domain Model
+##### Domain Behaviour
+###### Domain Model
 
 ```kotlin-1
 package com.billie.payment.domain
@@ -165,7 +166,7 @@ Up to this point our domain object just consists of boilerplate code, here comes
 }
 // completion of OrderDomain
 ```
-Finally we define side effect via `EventHandler`:
+Finally we create side effect via `EventHandler`:
 ```kotlin-72
 @Component
 class OrderEventHandler(
@@ -195,7 +196,7 @@ class OrderEventHandler(
 ```
 
 #### Use Cases
-##### Case 1.
+##### Case 1: Creation of domain object within an aggregate
 ```kotlin
     private fun createOrderDetail(
         orderId: UUID,
@@ -212,7 +213,7 @@ class OrderEventHandler(
         orderDomain.save()
     }
 ```
-##### Case 2.
+##### Case 2: Update of domain object within an aggregate
 ```kotlin
     private fun updateOrderStatusAndDetail(orderId: String, invoicePaideventId: String, subscriptionId: String) {
         val orderDomain = orderRepository.findById(orderId)
@@ -226,7 +227,9 @@ Note that both
 - `orderDomain.updateOrdersucceededInfo` 
 are simply creating events, and `save()` is simply a dispatch of all events.
 
-#### @TransactionalEventListener
+#### Appendix
+
+##### @TransactionalEventListener
 
 Based on `Claude-3.5-Sonnet-200k`:
 
@@ -242,7 +245,7 @@ In this case we annotate our `EventHandler` that sends email by `@TransactionalE
 - `AFTER_ROLLBACK`
 - `AFTER_COMPLETION`
 
-#### Configure `JOOQ` to use Spring's Transactional Manager
+##### Configure `JOOQ` to use Spring's Transactional Manager
 
 ```kotlin 
 import org.jooq.SQLDialect
