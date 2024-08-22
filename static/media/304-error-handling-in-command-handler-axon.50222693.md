@@ -41,7 +41,7 @@ intro: "Study the error handling for Subscription Query."
   We suggest the following pattern instead!
 
   ```kotlin
-  import com.billie.payment.enums.PaymentPlan
+  import com.machingclee.payment.enums.PaymentPlan
   import org.axonframework.modelling.command.TargetAggregateIdentifier
 
   class CommandAndEvents {
@@ -191,12 +191,12 @@ intro: "Study the error handling for Subscription Query."
 
 
 ```kotlin
-import com.billie.db.tables.pojos.Stripeorder
-import com.billie.payment.command.CommandAndEvents
-import com.billie.payment.dto.OrderSubscriptionPlanDto
-import com.billie.payment.model.UserContext
-import com.billie.payment.query.CheckoutOrderQuery
-import com.billie.payment.service.DbService
+import com.machingclee.db.tables.pojos.Stripeorder
+import com.machingclee.payment.command.CommandAndEvents
+import com.machingclee.payment.dto.OrderSubscriptionPlanDto
+import com.machingclee.payment.model.UserContext
+import com.machingclee.payment.query.CheckoutOrderQuery
+import com.machingclee.payment.service.DbService
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.messaging.responsetypes.ResponseTypes
 import org.axonframework.queryhandling.QueryGateway

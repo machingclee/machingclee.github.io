@@ -34,7 +34,7 @@ CMD ["java","-Dspring.profiles.active=uat", "-jar", "payment-0.0.1-SNAPSHOT.jar"
 ```kotlin{9,25}
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
-group = "com.billie"
+group = "com.machingclee"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_21
 
@@ -56,7 +56,7 @@ tasks.withType<Test> {
 
 tasks.getByName<Jar>("jar") {
     manifest {
-        attributes["Main-Class"] = "com.billie.payment.PaymentApplicationKt"
+        attributes["Main-Class"] = "com.machingclee.payment.PaymentApplicationKt"
     }
 }
 ```

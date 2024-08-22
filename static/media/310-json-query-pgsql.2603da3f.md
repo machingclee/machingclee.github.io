@@ -18,7 +18,7 @@ intro: "We record useful query for debugging of domain events with json payload.
 select 
   sequence_number,
   type as aggregate,
-  REPLACE(payload_type, 'com.billie.payment.command.CommandAndEvents$SubscriptionPlanOrder$', '') as event, 
+  REPLACE(payload_type, 'com.machingclee.payment.command.CommandAndEvents$SubscriptionPlanOrder$', '') as event, 
   encode(payload, 'escape') as payload, 
   time_stamp,
   aggregate_identifier

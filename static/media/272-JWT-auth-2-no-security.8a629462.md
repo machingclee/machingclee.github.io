@@ -76,7 +76,7 @@ Let's define the remaining missing pieces,
 package com.kotlinspring.restapi.jwt
 
 import at.favre.lib.crypto.bcrypt.BCrypt
-import com.billie.payment.model.JwtPayload
+import com.machingclee.payment.model.JwtPayload
 import io.fusionauth.jwt.Verifier
 import io.fusionauth.jwt.domain.JWT
 import io.fusionauth.jwt.hmac.HMACSigner
@@ -181,9 +181,9 @@ SecurityContextHolder.getContext().authentication
 
 ##### JwtHandlerInterceptor 
 ```kotlin 
-import com.billie.payment.service.JwtService
-import com.billie.payment.model.JwtPayload
-import com.billie.payment.model.UserContext
+import com.machingclee.payment.service.JwtService
+import com.machingclee.payment.model.JwtPayload
+import com.machingclee.payment.model.UserContext
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.fusionauth.jwt.JWTExpiredException
 import io.github.oshai.kotlinlogging.KLogger

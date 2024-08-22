@@ -59,9 +59,9 @@ fun deadlineManager(
 ##### Set a Timeout in Saga
 
 ```kotlin{54-61,64} 
-import com.billie.payment.CheckoutSessionIdResponse
-import com.billie.payment.command.CommandAndEvents.SubscriptionPlanOrder.*
-import com.billie.payment.query.CheckoutSesionIdQuery
+import com.machingclee.payment.CheckoutSessionIdResponse
+import com.machingclee.payment.command.CommandAndEvents.SubscriptionPlanOrder.*
+import com.machingclee.payment.query.CheckoutSesionIdQuery
 import io.github.oshai.kotlinlogging.KLogger
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.axonframework.commandhandling.gateway.CommandGateway

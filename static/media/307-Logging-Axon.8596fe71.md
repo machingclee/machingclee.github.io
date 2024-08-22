@@ -17,7 +17,7 @@ intro: "We record how to use interceptor and custom annotation to record the flo
 
 ##### AggregateCommandLoggingDispatchInterceptor
 ```kotlin
-package com.billie.payment.interceptor
+package com.machingclee.payment.interceptor
 
 import io.github.oshai.kotlinlogging.KLogger
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -45,7 +45,7 @@ class AggregateCommandLoggingDispatchInterceptor() : MessageDispatchInterceptor<
 
 ##### SagaEventLoggingDispatchInterceptor
 ```kotlin
-package com.billie.payment.interceptor
+package com.machingclee.payment.interceptor
 
 import io.github.oshai.kotlinlogging.KLogger
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -117,7 +117,7 @@ class PaymentApplication {
 ##### Define Annotation to add Interceptor to all Methods of a Class
 ###### Annotation
 ```kotlin
-package com.billie.payment.annotation
+package com.machingclee.payment.annotation
 
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
@@ -127,9 +127,9 @@ annotation class EventHandlerLogging
 ###### Aspect
 
 ```kotlin 
-package com.billie.payment.aspect
+package com.machingclee.payment.aspect
 
-import com.billie.payment.service.GmailService
+import com.machingclee.payment.service.GmailService
 import io.github.oshai.kotlinlogging.KLogger
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.aspectj.lang.ProceedingJoinPoint
@@ -145,7 +145,7 @@ class EventHandlerLoggingAspect {
         var logger: KLogger = KotlinLogging.logger {}
     }
 
-    @Around("@within(com.billie.payment.annotation.EventHandlerLogging)")
+    @Around("@within(com.machingclee.payment.annotation.EventHandlerLogging)")
     fun around(joinPoint: ProceedingJoinPoint): Any? {
         val argument = joinPoint.args[0]
         logger.info { "[EvtHandler] $argument" }
@@ -156,14 +156,14 @@ class EventHandlerLoggingAspect {
 ##### Apply it to Regular EventHandler (not axon-managed)
 
 ```kotlin
-import com.billie.db.tables.daos.ProductDao
-import com.billie.db.tables.daos.StripecustomerDao
-import com.billie.db.tables.daos.StripeorderDao
-import com.billie.db.tables.pojos.Stripecustomer
-import com.billie.db.tables.pojos.Stripeorder
-import com.billie.payment.annotation.EventHandlerLogging
-import com.billie.payment.command.CommandAndEvents.SubscriptionPlanOrder.*
-import com.billie.payment.query.CheckoutOrderQuery
+import com.machingclee.db.tables.daos.ProductDao
+import com.machingclee.db.tables.daos.StripecustomerDao
+import com.machingclee.db.tables.daos.StripeorderDao
+import com.machingclee.db.tables.pojos.Stripecustomer
+import com.machingclee.db.tables.pojos.Stripeorder
+import com.machingclee.payment.annotation.EventHandlerLogging
+import com.machingclee.payment.command.CommandAndEvents.SubscriptionPlanOrder.*
+import com.machingclee.payment.query.CheckoutOrderQuery
 import io.github.oshai.kotlinlogging.KLogger
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.axonframework.commandhandling.gateway.CommandGateway
