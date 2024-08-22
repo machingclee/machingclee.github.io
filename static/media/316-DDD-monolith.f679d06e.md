@@ -40,9 +40,13 @@ abstract class AbstractRepository<T, ID> {
 **Remark.**
 - If we do DDD with ORM provided by `spring-data`, i.e., using `CrudRepositry<T>` or `JpaRepository<T>` with `T` being inherited from `AbstractAggregateRoot`, then by `repository.save()`, the ORM will dispatch all events stored in the events attribute annotated by `@DomainEvents`. 
 
-- This approach is feasible if we start everything from JPA's `Entity` classes. Details can be found [here](https://dev.to/kirekov/spring-data-power-of-domain-events-2okm?fbclid=IwY2xjawEyAyJleHRuA2FlbQIxMQABHS8mGlKwXbe-CGD_GFhoeq3VIzl-BrXN9BqGBBuotx1HwZx4pBUVPmmUTQ_aem_KYDcdoX9EKyttjP_VAYMpQ).
+  This approach is feasible if we start everything from JPA's `Entity` classes. Details can be found [here](https://dev.to/kirekov/spring-data-power-of-domain-events-2okm?fbclid=IwY2xjawEyAyJleHRuA2FlbQIxMQABHS8mGlKwXbe-CGD_GFhoeq3VIzl-BrXN9BqGBBuotx1HwZx4pBUVPmmUTQ_aem_KYDcdoX9EKyttjP_VAYMpQ).
 
-- However, if we start from an existing database (which is my case), then turning our schema into `Entity` classes is not pragmatic.
+- However, if we start from an existing database (which is my case), then turning our schema into `Entity` classes is not pragmatic. 
+
+  Though there are tools like `jpa-buddy` that tries to achieve this, but a change of a  table means a rebuild of a `jpa` class, it is not easy to version the changes especially we need to write domain behaviour in that file.
+
+- Worse still, `enum` is not supported very well from `jpa-buddy` into `jpa` class.
 
 
 
@@ -475,7 +479,7 @@ fun fetchAssignableSeatByUserEmail(ownerEmail: String, seattype: QuotaSeattype):
 }
 ```
 
-##### Rules from DDD to Prevent Sporatic (Uncontrollable) Database State Change and Some Tradeoff Dicussion
+##### Rules from DDD to Prevent Sporatic (Uncontrollable) Database State Change and Some Tradeoff Discussion
 
 - Database state change should only come from:
   1. Aggregate domain event

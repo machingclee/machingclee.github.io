@@ -2,7 +2,7 @@
 title: "Google Login"
 date: 2023-08-13
 id: blog0164
-tag: express, cors
+tag: express
 intro: "A simple backend that perform google authentication. I personally use this to restrict users who can access my project."
 toc: true
 ---

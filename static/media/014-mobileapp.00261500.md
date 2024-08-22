@@ -1,6 +1,7 @@
 ---
 id: portfolio014
 title: "Mobile Application with Custom Animated Components and Deployment Experience"
+wip: true
 intro: Demontrate the ability to create custom animated components to fulfill complicated requirements.
 thumbnail: /assets/portfolios/thumbnails/mobileapp.png
 tech: React-Native, expo-cli
