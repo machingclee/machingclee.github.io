@@ -35,6 +35,11 @@ To get a full hint:
 - Search for `defaultMaximumTruncationLength` and change this line from `160` to `800`
 
   ![](/assets/img/2024-06-01-04-30-09.png)
+
+  **Remark.** Recently ($\approx$ 2024-09-12) this variable is moved to `typescript.ts` of the same directory
+
+  ![](/assets/img/2024-09-14-23-01-28.png)
+
 - Reload VSCode
 - We get everything now:
 

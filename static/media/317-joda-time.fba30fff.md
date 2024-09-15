@@ -1,7 +1,7 @@
 ---
 title: "Joda Time"
 date: 2024-08-27
-id: blog0316
+id: blog0317
 tag: kotlin
 toc: true
 intro: "Record convenient tool to manage time in kotlin"
