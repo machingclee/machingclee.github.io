@@ -15,7 +15,7 @@ intro: "Traditionally lambda function is as simple as running the function defin
 
 #### Scenario
 
-- My teamate used my template to run an express application in zipped fraction.
+- My teamate used my template to run an express application in zipped fashion.
 
 - One day we are asked to create `pdf` using `react-pdf` and `sharp` for resizing images.
 
