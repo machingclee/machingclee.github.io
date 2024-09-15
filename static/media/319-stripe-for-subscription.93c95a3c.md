@@ -1,6 +1,6 @@
 ---
 title: "Stripe Technical Detail for Add, Upgrade, Downgrade, and Cancel Subscrpition"
-date: 2024-09-07
+date: 2024-09-15
 id: blog0319
 tag: kotlin, stripe
 toc: true

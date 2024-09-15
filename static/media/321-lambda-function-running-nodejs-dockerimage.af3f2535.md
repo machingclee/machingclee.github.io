@@ -1,8 +1,8 @@
 ---
-title: "Lambda Function Running Nodejs Image"
-date: 2024-09-14
+title: "Lambda Function Running Nodejs Docker Image"
+date: 2024-09-09
 id: blog0321
-tag: kotlin
+tag: docker, aws, kotlin
 toc: true
 intro: "Traditionally lambda function is as simple as running the function defined in a zipped package, but when dependencies get complicated and when file size inevitably exceeds 250MB limit when being unzipped, let's discuss the use of docker image as an alternative."
 ---
