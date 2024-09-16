@@ -91,10 +91,10 @@ Therefore for unifying everything we shift our focus to `customer.subscription.u
 
 The actual implementation of `add`, `upgrade`, `downgrade` and `cancel` operations are all controlled by adjusting quantities of the products with appropriate `setters` setting **proration behaviour** and **billing cylces**:
 
-- `Subscribe` $\Large \nearrow$ the quantity from 0 to 1
+- `Subscribe` $\nearrow$ the quantity from 0 to 1
 
-- `Upgrade, Downgrade` $\Large\searrow$ the quantity of the old product by 1, and $\Large \nearrow$ that of the new product.
-- `Cancel` simply $\Large\searrow$ the quantity of target product by 1.
+- `Upgrade, Downgrade` $\searrow$ the quantity of the old product by 1, and $ \nearrow$ that of the new product.
+- `Cancel` simply $\searrow$ the quantity of target product by 1.
 
 ###### Proration Period and Billing Cycle
 
@@ -125,8 +125,6 @@ Delayed Action:   (ProrationBehavior.NONE, BillingCycleAnchor.UNCHANGED)
 - This step is crucial, we always check whether a customer has active subscription in order to determine if we need to create a checkout page for customer.
 
 - If a subscription already exists, we instead provide a confirmation dialog in the frontend since the customer don't need to provide the payment information again.
-
-- We need this subscription object because we can add, remove, adjust the amount of the subscribed items so that they are all billed within the same period and let stripe calculate the ***prorated cost*** for us.
 
 ```kotlin
 fun getActiveSubscriptionOfCustomer(stripCustomerId: String): Subscription? {
@@ -270,83 +268,89 @@ Here comes the importance of `createdAt`, `customer.subscription.updated` contai
 
 ##### Update Existing Subscription
 
-###### Helper Function: `getSubItemFromSubAndPriceId` and Subscription Item Inited Event
+###### Subscription Item 
+- **Special Enum for Subscription Item Inited Event.** Since adding a subscription item (with 0 quantity) is also a subscription update event. We introduce the following enum:
+```kotlin
+enum class MetadataOperation(val code: String) {
+      INIT_SUBSCRIPTION_ITEM("INIT_SUBSCRITION_ITEM")
+}
+```
 
-- It is helpful to find the `SubscriptionItem` of the target `priceId` within an `Subscription` since we need to deal with the number of subscribed items.
+- **Helper Function: `getSubItemFromSubscriptionAndPriceId`.**
 
-- For example, a subscription plan can have number $>1$ because we model some of our plans as a sharable asset assignable to "team member" inside our system.
+  - It is helpful to find the `SubscriptionItem` of the target `priceId` within an `Subscription` since: 
+    - We need to deal with the number of subscribed items
+    
+    - Operation within the same subscription scope can ensure all products are billed within the same period and enable stripe to calculate the ***prorated cost*** for us.
+
+  - For example, a subscription plan can have number $>1$ because we model some of our plans as a sharable asset assignable to "team member" inside our system.
 
 
+  - We then assign this enum into our `metadata` 
+    ```kotlin{11}
+    private fun getSubItemFromSubscriptionAndPriceId(subscription: Subscription, priceId: String): SubscriptionItem {
+        val subItem = subscription.items.data.find { it ->
+            it.price.id == priceId
+        }
+        if (subItem != null) {
+            return subItem
+        } else {
+            val itemParams = SubscriptionUpdateParams.Item.builder()
+                .setPrice(priceId)
+                .putMetadata("createdAt", System.currentTimeMillis().toString())
+                .putMetadata("operation", SubscriptionChangeEvent.MetadataOperation.INIT_SUBSCRIPTION_ITEM.code)
+                .setQuantity(0L)
+                .build()
+            val updateParams = SubscriptionUpdateParams.builder()
+                .addItem(itemParams)
+                .build()
+            val updatedSubscription = subscription.update(updateParams)
+            return updatedSubscription.items.data.find { it ->
+                it.price.id == priceId
+            }!!
+        }
+    }
+    ```
+    so that later we can ignore this `init-item-event` by using the boolean:
+    ```kotlin{21-22}
+    class SubscriptionChangeEvent {
+        enum class MetadataOperation(val code: String) {
+            INIT_SUBSCRIPTION_ITEM("INIT_SUBSCRITION_ITEM")
+        }
 
-- Since adding an subscription item (with 0 quantity) is also trigger a subscription update event.
-  ```kotlin
-  enum class MetadataOperation(val code: String) {
-        INIT_SUBSCRIPTION_ITEM("INIT_SUBSCRITION_ITEM")
-  }
-  ```
-- We then assign this enum into our `metadata` 
-  ```kotlin{11}
-  private fun getSubItemFromSubAndPriceId(subscription: Subscription, priceId: String): SubscriptionItem {
-      val subItem = subscription.items.data.find { it ->
-          it.price.id == priceId
-      }
-      if (subItem != null) {
-          return subItem
-      } else {
-          val itemParams = SubscriptionUpdateParams.Item.builder()
-              .setPrice(priceId)
-              .putMetadata("createdAt", System.currentTimeMillis().toString())
-              .putMetadata("operation", SubscriptionChangeEvent.MetadataOperation.INIT_SUBSCRIPTION_ITEM.code)
-              .setQuantity(0L)
-              .build()
-          val updateParams = SubscriptionUpdateParams.builder()
-              .addItem(itemParams)
-              .build()
-          val updatedSubscription = subscription.update(updateParams)
-          return updatedSubscription.items.data.find { it ->
-              it.price.id == priceId
-          }!!
-      }
-  }
-  ```
-  so that later we can ignore this `init-item-event` by using the boolean:
-  ```kotlin
-  class SubscriptionChangeEvent {
-      enum class MetadataOperation(val code: String) {
-          INIT_SUBSCRIPTION_ITEM("INIT_SUBSCRITION_ITEM")
-      }
+        data class Metadata(val orderId: String, val createdAt: String?, val operation: String?)
+        data class Data(val subscription: String, val metadata: Metadata)
+        data class Items(val data: List<Data>)
+        data class DataObject(val items: Items, val metadata: Metadata)
+    }
 
-      data class Metadata(val orderId: String, val createdAt: String?, val operation: String?)
-      data class Data(val subscription: String, val metadata: Metadata)
-      data class Items(val data: List<Data>)
-      data class DataObject(val items: Items, val metadata: Metadata)
-  }
+    val fullEvent = Event.retrieve(event.id)
+    val subscriptionUpdatedEventDataObject = Gson().fromJson(
+        fullEvent.dataObjectDeserializer.`object`.get().toJson(),
+        SubscriptionChangeEvent.DataObject::class.java
+    )
+    val lastUpdatedItem = subscriptionUpdatedEventDataObject.items.data.sortedByDescending {
+        it.metadata.createdAt ?: "0"
+    }.firstOrNull()
 
-  val fullEvent = Event.retrieve(event.id)
-  val subscriptionUpdatedEventDataObject = Gson().fromJson(
-      fullEvent.dataObjectDeserializer.`object`.get().toJson(),
-      SubscriptionChangeEvent.DataObject::class.java
-  )
-  val lastUpdatedItem = subscriptionUpdatedEventDataObject.items.data.sortedByDescending {
-      it.metadata.createdAt ?: "0"
-  }.firstOrNull()
-
-  val isInitItem = lastUpdatedItem?.metadata?.operation ==
-          SubscriptionChangeEvent.MetadataOperation.INIT_SUBSCRIPTION_ITEM.code
-  ```
+    val isInitItem = lastUpdatedItem?.metadata?.operation ==
+            SubscriptionChangeEvent.MetadataOperation.INIT_SUBSCRIPTION_ITEM.code
+    ```
 
 ###### Subscribe Additional Product
 
-We update the active subscription by simply setting a new item into it:
+We update the active subscription by simply setting a new item into it.
 
-```kotlin-1{19}
+Since `metadata` is like a persistent record,  it will confuse our system if we don't manually remove it (by `.putMetadata("operation", "")`). We need to ensure the erasion of `operation` field for any subsequent update:
+
+```kotlin-1{14,19}
 fun addSubscriptionItemsByPriceId(
     fromPriceId: String,
     quantityIncrement: Long,
     activeSubscription: Subscription,
     orderId: String,
 ) {
-    val targetSubscriptionItem = getSubItemFromSubAndPriceId(activeSubscription, fromPriceId)
+    val targetSubscriptionItem = getSubItemFromSubscriptionAndPriceId(activeSubscription, fromPriceId)
     val newQuantity = targetSubscriptionItem.quantity + quantityIncrement
     val subItemUpdate = SubscriptionUpdateParams.Item.builder()
         .setId(targetSubscriptionItem.id)
@@ -371,7 +375,7 @@ Note that the payment should be **_immediate_**, `ProrationBehavior.ALWAYS_INVOI
 
 Both upgrade and downgrade represents a switch between items in a `zero-sum` fashion:
 
-```kotlin-1{15,23}
+```kotlin-1{15,23,18,26}
 fun switchSubscriptionItemsByPriceId(
     fromPriceId: String,
     targetPriceId: String,
@@ -379,7 +383,7 @@ fun switchSubscriptionItemsByPriceId(
     orderId: String,
     isImmediate: Boolean = true,
 ) {
-    val fromSubscriptionItem = getSubItemFromSubAndPriceId(activeSubscription, fromPriceId)
+    val fromSubscriptionItem = getSubItemFromSubscriptionAndPriceId(activeSubscription, fromPriceId)
     val targetSubscriptionItem = getSubIteswitchSubscriptionItemsByPriceIdmFromSubAndPriceId(activeSubscription, targetPriceId)
     val updatedSub = Subscription.retrieve(activeSubscription.id)
     val currTimestamp = System.currentTimeMillis()
@@ -423,17 +427,16 @@ However, `upgrade` and `downgrade` differs from being an **_immediate_** or **_d
 
 Cancelling a subscription amounts to decreasing the product with recurring price by 1.
 
-```kotlin{7,10,18-19}
+```kotlin{9,12,17-18}
 fun decreasePriceIdByOne(
     cancelPriceId: String,
     activeSubscription: Subscription,
     orderId: String,
 ) {
-    val targetSubscriptionItem = getSubItemFromSubAndPriceId(activeSubscription, cancelPriceId)
-    val newQuantity = targetSubscriptionItem.quantity - 1
+    val targetSubscriptionItem = getSubItemFromSubscriptionAndPriceId(activeSubscription, cancelPriceId)
     val subItemUpdate = SubscriptionUpdateParams.Item.builder()
         .setId(targetSubscriptionItem.id)
-        .setQuantity(newQuantity)
+        .setQuantity(targetSubscriptionItem.quantity - 1)
         .putMetadata("orderId", orderId)
         .putMetadata("createdAt", System.currentTimeMillis().toString())
         .putMetadata("operation", "")

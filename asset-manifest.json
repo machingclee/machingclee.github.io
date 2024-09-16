@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.65249aed.chunk.css",
-    "main.js": "/static/js/main.f65ac661.chunk.js",
+    "main.js": "/static/js/main.06641eba.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.c7e5c703.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.63cc857f.chunk.js": "/static/js/2.63cc857f.chunk.js",
@@ -309,7 +309,7 @@
     "static/media/316-DDD-monolith.md": "/static/media/316-DDD-monolith.f679d06e.md",
     "static/media/317-joda-time.md": "/static/media/317-joda-time.fba30fff.md",
     "static/media/318-containerization-of-springboot.md": "/static/media/318-containerization-of-springboot.c7859434.md",
-    "static/media/319-stripe-for-subscription.md": "/static/media/319-stripe-for-subscription.5d1815f2.md",
+    "static/media/319-stripe-for-subscription.md": "/static/media/319-stripe-for-subscription.7f673926.md",
     "static/media/320-custom-gradle-bootRun.md": "/static/media/320-custom-gradle-bootRun.06ecbf19.md",
     "static/media/321-lambda-function-running-nodejs-dockerimage.md": "/static/media/321-lambda-function-running-nodejs-dockerimage.02d574e5.md",
     "static/media/322-running-springboot.md": "/static/media/322-running-springboot.cad6a47b.md",
@@ -366,6 +366,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.63cc857f.chunk.js",
     "static/css/main.65249aed.chunk.css",
-    "static/js/main.f65ac661.chunk.js"
+    "static/js/main.06641eba.chunk.js"
   ]
 }
