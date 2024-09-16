@@ -60,7 +60,7 @@ As time goes by, we find that the `checkout.session.completed` event only applie
 Therefore for unifying everything we shift our focus to `customer.subscription.updated` event.
 
 ##### Handle Delayed Billing Events
-###### Doubled Events Emitted upon Downgrading and Deleting Subscription
+###### Doubled Events Emission upon Downgrading and Deleting Subscription
 
 - When downgrading and canelling subscription, we would like the event only to take place at the end of billing period.
 
