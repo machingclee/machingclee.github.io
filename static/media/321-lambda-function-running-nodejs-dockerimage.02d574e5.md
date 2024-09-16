@@ -19,7 +19,7 @@ intro: "Traditionally lambda function is as simple as running the function defin
 
 - One day we are asked to create `pdf` using `react-pdf` and `sharp` for resizing images.
 
-- The `shape` dependency must be built by linux machine, luckily we can find a `sharp-layer.zip` online and simply upload it to our lambda layer registry.
+- The `sharp` dependency must be built by linux machine, luckily we can find a `sharp-layer.zip` online and simply upload it to our lambda layer registry.
 
 - Zip-based lambda function will combine lambda layer when finalizing the total size, unfortunately however hard we try we still exceed the 250MB limit by 6MB.
 
@@ -141,9 +141,6 @@ import express, { Request, Response } from "express";
 import pdf_gen from "./pdf/PdfGenRouter";
 import * as bodyParser from "body-parser";
 
-const FILE_STORAGE = process.env?.FILE_STORAGE || "";
-const BILLIE_WEB_URL = process.env?.BILLIE_WEB_URL;
-
 export const app = express();
 
 app.get("/", (req, res) => {
@@ -153,7 +150,7 @@ app.get("/", (req, res) => {
   });
 });
 
-app.post("/llm/summary/generate/pdf", pdf_gen.exportPdf);
+app.post("/some-endpoint", some.controller);
 
 const PORT = Number(process.env?.PORT || "3000");
 app.listen(PORT, () => {

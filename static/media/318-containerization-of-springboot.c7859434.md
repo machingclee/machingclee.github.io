@@ -34,7 +34,7 @@ ENTRYPOINT ["java", "-Dspring.profiles.active=uat", "-jar", "app.jar"]
 
 - We build the image in two stages, but you can also build the `jar` file in your CI worker node, so this step is not necessary.
 
-- In the second stage we keep using `COPY . .` because we need stored tokens for sending gmail, as well as the GCP credential in json format.
+- In the second stage we keep using `COPY . .` because we need the stored tokens for sending email by GMail Service, as well as the GCP credential in json format.
 
 #### Find out the jar Filename
 
@@ -106,7 +106,7 @@ class PaymentApplication {
 
 ##### Problem
 
-If we keep health-check default config (fired per seconds, 3 consecutive success as healthy, etc), then we will be being led to the following failure
+If we keep health-check default config (fired per 5 seconds, 3 consecutive success as healthy, etc), then we will be being led to the following failure
 
 ![](/assets/img/2024-09-14-16-43-08.png)
 

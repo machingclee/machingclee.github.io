@@ -27,20 +27,61 @@ fullEvent.dataObjectDeserializer.`object`.get()
 
 Recall that `.get()` method usually means it is of type `Optional` in `java`.
 
+#### Testing Webhook
+
+##### Install Stripe CLI
+
+To install Stripe CLI we can follow the [official instruction](https://docs.stripe.com/stripe-cli). For mac it is as simple as running:
+```text
+brew install stripe/stripe-cli/stripe
+```
+
+##### Connect to Your Stripe Account
+
+After installing CLI, we execute:
+
+```text
+stripe login --api-key sk_test_51PffJDR...
+stripe listen --forward-to http://localhost:8080/stripe-test/webhook
+```
+
+
+
+
+
 #### Cont'd From Previous Stripe Basic Post
 
 ##### From $\texttt{checkout.session.complete}$ to $\texttt{customer.subscription.updated}$
 
-We have introduced a basic stripe event: the `checkout.session.completed` event, and how to get latest customized `ID` from the event from [this post](/blog/article/Stripe-Events-and-metadata-in-Stripe-Checkout-Sessions)
+We have introduced a basic stripe event: the `checkout.session.completed` event, and how to get the latest customized `ID` from the event from [this post](/blog/article/Stripe-Events-and-metadata-in-Stripe-Checkout-Sessions).
 
 As time goes by, we find that the `checkout.session.completed` event only applies to new subscription, it **_does not work_** with subscription changes (like upgrade, downgrade, cancel, etc).
 
 Therefore for unifying everything we shift our focus to `customer.subscription.updated` event.
 
-##### Special Notes to Delayed Events for Downgrading and Deleting Subscription
+##### Handle Delayed Billing Events
+###### Doubled Events Emitted upon Downgrading and Deleting Subscription
 
 - When downgrading and canelling subscription, we would like the event only to take place at the end of billing period.
-- **_Unfortunately_**, a `customer.subscription.updated` event will be emitted **_immediately_** once after we make changes (an almost the same event will be fired again at the end of billing period), we need to study how to distinguish them and **_ignore_** the immediately fired one.
+
+- **_Unfortunately_**, a `customer.subscription.updated` event will be emitted **_immediately_** once after we make changes (an almost identical event will be fired again at the end of billing period), we need to study how to distinguish them and **_ignore_** the immediately fired one. 
+
+###### How to Ignore Immediately Triggered Subscription Update Event
+
+- For every `subscription.updated` event there is a field `previousAttributes` that indicates what is being changed in the subscription, in kotlin we invoke 
+  ```text{2}
+  val fullEvent = Event.retrieve(event.id)
+  fullEvent.data.previousAttributes
+  ```
+  to get a `Map` of previous values object.
+
+- When `Cancel`/`Downgrade` occurs, the `latest_invoice` will get updated  (and it will not be there at the end of billing period). Therefore we can define a boolean
+  ```kotlin
+  val isBillingUpdate = (fullEvent.data.previousAttributes != null)
+          && fullEvent.data.previousAttributes.containsKey("latest_invoice")
+          && fullEvent.data.previousAttributes["latest_invoice"] != null
+  ```
+  to distinguish two `subscription.update` events.
 
 #### Subscribe, Upgrade, Downgrade, Cancel
 
@@ -50,15 +91,16 @@ Therefore for unifying everything we shift our focus to `customer.subscription.u
 
 The actual implementation of `add`, `upgrade`, `downgrade` and `cancel` operations are all controlled by adjusting quantities of the products with appropriate `setters` setting **proration behaviour** and **billing cylces**:
 
-- `Subscribe` $\uparrow$ the quantity from 0 to 1
-- `Upgrade, Downgrade` $\downarrow$ the quantity of the old product by 1, and $\uparrow$ that of new product.
-- `Cancel` simply $\downarrow$ the quantity of target product by 1.
+- `Subscribe` $\Large \nearrow$ the quantity from 0 to 1
+
+- `Upgrade, Downgrade` $\Large\searrow$ the quantity of the old product by 1, and $\Large \nearrow$ that of the new product.
+- `Cancel` simply $\Large\searrow$ the quantity of target product by 1.
 
 ###### Proration Period and Billing Cycle
 
 We model a subscription plan as a stripe **_product_** in Stripe world, which must live within a Stripe Subscription.
 
-A **_product_** configured to have recurring price is again a **_subscription_** (in normal sense), therefore
+This **_product_** is configured to have recurring price and therefore become a **_subscription_** (in normal sense), therefore
 
 $$
 \text{subscription}\Big|_\text{stripe sense} \supseteq \left\{ \text{subscription}\Big|_\text{normal sense}\right\},
@@ -66,9 +108,9 @@ $$
 
 namely, a stripe subsciprtion can contain a list of subscriptions in normal sense.
 
-For `Subscribe` and `Upgrade`, the action should be **_immediate_**, and that of `Downgrade` and `Cancel` should be **_delayed_** until the end of billing period.
+For `Subscribe` and `Upgrade`, the billing action should be **_immediate_**, and that of `Downgrade` and `Cancel` should be **_delayed_** until the end of billing period.
 
-In stripe the "immediate" and "delayed" actions are controlled by
+In stripe the "immediate" and "delayed" billing actions are controlled by
 
 - **Proration Behaviour** and
 - **Billing Anchor**
@@ -84,7 +126,7 @@ Delayed Action:   (ProrationBehavior.NONE, BillingCycleAnchor.UNCHANGED)
 
 - If a subscription already exists, we instead provide a confirmation dialog in the frontend since the customer don't need to provide the payment information again.
 
-- We need this subscription object because we can add, remove, adjust the amount of the subscribed items so that they are all billed within the same period.
+- We need this subscription object because we can add, remove, adjust the amount of the subscribed items so that they are all billed within the same period and let stripe calculate the ***prorated cost*** for us.
 
 ```kotlin
 fun getActiveSubscriptionOfCustomer(stripCustomerId: String): Subscription? {
@@ -116,7 +158,7 @@ class StripeService(
     ): String {
 ```
 
-At this point we need `priceId` instead of `productId` since each product has a list of `price`'s, we _should not_ directly work with `product`.
+At this point we need `priceId` instead of `productId` since each product has a list of `price`'s, we **_should not_** directly work with `product` (to make room for discounted price later).
 
 ```kotlin-12
         // https://docs.stripe.com/api/checkout/sessions/create
@@ -125,9 +167,9 @@ At this point we need `priceId` instead of `productId` since each product has a 
             .setCancelUrl("$purchasePageURL/failed?orderId=$orderId")
 ```
 
-Here we handle the display of failed and success cases in our frontend.
+$\uparrow$ Here we handle the display of failed and success cases in our frontend.
 
-```kotlin-16
+```kotlin-16{18,22}
             .addLineItem(
                 SessionCreateParams.LineItem.builder()
                     .setPrice(priceId)
@@ -137,7 +179,7 @@ Here we handle the display of failed and success cases in our frontend.
             .setMode(SessionCreateParams.Mode.SUBSCRIPTION)
 ```
 
-Now we set our product to bill users periodically, so that it becomes a subscription (in billing sense).
+$\uparrow$ Now we set our product to bill users periodically,
 
 ```kotlin-23{31,32}
             .setCustomer(stripCustomerId)
@@ -228,36 +270,70 @@ Here comes the importance of `createdAt`, `customer.subscription.updated` contai
 
 ##### Update Existing Subscription
 
-###### Helper Function: `getSubItemFromSubAndPriceId`
+###### Helper Function: `getSubItemFromSubAndPriceId` and Subscription Item Inited Event
 
 - It is helpful to find the `SubscriptionItem` of the target `priceId` within an `Subscription` since we need to deal with the number of subscribed items.
 
 - For example, a subscription plan can have number $>1$ because we model some of our plans as a sharable asset assignable to "team member" inside our system.
 
-```kotlin
-private fun getSubItemFromSubAndPriceId(subscription: Subscription, priceId: String): SubscriptionItem {
-    val subItem = subscription.items.data.find { it ->
-        it.price.id == priceId
-    }
-    if (subItem != null) {
-        return subItem
-    } else {
-        val itemParams = SubscriptionUpdateParams.Item.builder()
-            .setPrice(priceId)
-            .putMetadata("createdAt", System.currentTimeMillis().toString())
-            .putMetadata("operation", SubscriptionChangeEvent.MetadataOperation.INIT_SUBSCRIPTION_ITEM.code)
-            .setQuantity(0L)
-            .build()
-        val updateParams = SubscriptionUpdateParams.builder()
-            .addItem(itemParams)
-            .build()
-        val updatedSubscription = subscription.update(updateParams)
-        return updatedSubscription.items.data.find { it ->
-            it.price.id == priceId
-        }!!
-    }
-}
-```
+
+
+- Since adding an subscription item (with 0 quantity) is also trigger a subscription update event.
+  ```kotlin
+  enum class MetadataOperation(val code: String) {
+        INIT_SUBSCRIPTION_ITEM("INIT_SUBSCRITION_ITEM")
+  }
+  ```
+- We then assign this enum into our `metadata` 
+  ```kotlin{11}
+  private fun getSubItemFromSubAndPriceId(subscription: Subscription, priceId: String): SubscriptionItem {
+      val subItem = subscription.items.data.find { it ->
+          it.price.id == priceId
+      }
+      if (subItem != null) {
+          return subItem
+      } else {
+          val itemParams = SubscriptionUpdateParams.Item.builder()
+              .setPrice(priceId)
+              .putMetadata("createdAt", System.currentTimeMillis().toString())
+              .putMetadata("operation", SubscriptionChangeEvent.MetadataOperation.INIT_SUBSCRIPTION_ITEM.code)
+              .setQuantity(0L)
+              .build()
+          val updateParams = SubscriptionUpdateParams.builder()
+              .addItem(itemParams)
+              .build()
+          val updatedSubscription = subscription.update(updateParams)
+          return updatedSubscription.items.data.find { it ->
+              it.price.id == priceId
+          }!!
+      }
+  }
+  ```
+  so that later we can ignore this `init-item-event` by using the boolean:
+  ```kotlin
+  class SubscriptionChangeEvent {
+      enum class MetadataOperation(val code: String) {
+          INIT_SUBSCRIPTION_ITEM("INIT_SUBSCRITION_ITEM")
+      }
+
+      data class Metadata(val orderId: String, val createdAt: String?, val operation: String?)
+      data class Data(val subscription: String, val metadata: Metadata)
+      data class Items(val data: List<Data>)
+      data class DataObject(val items: Items, val metadata: Metadata)
+  }
+
+  val fullEvent = Event.retrieve(event.id)
+  val subscriptionUpdatedEventDataObject = Gson().fromJson(
+      fullEvent.dataObjectDeserializer.`object`.get().toJson(),
+      SubscriptionChangeEvent.DataObject::class.java
+  )
+  val lastUpdatedItem = subscriptionUpdatedEventDataObject.items.data.sortedByDescending {
+      it.metadata.createdAt ?: "0"
+  }.firstOrNull()
+
+  val isInitItem = lastUpdatedItem?.metadata?.operation ==
+          SubscriptionChangeEvent.MetadataOperation.INIT_SUBSCRIPTION_ITEM.code
+  ```
 
 ###### Subscribe Additional Product
 
@@ -293,7 +369,7 @@ Note that the payment should be **_immediate_**, `ProrationBehavior.ALWAYS_INVOI
 
 ###### Upgrade and Downgrade
 
-Both upgrade and downgrade represents a switch between items in a `zero-sum` fashion,
+Both upgrade and downgrade represents a switch between items in a `zero-sum` fashion:
 
 ```kotlin-1{15,23}
 fun switchSubscriptionItemsByPriceId(
@@ -377,7 +453,7 @@ fun decreasePriceIdByOne(
 
 ##### Why?
 
-In stripe each testclocks are mutually isolated worlds, we need to associate each testing stripe users with a test clock in order to view the changes for like **_1 month later_**.
+In stripe testclocks are mutually isolated worlds, we need to associate each of stripe test users with a testclock in order to view the changes for like **_1 month later_**.
 
 This is a must-have feature for testing **_delayed subscription actions_** like unsubscription, downgrading subscription and also testing the billing behaviour from Stripe.
 
@@ -393,7 +469,7 @@ In Stripe when a customer is associated with a testclock, then all of his/her su
 
   ![](/assets/img/2024-09-15-19-12-38.png)
 
-##### Testclock Manipulation
+##### Test Clock Manipulation
 
 ###### Create a Test Clock and a Test Customer
 
@@ -411,7 +487,9 @@ Up to this point we are done with creating a user with testclock.
 
 ###### Assign Payment Method
 
-Next the following is optional which is only useful for **writing test cases**:
+Next the following is optional which is only useful for **writing test cases**.
+
+**Remark.** Since we will have no UI finishing the checkout session, that means we need to finish the session by code, but that amounts to the need to create subscription via program in code-based test-cases (and we need payment method for getting invoice).
 
 ```kotlin-8
     val paymentMethodParams = PaymentMethodCreateParams.builder()
@@ -433,11 +511,10 @@ Next the following is optional which is only useful for **writing test cases**:
                                           testClockId = testClock.id)
 ```
 
-Since we will have no UI finishing the checkout session, we need to create subscription by coding in code-based test-cases (and we need payment method for getting invoice).
 
 ###### Advance The Test Clock
 
-- If we are implementing a frontend to let internal user to advance the time, we could write:
+- If we are implementing a frontend to let internal users advance the time, we could write:
 
   ```kotlin
   data class AdvanceTestclockRequestDto(val testclockId: String)

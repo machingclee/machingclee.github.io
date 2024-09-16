@@ -33,6 +33,10 @@ Result:
 
 ![](/assets/img/2024-09-15-13-44-28.png)
 
+**Known Issue.** If we run debugger using a custom task, the process ***will not be killed*** by ending the debug process.
+
+
+
 #### Set MainClass for `boorJar` Created `jar` file
 
 ```kotlin
