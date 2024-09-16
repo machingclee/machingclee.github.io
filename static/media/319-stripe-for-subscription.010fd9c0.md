@@ -384,7 +384,7 @@ fun switchSubscriptionItemsByPriceId(
     isImmediate: Boolean = true,
 ) {
     val fromSubscriptionItem = getSubItemFromSubscriptionAndPriceId(activeSubscription, fromPriceId)
-    val targetSubscriptionItem = getSubIteswitchSubscriptionItemsByPriceIdmFromSubAndPriceId(activeSubscription, targetPriceId)
+    val targetSubscriptionItem = getSubItemFromSubscriptionAndPriceId(activeSubscription, targetPriceId)
     val updatedSub = Subscription.retrieve(activeSubscription.id)
     val currTimestamp = System.currentTimeMillis()
 
@@ -408,7 +408,7 @@ fun switchSubscriptionItemsByPriceId(
         .addAllItem(listOf(fromSubItemParams, toSubItemParams))
 ```
 
-However, `upgrade` and `downgrade` differs from being an **_immediate_** or **_delayed_** action, we should manually detemine the proration behaviour:
+However, `upgrade` and `downgrade` differs from having an **_immediate_** or **_delayed_** billing action, we should manually detemine the proration behaviour:
 
 ```kotlin-32{34,37-38}
     if (isImmediate) {

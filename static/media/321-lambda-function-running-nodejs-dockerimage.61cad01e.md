@@ -29,7 +29,7 @@ The next **_comes to the rescue!_**
 
 This approach solve our problem in two-fold:
 
-- For one it **_bypass_** the 250MB limit constriant;
+- For one it **_bypasses_** the 250MB limit constriant;
 - For second it helps solve the **_complicated dependencies_** problem because we install everything we need when building the image.
 
 ##### Serverless Framework Version
@@ -138,8 +138,6 @@ CMD [ "dist/server.handler" ]
 ```js
 // app.ts
 import express, { Request, Response } from "express";
-import pdf_gen from "./pdf/PdfGenRouter";
-import * as bodyParser from "body-parser";
 
 export const app = express();
 
