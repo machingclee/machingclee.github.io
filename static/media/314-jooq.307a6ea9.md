@@ -4,7 +4,7 @@ date: 2024-08-12
 id: blog0314
 tag: kotlin, jooq
 toc: true
-intro: "Record a JOOQ usage"
+intro: "Record the common usages of JOOQ library."
 ---
 
 <style>
@@ -71,9 +71,9 @@ db
 
 ##### Subquery an object in JOOQ
 
-We keep using `multiset`, with an distinction that we convert the list into an object:
+We keep using `multiset`, with an distinction that we convert the list into an object by `firstOrNull()`:
 
-```kotlin{3-18}
+```kotlin-1{14-16,20-22}
 db.select(
     QUOTA_SEAT.asterisk(),
     multiset(
@@ -87,11 +87,15 @@ db.select(
     multiset(select(QUOTA_PERSONALSEAT.asterisk())
                     .from(QUOTA_PERSONALSEAT)
                     .where(QUOTA_PERSONALSEAT.SEATID.eq(seatTable.ID))
-    ).`as`("personalSeatData").convertFrom { result -> result.map { it.into(QuotaPersonalseat::class.java) }.firstOrNull() },
+    ).`as`("personalSeatData").convertFrom { result -> result.map { 
+        it.into(QuotaPersonalseat::class.java) }.firstOrNull()
+    },
     multiset(select(QUOTA_TEAMSEAT.asterisk())
                     .from(QUOTA_TEAMSEAT)
                     .where(QUOTA_TEAMSEAT.SEATID.eq(seatTable.ID))
-    ).`as`("teamSeatData").convertFrom { result -> result.map { it.into(QuotaTeamseat::class.java) }.firstOrNull() }
+    ).`as`("teamSeatData").convertFrom { result -> result.map { 
+        it.into(QuotaTeamseat::class.java) }.firstOrNull() 
+    }
 )
     .from(seatTable)
     .where(...)
