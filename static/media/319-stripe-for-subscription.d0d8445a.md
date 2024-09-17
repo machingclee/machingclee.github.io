@@ -452,6 +452,59 @@ fun decreasePriceIdByOne(
 }
 ```
 
+
+
+
+#### Renewal of Existing Subscribed Items
+
+At the end of billing period, yet another subscription updated event is emitted which simply changes (as can be found in previous values object):
+
+- `current_period_start`
+- `current_period_end`
+- `latest_invoice`
+
+We can trigger the renewal logic in our database by using the boolean:
+```kotlin
+val isBillingPeriodUpdate = isBillingInfoUpdate &&
+        fullEvent.data.previousAttributes.containsKey("current_period_start") &&
+        fullEvent.data.previousAttributes.containsKey("current_period_end")
+```
+Of course we can also handle the cancel/downgrade logic at the same time. In my case:
+
+```kotlin{8,9}
+fun handleEndOfBillingPeriod(planOwnerEmail: String, subscriptionId: String) {
+    val subscription = Subscription.retrieve(subscriptionId)
+    subscription.items.data.forEach {
+        val priceId = it.price.id
+        val product = stripeproductDao.fetchByStripepriceid(priceId).firstOrNull() ?: throw Exception("stripe product cannot be found")
+        val seatDomains = seatRepository.fetchActiveSeatsByUserEmail(planOwnerEmail, product.type!!)
+        seatDomains.forEach { seatDomain ->
+            val iscancelScheduled = seatDomain.seat?.cancelscheduled ?: false
+            val isdowngradeScheduled = seatDomain.getPersonalSeataData()?.downgradescheduled ?: false
+            if (iscancelScheduled) {
+                seatDomain.inactivate()
+                seatDomain.inactivateCounter()
+            } else if (isdowngradeScheduled) {
+                val seat = seatDomain.seat
+                if (seat?.type === QuotaSeattype.PERSONAL_POWERFUL_BILLIE) {
+                    val newSeat = seatService.downgradePersonalPowerfulPlan(seat)
+                    val newSeatDoamin = seatRepository.createRoot(newSeat)
+                    newSeatDoamin.addNewUsageCounter()
+                    newSeatDoamin.save()
+                    seatDomain.inactivate()
+                }
+            } else {
+                // renew to use new counter
+                seatDomain.inactivateCounter()
+                seatDomain.addNewUsageCounter()
+            }
+            seatDomain.save()
+        }
+    }
+}
+```
+
+
 #### Test Clock
 
 ##### Why?
