@@ -56,15 +56,20 @@ services:
       - 3306:3306
 ```
 
-#### Clone Data from Remote DB Server to Localhost:5432
+#### PostgreSQL: Clone Data from Remote DB Server to Localhost:5432
 
-```sh
+Here we also add custom scripts to manually seed data for particular purpose.
+
+```bash
 docker pull postgres:15
+
+## Wait for services to be healthy
+#echo "Waiting for services to be healthy..."
 
 export SOURCE_DB_USER=
 export SOURCE_DB_PASSWORD=
 export SOURCE_DB_HOST=
-export SOURCE_DB_NAME=
+export SOURCE_DB_NAME="billie-dev"
 
 export TARGET_DB_HOST="host.docker.internal"
 export TARGET_DB_USER="pguser"
@@ -96,4 +101,21 @@ docker run --rm -v $(pwd):/backup \
   -U $TARGET_DB_USER \
   -d $TARGET_DB_NAME \
   -c -C /backup/database_dump.dump
+
+# James Stripe Product Data:
+echo "Update to use James Stripe Data ..."
+cat <<EOF > temp_script.sql
+DELETE FROM "Quota_UsageCounter";
+DELETE FROM "Quota_PersonalSeat";
+DELETE FROM "Quota_TeamSeat";
+DELETE FROM "Quota_Seat";
+DELETE FROM "StripeProduct";
+INSERT INTO "public"."StripeProduct" ("productName", "stripePriceId", "type") VALUES
+('Powerful Billie', 'price_1PnuH6Rt6IuPFjtugpMi882V', 'PERSONAL_POWERFUL_BILLIE'),
+('Handy Billie', 'price_1PnuH7Rt6IuPFjtuXl0RYniy', 'PERSONAL_HANDY_BILLIE'),
+('Team Plan', 'price_1PxKSsRt6IuPFjtugx1WqZYw', 'TEAM_PLAN');
+EOF
+docker run --rm -e PGPASSWORD=$TARGET_DB_PASSWORD -v $(pwd)/temp_script.sql:/tmp/script.sql postgres:15 psql -h $TARGET_DB_HOST -d $TARGET_DB_NAME -U $TARGET_DB_USER -f /tmp/script.sql
+rm temp_script.sql
+echo "Done"
 ```

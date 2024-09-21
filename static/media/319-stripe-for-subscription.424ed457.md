@@ -4,7 +4,7 @@ date: 2024-09-15
 id: blog0319
 tag: kotlin, stripe
 toc: true
-intro: "We record how to adjust a subscription in code using kotlin."
+intro: "We record how to adjust a stripe subscription in code using kotlin."
 ---
 
 <style>

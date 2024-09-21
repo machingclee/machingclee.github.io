@@ -135,7 +135,7 @@ plugins:
 
 ###### Motivation: Problem of Using `bootJar`
 
-We will be locating the `$LAMBDA_TASK_ROOT/application.jar` where `$LAMBDA_TASK_ROOT` will be resolved into `/var/task` as an environment variable inside of the following container:
+We will be locating our `jar` file into `$LAMBDA_TASK_ROOT/application.jar`, where `$LAMBDA_TASK_ROOT` will be resolved into `/var/task` as an environment variable inside of the following container:
 - `public.ecr.aws/lambda/java:21`
 In spring project the gradle task `bootJar` or `build` zips the compiled `.class`'s (the java bytecode) into `BOOT-INF/classes/` and `BOOT-INF/lib/`. 
 
