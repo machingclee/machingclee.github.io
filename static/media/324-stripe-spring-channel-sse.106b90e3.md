@@ -1,5 +1,5 @@
 ---
-title: "Waiting for Stripe Event Using Coroutine, SSE and Channel in Spring Boot and Kotlin"
+title: "Notify Frontend for Stripe Events Using Coroutine, SSE and Channel in Spring Boot and Kotlin"
 date: 2024-09-21
 id: blog0324
 tag: kotin, springboot
@@ -17,7 +17,7 @@ intro: "A Stripe event is always delayed, and some system relies on database per
 
 #### SSE via WebFlux in the Past
 
-We have simple illustration of `SSE` using spring boot via Java in 
+We have a simple illustration of `SSE` using spring boot via Java in 
 - [Server-Sent-Event-in-Java-and-Node-js-Backend](/blog/article/Server-Sent-Event-in-Java-and-Node-js-Backend/) 
 That post is optional and can be skipped because this time ***although*** we are still using SSE, we will discard the reliance on `WebFlux` framework.
 
@@ -27,8 +27,8 @@ Moreover, we stick everything with native Kotlin nature using coroutines.
 
 In the sequel we plan to achieve the following:
 
-<a href="/assets/img/2024-09-21-11-34-00.png" target="_blank">
-<img src="/assets/img/2024-09-21-11-34-00.png" />
+<a href="/assets/img/2024-09-21-11-51-20.png" target="_blank">
+<img src="/assets/img/2024-09-21-11-51-20.png" />
 </a>
 <p></p>
 
@@ -40,13 +40,13 @@ In the sequel we plan to achieve the following:
 
 4. The thread pool shared with `Dispatchers.IO` will resume the task once `channel.receive()` gets resolved.
 
-5. Once Stripe sends an `customer.subscription.updated` event to our payment backend, we update the database, and dispatch an `OrderCompletedEvent` in the system. One of the `EventHandler`'s will send success `true` via the channel associated with `orderId`. When this `Event` fails to happen, the channel will be closed due to the default timeout.
+5. Once Stripe sends a `customer.subscription.updated` event to our payment backend, we update the database, and dispatch an `OrderCompletedEvent` in the system. One of the `EventHandler`'s will send success `true` via the channel associated with `orderId`. When this `Event` fails to happen, the channel will be closed due to the default timeout.
 
 6. Finally we close the scope lauching the `channel` to avoid memory leakage.
 
 
+Before we dive into it, let's build a machinery:
 
-We start off from a simple illustrative example. Later we will modify it into  the one  we use in the sequence diagram.
 
 
 #### Channel
@@ -80,6 +80,10 @@ class SuccessResponseChannelManager<T> {
 }
 ```
 
+
+
+We start off from a simple illustrative example. Later we will modify it into  the one  we use in the sequence diagram:
+
 #### Simple Illustration First
 
 ##### Frontend with `EventSourcePolyfill`
@@ -100,7 +104,7 @@ evtSource.addEventListener("SomeEvent", (event) => {
 
 ##### Backend Simply Steaming 1 to 100
 
-Next in the backend we using a blocking way to deliver the request and let an non-blocking block handle the SSE Task:
+Next in the backend we use a blocking way to deliver the request and let a non-blocking coroutine-block handles the SSE Task:
 ```kotlin 
 @GetMapping("/sse-get-stripe-event-notification", produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
 fun getOrderNotificationViaChannel(): SseEmitter {
@@ -125,7 +129,7 @@ fun getOrderNotificationViaChannel(): SseEmitter {
     return emitter
 }
 ```
-- The emitter is returned and the coroutine is launched ***at the same time***. The main thread dilivering 
+- The emitter is returned and the coroutine is launched ***at the same time***. The main thread delivering the request to handler is released
 
 - The async task is delegated to the thread-pool allocated to `Dispatchers.IO`
 
@@ -137,14 +141,14 @@ fun getOrderNotificationViaChannel(): SseEmitter {
     "Cache-Control": "no-cache",
   });
   ```
-  in the response header, Spring Boot will handle it for us when we return a `SseEmitter` instance.
+  in the response header, these will be handled by Spring Boot when we return an `SseEmitter` instance.
 
 ##### Event in Frontend
 
 In frontend you will see something like (forgive me I didn't record the result in screenshot):
 
 ```text
-eventevent { id: "1", type: "SomeEvent", data: <JSON.stringified data> }
+event: { id: "1", type: "SomeEvent", data: <JSON.stringified data> }
 ```
 
 #### Complete Example
@@ -208,6 +212,7 @@ const addAndAssign = async () => {
 
 **Remark 1.**
 - `Teamplan` is a stripe product
+
 - `orderId` is our self-managed database record id
 
 **Remark 2.**
@@ -253,7 +258,7 @@ const addAndAssign = async () => {
 
 ###### The Event Handler
 
-Since all database changes are governed by `EventHandler`'s (in a Domain Driven Design methodology), we add additional functionality as simple as adding a new `EventHandler`:
+Since all database changes are governed by `EventHandler`'s (in a Domain Driven Design methodology), adding new functionality is as simple as adding a new `EventHandler`:
 
 ```kotlin{12-16}
 @EventHandlerLogging
