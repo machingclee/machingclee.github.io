@@ -27,8 +27,8 @@ Moreover, we stick everything with native Kotlin nature using coroutines.
 
 In the sequel we plan to achieve the following:
 
-<a href="/assets/img/2024-09-21-10-14-06.png" target="_blank">
-<img src="/assets/img/2024-09-21-10-14-06.png" />
+<a href="/assets/img/2024-09-21-11-34-00.png" target="_blank">
+<img src="/assets/img/2024-09-21-11-34-00.png" />
 </a>
 <p></p>
 
