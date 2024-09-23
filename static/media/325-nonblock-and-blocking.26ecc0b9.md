@@ -54,20 +54,22 @@ class SomeApplicationService() {
 ```
 We later `setResult` in a coroutine scope asynchronously
 
-```kotlin-6{14}
+```kotlin-6{15}
         val scope = CoroutineScope(Dispatchers.IO)
-        try {
-            val (customerId) = createCustomerPortalSessionDto
-            val params = SessionCreateParams.builder()
-                .setCustomer(customerId)
-                .setReturnUrl(managePlanURL)
-                .build()
-            val session = Session.create(params)
-            deferredSessionURL.setResult(Success(CreateCustomerPortalSessionResult(session.url)))
-        } catch (err: Exception) {
-            deferredSessionURL.setErrorResult(err)
-        } finally {
-            scope.cancel()
+        scope.launch {
+            try {
+                val (customerId) = createCustomerPortalSessionDto
+                val params = SessionCreateParams.builder()
+                    .setCustomer(customerId)
+                    .setReturnUrl(managePlanURL)
+                    .build()
+                val session = Session.create(params)
+                deferredSessionURL.setResult(Success(CreateCustomerPortalSessionResult(session.url)))
+            } catch (err: Exception) {
+                deferredSessionURL.setErrorResult(err)
+            } finally {
+                scope.cancel()
+            }
         }
         return deferredSessionURL
     }
