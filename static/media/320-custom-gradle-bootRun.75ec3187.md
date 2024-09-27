@@ -1,8 +1,8 @@
 ---
-title: "More Customization on build.gradle.kts"
+title: "Customization on build.gradle.kts"
 date: 2024-09-12
 id: blog0320
-tag: kotlin
+tag: kotlin, gradle
 toc: true
 intro: "`build.gradle.kts` is like a Makefile with powerful feature that you can write kotlin code on it, let's study useful customization."
 ---
@@ -60,5 +60,13 @@ tasks.named<Test>("test") {
 ```kotlin
 tasks.named<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>("compileTestKotlin") {
     enabled = false
+}
+```
+
+#### Customize the Jar Name for bootRun
+
+```kotlin
+tasks.bootJar {
+    archiveFileName.set("application.jar")
 }
 ```

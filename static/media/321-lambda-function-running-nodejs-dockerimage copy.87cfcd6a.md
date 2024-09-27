@@ -1,6 +1,6 @@
 ---
 title: "Lambda Function Running Nodejs Docker Image"
-date: 2024-09-09
+date: 2024-09-14
 id: blog0321
 tag: docker, aws, kotlin
 toc: true

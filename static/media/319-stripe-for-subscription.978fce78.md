@@ -32,6 +32,7 @@ Recall that `.get()` method usually means it is of type `Optional` in `java`.
 ##### Install Stripe CLI
 
 To install Stripe CLI we can follow the [official instruction](https://docs.stripe.com/stripe-cli). For mac it is as simple as running:
+
 ```text
 brew install stripe/stripe-cli/stripe
 ```
@@ -45,10 +46,6 @@ stripe login --api-key sk_test_51PffJDR...
 stripe listen --forward-to http://localhost:8080/stripe-test/webhook
 ```
 
-
-
-
-
 #### Cont'd From Previous Stripe Basic Post
 
 ##### From $\texttt{checkout.session.complete}$ to $\texttt{customer.subscription.updated}$
@@ -60,22 +57,25 @@ As time goes by, we find that the `checkout.session.completed` event only applie
 Therefore for unifying everything we shift our focus to `customer.subscription.updated` event.
 
 ##### Handle Delayed Billing Events
+
 ###### Doubled Events Emission upon Downgrading and Deleting Subscription
 
 - When downgrading and canelling subscription, we would like the event only to take place at the end of billing period.
 
-- **_Unfortunately_**, a `customer.subscription.updated` event will be emitted **_immediately_** once after we make changes (an almost identical event will be fired again at the end of billing period), we need to study how to distinguish them and **_ignore_** the immediately fired one. 
+- **_Unfortunately_**, a `customer.subscription.updated` event will be emitted **_immediately_** once after we make changes (an almost identical event will be fired again at the end of billing period), we need to study how to distinguish them and **_ignore_** the immediately fired one.
 
 ###### How to Ignore Immediately Triggered Subscription Update Event
 
-- For every `subscription.updated` event there is a field `previousAttributes` that indicates what is being changed in the subscription, in kotlin we invoke 
+- For every `subscription.updated` event there is a field `previousAttributes` that indicates what is being changed in the subscription, in kotlin we invoke
+
   ```text{2}
   val fullEvent = Event.retrieve(event.id)
   fullEvent.data.previousAttributes
   ```
+
   to get a `Map` of previous values object.
 
-- When `Cancel`/`Downgrade` occurs, the `latest_invoice` will get updated  (and it will not be there at the end of billing period). Therefore we can define a boolean
+- When `Cancel`/`Downgrade` occurs, the `latest_invoice` will get updated (and it will not be there at the end of billing period). Therefore we can define a boolean
   ```kotlin
   val isBillingUpdate = (fullEvent.data.previousAttributes != null)
           && fullEvent.data.previousAttributes.containsKey("latest_invoice")
@@ -268,8 +268,10 @@ Here comes the importance of `createdAt`, `customer.subscription.updated` contai
 
 ##### Update Existing Subscription
 
-###### Subscription Item 
+###### Subscription Item
+
 - **Special Enum for Subscription Item Inited Event.** Since adding a subscription item (with 0 quantity) is also a subscription update event. We introduce the following enum:
+
 ```kotlin
 enum class MetadataOperation(val code: String) {
       INIT_SUBSCRIPTION_ITEM("INIT_SUBSCRITION_ITEM")
@@ -278,15 +280,16 @@ enum class MetadataOperation(val code: String) {
 
 - **Helper Function: `getSubItemFromSubscriptionAndPriceId`.**
 
-  - It is helpful to find the `SubscriptionItem` of the target `priceId` within an `Subscription` since: 
+  - It is helpful to find the `SubscriptionItem` of the target `priceId` within an `Subscription` since:
+
     - We need to deal with the number of subscribed items
-    
-    - Operation within the same subscription scope can ensure all products are billed within the same period and enable stripe to calculate the ***prorated cost*** for us.
+
+    - Operation within the same subscription scope can ensure all products are billed within the same period and enable stripe to calculate the **_prorated cost_** for us.
 
   - For example, a subscription plan can have number $>1$ because we model some of our plans as a sharable asset assignable to "team member" inside our system.
 
+  - We then assign this enum into our `metadata`
 
-  - We then assign this enum into our `metadata` 
     ```kotlin{11}
     private fun getSubItemFromSubscriptionAndPriceId(subscription: Subscription, priceId: String): SubscriptionItem {
         val subItem = subscription.items.data.find { it ->
@@ -311,7 +314,9 @@ enum class MetadataOperation(val code: String) {
         }
     }
     ```
+
     so that later we can ignore this `init-item-event` by using the boolean:
+
     ```kotlin{21-22}
     class SubscriptionChangeEvent {
         enum class MetadataOperation(val code: String) {
@@ -341,7 +346,7 @@ enum class MetadataOperation(val code: String) {
 
 We update the active subscription by simply setting a new item into it.
 
-Since `metadata` is like a persistent record,  it will confuse our system if we don't manually remove it (by `.putMetadata("operation", "")`). We need to ensure the erasion of `operation` field for any subsequent update:
+Since `metadata` is like a persistent record, it will confuse our system if we don't manually remove it (by `.putMetadata("operation", "")`). We need to ensure the erasion of `operation` field for any subsequent update:
 
 ```kotlin-1{14,19}
 fun addSubscriptionItemsByPriceId(
@@ -371,9 +376,9 @@ fun addSubscriptionItemsByPriceId(
 
 Note that the payment should be **_immediate_**, `ProrationBehavior.ALWAYS_INVOICE` makes sure the charging from the existing payment method is directly triggered on any update.
 
-###### Upgrade and Downgrade
+###### Upgrade and Immediate Downgrade
 
-Both upgrade and downgrade represents a switch between items in a `zero-sum` fashion:
+Both upgrade and downgrade represent a switch between items in a `zero-sum` fashion:
 
 ```kotlin-1{15,23,18,26}
 fun switchSubscriptionItemsByPriceId(
@@ -408,52 +413,163 @@ fun switchSubscriptionItemsByPriceId(
         .addAllItem(listOf(fromSubItemParams, toSubItemParams))
 ```
 
-However, `upgrade` and `downgrade` differs from having an **_immediate_** or **_delayed_** billing action, we should manually detemine the proration behaviour:
+For upgrade `isImmediate` should be set to `true`:
 
-```kotlin-32{34,37-38}
+```kotlin-31{33,36-37}
     if (isImmediate) {
         updateSubParamsPrebuild
             .setProrationBehavior(ProrationBehavior.ALWAYS_INVOICE)
-    } else {
-        updateSubParamsPrebuild
-            .setProrationBehavior(ProrationBehavior.NONE)
-            .setBillingCycleAnchor(SubscriptionUpdateParams.BillingCycleAnchor.UNCHANGED)
     }
-    updatedSub.update(updateSubParamsPrebuild.build())
+```
+
+so that the billing is immediate with invoice being dispatched immediately.
+
+On the other hand, if our action is **_immediate downgrade_**, we set `isImmediate` to `false` to get non-immediate billing action:
+
+```kotlin-35{37-38}
+   else {
+       updateSubParamsPrebuild
+           .setProrationBehavior(ProrationBehavior.NONE)
+           .setBillingCycleAnchor(SubscriptionUpdateParams.BillingCycleAnchor.UNCHANGED)
+   }
+   updatedSub.update(updateSubParamsPrebuild.build())
 }
 ```
 
-###### Unsubscribe
+For example, suppose at the first month a product is downgraded for $0.7\cdot \texttt{months}$ right before the next billing period, then at the next period the user will be charged
 
-Cancelling a subscription amounts to decreasing the product with recurring price by 1.
+$$
+30\cdot\texttt{\$downgraded_plan}  - 0.7\cdot 30 \cdot (\texttt{\$upgraded_plan}- \texttt{\$downgraded_plan})
+$$
 
-```kotlin{9,12,17-18}
-fun decreasePriceIdByOne(
-    cancelPriceId: String,
+###### Subscription Schedules for Scheduled Downgrade/Unsubscription
+
+- Another case for downgrade is to delay the downgrade request until the start of the next billing period.
+
+- This makes perfect sense in case of **_unsubscription_** where the cancel of a subscription (as a kind of downgrade) should only **_takes effect at the end of billing period_** because customer has already paid for the service.
+
+Now we demonstrate an example of scheduling the changes of a product quantity:
+
+> **Objective.** We create a function `scheduleAmountChangeByPriceId` which schedules a decrease of the amount of a product with `priceId` owned by `customerId`. The schedule will take effect at the start of next billing period.
+
+```kotlin-1{15}
+private fun getExistingSchedule(customerId: String, activeSubscription: Subscription): SubscriptionSchedule? {
+    val listParams = SubscriptionScheduleListParams.builder()
+        .setCustomer(customerId)
+        .build()
+    val existingSchedules = SubscriptionSchedule.list(listParams)
+    val existingSchedule = existingSchedules.data
+        .filter {
+            it.subscription == activeSubscription.id
+        }.sortedByDescending {
+            it.created
+        }.firstOrNull()
+    return existingSchedule
+}
+
+fun scheduleAmountChangeByPriceId(
+    increment: Int,
+    priceId: String,
+    customerId: String,
     activeSubscription: Subscription,
-    orderId: String,
-) {
-    val targetSubscriptionItem = getSubItemFromSubscriptionAndPriceId(activeSubscription, cancelPriceId)
-    val subItemUpdate = SubscriptionUpdateParams.Item.builder()
-        .setId(targetSubscriptionItem.id)
-        .setQuantity(targetSubscriptionItem.quantity - 1)
-        .putMetadata("orderId", orderId)
-        .putMetadata("createdAt", System.currentTimeMillis().toString())
-        .putMetadata("operation", "")
-        .build()
+): SubscriptionSchedule {
+    val currentPeriodEnd = activeSubscription.currentPeriodEnd
+    val existingSchedule = getExistingSchedule(customerId, activeSubscription)
+    val targetItem = getSubItemFromSubAndPriceId(activeSubscription, priceId)
 
-    val updateParams = SubscriptionUpdateParams.builder()
-        .addItem(subItemUpdate)
-        .setProrationBehavior(ProrationBehavior.NONE)
-        .setBillingCycleAnchor(SubscriptionUpdateParams.BillingCycleAnchor.UNCHANGED)
-        .build()
-
-    activeSubscription.update(updateParams)
-}
+    val schedule = if (existingSchedule != null) {
+        existingSchedule
+    } else {
+        val params = SubscriptionScheduleCreateParams.builder()
+            .setFromSubscription(activeSubscription.id)
+            .build()
+        SubscriptionSchedule.create(params)
+    }
 ```
 
+Let's pause and explain the strategy here. What I learned from a conversation:
 
+<a href="/assets/img/2024-09-28-02-59-19.png" target="_blank">![](/assets/img/2024-09-28-02-59-19.png)</a>
 
+Therefore let's create a new list of phases and update it:
+
+```kotlin-33
+    val updateParamsBuilder = SubscriptionScheduleUpdateParams.builder()
+        .setEndBehavior(SubscriptionScheduleUpdateParams.EndBehavior.RELEASE)
+
+    schedule.phases.forEach { phase ->
+        val phaseBuilder = SubscriptionScheduleUpdateParams.Phase.builder()
+        phase.startDate?.let { phaseBuilder.setStartDate(it) }
+        phase.endDate?.let { phaseBuilder.setEndDate(it) }
+        phase.items.forEach { item ->
+            phaseBuilder.addItem(
+                SubscriptionScheduleUpdateParams.Phase.Item.builder()
+                    .setPrice(item.price)
+                    .apply {
+                        if (phase.endDate > currentPeriodEnd && item.price == priceId) {
+                            setQuantity(item.quantity + increment)
+                        } else {
+                            setQuantity(item.quantity)
+                        }
+                    }
+                    .build()
+            )
+        }
+        updateParamsBuilder.addPhase(phaseBuilder.build())
+    }
+```
+
+Finally let's handle an edge case here.
+
+- A new subscription has no schedule, and;
+
+- When `existingSchedule == null`, we created a new schedule in line 25.
+
+- By default any new schedule will have a phase describing the current items in the latest subscription period.
+
+- Since the only `phase.endDate == currentPeriodEnd`, line 46 cannot be reached in this case
+
+- Subsequently we manually add a phase in the next billing period:
+
+  ```kotlin-56
+      if (existingSchedule == null) {
+          val phaseBuilder = SubscriptionScheduleUpdateParams.Phase.builder()
+              .setStartDate(currentPeriodEnd)
+              .addItem(
+                  SubscriptionScheduleUpdateParams.Phase.Item.builder()
+                      .setPrice(priceId)
+                      .setQuantity(targetItem.quantity + increment)
+                      .build()
+              )
+          updateParamsBuilder.addPhase(phaseBuilder.build())
+      }
+
+      return schedule.update(updateParamsBuilder.build())
+  }
+  ```
+
+###### Undo a Schedule
+
+We simply call
+
+```kotlin
+fun scheduleAmountChangeByPriceId(
+    increment: Int,
+    priceId: String,
+    customerId: String,
+    activeSubscription: Subscription,
+): SubscriptionSchedule
+```
+
+with the _compensating_ `increment` in **_opposite sign_**.
+
+Alternatively, one can save the `scheduleId` in the database so that when we click `undo` in the frontend, the backend execute:
+
+```kotlin
+SubscriptionSchedule.retrieve(scheduleId).cancel()
+```
+
+For me doing the opposite via `scheduleAmountChangeByPriceId` did the job.
 
 #### Renewal of Existing Subscribed Items
 
@@ -464,46 +580,66 @@ At the end of billing period, yet another subscription updated event is emitted 
 - `latest_invoice`
 
 We can trigger the renewal logic in our database by using the boolean:
+
 ```kotlin
-val isBillingPeriodUpdate = isBillingInfoUpdate &&
-        fullEvent.data.previousAttributes.containsKey("current_period_start") &&
-        fullEvent.data.previousAttributes.containsKey("current_period_end")
+val prevValues = fullEvent.data.previousAttributes
+val isBillingPeriodUpdate = (prevValues != null) &&
+        prevValues.containsKey("latest_invoice") &&
+        prevValues.containsKey("current_period_start") &&
+        prevValues.containsKey("current_period_end")
 ```
+
 Of course we can also handle the cancel/downgrade logic at the same time. In my case:
 
-```kotlin{8,9}
-fun handleEndOfBillingPeriod(planOwnerEmail: String, subscriptionId: String) {
+```kotlin{15,16}
+fun handleEndOfBillingPeriod(
+    prevStartDate: Double,
+    prevEndDate: Double,
+    newStartDate: Double,
+    newEndDate: Double,
+    planOwnerUserEmail: String,
+    subscriptionId: String,
+) {
     val subscription = Subscription.retrieve(subscriptionId)
     subscription.items.data.forEach {
         val priceId = it.price.id
         val product = stripeproductDao.fetchByStripepriceid(priceId).firstOrNull() ?: throw Exception("stripe product cannot be found")
-        val seatDomains = seatRepository.fetchActiveSeatsByUserEmail(planOwnerEmail, product.type!!)
+        val seatDomains = seatRepository.fetchActiveSeatsByUserEmail(planOwnerUserEmail, product.type!!)
         seatDomains.forEach { seatDomain ->
             val iscancelScheduled = seatDomain.seat?.cancelscheduled ?: false
             val isdowngradeScheduled = seatDomain.getPersonalSeataData()?.downgradescheduled ?: false
-            if (iscancelScheduled) {
-                seatDomain.inactivate()
-                seatDomain.inactivateCounter()
-            } else if (isdowngradeScheduled) {
-                val seat = seatDomain.seat
-                if (seat?.type === QuotaSeattype.PERSONAL_POWERFUL_BILLIE) {
-                    val newSeat = seatService.downgradePersonalPowerfulPlan(seat)
-                    val newSeatDoamin = seatRepository.createRoot(newSeat)
-                    newSeatDoamin.addNewUsageCounter()
-                    newSeatDoamin.save()
+            when {
+                iscancelScheduled -> {
                     seatDomain.inactivate()
+                    seatDomain.inactivateCounter()
                 }
-            } else {
-                // renew to use new counter
-                seatDomain.inactivateCounter()
-                seatDomain.addNewUsageCounter()
+
+                isdowngradeScheduled -> {
+                    val seat = seatDomain.seat
+                    if (seat?.type === QuotaSeattype.PERSONAL_POWERFUL_BILLIE) {
+                        seatDomain.inactivate()
+                        seatDomain.inactivateCounter()
+                    }
+                }
+
+                else -> {
+                    seatDomain.getLatestActiveCounter()?.let {
+                        val isOldCounterToRenew = it.startdate < prevEndDate
+                        if (isOldCounterToRenew) {
+                            seatDomain.inactivateCounter()
+                            seatDomain.addNewUsageCounter(
+                                newStartDate,
+                                newEndDate
+                            )
+                        }
+                    }
+                }
             }
             seatDomain.save()
         }
     }
 }
 ```
-
 
 #### Test Clock
 
@@ -566,7 +702,6 @@ Next the following is optional which is only useful for **writing test cases**.
     return CreateTestClockCustomerReturn(stripeCusotomerId = customer.id,
                                           testClockId = testClock.id)
 ```
-
 
 ###### Advance The Test Clock
 
