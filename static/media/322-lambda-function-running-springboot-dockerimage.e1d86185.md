@@ -1,6 +1,6 @@
 ---
 title: "Lambda Function Running Spring Boot in Docker Image"
-date: 2024-09-15
+date: 2024-09-07
 id: blog0322
 tag: kotlin, springboot
 toc: true

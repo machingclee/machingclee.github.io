@@ -21,10 +21,10 @@ intro: "We study how to effectively deliver request to non-blocking coroutine sc
 class SomeController() {
     @PostMapping("/create-customer-portal-session")
     fun createCustomerPortalSession(
-        @RequestBody createCustomerPortalSessionDto: CreateCustomerPortalSessionDto,
-    ): DeferredResult<Success<CreateCustomerPortalSessionResult>> {
+        @RequestBody someDto: SomeDto,
+    ): DeferredResult<Success<SomeResult>> {
         val deferredSessionURL = someApplicationService.createCustomerPortalSession(
-            createCustomerPortalSessionDto
+            someDto
         )
         return deferredSessionURL
     }
@@ -43,28 +43,24 @@ class SomeController() {
 #### What Happens in Application Service?
 
 
-We initiate `DeferredResult(timeout in Long)` as a placeholder:
+We initiate `DeferredResult(timeout in Long)` as a placeholder, we later `setResult` in a coroutine scope asynchronously:
 
-```kotlin-1
+```kotlin-1{15}
 class SomeApplicationService() {
     fun createCustomerPortalSession(
-        createCustomerPortalSessionDto: CreateCustomerPortalSessionDto,
-    ): DeferredResult<Success<CreateCustomerPortalSessionResult>> {
-        val deferredSessionURL = DeferredResult<Success<CreateCustomerPortalSessionResult>>(10000L)
-```
-We later `setResult` in a coroutine scope asynchronously
-
-```kotlin-6{15}
+        someDto: SomeDto,
+    ): DeferredResult<Success<SomeResult>> {
+        val deferredSessionURL = DeferredResult<Success<SomeResult>>(10000L)
         val scope = CoroutineScope(Dispatchers.IO)
         scope.launch {
             try {
-                val (customerId) = createCustomerPortalSessionDto
+                val (customerId) = someDto
                 val params = SessionCreateParams.builder()
                     .setCustomer(customerId)
                     .setReturnUrl(managePlanURL)
                     .build()
                 val session = Session.create(params)
-                deferredSessionURL.setResult(Success(CreateCustomerPortalSessionResult(session.url)))
+                deferredSessionURL.setResult(Success(SomeResult(session.url)))
             } catch (err: Exception) {
                 deferredSessionURL.setErrorResult(err)
             } finally {
@@ -72,6 +68,52 @@ We later `setResult` in a coroutine scope asynchronously
             }
         }
         return deferredSessionURL
+    }
+}
+```
+
+
+
+#### Customer DSL to Simplify the Logic Via Trailing Closure
+
+We further simplify the previous code block via the following util:
+
+```kotlin
+@Component
+class DeferUtil {
+    fun <T> defer(block: suspend () -> T): DeferredResult<T> {
+        val deferredResult = DeferredResult<T>(20000L)
+        val scope = CoroutineScope(Dispatchers.IO)
+        scope.launch {
+            try {
+                val result = block()
+                deferredResult.setResult(result)
+            } catch (err: Exception) {
+                deferredResult.setErrorResult(err)
+            } finally {
+                scope.cancel()
+            }
+        }
+        return deferredResult
+    }
+}
+```
+
+Now our `SomeApplicationService` becomes
+
+```kotlin{4-10}
+class SomeApplicationService(private val deferUtil: DeferUtil) {
+    fun createCustomerPortalSession(someDto: SomeDto): DeferredResult<Success<SomeResult>> {
+        val deferred = deferUtil.defer {
+            val (customerId) = someDto
+            val params = SessionCreateParams.builder()
+                    .setCustomer(customerId)
+                    .setReturnUrl(managePlanURL)
+                    .build()
+            val session = Session.create(params)
+            Success(result=SomeResult(session.url))
+        }
+        return deferred
     }
 }
 ```

@@ -1,5 +1,5 @@
 ---
-title: "Notify Frontend for Stripe Events Using Coroutine, SSE and Channel in Spring Boot and Kotlin"
+title: "SSE, Coroutine and Channel to Notify Frontend for Stripe Events in Spring Boot and Kotlin"
 date: 2024-09-21
 id: blog0324
 tag: kotin, springboot

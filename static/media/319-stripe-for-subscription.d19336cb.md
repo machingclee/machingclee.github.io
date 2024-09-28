@@ -91,22 +91,22 @@ Therefore for unifying everything we shift our focus to `customer.subscription.u
 
 The actual implementation of `add`, `upgrade`, `downgrade` and `cancel` operations are all controlled by adjusting quantities of the products with appropriate `setters` setting **proration behaviour** and **billing cylces**:
 
-- `Subscribe` $\nearrow$ the quantity from 0 to 1
+- `Subscribe` <span><up/></span> the quantity from 0 to 1
 
-- `Upgrade, Downgrade` $\searrow$ the quantity of the old product by 1, and $ \nearrow$ that of the new product.
-- `Cancel` simply $\searrow$ the quantity of target product by 1.
+- `Upgrade`, `Downgrade` <span><down/></span> the quantity of the old product by 1, and <span><up/></span> that of the new product.
+- `Cancel` simply <span><down/></span> the quantity of target product by 1.
 
 ###### Proration Period and Billing Cycle
 
 We model a subscription plan as a stripe **_product_** in Stripe world, which must live within a Stripe Subscription.
 
-This **_product_** is configured to have recurring price and therefore become a **_subscription_** (in normal sense), therefore
+This **_product_** is configured to have recurring price and therefore become a **_subscription_** (in common sense), thus
 
 $$
-\text{subscription}\Big|_\text{stripe sense} \supseteq \left\{ \text{subscription}\Big|_\text{normal sense}\right\},
+\text{subscription}\Big|_\text{stripe sense} \supseteq \left\{ \text{subscription}\Big|_\text{ordinary}\right\},
 $$
 
-namely, a stripe subsciprtion can contain a list of subscriptions in normal sense.
+namely, a stripe subsciprtion can contain a list of ordinary subscriptions.
 
 For `Subscribe` and `Upgrade`, the billing action should be **_immediate_**, and that of `Downgrade` and `Cancel` should be **_delayed_** until the end of billing period.
 
@@ -119,6 +119,14 @@ In stripe the "immediate" and "delayed" billing actions are controlled by
 Immediate Action:  ProrationBehavior.ALWAYS_INVOICE,
 Delayed Action:   (ProrationBehavior.NONE, BillingCycleAnchor.UNCHANGED)
 ```
+
+For example, suppose a user have subscribed an upgraded plan for $0.3$ month and downgraded for $0.7$ month right before the next billing period,  then 
+
+$$
+\underbrace{30\cdot\texttt{\$downgraded_plan}}_\text{covers the new plan}  - \underbrace{0.7\cdot 30 \cdot (\texttt{\$upgraded_plan}- \texttt{\$downgraded_plan})}_\text{compensation for the first month}
+$$
+
+will be charged at start of the next period.
 
 ##### Check Existing Active Subscription
 
@@ -138,9 +146,9 @@ fun getActiveSubscriptionOfCustomer(stripCustomerId: String): Subscription? {
 }
 ```
 
-##### Manage New Subscription
+##### New Subscription and Metadata
 
-###### Handle Checkout Session
+###### Handle Checkout Session and Add Metadata to Subscriptions
 
 ```kotlin-1
 @Service
@@ -177,7 +185,9 @@ $\uparrow$ Here we handle the display of failed and success cases in our fronten
             .setMode(SessionCreateParams.Mode.SUBSCRIPTION)
 ```
 
-$\uparrow$ Now we set our product to bill users periodically,
+$\uparrow$ Now we set our product to bill users periodically.
+
+Finally let's attach an `orderId` so that later we can trace back the latest transaction that leads to the quantity change:
 
 ```kotlin-23{31,32}
             .setCustomer(stripCustomerId)
@@ -424,7 +434,7 @@ For upgrade `isImmediate` should be set to `true`:
 
 so that the billing is immediate with invoice being dispatched immediately.
 
-On the other hand, if our action is **_immediate downgrade_**, we set `isImmediate` to `false` to get non-immediate billing action:
+On the other hand, if our action is an **_immediate downgrade_**, we set `isImmediate` to `false` to get non-immediate billing action:
 
 ```kotlin-35{37-38}
    else {
@@ -436,23 +446,20 @@ On the other hand, if our action is **_immediate downgrade_**, we set `isImmedia
 }
 ```
 
-For example, suppose at the first month a product is downgraded for $0.7\cdot \texttt{months}$ right before the next billing period, then at the next period the user will be charged
-
-$$
-30\cdot\texttt{\$downgraded_plan}  - 0.7\cdot 30 \cdot (\texttt{\$upgraded_plan}- \texttt{\$downgraded_plan})
-$$
-
 ###### Subscription Schedules for Scheduled Downgrade/Unsubscription
 
 - Another case for downgrade is to delay the downgrade request until the start of the next billing period.
 
-- This makes perfect sense in case of **_unsubscription_** where the cancel of a subscription (as a kind of downgrade) should only **_takes effect at the end of billing period_** because customer has already paid for the service.
+- This makes perfect sense in case of **_unsubscription_**  (as a kind of downgrade) which should only **_takes effect at the end of billing period_** because customer has already paid for the service.
 
 Now we demonstrate an example of scheduling the changes of a product quantity:
 
-> **Objective.** We create a function `scheduleAmountChangeByPriceId` which schedules a decrease of the amount of a product with `priceId` owned by `customerId`. The schedule will take effect at the start of next billing period.
+> **Objective.** We create a function `scheduleAmountChangeByPriceId` which schedules a change of the amount of a product that takes effect at the start of ***next billing period***.
 
-```kotlin-1{15}
+
+Let's define an helper function and our schedule function:
+
+```kotlin-1
 private fun getExistingSchedule(customerId: String, activeSubscription: Subscription): SubscriptionSchedule? {
     val listParams = SubscriptionScheduleListParams.builder()
         .setCustomer(customerId)
@@ -467,6 +474,8 @@ private fun getExistingSchedule(customerId: String, activeSubscription: Subscrip
     return existingSchedule
 }
 
+```
+```kotlin-15
 fun scheduleAmountChangeByPriceId(
     increment: Int,
     priceId: String,
@@ -519,7 +528,7 @@ Therefore let's create a new list of phases and update it:
     }
 ```
 
-Finally let's handle an edge case here.
+Finally let's handle an edge case here:
 
 - A new subscription has no schedule, and;
 
@@ -527,11 +536,11 @@ Finally let's handle an edge case here.
 
 - By default any new schedule will have a phase describing the current items in the latest subscription period.
 
-- Since the only `phase.endDate == currentPeriodEnd`, line 46 cannot be reached in this case
+- Since our latest schedule have at most `phase.endDate == currentPeriodEnd`, line 46 cannot be reached in this case.
 
-- Subsequently we manually add a phase in the next billing period:
+- Subsequently we manually add a phase in the next billing period so that we actually have an schedule for which `phase.endDate > currentPeriodEnd`:
 
-  ```kotlin-56
+  ```kotlin-56{58}
       if (existingSchedule == null) {
           val phaseBuilder = SubscriptionScheduleUpdateParams.Phase.builder()
               .setStartDate(currentPeriodEnd)
@@ -563,7 +572,7 @@ fun scheduleAmountChangeByPriceId(
 
 with the _compensating_ `increment` in **_opposite sign_**.
 
-Alternatively, one can save the `scheduleId` in the database so that when we click `undo` in the frontend, the backend execute:
+Alternatively, one can save the `scheduleId` in the database so that when we click `undo` in the frontend, the backend execute the following:
 
 ```kotlin
 SubscriptionSchedule.retrieve(scheduleId).cancel()
