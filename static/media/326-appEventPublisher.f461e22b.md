@@ -362,7 +362,7 @@ However, `Student_package` is referenced by `Class`'s via a foreign key, the req
 
 ![](/assets/img/2024-10-01-23-40-45.png)
 
-Since we didn't set foreign key as castcade delete, our `Class` entities will not be deleted automatically, therefore we have to sequentially:
+Since we didn't set the foreign key as `CASCADE_DELETE`, our `Class` entities will not be deleted automatically, therefore we have to sequentially:
 
 1. Delete the classes referencing to this package
 
@@ -388,6 +388,4 @@ This can be handled by two eventHandlers (we can condense them into one of cours
 - [What makes an Aggregate (DDD)? Hint: it's NOT hierarchy & relationships](https://www.youtube.com/watch?v=djq0293b2bA), CodeOpinion
 
 - [Monolithic DDD Without ORM by Separating Data and Domain Behaviour](/blog/article/Monolithic-DDD-Without-ORM-by-Separating-Data-and-Domain-Behaviour), Ching-C Lee
-
-The presence of `event.result` indicates the `applicationEventPublisher` functions as expected. Recall that by default we set `event.result = null` before dispatching the event.
 
