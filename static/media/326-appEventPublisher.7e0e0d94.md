@@ -65,12 +65,8 @@ class ApplicationEventPublisher {
         const handlers = this.handlers.get(event.type).sort((a, b) => a.order - b.order);
         if (handlers) {
             for (const handler of handlers) {
-                try {
-                    const processor = handler.processor as EventProcessor<typeof event>
-                    await processor(event)
-                } catch (error) {
-                    console.error(`Error in event handler for ${event.type}:`, error);
-                };
+                const processor = handler.processor as EventProcessor<typeof event>
+                await processor(event)
             }
         }
     }
@@ -83,60 +79,27 @@ class ApplicationEventPublisher {
     }
 }
 
-export default ApplicationEventPublisher
+export const applicationEventPublisher = new ApplicationEventPublisher();
+export default ApplicationEventPublisher;
 ```
-
 
 Note that when no constructor is defined, the parent constructor will be called automatically.
 
-#### Middlewares to Inject ApplicationEventPublisher for Each Request
 
-At the entry level of the application let's apply two middlewares sequentially:
-
-```ts
-app.use(eventBusMiddleware, repositoryMiddleware);
-```
-
-##### EventBus
-
-
-###### eventBusMiddleware.ts
-
-Note that everytime we create a publisher we register all the events we wish to listen:
-
-```ts{15}
-import { NextFunction, Request, Response } from "express";
-import ApplicationEventPublisher from "../util/ApplicationEventPublisher"
-import { registerStudentEvents } from "../../domain/eventHandlers/studentEventHandler";
-
-declare global {
-    namespace Express {
-        interface Request {
-            applicationEventPublisher: ApplicationEventPublisher
-        }
-    }
-}
-
-export default async (req: Request, res: Response, next: NextFunction) => {
-    const applicationEventPublisher = new ApplicationEventPublisher()
-    registerStudentEvents(applicationEventPublisher)
-    req.applicationEventPublisher = applicationEventPublisher
-    next()
-}
-```
-
-Next we define the `registerStudentEvents`:
+##### EventHandlers
 
 ###### studentEventHandler.ts
 
 ```ts
 import { db } from "../../db/database";
 import { StudentCreatedEvent } from "../repository/StudentRepository";
-import ApplicationEventPublisher from "../../src/util/ApplicationEventPublisher";
+import { applicationEventPublisher } from "../../src/util/ApplicationEventPublisher";
+import { PackageDeletedEvent, PackageUpdatedEvent, StudentInfoUpdatedEvent } from "../aggregate/StudentDomain";
 
-export const registerStudentEvents = (applicationEventPublisher: ApplicationEventPublisher) => {
+export const registerStudentEvents = () => {
+    const on = applicationEventPublisher.addEventHandler
 
-    applicationEventPublisher.addEventHandler<StudentCreatedEvent>("StudentCreatedEvent", async (event) => {
+    on<StudentCreatedEvent>("StudentCreatedEvent", async (event) => {
         const student = event.data
         const student_ = await db.insertInto("Student").values(student).returningAll().executeTakeFirst()
         if (!student_) {
@@ -144,28 +107,17 @@ export const registerStudentEvents = (applicationEventPublisher: ApplicationEven
         }
         event.result = student_
     })
+
+    on<StudentInfoUpdatedEvent>("StudentInfoUpdatedEvent", async (event) => {
+        const { update } = event.data
+        await db.updateTable("Student").set(update).where("Student.id", "=", update.id).execute();
+    })
+
+    on<PackageDeletedEvent>("PackageDeletedEvent", async (event) => {
+        const { packageId } = event.data;
+        await db.deleteFrom("Student_package").where("Student_package.id", "=", Number(packageId)).execute();
+    })
 }
-```
-
-
-##### repositoryMiddleware.ts
-
-```ts
-import { NextFunction, Request, Response } from "express";
-import StudentRepository from "../../domain/repository/StudentRepository";
-
-declare global {
-    namespace Express {
-        interface Request {
-            studentRepository: StudentRepository;
-        }
-     }
-}
-
-export default async (req: Request, res: Response, next: NextFunction) => {
-    req.studentRepository = new StudentRepository(req.applicationEventPublisher);
-    next();
-};
 ```
 
 #### Experiment
@@ -203,17 +155,15 @@ Let's consider the following relations:
 Let's define a base class for our aggregates. We intentionally not to use abstract class because special config in `package.json` needs to be set to make it work.
 
 ```ts
-export default class AbstractAggregateRoot {
-    private applicationEventPublisher: ApplicationEventPublisher | null = null
-    private events: any[] = []
+import { ApplicationEvent, applicationEventPublisher } from "../../src/util/ApplicationEventPublisher"
 
-    setApplicationEventPublisher(applicationEventPublisher: ApplicationEventPublisher) {
-        this.applicationEventPublisher = applicationEventPublisher
-    }
+export default class AbstractAggregateRoot {
+
+    private events: any[] = []
 
     public save = async () => {
         for (const event of this.events) {
-            await this.applicationEventPublisher?.publishEvent(event)
+            await applicationEventPublisher.publishEvent(event)
         }
         this.events = []
     }
@@ -222,42 +172,70 @@ export default class AbstractAggregateRoot {
         this.events.push(event)
     }
 }
-
 ```
 
 ###### StudentDomain
 
-For now our focus is on `applicationEventPublisher`, so let's just provide a definition to represent a smaller aggregate where we get rid of `Class`'s.
+```ts
+import { Student, Student_package } from "@prisma/client"
+import AbstractAggregateRoot from "./AbstractAggregateRoot"
+import ApplicationEventPublisher, { ApplicationEvent } from "../../src/util/ApplicationEventPublisher";
+import { UpdatePackageRequest, UpdateStudentRequest } from "../../dto/dto";
+import updateValues from "../../src/util/updateValues";
 
-```ts{5,7-8}
+export class StudentInfoUpdatedEvent extends ApplicationEvent<"StudentInfoUpdatedEvent", { update: UpdateStudentRequest }> { }
+export class PackageUpdatedEvent extends ApplicationEvent<"PackageUpdatedEvent", { update: UpdatePackageRequest }> { }
+export class PackageDeletedEvent extends ApplicationEvent<"PackageDeletedEvent", { packageId: number }> { }
+
 export default class StudentDomain extends AbstractAggregateRoot {
     constructor(
         private student: Student | null,
         private packages: Student_package[],
-        applicationEventPublisher: ApplicationEventPublisher
     ) {
         super()
-        super.setApplicationEventPublisher(applicationEventPublisher)
+    }
+
+    updateInfo = (update: UpdateStudentRequest) => {
+        this.student = { ...this.student, ...update }
+        this.registerEvent(new StudentInfoUpdatedEvent("StudentInfoUpdatedEvent", { update }))
+    }
+
+    updatePackage = (update: UpdatePackageRequest) => {
+        const package_ = this.packages.find(p => p.id === update.id)
+        updateValues(package_, update)
+        this.registerEvent(new PackageUpdatedEvent("PackageUpdatedEvent", { update }))
+    }
+
+    deletePackage = (packageId: number) => {
+        const index = this.packages.findIndex(p => p.id === packageId)
+        this.packages.splice(index, 1)
+        this.registerEvent(new PackageDeletedEvent("PackageDeletedEvent", { packageId }))
     }
 }
 ```
 
-The highlighted lines will be technically the only **_boilerplate_** code for all of our aggregate roots. Recall that domain behaviours need to be published for other domain object to subscribe.
+Recall that domain behaviours need to be published for other domain object to subscribe. By using `save()` method we will dispatch all the events we registered (refer to the `AbstractAggregateRoot` definition).
 
 ##### Define StudentCreatedEvent and StudentRepository
 
 Recall that a **_repository_** by convention is defined to return **_aggregate root(s)_**. In our convention each aggregate will be called `something-Domain`.
 
 ```ts
+import { Student, Student_package } from "@prisma/client"
+import StudentDomain from "../aggregate/StudentDomain"
+import { db } from "../../db/database"
+import { jsonArrayFrom, jsonObjectFrom } from "kysely/helpers/postgres";
+import { applicationEventPublisher, ApplicationEvent } from "../../src/util/ApplicationEventPublisher"
+import { CreateStudentRequest } from "../../dto/dto"
+
 export class StudentCreatedEvent extends ApplicationEvent<"StudentCreatedEvent", CreateStudentRequest> { }
 
-class StudentRepository {
-    constructor(private applicationEventPublisher: ApplicationEventPublisher) { }
 
+class StudentRepository {
     createRoot = async (student: CreateStudentRequest): Promise<StudentDomain> => {
         const event = new StudentCreatedEvent("StudentCreatedEvent", student)
-        const result = await this.applicationEventPublisher.publishEvent(event)
-        return new StudentDomain(event.result as Student, [], this.applicationEventPublisher)
+        const result = await applicationEventPublisher.publishEvent(event)
+        return new StudentDomain(event.result as Student, [], applicationEventPublisher)
     }
 
     getStudentById = async (uuid: string): Promise<StudentDomain> => {
@@ -265,10 +243,10 @@ class StudentRepository {
             .where("Student.id", "=", uuid)
             .executeTakeFirst()
         if (!result) {
-            return new StudentDomain(null, [], this.applicationEventPublisher)
+            return new StudentDomain(null, [], applicationEventPublisher)
         }
         const { studentPackages, ...student } = result
-        const studentDomain = new StudentDomain(student, studentPackages, this.applicationEventPublisher)
+        const studentDomain = new StudentDomain(student, studentPackages, applicationEventPublisher)
         return studentDomain
     }
 
@@ -282,7 +260,7 @@ class StudentRepository {
         const studentDomains: StudentDomain[] = [];
         result.forEach(r => {
             const { studentPackages, ...student_ } = r
-            const studentDomain = new StudentDomain(student_, studentPackages, this.applicationEventPublisher)
+            const studentDomain = new StudentDomain(student_, studentPackages, applicationEventPublisher)
             studentDomains.push(studentDomain)
         })
         return studentDomains
@@ -300,6 +278,7 @@ const studentAggQuery = db.selectFrom("Student")
         ).as("studentPackages"),
     ])
 
+export const studentRepository = new StudentRepository();
 export default StudentRepository;
 ```
 
@@ -309,11 +288,11 @@ Let's study the simplest case of domain event: create a `Student` aggregate. Rec
 
 ```ts
 const createStudent = async (req: Request, res: Response) => {
-    const body = req.body as CreateStudentRequest;
-    const studentDomain = await req.studentRepository.createRoot(body)
-    res.json({
-        success: true,
-    });
+  const body = req.body as CreateStudentRequest;
+  const studentDomain = await studentRepository.createRoot(body);
+  res.json({
+    success: true,
+  });
 };
 ```
 
@@ -322,9 +301,93 @@ We have demonstrated the result at the beginning of this article, let's review i
 ![](/assets/img/2024-09-30-04-21-06.png)
 
 
+
+##### Let's Execute StudentDomain.{updateInfo, updatePackage, deletePackage}
+
+Finally let's go through basic CRUD examples using this methodology:
+
+```ts
+const updateStudent = async (req: Request, res: Response) => {
+    const body = req.body as UpdateStudentRequest;
+    const studentDomain = await studentRepository.getStudentById(body.id)
+    studentDomain.updateInfo(body)
+    await studentDomain.save()
+
+    res.json({
+        success: true,
+        result: { student: body },
+    });
+};
+
+const deletePackage = async (req: Request, res: Response) => {
+    const params = req.query as { studentId: string, packageId: string };
+    const { packageId, studentId } = params;
+    const studentDomain = await studentRepository.getStudentById(studentId)
+    studentDomain.deletePackage(Number(packageId))
+    await studentDomain.save()
+    res.json({
+        success: true,
+    });
+};
+
+const updatePackage = async (req: Request, res: Response) => {
+    const packageUpdate = req.body as UpdatePackageRequest;
+    const { student_id } = packageUpdate;
+    const studentDomain = await studentRepository.getStudentById(student_id)
+    studentDomain.updatePackage(req.body)
+    await studentDomain.save();
+
+    res.json({
+        success: true,
+        result: packageUpdate,
+    });
+};
+```
+
+Now to add new features, let's say we add an email notification after `deletePackage` is finished, then it is as simply as adding 
+
+```ts
+on<PackageDeletedEvent>("PackageDeletedEvent", async (event) => {
+    // some logic to notify student by email
+})
+```
+
+#### Order of EventHandlers
+
+Back to our `deletePackage` example, it is implemented by:
+```ts
+await db.deleteFrom("Student_package").where("Student_package.id", "=", Number(packageId)).execute();
+```
+However, `Student_package` is referenced by `Class`'s via a foreign key, the request for now will result in the following error:
+
+![](/assets/img/2024-10-01-23-40-45.png)
+
+Since we didn't set foreign key as castcade delete, our `Class` entities will not be deleted automatically, therefore we have to sequentially:
+
+1. Delete the classes referencing to this package
+
+2. Delete this package
+
+This can be handled by two eventHandlers (we can condense them into one of course, but let's demonstrate how to order events).
+
+```ts{5,10}
+// studentEventHandler.ts
+    on<PackageDeletedEvent>("PackageDeletedEvent", async (event) => {
+        const { packageId } = event.data;
+        await db.deleteFrom("Student_package").where("Student_package.id", "=", packageId).execute();
+    }, 2)
+
+    on<PackageDeletedEvent>("PackageDeletedEvent", async (event) => {
+        const { packageId } = event.data;
+        await db.deleteFrom("Class").where("Class.student_package_id", "=", packageId).execute();
+    }, 1)
+```
+
 #### References
 
 - [What makes an Aggregate (DDD)? Hint: it's NOT hierarchy & relationships](https://www.youtube.com/watch?v=djq0293b2bA), CodeOpinion
 
 - [Monolithic DDD Without ORM by Separating Data and Domain Behaviour](/blog/article/Monolithic-DDD-Without-ORM-by-Separating-Data-and-Domain-Behaviour), Ching-C Lee
+
+The presence of `event.result` indicates the `applicationEventPublisher` functions as expected. Recall that by default we set `event.result = null` before dispatching the event.
 
