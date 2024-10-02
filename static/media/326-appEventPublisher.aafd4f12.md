@@ -83,9 +83,6 @@ export const applicationEventPublisher = new ApplicationEventPublisher();
 export default ApplicationEventPublisher;
 ```
 
-Note that when no constructor is defined, the parent constructor will be called automatically.
-
-
 ##### EventHandlers
 
 ###### studentEventHandler.ts
@@ -174,7 +171,8 @@ export default class AbstractAggregateRoot {
 }
 ```
 
-###### StudentDomain
+###### StudentInfoUpdatedEvent, PackageUpdatedEvent and PackageDeletedEvent
+
 
 ```ts
 import { Student, Student_package } from "@prisma/client"
@@ -186,7 +184,12 @@ import updateValues from "../../src/util/updateValues";
 export class StudentInfoUpdatedEvent extends ApplicationEvent<"StudentInfoUpdatedEvent", { update: UpdateStudentRequest }> { }
 export class PackageUpdatedEvent extends ApplicationEvent<"PackageUpdatedEvent", { update: UpdatePackageRequest }> { }
 export class PackageDeletedEvent extends ApplicationEvent<"PackageDeletedEvent", { packageId: number }> { }
+```
+Note that when no constructor is defined, the parent constructor will be called automatically.
 
+######  StudentDomain
+
+```ts
 export default class StudentDomain extends AbstractAggregateRoot {
     constructor(
         private student: Student | null,
