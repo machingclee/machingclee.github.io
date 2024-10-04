@@ -71,7 +71,7 @@ Stripe happends to send the same event repeatedly to our backend.
 
 ![](/assets/img/2024-10-04-02-46-22.png)
 
-Here our domain event `TeamplanAddedEvent` is triggered by the Stripe event twice (as indicated by the same `stripe_event_id` with 3 seconds interval). To handle this:
+Here our domain event `TeamplanAddedEvent` is triggered by the Stripe event twice (as indicated by the same `stripe_event_id` with 3 seconds after one another). To handle this:
 
 
 1. **Concurrency Checking.** We create distributive lock to disable processing the same event within short period (even concurrenly).
