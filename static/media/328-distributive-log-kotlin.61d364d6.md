@@ -15,8 +15,24 @@ intro: A simple implementation of distributive lock in Kotlin.
 
 #### Dependencies
 
-```kotlin
-implementation("redis.clients:jedis:5.1.4")
+```kotli
+dependencies {
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
+}
+```
+
+#### application.yml
+
+```yml
+spring:
+  data:
+    redis:
+      host: tender-goldfish-53801.upstash.io
+      port: 6379
+      password: AdIpAAIjcDEzYTc0YWNkNjdhMzk0Yzc2OGFkYmFhNzM5M2M3ZmRmMnAxMA
+      database: 0
+      ssl:
+        enabled: true
 ```
 
 #### Implementation of the Lock
@@ -28,28 +44,30 @@ package com.billie.payment.util
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.reactor.awaitSingle
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
+import org.springframework.data.redis.core.ReactiveRedisTemplate
 import org.springframework.stereotype.Component
-import redis.clients.jedis.Jedis
-import redis.clients.jedis.JedisPool
-import redis.clients.jedis.params.SetParams
 
 @Component
-class DistributiveLock(private val jedis: Jedis) {
-
-    suspend fun acquireLock(id: String, lockTimeout: Long = 30): Boolean = withContext(Dispatchers.IO) {
-        val params = SetParams().nx().ex(30)
-        val result = jedis.set(id, id, params)
-        return@withContext result == "OK"
+class DistributiveLock(
+    private val redisTemplate: ReactiveRedisTemplate<String, String>,
+) {
+    suspend private fun setIfNotExists(key: String, value: String): Boolean {
+        return redisTemplate.opsForValue().setIfAbsent(key, value).awaitSingle() ?: false
     }
 
-    suspend fun releaseLock(id: String) = withContext(Dispatchers.IO) {
-        jedis.del(id)
+    suspend fun acquireLock(id: String, lockTimeout: Long = 30): Boolean {
+        return setIfNotExists(id, id)
     }
 
-    suspend fun isLocked(id: String): Boolean = withContext(Dispatchers.IO) {
-        jedis.exists(id)
+    suspend fun releaseLock(id: String) {
+        redisTemplate.delete(id).awaitSingle()
+    }
+
+    suspend fun isLocked(id: String): Boolean {
+        return redisTemplate.hasKey(id).awaitSingle()
     }
 
     suspend fun waitForLock(id: String, timeout: Long = 10000): Boolean {
