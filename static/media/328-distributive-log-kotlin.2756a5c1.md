@@ -27,9 +27,9 @@ dependencies {
 spring:
   data:
     redis:
-      host: tender-goldfish-53801.upstash.io
+      host: XXX.upstash.io
       port: 6379
-      password: AdIpAAIjcDEzYTc0YWNkNjdhMzk0Yzc2OGFkYmFhNzM5M2M3ZmRmMnAxMA
+      password: AdIpAAIjcDEzYTcXXX
       database: 0
       ssl:
         enabled: true
