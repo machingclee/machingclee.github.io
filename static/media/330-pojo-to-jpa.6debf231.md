@@ -1,5 +1,5 @@
 ---
-title: JPA with DB-First Approach, Surgery on POJO generated from JOOQ into Base JPA Entity Class
+title: "JPA with DB-First Approach: Surgery on JOOQ's POJO into Base @Entity Class"
 date: 2024-10-20
 id: blog0329
 tag: kotlin, springboot, jooq, jpa
@@ -414,57 +414,83 @@ class OrderStripeEntity(
 }
 ```
 
+#### @EntityScan
 
-#### Test Cases
+To play safe just list out all the packages where our entity class live in.
 
 ```kt
-@SpringBootTest
-class RepositoryTest {
+@EntityScan(basePackages = [
+    "com.billie.db",
+    "com.billie.payment"
+])
+class PaymentApplication {
+    ...
+}
+```
 
-    @Autowired
-    private lateinit var orderMobileJpaRepository: OrderMobileJpaRepository
+#### JpaRepository
+#####  The naming convention of findByXXX
 
-    @Autowired
-    private lateinit var orderJpaRepository: OrderJpaRepository
+For a complete of convention please visit the 
+- [official documentation](https://docs.spring.io/spring-data/jpa/reference/jpa/query-methods.html). 
+We just discuss the most common one: `findbyXXX`.
 
-    init {
-        System.setProperty("spring.profiles.active", "uat,james_db_and_james_stripe")
-    }
+Let's look at our entity class:
 
-    @Test
-    fun `repository save`() {
-        val orderEntity = OrderEntity(useremail = "james.lee@wonderbricks.com")
-        orderEntity.ordertype = Ordertype.MOBILE
-        orderJpaRepository.save(orderEntity)
-        val orderMobileEntity = OrderMobileEntity(orderid = orderEntity.id!!,
-                                                  period = Period.MONTHLY,
-                                                  platform = Platform.IOS,
-                                                  originalappuserid = "123",
-                                                  useremail = orderEntity.useremail)
-        orderMobileJpaRepository.save(orderMobileEntity)
-    }
+```kt{8}
+@MappedSuperclass
+open class QuotaFreequotarecordPreEntity(
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    open var id: Int? = null,
+    @Column(name = "userEmail", nullable = false)
+    open var useremail: String,
+    @Column(name = "audioUsed", nullable = false)
+    open var audioused: Double,
+    @Column(name = "summaryUsed", nullable = false)
+    open var summaryused: Int
+) 
+```
+Note that our member name is `useremail`, we ***capitalize the first letter*** to get:
+```kt
+@Repository
+interface FreeQuotaJpaRepository : JpaRepository<QuotaFreeEntity, Int> {
+    fun findByUseremail(email: String): QuotaFreeEntity?
+}
+```
+the custom repository method depends on the member name of our entity class but ***not on the actual column name***.
 
-    @Test
-    fun `repository get`() {
-        val orderEntity = orderJpaRepository.findByIdOrNull(UUID.fromString("77d8fd43-b780-4116-9b8e-dc4d032a3754"))
-        val orderMobileEntity = orderEntity?.orderMobile
-        val theParentEntity = orderMobileEntity?.orderEntity // this is the same as orderEntity in the first line
-        theParentEntity?.updateOrderSucceededInfo()
-        orderJpaRepository.save(theParentEntity!!) // successfully dispatch an event and we get the event from event handler
+##### Back Reference that Causes Infinite Loop in Data Serialization
 
-        println(orderMobileEntity)
-        println(theParentEntity)
-    }
+In short
+- inside of aggregate root we annotate subaggregate/subdomain object by `@JsonManagedReference`.
+- inside of subdomain object we add `@JsonBackReference` to the backward reference.
+
+```kt
+import com.fasterxml.jackson.annotation.JsonManagedReference
+import com.fasterxml.jackson.annotation.JsonBackReference
+
+class Parent {
+    @OneToMany(mappedBy = "parent")
+    @JsonManagedReference
+    val children: List<Child> = mutableListOf()
+}
+
+class Child {
+    @ManyToOne // so is @OneToOne
+    @JsonBackReference
+    lateinit var parent: Parent
 }
 ```
 
 
 
-#### Handle Non-JPA Naming Convention for Tables and Columns
+##### When Tables and Columns are not Named in Snake Case
 
-Since we use camel case instead of lower-letter snake case which `jpa` recognizes by default, we have to enclose every single definition by double quote `"`'s. 
+Since we use camel case in table and column name instead of lower-letter snake case which `jpa` recognizes by default, in every query we have to ***enclose every single*** occurence of table and column name by two double quote `"`'s. 
 
-We archive this by setting custom naming strategy:
+We archive this by setting custom naming strategy for `jpa`:
 
 ```kt
 package com.billie.payment.config.jooq
@@ -515,3 +541,122 @@ spring:
         type:
           EnumType: STRING
 ```
+
+
+
+
+
+##### Test Cases
+
+###### Set the stage in our test:
+```kt-1
+@SpringBootTest
+class RepositoryTest {
+
+    @Autowired
+    private lateinit var orderMobileJpaRepository: OrderMobileJpaRepository
+
+    @Autowired
+    private lateinit var orderJpaRepository: OrderJpaRepository
+
+    init {
+        System.setProperty("spring.profiles.active", "uat,james_db_and_james_stripe")
+    }
+```
+###### Test if we are abole to persist an entity:
+```kt-14
+  @Test
+  fun `repository save`() {
+      val orderEntity = OrderEntity(useremail = "james.lee@wonderbricks.com")
+      orderEntity.ordertype = Ordertype.MOBILE
+      orderJpaRepository.save(orderEntity)
+      val orderMobileEntity = OrderMobileEntity(orderid = orderEntity.id!!,
+                                                period = Period.MONTHLY,
+                                                platform = Platform.IOS,
+                                                originalappuserid = "123",
+                                                useremail = orderEntity.useremail)
+      orderMobileJpaRepository.save(orderMobileEntity)
+}
+```
+
+###### Test if the "back-reference" works, and test if the domain event can be caught by `@EventListener`.
+```kt-39
+    @Test
+    fun `repository get`() {
+        val orderEntity = orderJpaRepository.findByIdOrNull(UUID.fromString("77d8fd43-b780-4116-9b8e-dc4d032a3754"))
+        val orderMobileEntity = orderEntity?.orderMobile
+        val theParentEntity = orderMobileEntity?.orderEntity // this is the same as orderEntity in the first line
+        theParentEntity?.updateOrderSucceededInfo()
+        orderJpaRepository.save(theParentEntity!!) // successfully dispatch an event and we get the event from event handler
+
+        println(orderMobileEntity)
+        println(theParentEntity)
+    }
+}
+```
+
+##### Example of Adding Domain Behaviour and How it Actually Works with Our Controller
+###### Then Entity Class
+```kt
+data class SeatSummaryCountedEvent(
+    val entity: QuotaSeatCounterEntity,
+)
+
+@Entity
+@DynamicInsert
+@Table(name = "Quota_UsageCounter", schema = "public")
+class QuotaSeatCounterEntity(
+    override var seatid: Int,
+    override var audioused: Double,
+    override var duedate: Double,
+    override var startdate: Double,
+) : IDomainModel, QuotaUsagecounterPreEntity(
+    seatid = seatid,
+    audioused = audioused,
+    duedate = duedate,
+    startdate = startdate
+) {
+
+    @Transient
+    override var domainEvents: MutableList<Any>? = null
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "seatId", referencedColumnName = "id", insertable = false, updatable = false)
+    @JsonBackReference
+    var seat: QuotaSeatEntity? = null
+
+    fun increaseSummaryCount() {
+        this.summarygenerated = (this.summarygenerated ?: 0) + 1
+        val event = SeatSummaryCountedEvent(this)
+        registerEvent(event)
+    }
+}
+```
+
+###### The Controller Method
+- The highlighted demonstrates the state change can be managemented by the entity itself. 
+
+- In the past without ORM we have to handle state change in eventListener. With ORM we can now arrange all the in-memory change, and let `jpa` figure out and persist the changes by `repo.save(entity)`.
+
+- By `repo.save()`, `jpa` will look at the member annotated by `@DomainEvents`, then dispatch each event synchronously via `ApplicationEventPublisher`.
+
+```kt{11-12}
+    @PostMapping("/increase-summary-count")
+    fun increaseSummaryCount(@RequestBody reduceQuotaDto: IncreaseSummaryCountRequest): Response.Success<IncreaseSummaryCountResponse> {
+        val user = UserContext.instance.getUser()
+        val (counterId) = reduceQuotaDto
+        if (counterId == null) {
+            val freeQuota = freeQuotaJpaRepository.findByUseremail(user.email) ?: throw Exception("free quota has not created")
+            freeQuota.increaseSummaryCount()
+            freeQuotaJpaRepository.save(freeQuota)
+        }
+        val counter = seatCounterJpaRepository.findByIdOrNull(counterId) ?: throw Exception("counter not found")
+        counter.increaseSummaryCount()
+        seatCounterJpaRepository.save(counter)
+        return Response.Success(result = IncreaseSummaryCountResponse(counterId))
+    }
+```
+Therefore when we execute `repo.save()` method, we are actually doing:
+- Persist the state change
+
+- Notify all domains which is interested in the `SeatSummaryCountedEvent`.
