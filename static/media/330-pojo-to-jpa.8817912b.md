@@ -13,6 +13,8 @@ intro: Working with existing database via jpa amounts to the need to manually mo
   }
 </style>
 
+![](/assets/img/2024-10-23-21-54-16.png)
+
 
 #### Surgery on JOOQ generated POJO
 ##### Introduction to the POJO and the Strategy of the Surgery 
@@ -73,8 +75,7 @@ What we will be doing:
   @GeneratedValue(generator = "ulid_as_uuid")
   ```
   since we have custom generation method for `uuid`.
-- Remove `@Table(...)` as indexing has been done in db-first step and `@Table` must be bundled with `@Entity`
-- Replace `@Entity` by `@MappedSuperclass`
+- Remove index part in `@Table()` as indexing has been done in db-first step and `@Table` must be bundled with `@Entity`
 - Remove `Serializable`
 - Get rid of everything inside `{ ... }` since no method declaration is needed
 
@@ -82,47 +83,49 @@ What we will be doing:
 ##### Sample Result After Surgery
 
 ```kt
-package com.billie.db.tables.preentities
-
 import com.billie.db.enums.Ordertype
 import com.billie.db.enums.Status
-
-import jakarta.persistence.Column
-import jakarta.persistence.MappedSuperclass
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.Enumerated
-import jakarta.persistence.EnumType
+import org.hibernate.annotations.DynamicInsert
 import org.hibernate.dialect.PostgreSQLEnumJdbcType
 import org.hibernate.annotations.JdbcType
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.Enumerated
+import jakarta.persistence.EnumType
 import jakarta.persistence.Id
+import jakarta.persistence.Table
 import java.util.UUID
 
-@MappedSuperclass
-open class OrderPreEntity(
+@Entity
+@DynamicInsert
+@Table(
+    name = "Order",
+    schema = "public"
+)
+class OrderEntity_(
     @Id
     @Column(name = "id")
-    @GeneratedValue(generator = "ulid_as_uuid")
-    open var id: UUID? = null,
+     var id: UUID? = null,
     @Column(name = "error")
-    open var error: String? = null,
+     var error: String? = null,
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     @JdbcType(PostgreSQLEnumJdbcType::class)
-    open var status: Status? = null,
+     var status: Status? = null,
     @Column(name = "succeededAt")
-    open var succeededat: Double? = null,
+     var succeededat: Double? = null,
     @Column(name = "failedAt")
-    open var failedat: Double? = null,
+     var failedat: Double? = null,
     @Column(name = "userEmail", nullable = false)
-    open var useremail: String,
+     var useremail: String,
     @Column(name = "orderType")
     @Enumerated(EnumType.STRING)
     @JdbcType(PostgreSQLEnumJdbcType::class)
-    open var ordertype: Ordertype? = null,
+     var ordertype: Ordertype? = null,
     @Column(name = "createdAt")
-    open var createdat: Double? = null,
+     var createdat: Double? = null,
     @Column(name = "createdAtHK")
-    open var createdathk: String? = null
+     var createdathk: String? = null
 ) 
 ```
 
@@ -180,15 +183,13 @@ tasks.create("generate") {
 }
 ```
 
-##### The Extra Amendment Step
+##### The Extra Amendment Step: adjustJooqFilesForJPA
 
 
-![](/assets/img/2024-10-23-09-02-15.png)
+- Here we copy all `pojos/XXX.kt` into `preentities/XXXEntity_.kt`. 
 
-- Here we copy all `pojos/XXX.kt` into `preentities/XXXPreEntity.kt`. 
-
-- We then do the text manipulation in `adjustJooqFilesForJPA` to turn the jooq's `@Entity` classes into  `@MappedSuperclass` classes which we name as `PreEntity` Classes.
-- We later define our own `@Entity` class by extending these `@MappedSuperclass` preentity classes where 
+- We then do the text manipulation in `adjustJooqFilesForJPA` to simplify the jooq's `@Entity` classes
+- We later copy the whole definition by creating our `AbstractAggregateRoot` where 
   - We can define our custom `join-column` behaviour (aggregates) and 
 
   - custom domain behaviours.
@@ -218,28 +219,27 @@ fun adjustJooqFilesForJPA(pojoDir: File, preEntityDir: File) {
                 .replace(Regex("^(data )?class ", RegexOption.MULTILINE),
                          "open class ")
                 .replace(Regex("""open class (\w+)\("""),
-                         """open class $1PreEntity\(""")
+                         """class $1Entity_\(""")
                 .replace(Regex("""(@get:.+\n\s*)var""", RegexOption.MULTILINE),
-                         "$1open var")
-                .replace(Regex("""(@Entity)""", RegexOption.MULTILINE),
-                         "@MappedSuperclass")
+                         "$1 var")
                 .replace("import jakarta.persistence.GeneratedValue",
                          "")
                 .replace("import jakarta.persistence.GenerationType",
                          "")
+                .replace(Regex("""indexes\s+=.*?\]""", RegexOption.DOT_MATCHES_ALL), "")
                 .replace(Regex("""import jakarta.persistence.Entity""".trimIndent()),
                          """
+                     import jakarta.persistence.Entity
                      import jakarta.persistence.MappedSuperclass
                      import jakarta.persistence.Enumerated
                      import jakarta.persistence.EnumType
                      import jakarta.persistence.Convert
                      import jakarta.persistence.GeneratedValue
                      import jakarta.persistence.GenerationType
+                     import org.hibernate.annotations.DynamicInsert
                      import org.hibernate.dialect.PostgreSQLEnumJdbcType
                      import org.hibernate.annotations.JdbcType
                      """.trimIndent().trimMargin())
-                .replace(Regex("""@Table.*?open class""", RegexOption.DOT_MATCHES_ALL),
-                         "open class")
                 .replace(Regex(""": Serializable""", RegexOption.DOT_MATCHES_ALL),
                          "")
                 .replace(Regex("""@get:""", RegexOption.MULTILINE),
@@ -248,14 +248,18 @@ fun adjustJooqFilesForJPA(pojoDir: File, preEntityDir: File) {
                          """
                      |@Column(name = "id")
                      |    @GeneratedValue(generator = "ulid_as_uuid")
-                     |    open var id: UUID? = null
+                     |    var id: UUID? = null
                      """.trimMargin()
                 )
+                .replace("@Entity", """
+                    @Entity
+                    @DynamicInsert
+                """.trimIndent())
                 .replace("@GeneratedValue(strategy = GenerationType.IDENTITY)", "")
-                .replace("open var id: Int? = null",
+                .replace("var id: Int? = null",
                          """
                          @GeneratedValue(strategy = GenerationType.IDENTITY)
-                         |    open var id: Int? = null
+                         |    var id: Int? = null
                          """.trimIndent().trimMargin())
                 .replace(Regex("""\{.*\}""", RegexOption.DOT_MATCHES_ALL), "")
                 .split("\n")
@@ -278,7 +282,7 @@ fun adjustJooqFilesForJPA(pojoDir: File, preEntityDir: File) {
 
             if (content != modifiedContent) {
                 file.writeText(modifiedContent)
-                val newFilepath = "${file.parent}/${file.nameWithoutExtension}PreEntity.kt"
+                val newFilepath = "${file.parent}/${file.nameWithoutExtension}Entity_.kt"
                 file.renameTo(File(newFilepath))
             }
         }
@@ -288,71 +292,53 @@ fun adjustJooqFilesForJPA(pojoDir: File, preEntityDir: File) {
 }
 ```
 
-#### How to Create Entity Class Using @MappedSuperclass Base Class?
+#### How to Create AbastractAggregateRoot?
 
-##### IDomainModel Interface
-
-- To reduce boilerplate code we will define default implementation of common methods in an interface which will be implemented by our *rich* domain model.
-
-- We will then create an `Entity` class by implementing and extending `IDomainModel` and `PreEntity`.
-
-```kt
-interface IDomainModel {
-    @get:Transient
-    var domainEvents: MutableList<Any>?
-
-    fun <T> registerEvent(event: T): T {
-        Assert.notNull(event, "Domain event must not be null")
-        if (domainEvents == null) {
-            domainEvents = mutableListOf()
-        }
-        domainEvents?.add(event as Any)
-        return event
-    }
-
-    @AfterDomainEventPublication
-    fun clearDomainEvents() {
-        domainEvents?.clear()
-    }
-
-    @DomainEvents
-    fun domainEvents(): Collection<Any?> {
-        return Collections.unmodifiableList(this.domainEvents ?: mutableListOf())
-    }
-}
-```
-
-##### OrderEntity extending OrderPreEntity with Domain Behaviours
+##### OrderEntity extending AbstractAggregateRoot\<OrderEntity\>
 
 Let's consider the following Order aggregate:
 
 ![](/assets/img/2024-10-21-03-15-30.png)
 
-Recall that in our modification strategy we renamed the surgical result of `XXX` `POJO` by `XXXPreEntity`. Now we inherit from these `PreEntity` classes to create our `Entity` classes.
+Now we copy the definition of simplified @Entity classes and create a domain object:
 
 ```kt
-package com.billie.payment.domain.jpa.model
-
-import com.billie.db.enums.Status
-import com.billie.db.tables.pojos.OrderStripe
-import com.billie.db.tables.preentities.OrderPreEntity
-import com.billie.payment.domain.aggregate.*
-import jakarta.persistence.*
-import org.hibernate.annotations.DynamicInsert
-import org.joda.time.DateTime
-
-
 @Entity
 @DynamicInsert
 @Table(name = "Order", schema = "public")
-class OrderEntity(override var useremail: String) : IDomainModel, OrderPreEntity(useremail = useremail) {
-    @Transient
-    override var domainEvents: MutableList<Any>? = null
+class OrderEntity(
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(generator = "ulid_as_uuid")
+    var id: UUID? = null,
+    @Column(name = "error")
+    open var error: String? = null,
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    @JdbcType(PostgreSQLEnumJdbcType::class)
+    open var status: Status? = null,
+    @Column(name = "succeededAt")
+    open var succeededat: Double? = null,
+    @Column(name = "failedAt")
+    open var failedat: Double? = null,
+    @Column(name = "userEmail", nullable = false)
+    open var useremail: String,
+    @Column(name = "orderType")
+    @Enumerated(EnumType.STRING)
+    @JdbcType(PostgreSQLEnumJdbcType::class)
+    open var ordertype: Ordertype? = null,
+    @Column(name = "createdAt")
+    open var createdat: Double? = null,
+    @Column(name = "createdAtHK")
+    open var createdathk: String? = null,
+) : AbstractAggregateRoot<OrderEntity>() {
 
     @OneToOne(mappedBy = "orderEntity", fetch = FetchType.LAZY, cascade = [CascadeType.PERSIST])
+    @JsonManagedReference
     var orderStripe: OrderStripeEntity? = null
 
     @OneToOne(mappedBy = "orderEntity", fetch = FetchType.LAZY, cascade = [CascadeType.PERSIST])
+    @JsonManagedReference
     var orderMobile: OrderMobileEntity? = null
 
     fun updateStripeOrder(stripeOrder: OrderStripe) {
@@ -400,20 +386,27 @@ class OrderEntity(override var useremail: String) : IDomainModel, OrderPreEntity
 @DynamicInsert
 @Table(name = "Order_Mobile", schema = "public")
 class OrderMobileEntity(
-    override var orderid: UUID,
-    override var period: Period,
-    override var platform: Platform,
-    override var originalappuserid: String,
-    override var useremail: String
-) : OrderMobilePreEntity(
-    orderid = orderid,
-    period = period,
-    platform = platform,
-    originalappuserid = originalappuserid,
-    useremail = useremail,
+    @Id
+    @Column(name = "id")
+    var id: UUID? = null,
+    @Column(name = "orderId", nullable = false)
+    var orderid: UUID,
+    @Column(name = "period", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @JdbcType(PostgreSQLEnumJdbcType::class)
+    var period: Period,
+    @Column(name = "platform", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @JdbcType(PostgreSQLEnumJdbcType::class)
+    var platform: Platform,
+    @Column(name = "originalAppUserId", nullable = false)
+    var originalappuserid: String,
+    @Column(name = "userEmail", nullable = false)
+    var useremail: String,
 ) {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "orderId", referencedColumnName = "id", insertable = false, updatable = false)
+    @JsonBackReference
     var orderEntity: OrderEntity? = null
 }
 ```
@@ -425,16 +418,29 @@ class OrderMobileEntity(
 @DynamicInsert
 @Table(name = "Order_Stripe", schema = "public")
 class OrderStripeEntity(
-    override var actiontype: Actiontype,
-    override var numofpersons: Int,
-    override var orderid: UUID
-) : OrderStripePreEntity(
-    actiontype = actiontype,
-    numofpersons = numofpersons,
-    orderid = orderid
+    @Id
+    @Column(name = "id")
+    var id: UUID? = null,
+    @Column(name = "stripeSessionId")
+    var stripesessionid: String? = null,
+    @Column(name = "actionType", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @JdbcType(PostgreSQLEnumJdbcType::class)
+    var actiontype: Actiontype,
+    @Column(name = "numOfPersons", nullable = false)
+    var numofpersons: Int,
+    @Column(name = "subscriptionId")
+    var subscriptionid: String? = null,
+    @Column(name = "actionTargetSeatId")
+    var actiontargetseatid: Int? = null,
+    @Column(name = "quota_SeatId")
+    var quotaSeatid: Int? = null,
+    @Column(name = "orderId", nullable = false)
+    var orderid: UUID,
 ) {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "orderId", referencedColumnName = "id", insertable = false, updatable = false)
+    @JsonBackReference
     private val orderEntity: OrderEntity? = null
 }
 ```
@@ -473,22 +479,34 @@ We just discuss the most common one: `findbyXXX`.
 
 Let's look at our entity class:
 
-```kt{8}
-@MappedSuperclass
-open class QuotaFreequotarecordPreEntity(
+```kt{10}
+@Entity
+@DynamicInsert
+@Table(name = "Quota_FreeQuotaRecord", schema = "public")
+class QuotaFreeEntity(
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    open var id: Int? = null,
+    var id: Int? = null,
     @Column(name = "userEmail", nullable = false)
-    open var useremail: String,
+    var useremail: String,
     @Column(name = "audioUsed", nullable = false)
-    open var audioused: Double,
+    var audioused: Double,
     @Column(name = "summaryUsed", nullable = false)
-    open var summaryused: Int
-) 
+    var summaryused: Int,
+) : AbstractAggregateRoot<QuotaFreeEntity>() {
+    fun notifyFreeQuotaCreated() {
+        val event = FreeQuotaCreatedEvent(this.useremail)
+        registerEvent(event)
+    }
+
+    fun increaseSummaryCount() {
+        this.summaryused = (this.summaryused ?: 0) + 1
+        registerEvent(FreeQuotaSummaryCountedEvent(this.id!!))
+    }
+}
 ```
-Note that our member name is `useremail`, we ***capitalize the first letter*** to get:
+Note that our member name is `useremail`, we ***capitalize*** the ***first*** letter to get:
 ```kt
 @Repository
 interface FreeQuotaJpaRepository : JpaRepository<QuotaFreeEntity, Int> {
