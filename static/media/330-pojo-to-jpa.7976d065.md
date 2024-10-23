@@ -128,6 +128,8 @@ open class OrderPreEntity(
 
 
 #### Execution of the Surgery via Customized Gradle Task in `build.gradle.kts`
+
+##### The Original Configuration of JOOQ Generation Task
 ```kts{45-46}
 tasks.create("generate") {
     val pojoDir = File("$projectDir/src/main/kotlin/com/billie/db/tables/pojos")
@@ -178,6 +180,20 @@ tasks.create("generate") {
 }
 ```
 
+##### The Extra Amendment Step
+
+
+![](/assets/img/2024-10-23-09-02-15.png)
+
+- Here we copy all `pojos/XXX.kt` into `preentities/XXXPreEntity.kt`. 
+
+- We then do the text manipulation in `adjustJooqFilesForJPA` to turn the jooq's `@Entity` classes into  `@MappedSuperclass` classes which we name as `PreEntity` Classes.
+- We later define our own `@Entity` class by extending these `@MappedSuperclass` preentity classes where 
+  - We can define our custom `join-column` behaviour (aggregates) and 
+
+  - custom domain behaviours.
+
+
 ```kt
 fun getEnumList(): Sequence<String> {
     val enumDir = File("$projectDir/src/main/kotlin/com/billie/db/enums")
@@ -207,15 +223,18 @@ fun adjustJooqFilesForJPA(pojoDir: File, preEntityDir: File) {
                          "$1open var")
                 .replace(Regex("""(@Entity)""", RegexOption.MULTILINE),
                          "@MappedSuperclass")
-                .replace(Regex("""import jakarta.persistence.GeneratedValue""", RegexOption.MULTILINE),
+                .replace("import jakarta.persistence.GeneratedValue",
+                         "")
+                .replace("import jakarta.persistence.GenerationType",
                          "")
                 .replace(Regex("""import jakarta.persistence.Entity""".trimIndent()),
                          """
                      import jakarta.persistence.MappedSuperclass
-                     import jakarta.persistence.GeneratedValue
                      import jakarta.persistence.Enumerated
                      import jakarta.persistence.EnumType
                      import jakarta.persistence.Convert
+                     import jakarta.persistence.GeneratedValue
+                     import jakarta.persistence.GenerationType
                      import org.hibernate.dialect.PostgreSQLEnumJdbcType
                      import org.hibernate.annotations.JdbcType
                      """.trimIndent().trimMargin())
@@ -232,6 +251,12 @@ fun adjustJooqFilesForJPA(pojoDir: File, preEntityDir: File) {
                      |    open var id: UUID? = null
                      """.trimMargin()
                 )
+                .replace("@GeneratedValue(strategy = GenerationType.IDENTITY)", "")
+                .replace("open var id: Int? = null",
+                         """
+                         @GeneratedValue(strategy = GenerationType.IDENTITY)
+                         |    open var id: Int? = null
+                         """.trimIndent().trimMargin())
                 .replace(Regex("""\{.*\}""", RegexOption.DOT_MATCHES_ALL), "")
                 .split("\n")
                 .map { line ->
@@ -264,10 +289,6 @@ fun adjustJooqFilesForJPA(pojoDir: File, preEntityDir: File) {
 ```
 
 #### How to Create Entity Class Using @MappedSuperclass Base Class?
-
-Let's consider the following Order aggregate:
-
-![](/assets/img/2024-10-21-03-15-30.png)
 
 ##### IDomainModel Interface
 
@@ -302,6 +323,10 @@ interface IDomainModel {
 ```
 
 ##### OrderEntity extending OrderPreEntity with Domain Behaviours
+
+Let's consider the following Order aggregate:
+
+![](/assets/img/2024-10-21-03-15-30.png)
 
 Recall that in our modification strategy we renamed the surgical result of `XXX` `POJO` by `XXXPreEntity`. Now we inherit from these `PreEntity` classes to create our `Entity` classes.
 
@@ -414,19 +439,30 @@ class OrderStripeEntity(
 }
 ```
 
-#### @EntityScan
 
-To play safe just list out all the packages where our entity class live in.
+##### Finally, Avoid Back Reference that Causes Infinite Loop in Data Serialization
+
+In short
+- inside of aggregate root we annotate subaggregate/subdomain object by `@JsonManagedReference`.
+- inside of subdomain object we add `@JsonBackReference` to the backward reference.
 
 ```kt
-@EntityScan(basePackages = [
-    "com.billie.db",
-    "com.billie.payment"
-])
-class PaymentApplication {
-    ...
+import com.fasterxml.jackson.annotation.JsonManagedReference
+import com.fasterxml.jackson.annotation.JsonBackReference
+
+class Parent {
+    @OneToMany(mappedBy = "parent")
+    @JsonManagedReference
+    val children: List<Child> = mutableListOf()
+}
+
+class Child {
+    @ManyToOne // so is @OneToOne
+    @JsonBackReference
+    lateinit var parent: Parent
 }
 ```
+
 
 #### JpaRepository
 #####  The naming convention of findByXXX
@@ -460,30 +496,6 @@ interface FreeQuotaJpaRepository : JpaRepository<QuotaFreeEntity, Int> {
 }
 ```
 the custom repository method depends on the member name of our entity class but ***not on the actual column name***.
-
-##### Back Reference that Causes Infinite Loop in Data Serialization
-
-In short
-- inside of aggregate root we annotate subaggregate/subdomain object by `@JsonManagedReference`.
-- inside of subdomain object we add `@JsonBackReference` to the backward reference.
-
-```kt
-import com.fasterxml.jackson.annotation.JsonManagedReference
-import com.fasterxml.jackson.annotation.JsonBackReference
-
-class Parent {
-    @OneToMany(mappedBy = "parent")
-    @JsonManagedReference
-    val children: List<Child> = mutableListOf()
-}
-
-class Child {
-    @ManyToOne // so is @OneToOne
-    @JsonBackReference
-    lateinit var parent: Parent
-}
-```
-
 
 
 ##### When Tables and Columns are not Named in Snake Case
@@ -596,7 +608,7 @@ class RepositoryTest {
 ```
 
 ##### Example of Adding Domain Behaviour and How it Actually Works with Our Controller
-###### Then Entity Class
+###### The Entity Class
 ```kt
 data class SeatSummaryCountedEvent(
     val entity: QuotaSeatCounterEntity,
@@ -660,3 +672,20 @@ Therefore when we execute `repo.save()` method, we are actually doing:
 - Persist the state change
 
 - Notify all domains which is interested in the `SeatSummaryCountedEvent`.
+
+
+
+
+#### @EntityScan
+
+To play safe just list out all the packages where our entity class live in.
+
+```kt
+@EntityScan(basePackages = [
+    "com.billie.db",
+    "com.billie.payment"
+])
+class PaymentApplication {
+    ...
+}
+```
