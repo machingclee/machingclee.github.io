@@ -57,13 +57,10 @@ data class Order(
 }
 ```
 
-What we will be doing:
+What we will be automating:
 
 - Get rid of all kotlin-specific `@get:`'s which cause error by experiment
-
-- Change all `var` to `open var`
-- Change `data class` to `open class`
-- Rename `Order` to `OrderPreEntity`
+- Rename `Order` to `OrderEntity_`
 - Detect all `enum` type, for each declaration of `enum` we add 
   ```kt
   @Enumerated(EnumType.STRING)
@@ -183,6 +180,12 @@ tasks.create("generate") {
 }
 ```
 
+The `adjustJooqFilesForJPA` will 
+
+1. Copy the pojos to another folder
+
+2. Modify every file in that new folder
+
 ##### The Extra Amendment Step: adjustJooqFilesForJPA
 
 
@@ -292,7 +295,7 @@ fun adjustJooqFilesForJPA(pojoDir: File, preEntityDir: File) {
 }
 ```
 
-#### How to Create AbastractAggregateRoot?
+#### How to Create AbstractAggregateRoot?
 
 ##### OrderEntity extending AbstractAggregateRoot\<OrderEntity\>
 
@@ -312,25 +315,25 @@ class OrderEntity(
     @GeneratedValue(generator = "ulid_as_uuid")
     var id: UUID? = null,
     @Column(name = "error")
-    open var error: String? = null,
+    var error: String? = null,
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     @JdbcType(PostgreSQLEnumJdbcType::class)
-    open var status: Status? = null,
+    var status: Status? = null,
     @Column(name = "succeededAt")
-    open var succeededat: Double? = null,
+    var succeededat: Double? = null,
     @Column(name = "failedAt")
-    open var failedat: Double? = null,
+    var failedat: Double? = null,
     @Column(name = "userEmail", nullable = false)
-    open var useremail: String,
+    var useremail: String,
     @Column(name = "orderType")
     @Enumerated(EnumType.STRING)
     @JdbcType(PostgreSQLEnumJdbcType::class)
-    open var ordertype: Ordertype? = null,
+    var ordertype: Ordertype? = null,
     @Column(name = "createdAt")
-    open var createdat: Double? = null,
+    var createdat: Double? = null,
     @Column(name = "createdAtHK")
-    open var createdathk: String? = null,
+    var createdathk: String? = null,
 ) : AbstractAggregateRoot<OrderEntity>() {
 
     @OneToOne(mappedBy = "orderEntity", fetch = FetchType.LAZY, cascade = [CascadeType.PERSIST])
