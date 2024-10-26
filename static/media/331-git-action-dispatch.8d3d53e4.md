@@ -13,10 +13,18 @@ intro: We can design a button to determine what and when to do something instead
   }
 </style>
 
+<center>
+<img src="/assets/img/2024-10-26-13-56-09.png"/>
+</center>
+
+
 #### Workflow Dispatch Menu
 ##### String, Dropdown List and Boolean
 
+
+
 ```yml
+...
 on:
   workflow_dispatch:
     inputs:
@@ -28,13 +36,14 @@ on:
       boolean:
         type: boolean
         description: True or False
-      choice:
+      servicename:
         type: choice
         description: Make a choice
         options:
         - foo
         - bar
         - baz
+...
 ```
 
 #### Work with inputs from workflow_dispatch
@@ -47,11 +56,21 @@ We get the value in shell script via
     run: echo ${{ github.event.inputs.tag }}
 ```
 ##### Determine whether a step should be run (Like a Mapping)
-The following can be treated as a "mapping" to determine which parameter to use if we have made a reusable github action.
+The following can be treated as a "mapping" to determine which parameter to use if we have made a reusable github action. A typical example is a javascript action because all of them must be reusable by nature, see [Fundamentals of Github Actions](/blog/article/Fundamentals-of-Github-Actions) and scroll to *Javascript Actions* section.
 
-A typical example is a javascript action because all of them must be reusable by nature, see [Fundamentals of Github Actions](/blog/article/Fundamentals-of-Github-Actions) and scroll to *Javascript Actions* section.
+- For unknown reason the expression `${{ github.event.inputs.servicename == 'foo' }}` does not work because the available expression syntax is limited to specific functions and operators
+- Instead we use:
+  - ```yml
+    if: contains(github.event.inputs.servicename, 'foo')
+    ```
+    or
+  - ```yml
+    if: github.event.inputs.servicename == 'foo'
+    ```
 
-```yml
+- More examples from [official documentation](https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idif)
+
+```yml{12,19}
 jobs:
   test:
    runs-on: ubuntu-latest
@@ -61,20 +80,23 @@ jobs:
       with:
           fetch-depth: 0
           
-  l-Service:
+  foo-service:
     runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.SERVICE_NAME == 'L Service'}}
+    if: always() && github.event.inputs.servicename == 'foo'
     steps:
     - name: "Checkout source code"
       uses: actions/checkout@v3
 
-  S-Service:
+  bar-service:
     runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.SERVICE_NAME   == 'S Service'}}
+    if: always() && github.event.inputs.servicename == 'bar'
     steps:
     - name: "Checkout source code"
       uses: actions/checkout@v3
 ```
+Note that we add `always()` because the previous step may ***partially*** succeed for unknown reason but we still want to continue. 
+
+Note that the subsequent jobs will not continue unless you have if: success() or if: failure(), etc expression.
 
 ##### Validate tha inputs from workflow_dispatch
 For example, we can enforce the tag to follow some specific pattern:
