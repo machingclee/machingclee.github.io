@@ -17,20 +17,18 @@ intro: We can design a button to determine what and when to do something instead
 <img src="/assets/img/2024-10-26-13-56-09.png"/>
 </center>
 
-
 #### Workflow Dispatch Menu
+
 ##### String, Dropdown List and Boolean
 
-
-
 ```yml
-...
+---
 on:
   workflow_dispatch:
     inputs:
       tag:
         type: string
-        description: 'Release tag (e.g., v1.0.0)'
+        description: "Release tag (e.g., v1.0.0)"
         required: true
         default: v1.0.0
       boolean:
@@ -40,26 +38,28 @@ on:
         type: choice
         description: Make a choice
         options:
-        - foo
-        - bar
-        - baz
-...
+          - foo
+          - bar
+          - baz
 ```
 
 #### Work with inputs from workflow_dispatch
 
 ##### Retrieve the value
 
-We get the value in shell script via 
+We get the value in shell script via
 
 ```yml
-    run: echo ${{ github.event.inputs.tag }}
+run: echo ${{ github.event.inputs.tag }}
 ```
+
 ##### Determine whether a step should be run (Like a Mapping)
-The following can be treated as a "mapping" to determine which parameter to use if we have made a reusable github action. A typical example is a javascript action because all of them must be reusable by nature, see [Fundamentals of Github Actions](/blog/article/Fundamentals-of-Github-Actions) and scroll to *Javascript Actions* section.
+
+The following can be treated as a "mapping" to determine which parameter to use if we have made a reusable github action. A typical example is a javascript action because all of them must be reusable by nature, see [Fundamentals of Github Actions](/blog/article/Fundamentals-of-Github-Actions) and scroll to _Javascript Actions_ section.
 
 - For unknown reason the expression `${{ github.event.inputs.servicename == 'foo' }}` does not work because the available expression syntax is limited to specific functions and operators
 - Instead we use:
+
   - ```yml
     if: contains(github.event.inputs.servicename, 'foo')
     ```
@@ -79,7 +79,7 @@ jobs:
       uses: actions/checkout@v3
       with:
           fetch-depth: 0
-          
+
   foo-service:
     runs-on: ubuntu-latest
     if: always() && github.event.inputs.servicename == 'foo'
@@ -94,11 +94,18 @@ jobs:
     - name: "Checkout source code"
       uses: actions/checkout@v3
 ```
-Note that we add `always()` because the previous step may ***partially*** succeed for unknown reason but we still want to continue. 
 
-Note that the subsequent jobs will not continue unless you have if: success() or if: failure(), etc expression.
+Note that we add `always()` because the previous step may **_partially_** succeed for unknown reason but we still want to continue.
+
+Note that the subsequent jobs will not continue unless you have
+
+- `if: success()` or
+- `if: failure()`
+
+etc expression.
 
 ##### Validate tha inputs from workflow_dispatch
+
 For example, we can enforce the tag to follow some specific pattern:
 
 ```yml
@@ -124,21 +131,15 @@ jobs:
 Suppose that we have input a `tag` and want to tag a branch once a deployment succeeded, we add a final step to a job:
 
 ```yml![alt text](image.png)
-      # ... other step  
+      # ... other step
       - name: Create tag
         run: |
           # Print current branch for verification
           echo "Current branch: $(git branch --show-current)"
-          
-          # Validate tag format
-          if ! [[ ${{ github.event.inputs.tag }} =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            echo "Tag must follow format v*.*.* (e.g., v1.0.0)"
-            exit 1
-          fi
-          
+
           # Create tag on current branch
           git tag ${{ github.event.inputs.tag }} ${{ github.ref_name }}
           git push origin ${{ github.event.inputs.tag }}
-          
+
           echo "Created tag ${{ github.event.inputs.tag }} on branch ${{ github.ref_name }}"
 ```

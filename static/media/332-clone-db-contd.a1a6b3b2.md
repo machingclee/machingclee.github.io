@@ -7,37 +7,34 @@ toc: true
 intro: "Let's discuss how to clone a database again."
 ---
 
-
 <style>
   img {
     max-width: 660px;
   }
 </style>
 
-#### Dumping to Existing Database
+#### Dumping Data into an Existing Database
 
-
-- Let consider a situation where we have a `.dump` file created from a database (see in [this blog post](/blog/article/Postgresql-and-MySQL-DB-from-Docker-Compose-and-Clone-From-Existing-DB) how we do this).
+- Let's consider a situation where we have a `.dump` file created from a database (see in [this blog post](/blog/article/Postgresql-and-MySQL-DB-from-Docker-Compose-and-Clone-From-Existing-DB) how we do this).
 
 - By applying a `.dump` file we can create all tables in an existing database, but the following is not appropriate:
+
   > Create a new database
-  because our teammates are working on that and no one wants to reconfigure the host, the credentials, etc.
+
+  because none of our teammates would want to reconfigure the host, the username, the credentials, etc.
 
 - Therefore we come up with the next solution:
 
   > Destroy (remove) all tables in an existing database, and then apply `.dump` file to create all tables
 
-
-
-
-#####  Destructively Remove all Tables in a Database (Not removing the database)
+##### Destructively Remove all Tables in a Database (Not removing the database)
 
 ```sql
-DO $$ 
-DECLARE 
+DO $$
+DECLARE
   r RECORD;
 BEGIN
-  FOR r IN (SELECT tablename FROM pg_tables WHERE schemaname = current_schema()) 
+  FOR r IN (SELECT tablename FROM pg_tables WHERE schemaname = current_schema())
   LOOP
     EXECUTE 'DROP TABLE IF EXISTS ' || quote_ident(r.tablename) || ' CASCADE';
   END LOOP;
@@ -66,9 +63,9 @@ docker run --rm -v $(pwd):/backup \
 
 ##### Step 2. (Optional) Create a Database in a PostgreSQL Server
 
-Make sure an existing database server has been spin up. ***Skip this step*** if you are cloning data into an ***shared database*** (e.g., not local).
+Make sure an existing database server has been spin up. **_Skip this step_** if you are cloning data into an **_shared database_** (e.g., not local).
 
-```bash 
+```bash
 export TARGET_DB_HOST="host.docker.internal"
 export TARGET_DB_USER="pguser"
 export TARGET_DB_PASSWORD="pguser"
@@ -101,14 +98,15 @@ docker run --rm -v $(pwd):/backup \
   -c -C /backup/database_dump.dump
 ```
 
-Beware of the meaning of 
-```bash 
-/backup/database_dump.dump
-```
-Since we have mounted a volume referencing to the current working directory (see the `-v $(pwd):/backup`), `/backup/database_dump.dump` refers to the file in the local directory:
-```bash 
-$(pwd)/database_dump.dump
-```
+Beware of the meaning of
+
+- `/backup/database_dump.dump`
+
+Since we have mounted a volume referencing to the current working directory (see the `-v $(pwd):/backup`), we have the following 1-1 correspondence:
+
+- `$(pwd)/database_dump.dump` $\longleftrightarrow$ `/backup/database_dump.dump`
+
+In other words, it refers to the **_local file_** `./database_dump.dump` inside of the directory due to the way we mount the volume.
 
 ##### Step 4. Custom Follow-up Actions After Dumping Data
 
@@ -135,11 +133,9 @@ rm temp_script.sql
 echo "Done"
 ```
 
-
-
 #### Remove all Database by TRUNCATE TABLE \<table\> CASCADE
 
-As mentioned in step 4 above we may wish to have follow-up actions, and usually it is to remove data and also all  children  from other tables referencing to our data via a foreign-key ***forcefully***. 
+As mentioned in step 4 above we may wish to have follow-up actions, and usually it is to **_forcefully_** clean a table and also to remove all entities from other tables referencing to our data via a foreign-key.
 
 There is a better command than `DELETE FROM <table>` in this case!
 
