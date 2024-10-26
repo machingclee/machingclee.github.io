@@ -13,6 +13,33 @@ toc: true
   }
 </style>
 
+#### Queues Fundamentals
+
+```ts
+// Service A (Producer)
+async function serviceA() {
+    const channel = await connection.createChannel();
+    await channel.assertExchange('orders_exchange', 'topic');
+    
+    // Only publishes, doesn't need to know about queues
+    channel.publish('orders_exchange', 'order.created', 
+        Buffer.from('new order'));
+}
+
+// Service B (Consumer)
+async function serviceB() {
+    const channel = await connection.createChannel();
+    await channel.assertExchange('orders_exchange', 'topic');
+    await channel.assertQueue('order_processing_queue');
+    await channel.bindQueue('order_processing_queue', 'orders_exchange', 
+        'order.created');
+    
+    channel.consume('order_processing_queue', msg => {
+        // Process order
+    });
+}
+```
+
 #### Queues Structure
 
 [![](/assets/img/2024-03-02-23-57-02.png)](/assets/img/2024-03-02-23-57-02.png)

@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.4cf52b72.chunk.css",
-    "main.js": "/static/js/main.8504ffa3.chunk.js",
+    "main.js": "/static/js/main.b731cb68.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.f82f46ae.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.a052061a.chunk.js": "/static/js/2.a052061a.chunk.js",
@@ -246,7 +246,7 @@
     "static/media/233-github-actions.md": "/static/media/233-github-actions.8ac4d530.md",
     "static/media/234-algolia-revisit.md": "/static/media/234-algolia-revisit.a0b9aa1f.md",
     "static/media/235-github-actinos-fargate copy.md": "/static/media/235-github-actinos-fargate copy.01e21d46.md",
-    "static/media/236-organize-js-rabbitmq.md": "/static/media/236-organize-js-rabbitmq.5f59cc79.md",
+    "static/media/236-organize-js-rabbitmq.md": "/static/media/236-organize-js-rabbitmq.96b4077c.md",
     "static/media/237-auto-hot-key-for-vscode.md": "/static/media/237-auto-hot-key-for-vscode.22bdad75.md",
     "static/media/238-redis-code-organization.md": "/static/media/238-redis-code-organization.c04af1cf.md",
     "static/media/239-forcefully-migrate-prisma.md": "/static/media/239-forcefully-migrate-prisma.0a13c364.md",
@@ -376,6 +376,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.a052061a.chunk.js",
     "static/css/main.4cf52b72.chunk.css",
-    "static/js/main.8504ffa3.chunk.js"
+    "static/js/main.b731cb68.chunk.js"
   ]
 }
