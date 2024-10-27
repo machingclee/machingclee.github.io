@@ -1,5 +1,5 @@
 ---
-title: "Scheduled Tasks in ECS: Demonstration via Database Backup"
+title: "Scheduled Tasks in ECS: Demonstration via Regular Database Backup"
 date: 2024-10-27
 id: blog0333
 tag: pdf
