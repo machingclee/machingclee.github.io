@@ -1,8 +1,8 @@
 ---
-title: Destroy all Tables To Apply Dump Files in an Existing Database
+title: Restore PostgreSQL DB from Backup
 date: 2024-10-25
 id: blog0332
-tag: sql
+tag: sql, db-backup, postgresql
 toc: true
 intro: "Let's discuss how to clone a database again."
 ---

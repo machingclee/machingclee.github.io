@@ -41,7 +41,7 @@ toc: true
 - `go get github.com/lib/pq` (if we use pgsql)
 - Now in `pkg/pgsql/pgsql`
 
-  ```text
+  ```go
   package pgsql
 
   import (
@@ -68,7 +68,7 @@ toc: true
 
 ##### pkg/user/handler.go
 
-- ```text
+- ```go
   package user
 
   import (
@@ -103,7 +103,7 @@ toc: true
 
 ##### cmd/api/routes.go
 
-- ```text
+- ```go
   package main
 
   import (
@@ -132,7 +132,7 @@ toc: true
 
 ##### cmd/api/main.go
 
-- ```text
+- ```go
   package main
 
   import (
@@ -158,7 +158,7 @@ toc: true
 
 - We get:
 
-  ```text
+  ```go
   {
         "ID": 1,
         "FirstName": "James",

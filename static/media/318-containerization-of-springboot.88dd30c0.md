@@ -2,7 +2,7 @@
 title: "Containerization of Spring Boot Application in Kotlin and Troubles in Deployment through ECS"
 date: 2024-09-05
 id: blog0318
-tag: kotlin, docker
+tag: kotlin, docker, ecs
 toc: true
 intro: "We record a two-stages dockerfile to build a docker image of spring boot application."
 ---

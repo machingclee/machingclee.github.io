@@ -2,7 +2,7 @@
 title: "Role and User Management in PostgreSQL"
 date: 2024-06-07
 id: blog0265
-tag: sql
+tag: sql, db-management, postgresql
 intro: "Record SQL script for managing db user persmissions"
 toc: true
 ---

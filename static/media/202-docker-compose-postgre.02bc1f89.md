@@ -2,7 +2,7 @@
 title: "Postgresql and MySQL DB from Docker-Compose and Clone From Existing DB"
 date: 2024-09-08
 id: blog0202
-tag: docker, sql
+tag: docker, sql, postgresql, mysql
 intro: "Record a docker-compose.yml to host a postgresql/mysql db locally. Also we clone existing DB by docker-command using postgres image"
 toc: true
 ---

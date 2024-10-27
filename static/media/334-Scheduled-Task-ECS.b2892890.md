@@ -2,7 +2,7 @@
 title: "Scheduled Tasks in ECS: Demonstration via Regular Database Backup"
 date: 2024-10-27
 id: blog0333
-tag: pdf
+tag: ecs, aws, db-backup, sql
 toc: true
 intro: "We study scheduled tasks by doing a regular backup of databases (pgsql + mongo) on a hourly basis."
 ---
@@ -60,6 +60,7 @@ Lambda with SQS advantages:
 TMP_BACKUP_DIR="/var/task"
 mkdir -p $TMP_BACKUP_DIR
 
+# define the filename by timestamp
 TIMESTAMP=$(TZ='UTC+0' date -d '+8 hours' +%Y-%m-%d_%Hh%Mm%Ss)
 BACKUP_FILE="$TMP_BACKUP_DIR/backup_${STAGE}_${PG_DB_NAME}_${TIMESTAMP}.dump"
 
@@ -69,6 +70,7 @@ export PGPASSWORD=$PG_DB_PASSWORD
 CONN_STRING="postgresql://$PG_DB_USER:$PG_DB_PASSWORD@$PG_DB_HOST/$PG_DB_NAME?options=${NEON_DB_ENDPOINT_OPTION}"
 pg_dump $CONN_STRING -F c -f $BACKUP_FILE
 
+# upload to S3
 aws s3 cp "${BACKUP_FILE}" "s3://${S3_BUCKET}/${STAGE}/${TIMESTAMP}_PGSQL/"
 
 echo "Backup completed successfully"
@@ -79,11 +81,18 @@ echo "Backup completed successfully"
 ```bash
 #!/bin/bash
 
+# define the filename by timestamp
 TIMESTAMP=$(TZ='UTC+0' date -d '+8 hours' +%Y-%m-%d_%Hh%Mm%Ss)
 BACKUP_ZIP_FILENAME=${MONGO_DB_NAME}_${TIMESTAMP}.zip
+
+# clone data from backup
 mongodump --uri "$MONGO_CONNECTION_STRING" --out /var/task/mongo_backup
+
+# make sure to zip only the folder mongo_backup/ but not the folders /var/task
 cd /var/task
 zip -rv $BACKUP_ZIP_FILENAME mongo_backup/
+
+# upload to S3
 aws s3 cp "/var/task/${BACKUP_ZIP_FILENAME}" "s3://${S3_BUCKET}/${STAGE}/${TIMESTAMP}_MONGO/"
 ```
 

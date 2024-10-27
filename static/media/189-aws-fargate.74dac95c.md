@@ -2,7 +2,7 @@
 title: "AWS Fargate: Let's Create Service and Run Task!"
 date: 2023-10-07
 id: blog0189
-tag: aws
+tag: aws, ecs
 intro: 'There are two ways of deploying tasks in ECS fargate,  by either "create service" or "run task", let''s get hands on experience with both methods.'
 toc: true
 ---

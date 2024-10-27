@@ -2,7 +2,7 @@
 title: "Github Action for Deployment on ECS Fargate"
 date: 2024-01-22
 id: blog0235
-tag: cicd, github-actions
+tag: cicd, github-actions, ecs
 intro: "We study how to automate the deployment process with containerized backend image."
 toc: true
 ---
