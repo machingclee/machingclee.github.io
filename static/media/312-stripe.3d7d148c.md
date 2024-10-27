@@ -109,7 +109,7 @@ class EventController(
 }
 ```
 
-##### Get orderId from metadata in Subscription via Checkout Completed Event
+##### Get `orderId` from metadata in Subscription via Checkout Completed Event
 
 ```kotlin{25}
 data class EventDataObject(val subscription: String)
