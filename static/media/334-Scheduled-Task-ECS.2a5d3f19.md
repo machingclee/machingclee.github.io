@@ -14,6 +14,9 @@ intro: "We study scheduled tasks by doing a regular backup of databases (pgsql +
   }
 </style>
 
+
+#### Why ECS For Scheduled Task Instead of Lambda?
+
 <center>
 <img src="/assets/img/2024-10-27-17-47-42.png"/>
 </center>
@@ -21,7 +24,7 @@ intro: "We study scheduled tasks by doing a regular backup of databases (pgsql +
 Project Sturcture
 </center>
 
-#### Why ECS For Scheduled Task Instead of Lambda?
+
 ##### Comparison
 ECS Scheduled Tasks advantages (*From Claude-3.5-Sonnet*):
 

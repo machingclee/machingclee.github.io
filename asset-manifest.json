@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.4cf52b72.chunk.css",
-    "main.js": "/static/js/main.d88b6404.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.d75fbfa8.js",
+    "main.js": "/static/js/main.e7f18caa.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.7f92ddcd.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.2332de6c.chunk.js": "/static/js/2.2332de6c.chunk.js",
-    "static/js/3.0ae03b89.chunk.js": "/static/js/3.0ae03b89.chunk.js",
-    "static/js/4.d16f2310.chunk.js": "/static/js/4.d16f2310.chunk.js",
+    "static/js/2.0088d782.chunk.js": "/static/js/2.0088d782.chunk.js",
+    "static/js/3.fd706758.chunk.js": "/static/js/3.fd706758.chunk.js",
+    "static/js/4.3a287fee.chunk.js": "/static/js/4.3a287fee.chunk.js",
     "static/js/5.c620ad8a.chunk.js": "/static/js/5.c620ad8a.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.2332de6c.chunk.js.LICENSE.txt": "/static/js/2.2332de6c.chunk.js.LICENSE.txt",
-    "static/js/3.0ae03b89.chunk.js.LICENSE.txt": "/static/js/3.0ae03b89.chunk.js.LICENSE.txt",
-    "static/js/4.d16f2310.chunk.js.LICENSE.txt": "/static/js/4.d16f2310.chunk.js.LICENSE.txt",
+    "static/js/2.0088d782.chunk.js.LICENSE.txt": "/static/js/2.0088d782.chunk.js.LICENSE.txt",
+    "static/js/3.fd706758.chunk.js.LICENSE.txt": "/static/js/3.fd706758.chunk.js.LICENSE.txt",
+    "static/js/4.3a287fee.chunk.js.LICENSE.txt": "/static/js/4.3a287fee.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.52b1ef07.md",
     "static/media/002-Lazy-React-Router.md": "/static/media/002-Lazy-React-Router.48295ca9.md",
@@ -323,7 +323,7 @@
     "static/media/331-git-action-dispatch.md": "/static/media/331-git-action-dispatch.5f9e703b.md",
     "static/media/332-clone-db-contd.md": "/static/media/332-clone-db-contd.419ca655.md",
     "static/media/333-Create-html-via-pdf.md": "/static/media/333-Create-html-via-pdf.1b085686.md",
-    "static/media/334-Scheduled-Task-ECS.md": "/static/media/334-Scheduled-Task-ECS.b2892890.md",
+    "static/media/334-Scheduled-Task-ECS.md": "/static/media/334-Scheduled-Task-ECS.2a5d3f19.md",
     "static/media/335-clone-db-contd-mongo-ver.md": "/static/media/335-clone-db-contd-mongo-ver.ed5cecb2.md",
     "static/media/CV_Portfolio.956a131c.pdf": "/static/media/CV_Portfolio.956a131c.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
@@ -374,10 +374,10 @@
     "static/media/transformer-date-fomatter.18a2d3fc.pdf": "/static/media/transformer-date-fomatter.18a2d3fc.pdf"
   },
   "entrypoints": [
-    "static/js/runtime-main.d75fbfa8.js",
+    "static/js/runtime-main.7f92ddcd.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.2332de6c.chunk.js",
+    "static/js/2.0088d782.chunk.js",
     "static/css/main.4cf52b72.chunk.css",
-    "static/js/main.d88b6404.chunk.js"
+    "static/js/main.e7f18caa.chunk.js"
   ]
 }
