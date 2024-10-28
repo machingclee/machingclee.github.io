@@ -13,15 +13,23 @@ intro: "Let's discuss how to restore a mongodb from backup, how does the back up
   }
 </style>
 
-#### The Backup Data
+#### Back-up MongoDB
+##### The `mongodump` Command
+We usually backup a mongodb via 
 
-Usually a backup data generated from `mongodump` looks the following:
+```bash
+MONGO_CONNECTION_STRING="mongodb+srv://username:password@host/some_db?retryWrites=true&w=majority"
+mongodump --uri "$MONGO_CONNECTION_STRING" --out some/dir/mongo_backup
+```
+
+##### The Backup Files
+The backup data generated looks the following:
 
 ![](/assets/img/2024-10-27-22-27-50.png)
 
-Let's name this folder as `mongo_backup/some_db`.
+If our database name is `some_db`, then the back files lie inside `mongo_backup/some_db/`.
 
-#### Script to Inject Backuped Data
+#### Script to Inject Backup Data
 
 ##### Cloning old data into new Database
 ```bash
@@ -43,6 +51,6 @@ This time we should run with the additional flag `--drop`:
 ```bash
 mongorestore --drop --uri $DB_URL --dir ./mongo_backup/some_db
 ```
-which means that for every collection that we are going to restore, we ***first*** drop it.
+- For every collection that we are going to restore, we ***first*** drop it.
 
-Note that in this case any ***new*** collection ***not included in*** the `mongo_backup` will not be dropped.
+- Note that in this case any ***new*** collection ***not included in*** the `mongo_backup` will not be dropped.

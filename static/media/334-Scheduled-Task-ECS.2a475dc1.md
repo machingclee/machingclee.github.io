@@ -26,23 +26,25 @@ Project Sturcture
 
 
 ##### Comparison
-ECS Scheduled Tasks advantages (*From Claude-3.5-Sonnet*):
 
-1. No time limits (Lambda has 15-min max)
-2. Better for large database backups
-3. More memory available (up to 30GB vs Lambda's 10GB)
-4. Can use same Docker image as your application
-5. Better for CPU-intensive tasks
-6. No cold starts
+*From Claude-3.5-Sonnet*: 
+- ECS Scheduled Tasks advantages:
+  1. No time limits (Lambda has 15-min max)
 
-Lambda with SQS advantages:
+  2. Better for large database backups
+  3. More memory available (up to 30GB vs Lambda's 10GB)
+  4. Can use same Docker image as your application
+  5. Better for CPU-intensive tasks
+  6. No cold starts
 
-1. More cost-effective for short tasks
-2. Serverless, less configuration
-3. Better for small databases
-4. Auto-scaling built in
-5. Pay only for execution time
-6. Easier to implement and maintain
+- Lambda with SQS advantages:
+  1. More cost-effective for short tasks
+  
+  2. Serverless, less configuration
+  3. Better for small databases
+  4. Auto-scaling built in
+  5. Pay only for execution time
+  6. Easier to implement and maintain
 
 ##### My Experience
 
@@ -105,8 +107,8 @@ aws s3 cp "/var/task/${BACKUP_ZIP_FILENAME}" "s3://${S3_BUCKET}/${STAGE}/${TIMES
 Now let's summarize the `env`'s we need in order for the scripts to be functioning:
 
 ```bash{3,4}
-MONGO_CONNECTION_STRING=
-MONGO_DB_NAME=
+MONGO_CONNECTION_STRING="mongodb+srv://username:password@host/db_name?retryWrites=true&w=majority"
+MONGO_DB_NAME=db_name
 PG_DB_HOST=ep-aged-morning-26453078.ap-southeast-1.aws.neon.tech
 NEON_DB_ENDPOINT_OPTION=endpoint%3Dep-aged-morning-26453078
 PG_DB_NAME=

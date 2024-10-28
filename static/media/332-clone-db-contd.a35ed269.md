@@ -135,10 +135,80 @@ echo "Done"
 
 #### Remove all Database by TRUNCATE TABLE \<table\> CASCADE
 
-As mentioned in step 4 above we may wish to have follow-up actions, and usually it is to **_forcefully_** clean a table and also to remove all entities from other tables referencing to our data via a foreign-key.
+- As mentioned in step 4 above we may wish to have follow-up actions.
+
+- Usually it is to **_forcefully_** clean a table and also to remove all entities from other tables referencing to our data.
 
 There is a better command than `DELETE FROM <table>` in this case!
 
 ```sql
 TRUNCATE TABLE parent_table CASCADE;
 ```
+
+#### Conversion From `.dump` into `.sql`
+##### Why?
+
+- For one reason we can observe what is actually done by the `.dump` script;
+- For another reason we can adjust the "insertion" (like making the insertion into `on conflict do nothing`).
+
+##### The Conversion Script
+
+Given a `database_dump.dump` file in the current diectory, we can execute
+```bash 
+docker run --rm -v $(pwd):/backup \
+  postgres:15 pg_restore -f /backup/database_dump.sql -Fc /backup/database_dump.dump
+```
+to convert a `database_dump.dump` file back to `database_dump.sql` file.
+
+
+
+##### Execute the `.sql` file
+To execute this `sql` script for backup we simply run 
+
+```bash
+export TARGET_DB_HOST="host.docker.internal"
+export TARGET_DB_USER="pguser"
+export TARGET_DB_PASSWORD="pguser"
+export TARGET_DB_NAME="some-name"
+
+docker run --rm -v $(pwd):/backup \
+  -e PGPASSWORD=$TARGET_DB_PASSWORD \
+  postgres:15 psql  \
+  -h $TARGET_DB_HOST \
+  -U $TARGET_DB_USER \
+  -d $TARGET_DB_NAME \
+  -f /backup/database_dump.sql
+```
+##### Typical Exmaple of a `database_dump.sql` and how to Change it to avoid Duplicate key
+
+A typical backup `database_dump.sql` script consists of the following block for each table:
+
+```sql
+--
+-- Data for Name: Quota_UsageCounter; Type: TABLE DATA; Schema: public; Owner: james.lee
+--
+
+COPY public."Quota_UsageCounter" (id, "seatId", ..., "summaryGenerated") FROM stdin;
+718	601	0	1729262031656	2024-10-18 22:33:51	f	1729262029357	1729262029357	0
+719	601	0	1729262403781	2024-10-18 22:40:03	f	1731940429357	1729262029357	0
+730	603	0	1729337500635	2024-10-19 19:31:40	f	1729337499664	1729337499664	0
+\.
+```
+Here we use `...` to omit the dummy names (not a valid `sql` syntax!).
+
+The `COPY` clause can be replaced by 
+
+```sql{1,3,9-11}
+CREATE TEMP TABLE temp_table AS TABLE public."Quota_UsageCounter" WITH NO DATA;
+
+COPY temp_table (id, "seatId", ..., "summaryGenerated") FROM stdin;
+718	601	0	1729262031656	2024-10-18 22:33:51	f	1729262029357	1729262029357	0
+719	601	0	1729262403781	2024-10-18 22:40:03	f	1731940429357	1729262029357	0
+730	603	0	1729337500635	2024-10-19 19:31:40	f	1729337499664	1729337499664	0
+\.
+
+INSERT INTO public."Quota_UsageCounter" (SELECT * FROM temp_table)
+ON CONFLICT DO NOTHING;
+DROP TABLE temp_table;
+```
+
