@@ -149,9 +149,11 @@ TRUNCATE TABLE parent_table CASCADE;
 ##### Why?
 
 - For one reason we can observe what is actually done by the `.dump` script;
-- For another reason we can adjust the "insertion" (like making the insertion into `on conflict do nothing`).
+- For another reason we can adjust the "data insertion" or table creation such as:
+  1. making the insertion into `on conflict do nothing` or
+  2. changing the owner of the tables before creating one, etc
 
-##### The Conversion Script
+##### The Conversion Script from `.dump` into `.sql`
 
 Given a `database_dump.dump` file in the current diectory, we can execute
 ```bash 
@@ -212,3 +214,94 @@ ON CONFLICT DO NOTHING;
 DROP TABLE temp_table;
 ```
 
+
+#### User Role Management
+##### Who is the owner of the table whose Original owner does not exist in the new Database?
+Sometimes we clone from a database where the owner of the table does not exist in our new database, then
+
+- the ownership of the table defaults to the user ***performing the restore*** operation (the user running `pg_restore`)
+
+Most of the time this user will be of `superuser` grade, but we wish to delegate the tables to an account with inferior power, for that:
+
+##### View the tables and their owner
+
+```sql
+SELECT tablename, tableowner 
+FROM pg_tables 
+WHERE schemaname = 'public';
+```
+
+<img src="/assets/img/2024-10-30-03-21-33.png" width="360"/>
+
+##### Change the owner
+
+The following change the tables owned by `postgres` to `new_user`:
+
+```sql
+-- For all tables in public schema
+DO $$
+DECLARE
+    r record;
+BEGIN
+    FOR r IN SELECT tablename FROM pg_tables 
+    WHERE schemaname = 'public' AND tableowner = 'postgres'
+    LOOP
+        EXECUTE 'ALTER TABLE public.' || quote_ident(r.tablename) || ' OWNER TO new_user';
+    END LOOP;
+END $$;
+
+-- For sequences
+DO $$
+DECLARE
+    r record;
+BEGIN
+    FOR r IN SELECT sequence_name FROM information_schema.sequences 
+    WHERE sequence_schema = 'public'
+    LOOP
+        EXECUTE 'ALTER SEQUENCE public.' || quote_ident(r.sequence_name) || 
+        ' OWNER TO new_user';
+    END LOOP;
+END $$;
+
+-- For views
+DO $$
+DECLARE
+    r record;
+BEGIN
+    FOR r IN SELECT viewname FROM pg_views 
+    WHERE schemaname = 'public' AND viewowner = 'postgres'
+    LOOP
+        EXECUTE 'ALTER VIEW public.' || quote_ident(r.viewname) || ' OWNER TO new_user';
+    END LOOP;
+END $$;
+```
+
+##### Create a user with minimal Development right (which can adjust schema)
+
+```sql
+CREATE USER new_user WITH PASSWORD 'new_password';
+
+--- enable basic priviledges:
+GRANT USAGE ON SCHEMA public TO new_user;
+--- database level priviledges such as connect, create scehma, etc:
+GRANT ALL PRIVILEGES ON DATABASE new_db TO new_user;
+--- Schema-level priviledges:
+GRANT USAGE, CREATE, DROP ON SCHEMA public TO new_user;
+--- For using auto-increment function:
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO new_user;
+--- enable a user to create foreign key constraint:
+GRANT REFERENCES ON ALL TABLES IN SCHEMA public TO new_user;
+--- for future tables:
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT REFERENCES ON TABLES TO new_user;
+--- grant to all existing tables, including: SELECT, INSERT, UPDATE, 
+--- DELETE, TRUNCATE, REFERENCES, TRIGGER:
+GRANT ALL ON ALL TABLES IN SCHEMA public TO new_user;
+--- or grant to all future tables more selectively:
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO testuser;
+```
+
+
+Note that to remove this user, one needs to:
+```sql
+REASSIGN OWNED BY new_user TO postgres;
+```
