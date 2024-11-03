@@ -39,7 +39,7 @@ Project Sturcture
 
 - Lambda with SQS advantages:
   1. More cost-effective for short tasks
-  
+
   2. Serverless, less configuration
   3. Better for small databases
   4. Auto-scaling built in
@@ -102,7 +102,7 @@ aws s3 cp "/var/task/${BACKUP_ZIP_FILENAME}" "s3://${S3_BUCKET}/${STAGE}/${TIMES
 ```
 
 ##### The Docker Images
-###### The Environment Varisbles and remark on SNI from neon-tech
+###### The Environment Variables and remark on SNI from neon-tech
 
 Now let's summarize the `env`'s we need in order for the scripts to be functioning:
 
@@ -151,6 +151,8 @@ COPY backup_mongo.sh /var/task
 RUN chmod +x /var/task/backup_pgsql.sh
 RUN chmod +x /var/task/backup_mongo.sh
 
+# if want to run in parallel, we should try:
+# ENTRYPOINT ["/bin/bash", "-c", "/var/task/backup_pgsql.sh & /var/task/backup_mongo.sh & wait"]
 ENTRYPOINT ["/bin/bash", "-c", "/var/task/backup_pgsql.sh && /var/task/backup_mongo.sh"]
 ```
 
