@@ -1,6 +1,6 @@
 ---
 title: "Github Action: Docker Action in Python to get Artifact of CloudWatch Logging"
-date: 2024-11-06
+date: 2024-11-05
 id: blog0336
 tag: github-action
 toc: true
@@ -21,6 +21,7 @@ intro: "Installing python and executing a python script with argument can be ted
 
 ##### Download the Artifact
 
+![](/assets/img/2024-11-07-02-46-38.png)
 
 #### The Project Structure
 
@@ -32,7 +33,7 @@ Unlike javascript action, this time we don't implement an `action.yml` to organi
 
 For an example of javascript action, reader may refer to [Github Action for Deployment on ECS Fargate](/blog/article/Github-Action-for-Deployment-on-ECS-Fargate)) where you can see that  `action.yml` is used to interact with the `with` part of each step in a job.
 
-#### .github/actions/Dockerfile
+#### .github/actions/get-cloudwatch-log/Dockerfile
 ```dockerfile
 FROM realsalmon/alpinelinux-python-boto3
 
@@ -41,10 +42,10 @@ COPY get_log.py /get_log.py
 CMD ["python", "/get_log.py"]
 ```
 
-#### .github/actions/get_log.py
+#### .github/actions/get-cloudwatch-log/get_log.py
 
 
-```py-1{69}
+```py-1{16-20}
 import boto3
 import os
 from datetime import datetime, timezone, timedelta
@@ -65,7 +66,11 @@ def convert_to_utc8(timestamp_ms):
     tz_utc8 = timezone(timedelta(hours=8))
     dt_utc8 = dt.astimezone(tz_utc8)
     return dt_utc8.strftime("%Y-%m-%d %H:%M:%S")
+```
+- By default the timestamp transformed from `boto3`'s millisecond via `datetime` package in python will be converted to the timezone that the github action worker machine lies in. 
 
+- To convert back to `UTC+8` we need to manually adjust the timezone, otherwise we get a time 8 hours before.
+```py-21{68}
 def getter(obj, key, default_value):
     value = None
     try:
@@ -115,7 +120,9 @@ def main():
     
     FILE_DIR = "/github/workspace"
 ```
-The highlighted directory inside of the container will be bind-mounted to the working directory of the github action.
+- The highlighted directory inside of the container will be bind-mounted to the working directory of the github action.
+
+- In other words, a file saved at `/github/workspace/haha.txt` inside of the container will be available to the remaining step of the job outside of the container (at the root project level).
 ```py-70
     if not os.path.exists(FILE_DIR):
         os.makedirs(FILE_DIR)
