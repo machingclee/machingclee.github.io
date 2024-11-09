@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.4cf52b72.chunk.css",
-    "main.js": "/static/js/main.ab7b0b68.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.3cb3ec16.js",
+    "main.js": "/static/js/main.bf95a777.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.8ef96ba8.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.b6c819d9.chunk.js": "/static/js/2.b6c819d9.chunk.js",
-    "static/js/3.9839b372.chunk.js": "/static/js/3.9839b372.chunk.js",
-    "static/js/4.f7a67234.chunk.js": "/static/js/4.f7a67234.chunk.js",
-    "static/js/5.0bd687d7.chunk.js": "/static/js/5.0bd687d7.chunk.js",
+    "static/js/2.d80ee629.chunk.js": "/static/js/2.d80ee629.chunk.js",
+    "static/js/3.0e81936c.chunk.js": "/static/js/3.0e81936c.chunk.js",
+    "static/js/4.56f41f57.chunk.js": "/static/js/4.56f41f57.chunk.js",
+    "static/js/5.b12c9521.chunk.js": "/static/js/5.b12c9521.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.b6c819d9.chunk.js.LICENSE.txt": "/static/js/2.b6c819d9.chunk.js.LICENSE.txt",
-    "static/js/3.9839b372.chunk.js.LICENSE.txt": "/static/js/3.9839b372.chunk.js.LICENSE.txt",
-    "static/js/4.f7a67234.chunk.js.LICENSE.txt": "/static/js/4.f7a67234.chunk.js.LICENSE.txt",
+    "static/js/2.d80ee629.chunk.js.LICENSE.txt": "/static/js/2.d80ee629.chunk.js.LICENSE.txt",
+    "static/js/3.0e81936c.chunk.js.LICENSE.txt": "/static/js/3.0e81936c.chunk.js.LICENSE.txt",
+    "static/js/4.56f41f57.chunk.js.LICENSE.txt": "/static/js/4.56f41f57.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.52b1ef07.md",
     "static/media/002-Lazy-React-Router.md": "/static/media/002-Lazy-React-Router.48295ca9.md",
@@ -327,7 +327,8 @@
     "static/media/335-clone-db-contd-mongo-ver.md": "/static/media/335-clone-db-contd-mongo-ver.b4036c3f.md",
     "static/media/336-get-cloudwatch-log-in-githubaction copy.md": "/static/media/336-get-cloudwatch-log-in-githubaction copy.c5fba52f.md",
     "static/media/337-lambda-function-python-docker-image.md": "/static/media/337-lambda-function-python-docker-image.48e2cd3e.md",
-    "static/media/CV_Portfolio.d382dd30.pdf": "/static/media/CV_Portfolio.d382dd30.pdf",
+    "static/media/338-decorators.md": "/static/media/338-decorators.b869a210.md",
+    "static/media/CV_Portfolio.a46fe6bf.pdf": "/static/media/CV_Portfolio.a46fe6bf.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
     "static/media/Midterm_Review_limsupinf.1e2193c7.pdf": "/static/media/Midterm_Review_limsupinf.1e2193c7.pdf",
@@ -376,10 +377,10 @@
     "static/media/transformer-date-fomatter.18a2d3fc.pdf": "/static/media/transformer-date-fomatter.18a2d3fc.pdf"
   },
   "entrypoints": [
-    "static/js/runtime-main.3cb3ec16.js",
+    "static/js/runtime-main.8ef96ba8.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.b6c819d9.chunk.js",
+    "static/js/2.d80ee629.chunk.js",
     "static/css/main.4cf52b72.chunk.css",
-    "static/js/main.ab7b0b68.chunk.js"
+    "static/js/main.bf95a777.chunk.js"
   ]
 }
