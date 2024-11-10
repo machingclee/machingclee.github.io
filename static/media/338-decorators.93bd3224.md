@@ -294,61 +294,10 @@ export default class DecoratedListenersRegister {
 ```
 ##### The `plotRelation` method
 
-###### Let's implement a doubly-linked list in typescript
-
-```js
-class Node<T> {
-    value: T;
-    next: Node<T> | null = null;
-    prev: Node<T> | null = null;
-
-    constructor(value: T) {
-        this.value = value;
-    }
-
-    appendRight(newNode: Node<T>): void {
-        newNode.prev = this;
-        newNode.next = this.next;
-        if (this.next) {
-            this.next.prev = newNode;
-        }
-        this.next = newNode;
-    }
-
-    appendLeft(newNode: Node<T>): void {
-        newNode.next = this;
-        newNode.prev = this.prev;
-        if (this.prev) {
-            this.prev.next = newNode;
-        }
-        this.prev = newNode;
-    }
-
-    traverse(): Node<T>[] {
-        const head = this.getHead();
-        const nodes: Node<T>[] = [];
-        let current: Node<T> | null = head;
-
-        while (current) {
-            nodes.push(current);
-            current = current.next;
-        }
-
-        return nodes;
-    }
-
-    getHead(): Node<T> {
-        let current: Node<T> = this;
-
-        while (current.prev) {
-            current = current.prev;
-        }
-
-        return current;
-    }
-}
-```
 ###### Implementation of `plotRelation`
+
+- We will make use of the `Node` for doubly linked list defined in [***this blog post***](/blog/article/Doubly-Linked-List-in-Typescirpt).
+
 - Since our services are decomposed into many small events, some may consider the services as highly-decoupled to the extent that is hard to follow. 
 
 - One solution is to add @nextEvent(NextEvent) attribute to indicate the `NextEvent` class to be the next target, from that we can plot the relation for easy-debugging (and also see all the events available in the system!)
@@ -367,8 +316,8 @@ class Node<T> {
         // don't mutate freezedNodes as we need to loop through completely
         for (const currNode of freezedNodes) {
             for (let j = 0; j < freezedNodes.length; j++) {
-                for (const connectedItem of currNode.getHead().traverse()) {
-                    const eventNamesToSkip = currNode.getHead().traverse().map(node => node.value.data.eventName);
+                for (const connectedItem of currNode.traverse()) {
+                    const eventNamesToSkip = currNode.traverse().map(node => node.value.data.eventName);
                     for (const traverseItem of freezedNodes) {
                         if (!eventNamesToSkip.includes(traverseItem.value.data.eventName)) {
                             if (traverseItem.value.data.nextEvent === connectedItem.value.data.eventName) {
