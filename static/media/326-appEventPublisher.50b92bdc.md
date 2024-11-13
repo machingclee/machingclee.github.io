@@ -386,6 +386,48 @@ This can be handled by two eventHandlers (we can condense them into one of cours
     }, 1)
 ```
 
+#### Further Code Simplification by @listener, @order using reflect-metadata
+In my [another new article on this topic](/blog/article/ApplicationEventPublisher-with-Decorators-for-Domain-Driven-Design), with the help of `reflect-metadata` we can further simplify our `ApplicationEvent` into 
+
+```js
+export class ApplicationEvent<
+    DataType,
+    ContextType extends ContextBaseType = ContextBaseType,
+> {
+    constructor(public data: DataType, public ctx: ContextType) { }
+}
+```
+
+and all listeners become
+
+```js
+export default class WalkEventListener {
+    @listener
+    async insertRelIssueToSummaryUuid(event: WalkEvent.SuccessPath.IssueSummaryUuidRelationInsertedEvent) {
+        const { issueToSummaryOidUpdates } = event.data;
+        const selectedIssueIds = issueToSummaryOidUpdates.map(({ issueId }) => issueId);
+        await issueDao.inactivateSummaryOfSelectedIssues(selectedIssueIds);
+        await issueDao.insertIssueSummaryUuids(issueToSummaryOidUpdates);
+    }
+
+    @listener
+    @order(2)
+    async furtherAaction(event: WalkEvent.SuccessPath.IssueSummaryUuidRelationInsertedEvent) {
+        // logic here ...
+    }
+}
+```
+
+- Now we can happily devide our long task into several reusuable subtasks, and each eventlistener has ***at most one*** `try-catch`.
+
+- In this way it is extremely easy to introduce a detailed retry/fallback mechanism for a long chain of tasks for which each of them can possibly fail. For example:
+
+  ![](/assets/img/2024-11-13-09-15-48.png)
+
+  For sure we can skip the `command` part and replace everything by `event` since we may not implement a `saga` to orchestrate those commands (it is over-complicated for monolithic application). 
+
+- For more concept about `saga`, please refer to `saga`-pattern introduced by `axon` framework documentation.
+
 #### References
 
 - [What makes an Aggregate (DDD)? Hint: it's NOT hierarchy & relationships](https://www.youtube.com/watch?v=djq0293b2bA), CodeOpinion
