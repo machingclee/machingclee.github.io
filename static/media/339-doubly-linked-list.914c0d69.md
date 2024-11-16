@@ -1,5 +1,5 @@
 ---
-title: "Doubly-Linked List in Typescirpt"
+title: "Doubly-Linked List in Typescript"
 date: 2024-11-08
 id: blog0339
 tag: data-structure
