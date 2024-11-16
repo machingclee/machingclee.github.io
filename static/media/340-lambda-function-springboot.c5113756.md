@@ -1,10 +1,10 @@
 ---
-title: "Snapstarted Lambda running Spring Boot and Transition into Springboot as a node.js developer"
+title: "Snapstarted Lambda running Spring Boot and Transition into Spring Boot as a Node.js Developer"
 date: 2024-11-16
 id: blog0340
 tag: spring-boot, aws, lamdba
 toc: true
-intro: "Record miscellaneous detail of transitioning into Springboot as a node.js developer."
+intro: "Record miscellaneous detail of transitioning into Spring Boot as a node.js developer."
 ---
 
 <style>
@@ -267,7 +267,7 @@ class UserFromHeaderAspect(private val jwtService: JwtService) {
 }
 ```
 
-For more refined control access using custom annotations, we may simply ask chat-gpt for the code implementation.
+For more refined access control using custom annotations, we may simply ask chat-gpt for the code implementation.
 
 ##### HandlerMethodArgumentResolver
 We want to access our data annotated by `@RequestUser`, however, by default `Spring` will validate all data passing through the argument of each method, in which it has no idea how to validate our `@RequestUser`-annotated data.
@@ -313,3 +313,127 @@ class WebMvcConfig(private var requestUserArgumentResolver: RequestUserArgumentR
 ```
 
 ![](/assets/img/2024-11-16-18-38-00.png)
+
+##### ORM via JPA
+###### The Prisma Model
+
+By mentioning Prisma with spring boot, it implicitly means that we are using database-first approach. Therefore we need to reverse-engineer existing database into jpa `@Entity` classes. We have mentioned how to do it in [***this article***](/blog/article/JPA-with-DB-First-Approach-Surgery-on-JOOQ-s-POJO-into-Base-Entity-Class) with the help of JOOQ. 
+
+Beware of the detail of: 
+- how to handle PostgreSQL enums and 
+- how to config PostgreSQL to enclose the table name in every single query by double quotes.
+These are discussed in depth in the article as well.
+
+Let's read about a prisma definition of our 3 tables, which is basically a ***one-to-many*** model (one role has many permissions):
+
+
+```prisma
+model Role {
+  id                String                @id @default(dbgenerated("ulid_as_uuid()")) @db.Uuid
+  name              String
+  displayName       String
+  description       String
+  createdAt         Float                 @default(dbgenerated("gen_created_at()"))
+  createdAtHK       String                @default(dbgenerated("gen_created_at_hk_timestr()"))
+  updatedAt         Float                 @default(0)
+  RelRolePermission Rel_Role_Permission[]
+  RelProjectRole    Rel_Project_Role[]
+
+  @@unique([name])
+  @@index([id])
+}
+
+model Permission {
+  id                String                @id @default(dbgenerated("ulid_as_uuid()")) @db.Uuid
+  codeName          String
+  displayName       String
+  description       String
+  createdAt         Float                 @default(dbgenerated("gen_created_at()"))
+  createdAtHK       String                @default(dbgenerated("gen_created_at_hk_timestr()"))
+  updatedAt         Float                 @default(0)
+  RelRolePermission Rel_Role_Permission[]
+
+  @@unique([codeName])
+  @@index([id])
+}
+
+model Rel_Role_Permission {
+  id           Int        @id @default(autoincrement())
+  roleId       String     @db.Uuid
+  Role         Role       @relation(fields: [roleId], references: [id])
+  permissionId String     @db.Uuid
+  Permission   Permission @relation(fields: [permissionId], references: [id])
+  createdAtHK  String     @default(dbgenerated("gen_created_at_hk_timestr()"))
+  createdAt    Float      @default(dbgenerated("gen_created_at()"))
+  updatedAt    Float      @default(0)
+
+  @@unique([permissionId, roleId])
+  @@index([permissionId, roleId])
+}
+```
+###### The JPA Equivalent Definition
+
+Now let's try to model this relation by an `@Entity` class in `jpa`:
+
+```kt
+@Entity
+@DynamicInsert
+@Table(
+    name = "Role",
+    schema = "public"
+)
+class Role(
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(generator = "ulid_as_uuid")
+    var id: UUID? = null,
+    @Column(name = "name", nullable = false)
+    var name: String,
+    @Column(name = "displayName", nullable = false)
+    var displayname: String,
+    @Column(name = "description", nullable = false)
+    var description: String,
+    @Column(name = "createdAt")
+    var createdat: Double? = null,
+    @Column(name = "createdAtHK")
+    var createdathk: String? = null,
+    @Column(name = "updatedAt")
+    var updatedat: Double? = null
+) {
+    @OneToMany
+    @Cascade(CascadeType.ALL)
+    @JoinTable(
+        name = "\"Rel_Role_Permission\"",
+        joinColumns = [JoinColumn(name = "roleId", referencedColumnName = "id")],
+        inverseJoinColumns = [JoinColumn(name = "permissionId", referencedColumnName = "id")]
+    )
+    val permissions: MutableSet<Permission> = mutableSetOf()
+}
+```
+- Note that our relation table name must be ***enclosed by double quotes*** due to the presence of capital letters.
+- We use `@Cascade(CascadeType.ALL)` to ask `jpa` to help us persist the in-memory state of `Rel_Role_Permission` and `Permission` tables. 
+
+  Note that we even didn't mention the presense of the `Permission` table in our `@JoinTable` definition! It is implicit in our foreign-key relation (if defined correctly).
+
+###### The Magic Happens
+
+Now in the past when creating a relation, we need to 
+1. persist an entity in `Role`
+2. persist an entity in `Permission`
+3. finally persist an entity in `Rel_Role_Permission`
+
+Now the creation of these entities boils down to 
+```kt
+@Transactional
+fun createRoleAndPermission () {
+    val newRole = Role(name = "TEST_ROLE",
+                       displayname = "Test Role",
+                       description = "This is a test role")
+    val newPermission = Permission(codename = "TEST_PERMISSION_$index",
+                                   displayname = "Test Permission $index",
+                                   description = "this is a test permission number $index")
+    newRole.add(newPermission)
+    roleRepository.save(newRole)
+}
+```
+and 3 entities are persisted automatically.
