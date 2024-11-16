@@ -80,38 +80,36 @@ date: 2024-03-11
 ##### Background
 
 
-- This project is to ***provide a timetable system*** for a group of ***4 or 8*** players of Final Fantasy XIV to:
+This project is to ***provide a timetable system*** for a group of ***4 or 8*** players of Final Fantasy XIV to fill in their available timeslots within a week so that,
 
-  - Fill in their available timeslots within a week so that,
+- All 4 or 8 people of the group can join an event, or
 
-    - All 4 or 8 people of the group can join an event, or
-
-    - leader can arrange substitution for that week as early as possible.
+- leader can arrange substitution for that week as early as possible.
 
 
-- For example, 8 people raiding for an ***ultimate dungeon*** in FF14 have to commit 4~6 days per week with 2 hours per day to join the raiding group for practice, e.g.,
+For example, 8 people raiding for an ***ultimate dungeon*** in FF14 have to commit 4~6 days per week with 2 hours per day to join the raiding group for practice, e.g.,
   
   ![](/assets/img/2024-02-18-18-05-39.png)
 
 ##### Problems to Solve
 
-- ***Time arrangement is always an headache***, each group ***uses different strategies*** to confirm available timeslots for each of 8 members, for example:
+***Time arrangement is always an headache***, each group ***uses different strategies*** to confirm available timeslots for each of 8 members, for example:
 
-  - **Case 1.**
+**Case 1.**
 
-    ![](/assets/img/2024-02-18-18-08-00.png)
+  ![](/assets/img/2024-02-18-18-08-00.png)
 
-  - **Case 2.**
+**Case 2.**
 
-    ![](/assets/img/2024-02-18-18-08-41.png)
+  ![](/assets/img/2024-02-18-18-08-41.png)
+
+**Case 3.** 
   
-  - **Case 3.** 
-    
-    ![](/assets/img/2024-02-18-18-08-49.png)
+  ![](/assets/img/2024-02-18-18-08-49.png)
 
-    - In case 3 there is a Japanese member, therefore HKT must be specified.
+  - In case 3 there is a Japanese member, therefore HKT must be specified.
 
-    - As FFXIV is a game full of people with ***diversified*** national background, such method is confusing for players of ***different timezones***.
+  - As FFXIV is full of people with ***diversified*** national background, such method is confusing for players in ***different timezones***.
 
 
   
