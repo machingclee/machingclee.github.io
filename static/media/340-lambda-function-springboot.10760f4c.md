@@ -2,7 +2,7 @@
 title: "Snapstarted Lambda running Spring Boot and Transition into Spring Boot as a Node.js Developer"
 date: 2024-11-16
 id: blog0340
-tag: spring-boot, aws, lamdba
+tag: springboot, aws, lamdba
 toc: true
 intro: "Record miscellaneous detail of transitioning into Spring Boot as a node.js developer."
 ---
@@ -57,7 +57,7 @@ plugins:
   - serverless-scriptable-plugin
 ```
 
-Note that `%cd%` is for windows, if you are linux, please change it to `$(pwd)`.
+Here `%cd%` is for windows machine, if you are using linux, please change it to `$(pwd)`.
 
 ##### The LambdaHandler
 
@@ -189,36 +189,75 @@ app.use("/file", jwtAuthMiddleware, fileRouter);
 app.use("/search", jwtAuthMiddleware, searchRouter);
 ```
 
-to block incoming requests or to inject desired object (like from request header) into our ***context*** object (in express case, the context is our `req`).
+
+to validate incoming requests or to inject desired object into our ***context*** object before reaching any of our routers (in `express` case, the context is our `req`).
+
+###### `Filter` and `HandlerInterceptor`, no, not what we want
+
 
 In spring boot there are two similar concepts that serve this purpose:
 - `Filter` (Servlet Level)
 - `Interceptor` (Application Level in which `@Bean`'s are available)
 
-The drawbacks using these approches is the interception is highly implicit, instead we can annotate a contorller by `@AccessToken` which do all the token-validation and "user-data-injection" for us:
+The drawbacks using these approches is the interception is ***highly implicit***. For example, to add an handler we need to define our customer `HandlerInterceptor` and add it manually:
+```kt
+@Configuration
+class JwtWebMvcConfigurer(
+    private val jwtHandlerInterceptor: JwtHandlerInterceptor
+) : WebMvcConfigurer {
+
+    override fun addInterceptors(registry: InterceptorRegistry) {
+        registry.addInterceptor(jwtHandlerInterceptor).addPathPatterns("/course/**")
+    }
+}
+```
+
+Adding a filter follows a simular pattern.
+
+###### Adding middleware via direct annotation
+
+
+
+Instead we can annotate a controller by `@AccessToken` which do all the token-validation and "user-data-injection" for us:
+
+```kt
+@RestController
+@RequestMapping("/hello")
+@AccessToken
+class HelloController(
+    @Value("\${stage.env}") private val env: String,
+    private val orderRepository: OrderRepository,
+    private val eventRepository: EventRepository,
+    private val gmailService: GmailService,
+    private val roleRepository: RoleRepository,
+) {
+    @GetMapping("/create-relation")
+    @Transactional
+    ...
+```
+Let's define our `@AccessToke`!
+
+###### Define an Aspect Triggered by `@AccessToken`
+
 
 ```kt
 package com.your.package.commons.aop
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.wonderbricks.billie.service.JwtPayload
 import com.wonderbricks.billie.service.JwtService
-import org.aspectj.lang.JoinPoint
 import org.aspectj.lang.annotation.Aspect
-import org.aspectj.lang.annotation.Before
 import org.aspectj.lang.annotation.Pointcut
 import org.springframework.stereotype.Component
 import org.springframework.web.context.request.RequestContextHolder
 import org.springframework.web.context.request.ServletRequestAttributes
 import io.fusionauth.jwt.JWTExpiredException
-import jakarta.servlet.http.HttpServletResponse
 import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.Around
 import org.aspectj.lang.reflect.MethodSignature
 
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
-annotation class UserFromHeader
+annotation class AccessToken
 
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
@@ -226,10 +265,10 @@ annotation class RequestUser
 
 @Aspect
 @Component
-class UserFromHeaderAspect(private val jwtService: JwtService) {
+class AccessTokenAspect(private val jwtService: JwtService) {
     private val authHeader: String = "authorization"
 
-    @Pointcut("@within(com.wonderbricks.billie.commons.aop.UserFromHeader)")
+    @Pointcut("@within(com.wonderbricks.billie.commons.aop.AccessToken)")
     fun getUserPointcut() {
     }
 
@@ -262,15 +301,17 @@ class UserFromHeaderAspect(private val jwtService: JwtService) {
             }
             throw Exception(errorMessage)
         }
-        return joinPoint.proceed()
     }
 }
 ```
 
 For more refined access control using custom annotations, we may simply ask chat-gpt for the code implementation.
 
-##### HandlerMethodArgumentResolver
-We want to access our data annotated by `@RequestUser`, however, by default `Spring` will validate all data passing through the argument of each method, in which it has no idea how to validate our `@RequestUser`-annotated data.
+###### `HandlerMethodArgumentResolver`: Configure Spring Boot to Resolve `@RequestUser`
+
+We want to access our data annotated by `@RequestUser` in the same fashion as `@RequestBody`.
+
+However by default spring boot will validate all parameters passing through the argument of each method (e.g., `@RequestBody` or `@PathVariable`), in which it has no idea how to validate our `@RequestUser`-annotated data.
 
 Therefore we need to make configuration to let spring boot ignore this annotation in the input argument of a controller method:
 
@@ -311,6 +352,8 @@ class WebMvcConfig(private var requestUserArgumentResolver: RequestUserArgumentR
     }
 }
 ```
+
+Now we get the parsed user object easily via anntation!
 
 ![](/assets/img/2024-11-16-18-38-00.png)
 
