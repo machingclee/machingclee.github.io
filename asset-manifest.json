@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.4cf52b72.chunk.css",
-    "main.js": "/static/js/main.a0e5ae55.chunk.js",
+    "main.js": "/static/js/main.1998ede4.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.bf7bf557.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.85052345.chunk.js": "/static/js/2.85052345.chunk.js",
@@ -328,7 +328,7 @@
     "static/media/335-clone-db-contd-mongo-ver.md": "/static/media/335-clone-db-contd-mongo-ver.b4036c3f.md",
     "static/media/336-get-cloudwatch-log-in-githubaction copy.md": "/static/media/336-get-cloudwatch-log-in-githubaction copy.c5fba52f.md",
     "static/media/337-lambda-function-python-docker-image.md": "/static/media/337-lambda-function-python-docker-image.48e2cd3e.md",
-    "static/media/338-decorators.md": "/static/media/338-decorators.93bd3224.md",
+    "static/media/338-decorators.md": "/static/media/338-decorators.d05e5327.md",
     "static/media/339-doubly-linked-list.md": "/static/media/339-doubly-linked-list.914c0d69.md",
     "static/media/340-lambda-function-springboot.md": "/static/media/340-lambda-function-springboot.10760f4c.md",
     "static/media/341-useful-api-testing-in-postman.md": "/static/media/341-useful-api-testing-in-postman.25ad7ec5.md",
@@ -385,6 +385,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.85052345.chunk.js",
     "static/css/main.4cf52b72.chunk.css",
-    "static/js/main.a0e5ae55.chunk.js"
+    "static/js/main.1998ede4.chunk.js"
   ]
 }

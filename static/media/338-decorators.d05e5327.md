@@ -263,7 +263,7 @@ export default ApplicationEventPublisher;
 ```
 The highlighted block of codes is responsible for storing historical event data. Storing into memory-store such as `redis` and flush it back to our PostgreSQL by bulk insert is much more appropriate.
 
-#### Register the decorated listeners --- the `DecoratedListenersRegister` class
+#### Class DecoratedListenersRegister: Register the decorated listeners
 ##### The `register` method
 
 By the previous concrete example (the `console.log(listeners);` in the previous section right above) the `register` method is straight forward:
