@@ -220,7 +220,7 @@ Adding a filter follows a simular pattern.
 
 Instead we can annotate a controller by `@AccessToken` which do all the token-validation and "user-data-injection" for us:
 
-```kt
+```kt{3}
 @RestController
 @RequestMapping("/hello")
 @AccessToken
@@ -278,7 +278,7 @@ class AccessTokenAspect(private val jwtService: JwtService) {
         val request = requestAttributes?.request
         try {
             val accessToken = request?.getHeader(authHeader)?.replace("Bearer ", "") ?: ""
-            if (accessToken === "") {
+            if (accessToken == "") {
                 throw Exception("AccessToken cannot be empty")
             }
             val payload: JwtPayload = jwtService.parseAndVerifyToken(accessToken)!!
