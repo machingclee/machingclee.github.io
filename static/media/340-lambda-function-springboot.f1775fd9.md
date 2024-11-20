@@ -357,7 +357,45 @@ Now we get the parsed user object easily via anntation!
 
 ![](/assets/img/2024-11-16-18-38-00.png)
 
-##### ORM via JPA
+
+##### File Uploading
+
+In node.js we handle file uploading (with `formdata` as request body) by using 
+
+```js
+import multiparty from "multiparty";
+
+const handler = (req: Request, res: Response) => {
+    const form = new multiparty.Form();
+    form.parse(req);
+    form.on("part", async (inputStream: multiparty.Part) => { 
+        ...
+    })
+}
+```
+Now in spring boot:
+
+```kt
+@PostMapping("/upload)
+fun fileUpload(@RequestPart("file") file: MultipartFile?) {
+    val uploadFile = file?.inputStream?.let {
+        ...
+    }
+}
+```
+Remember to enable `Multipart` file option:
+```yml
+# appplication.yml
+spring:
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+```
+
+
+##### JPA using relation tables
 ###### The Prisma Model
 
 By mentioning Prisma with spring boot, it implicitly means that we are using database-first approach. Therefore we need to reverse-engineer existing database into jpa `@Entity` classes. We have mentioned how to do it in [***this article***](/blog/article/JPA-with-DB-First-Approach-Surgery-on-JOOQ-s-POJO-into-Base-Entity-Class) with the help of JOOQ. 
@@ -460,12 +498,12 @@ class Role(
 
 ###### The Magic Happens
 
-Now in the past when creating a relation, we need to 
+Now in the past when creating a relation with data-centric approach we need to 
 1. persist an entity in `Role`
 2. persist an entity in `Permission`
 3. finally persist an entity in `Rel_Role_Permission`
 
-Now the creation of these entities boils down to 
+Now the creation of these entities boils down to an object-oriented orchestration: 
 ```kt
 @Transactional
 fun createRoleAndPermission () {
@@ -480,3 +518,160 @@ fun createRoleAndPermission () {
 }
 ```
 and 3 entities are persisted automatically.
+
+###### The $N+1$ Problem
+
+In spring boot there is a well-known trap for beginners called $N+1$ problem. Which basically means 
+- $\Large \mathbf 1$ query for fetching $N$ entities and 
+- each of $\Large \mathbf N$ entities dispatches one ***additional*** query;
+causing a total of $N+1$ queries for a single data-fetching.
+
+Let's explain it and solve it by a concrete example. But before that let's add the following to investigate the generated SQL:
+```yml
+# application.yml
+
+spring:
+  jpa:
+    open-in-view: false
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+```
+
+Now consider the following relations:
+
+![](/assets/img/2024-11-21-00-52-22.png)
+
+which by code is modelled as follows:
+```kt
+class Projectmember(
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(generator = "ulid_as_uuid")
+    var id: UUID? = null,
+    @Column(name = "userId", nullable = false)
+    var userid: UUID,
+    @Column(name = "roleId", nullable = false)
+    var roleid: UUID,
+    @Column(name = "createdAt")
+    var createdat: Double? = null,
+    @Column(name = "createdAtHK")
+    var createdathk: String? = null,
+) {
+    @OneToOne
+    @JoinTable(
+        name = "Rel_Project_ProjectMember",
+        joinColumns = [JoinColumn(name = "projectMemberId", referencedColumnName = "id")],
+        inverseJoinColumns = [JoinColumn(name = "projectId", referencedColumnName = "id")]
+    )
+    var project: Project? = null
+}
+```
+Suppose that we run 
+
+```kt
+@Transactional
+fun getMembersRecord() {
+    return projectMemberRepository.findByUserid(UUID.fromString(userId))
+}
+```
+then we get two records from our database:
+
+![](/assets/img/2024-11-21-00-55-23.png)
+
+***Trouble Happended.***  Since we directly return the result, behind the scene of getting these two records, an eager-loading is triggered to dispatch ***2 additional*** queries due to the `OneToOne` relation (the case is worse if it is `OneToMany`), resulting in $2+1$ queries:
+```text
+Hibernate: 
+    select
+        p1_0."id",
+        p1_0."createdAt",
+        p1_0."createdAtHK",
+        p1_0."roleId",
+        p1_0."userId",
+        p1_1."projectId" 
+    from
+        "public"."ProjectMember" p1_0 
+    left join
+        "Rel_Project_ProjectMember" p1_1 
+            on p1_0."id"=p1_1."projectMemberId" 
+    where
+        p1_0."userId"=?
+Hibernate: 
+    select
+        p1_0."id",
+        p1_0."address",
+        p1_0."avatarUrl",
+        p1_0."companyId",
+        p1_0."createdAt",
+        p1_0."createdAtHK",
+        p1_0."lat",
+        p1_0."long",
+        p1_0."name",
+        p1_0."region",
+        p1_0."userId",
+        p1_0."utc" 
+    from
+        "public"."Project" p1_0 
+    where
+        p1_0."id"=?
+Hibernate: 
+    select
+        p1_0."id",
+        p1_0."address",
+        p1_0."avatarUrl",
+        p1_0."companyId",
+        p1_0."createdAt",
+        p1_0."createdAtHK",
+        p1_0."lat",
+        p1_0."long",
+        p1_0."name",
+        p1_0."region",
+        p1_0."userId",
+        p1_0."utc" 
+    from
+        "public"."Project" p1_0 
+    where
+        p1_0."id"=?
+```
+To solve it, in our repository we add:
+```kt{3}
+interface ProjectMemberRepository : CrudRepository<Projectmember, UUID> {
+    // or @Query("SELECT pm FROM Projectmember pm LEFT JOIN FETCH pm.project")
+    @EntityGraph(attributePaths = ["project"])
+    fun findByUserid(userid: UUID): List<Projectmember>?
+}
+```
+now our new results are all fetched by simply one query!
+
+```text
+Hibernate: 
+    select
+        p1_0."id",
+        p1_0."createdAt",
+        p1_0."createdAtHK",
+        p1_0."roleId",
+        p1_0."userId",
+        p2_0."id",
+        p2_0."address",
+        p2_0."avatarUrl",
+        p2_0."companyId",
+        p2_0."createdAt",
+        p2_0."createdAtHK",
+        p2_0."lat",
+        p2_0."long",
+        p2_0."name",
+        p2_0."region",
+        p2_0."userId",
+        p2_0."utc" 
+    from
+        "public"."ProjectMember" p1_0 
+    left join
+        "Rel_Project_ProjectMember" p1_1 
+            on p1_0."id"=p1_1."projectMemberId" 
+    left join
+        "public"."Project" p2_0 
+            on p2_0."id"=p1_1."projectId" 
+    where
+        p1_0."userId"=?
+```
