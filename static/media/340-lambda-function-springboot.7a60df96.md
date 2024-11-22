@@ -199,7 +199,7 @@ In spring boot there are two similar concepts that serve this purpose:
 - `Filter` (Servlet Level)
 - `Interceptor` (Application Level in which `@Bean`'s are available)
 
-The drawbacks using these approches is the interception is ***highly implicit***. For example, to add an handler we need to define our customer `HandlerInterceptor` and add it manually:
+The drawback using these approches is the interception is ***highly implicit***. For example, to add an interceptor at applicaiton level we need to define our customer `HandlerInterceptor` class object and add it manually:
 ```kt
 @Configuration
 class JwtWebMvcConfigurer(
@@ -580,7 +580,7 @@ then we get two records from our database:
 
 ![](/assets/img/2024-11-21-00-55-23.png)
 
-***Trouble Happended.***  Since we directly return the result, behind the scene of getting these two records, an eager-loading is triggered to dispatch ***2 additional*** queries due to the `OneToOne` relation (the case is worse if it is `OneToMany`), resulting in $2+1$ queries:
+***Trouble Happended.***  Since we directly return the result, behind the scene an eager-loading is triggered to dispatch ***2 additional*** queries due to the `@OneToOne` relation (the case is worse if it is `@OneToMany`), resulting in $2+1$ queries:
 ```text
 Hibernate: 
     select
@@ -637,12 +637,12 @@ Hibernate:
 To solve it, in our repository we add:
 ```kt{3}
 interface ProjectMemberRepository : CrudRepository<Projectmember, UUID> {
-    // or @Query("SELECT pm FROM Projectmember pm LEFT JOIN FETCH pm.project")
-    @EntityGraph(attributePaths = ["project"])
+    // or @EntityGraph(attributePaths = ["project"])
+    @Query("SELECT pm FROM Projectmember pm LEFT JOIN FETCH pm.project where pm.userid = ?1")
     fun findByUserid(userid: UUID): List<Projectmember>?
 }
 ```
-now our new results are all fetched by simply one query!
+Now our new results are all fetched by simply one query!
 
 ```text
 Hibernate: 
@@ -675,3 +675,11 @@ Hibernate:
     where
         p1_0."userId"=?
 ```
+**Remarks.** 
+- Here we ***prefer*** to use the JPQL `@Query` approach because it provides a certain extent of ***type-safty*** (we even get an auto-completion based on the properties in the class of `Projectmember`) while `@EntityGraph` does not.
+
+- Also try to avoid having multiple `left join fetch`'s in a single JPQL as it might be buggy and not performant:
+
+  > The error ***cannot simultaneously fetch multiple bags*** occurs in JPA when trying to eagerly fetch multiple collection relationships (like @OneToMany or @ManyToMany) in a single query. This is due to limitations in how JPA handles collections with JOIN fetches.
+
+  You can define `findByUseridFetchA`, `findByUseridFetchB` with different `left join fetch` clauses based on your actual need.

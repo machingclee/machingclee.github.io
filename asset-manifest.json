@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.4cf52b72.chunk.css",
-    "main.js": "/static/js/main.a34dc6f6.chunk.js",
+    "main.js": "/static/js/main.8ca2a92f.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.1135cb28.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.3d4cfb73.chunk.js": "/static/js/2.3d4cfb73.chunk.js",
@@ -330,7 +330,7 @@
     "static/media/337-lambda-function-python-docker-image.md": "/static/media/337-lambda-function-python-docker-image.48e2cd3e.md",
     "static/media/338-decorators.md": "/static/media/338-decorators.d05e5327.md",
     "static/media/339-doubly-linked-list.md": "/static/media/339-doubly-linked-list.914c0d69.md",
-    "static/media/340-lambda-function-springboot.md": "/static/media/340-lambda-function-springboot.f1775fd9.md",
+    "static/media/340-lambda-function-springboot.md": "/static/media/340-lambda-function-springboot.7a60df96.md",
     "static/media/341-useful-api-testing-in-postman.md": "/static/media/341-useful-api-testing-in-postman.25ad7ec5.md",
     "static/media/342-test-container-for-testing.md": "/static/media/342-test-container-for-testing.7939e1c1.md",
     "static/media/CV_Portfolio.25e69a48.pdf": "/static/media/CV_Portfolio.25e69a48.pdf",
@@ -386,6 +386,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.3d4cfb73.chunk.js",
     "static/css/main.4cf52b72.chunk.css",
-    "static/js/main.a34dc6f6.chunk.js"
+    "static/js/main.8ca2a92f.chunk.js"
   ]
 }
