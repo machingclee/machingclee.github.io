@@ -1,7 +1,7 @@
 ---
 title: "Testcontainer, a Replacement of In-Memory Database in Testing"
 date: 2024-11-18
-id: blog0341
+id: blog0342
 tag: test, springboot, docker
 toc: true
 intro: "In testing we usually make use of in-memory database to separate the test data with our actual working database. For a long time people use H2 in spring boot for that purpose but that database is not eventually what the production uses, now we can align both!"
