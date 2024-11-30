@@ -1,5 +1,5 @@
 ---
-title: "HTML Request Logger in Springboot"
+title: "HTTP Request Logger in Springboot"
 date: 2024-11-28
 id: blog0343
 tag:  springboot
