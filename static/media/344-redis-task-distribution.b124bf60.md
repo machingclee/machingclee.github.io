@@ -3,7 +3,7 @@ title: "Redis Task Distribution in Kotlin"
 date: 2024-11-30
 id: blog0344
 tag:  springboot
-toc: false
+toc: true
 intro: "We record LUSH and BRPOP in kotlin"
 ---
 
@@ -13,13 +13,13 @@ intro: "We record LUSH and BRPOP in kotlin"
   }
 </style>
 
-Dependencies:
+#### Dependencies
 
 ```text
 implementation("org.springframework.boot:spring-boot-starter-data-redis")
 ```
 
-and we define a `RedisService`:
+#### RedisService
 
 ```kt
 import kotlinx.coroutines.delay
@@ -49,7 +49,9 @@ class RedisService(
     }
 }
 ```
-Demonstration:
+
+#### Demonstration
+
 ```kt
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("dbmigration")
