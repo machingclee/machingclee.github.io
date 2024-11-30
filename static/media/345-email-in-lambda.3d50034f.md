@@ -27,7 +27,7 @@ Unfortunatelly every time we submit our credential, gmail-related sdk will make 
 
 Good news is that for every lambda function the `/tmp` folder is writable, and we can move our credential into that folder before launching the `gmail-authflow`.
 
-##### Step 1. Local Your Credential to Resources Folder
+##### Step 1. Locate your credential to resources folder
 
 Let's place our credential here:
 
@@ -37,7 +37,7 @@ Next let's define the file path by `classpath:directory-name`
 
 ![](/assets/img/2024-11-30-22-12-28.png)
 
-##### Step 2. Setup Resource Loader
+##### Step 2. Setup resource loader
 
 Let's create a `BeanConfig` class to manage our beans:
 

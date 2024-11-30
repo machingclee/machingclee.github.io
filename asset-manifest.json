@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.4cf52b72.chunk.css",
-    "main.js": "/static/js/main.bb2d3948.chunk.js",
+    "main.js": "/static/js/main.40937e22.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.709f147f.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.189cb59d.chunk.js": "/static/js/2.189cb59d.chunk.js",
@@ -335,7 +335,7 @@
     "static/media/342-test-container-for-testing.md": "/static/media/342-test-container-for-testing.6c31c57c.md",
     "static/media/343-logger-in-spring.md": "/static/media/343-logger-in-spring.1759a725.md",
     "static/media/344-redis-task-distribution.md": "/static/media/344-redis-task-distribution.b124bf60.md",
-    "static/media/345-email-in-lambda.md": "/static/media/345-email-in-lambda.43695f5b.md",
+    "static/media/345-email-in-lambda.md": "/static/media/345-email-in-lambda.3d50034f.md",
     "static/media/CV_Portfolio.25e69a48.pdf": "/static/media/CV_Portfolio.25e69a48.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -389,6 +389,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.189cb59d.chunk.js",
     "static/css/main.4cf52b72.chunk.css",
-    "static/js/main.bb2d3948.chunk.js"
+    "static/js/main.40937e22.chunk.js"
   ]
 }
