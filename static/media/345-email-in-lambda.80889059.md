@@ -15,13 +15,13 @@ intro: "We record LUSH and BRPOP in kotlin"
 
 #### Setup in the past Succeeded in Local and Containerized Environment (e.g., ECS) but Failed in Lambda Functions
 
-In the past we have defined a email service in kotlin [in this article](/blog/article/Send-Gmail-in-Kotlin).
+In the past we have defined an gmail service using kotlin [in this article](/blog/article/Send-Gmail-in-Kotlin).
 
 This method fails when we use a `snapStarted` $\lambda$-function running a spring boot because 
-- By default the `tokens-prod/StoredCredential` that we put in root-directory/resources-folder of the project will be clone to `/var/task` of lambda function, however;
+1. By default the `tokens-prod/StoredCredential` that we put in `project-root/` or `resources/` of the project will be clone to `/var/task` of the lambda function, however;
 
-- `/var/task` is only readable but not writable
-Unfortunatelly every time we submit our credential, gmail-related sdk will make an adjustment to our `StoredCredential`, meaning that `/var/task` must be a `writable` directory, leading to a failure to launch the gmail service due to non-writability.
+2. `/var/task` is only ***readable*** but ***not writable***
+Unfortunatelly every time we submit our credential, google-related sdk will make an adjustment to our `tokens-prod/StoredCredential`, meaning that `/var/task` must be a `writable` directory, leading to a failure to launch the gmail service due to non-writability.
 
 #### Workaround
 
@@ -177,7 +177,7 @@ class GmailServiceImpl(
 }
 ```
 What we have done:
-1. When environment variable `IS_LAMBDA` is found and equal to `"true"`, we use the `lambdaAuthflow`, which clones everything in `/var/task/tokens-prod` into `/tmp/tokens-prod` and trigger the `auth-flow` as before.
+1. When env variable `IS_LAMBDA` is found and equal to `"true"`, we use the `lambdaAuthflow`, which clones everything in `/var/task/tokens-prod` into `/tmp/tokens-prod` and trigger the `auth-flow` as before.
 
 2. Otherwise we go back to `standardAuthFlow` (which is the code copied from documentation)
 
