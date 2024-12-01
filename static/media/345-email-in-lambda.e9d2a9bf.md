@@ -63,6 +63,7 @@ class BeanConfig {
 
 We have mentioned [this article](/blog/article/Send-Gmail-in-Kotlin) at the beginning (which includes all the implementation of our `GmailService`), now let's adjust `getCredentials` by the highlighted lines:
 
+
 ```kt{8,19,25-28,35-58,60-70}
 @Service
 class GmailServiceImpl(
