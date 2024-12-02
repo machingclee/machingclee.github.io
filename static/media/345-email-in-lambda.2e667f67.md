@@ -2,7 +2,7 @@
 title: "Email Configuration for Spring Boot in SnapStarted Lambda"
 date: 2024-12-01
 id: blog0345
-tag:  springboot
+tag: springboot
 toc: true
 intro: "We record LUSH and BRPOP in kotlin"
 ---
