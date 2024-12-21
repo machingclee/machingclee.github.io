@@ -2,7 +2,7 @@
 title: "Architecture for Private Lamdba functions called via another lambda function"
 date: 2024-12-19
 id: blog0349
-tag: docker
+tag: docker, aws, lambda
 toc: true
 intro: "Let's discuss how to orchistrate the interaction of lambda functions which are network-isolated, especially how to endow lambda functions with security group."
 ---
@@ -33,11 +33,11 @@ Place our public-facing lambda functions into private subnet so that:
 - the lambda function can be endowed with an ENI (Elastic Network Interface)
 - that ENI can carry a security group (SG) so that **_now lambda function can carry an SG_**.
 
-![](/assets/img/2024-12-21-17-28-40.png)
+[![](/assets/img/2024-12-21-17-28-40.png)](/assets/img/2024-12-21-17-28-40.png)
 
 ##### Calling protected resourcess
 
-######## Public facing lambdas
+###### Public facing lambdas
 
 Since our protected lambda function $\lambda_\text{protected}$ stay behind internal load balancer, suppose that the load balancer has an DNS name:
 
@@ -50,7 +50,7 @@ then inside of private subneted lambda function $\lambda_\text{private\_subnette
 
 here we assume that our lambda function is acting like a web server.
 
-######## Public facing ECS services
+###### Public facing ECS services
 
 For ECS since by default each service already has an SG, by allowing this SG to access `port-number`, we get access to protected resource easily.
 
@@ -93,7 +93,7 @@ For ECS since by default each service already has an SG, by allowing this SG to 
 
 ##### Creation of subsets and discussion on available CIDR blocks
 
-![](/assets/img/2024-12-21-17-31-49.png)
+[![](/assets/img/2024-12-21-17-31-49.png)](/assets/img/2024-12-21-17-31-49.png)
 
 By default the following are available:
 
@@ -118,68 +118,68 @@ If we want to further subdivide `172.31.64.0/24` into 3 pieces, we can use:
 
 ##### Set up NAT gateway
 
-######## Creation of NAT Gateway
+###### Creation of NAT Gateway
 
-![](/assets/img/2024-12-21-17-32-10.png)
+[![](/assets/img/2024-12-21-17-32-10.png)](/assets/img/2024-12-21-17-32-10.png)
 
 1. Arbitrary Name
 2. Any **_Public Subnet_**
 3. Must be of **_Public Connectivity Type_**
 4. Must **_have an Elastic IP_** (which we have at most 5 for each region)
 
-######## Association to a Subnest by creating RouteTables
+###### Association to a Subnest by creating RouteTables
 
 First create a route table:
 
-![](/assets/img/2024-12-21-17-32-27.png)
+[![](/assets/img/2024-12-21-17-32-27.png)](/assets/img/2024-12-21-17-32-27.png)
 
 Next view the detail of the route table, edit it and add `0.0.0.0/0 <- nat-xxxx`.
 
-![](/assets/img/2024-12-21-17-32-34.png)
+[![](/assets/img/2024-12-21-17-32-34.png)](/assets/img/2024-12-21-17-32-34.png)
 
 Finally associate **_all private subnets_** for which you wish to apply the route table:
 
-![](/assets/img/2024-12-21-17-32-40.png)
+[![](/assets/img/2024-12-21-17-32-40.png)](/assets/img/2024-12-21-17-32-40.png)
 
 ##### Setup private subnet and internal load balancers
 
-######## Subnets and Route Table
+###### Subnets and Route Table
 
 By default the creation of load-balancer requires **_at least two private subnets_** in two separate AZ's
 
-![](/assets/img/2024-12-21-17-32-47.png)
+[![](/assets/img/2024-12-21-17-32-47.png)](/assets/img/2024-12-21-17-32-47.png)
 
 Next our private subnets need outwards traffic, create a route table for this purpose:
 
-![](/assets/img/2024-12-21-17-32-52.png)
+[![](/assets/img/2024-12-21-17-32-52.png)](/assets/img/2024-12-21-17-32-52.png)
 
 and of course we add outward traffic rules
 
-![](/assets/img/2024-12-21-17-32-59.png)
+[![](/assets/img/2024-12-21-17-32-59.png)](/assets/img/2024-12-21-17-32-59.png)
 
 for the new private subsets:
 
-![](/assets/img/2024-12-21-17-33-08.png)
+[![](/assets/img/2024-12-21-17-33-08.png)](/assets/img/2024-12-21-17-33-08.png)
 
-######## Internal load balancer
+###### Internal load balancer
 
-![](/assets/img/2024-12-21-17-33-13.png)
+[![](/assets/img/2024-12-21-17-33-13.png)](/assets/img/2024-12-21-17-33-13.png)
 
 Choose Internal Type with IPv4 addresses:
 
-![](/assets/img/2024-12-21-17-33-22.png)
+[![](/assets/img/2024-12-21-17-33-22.png)](/assets/img/2024-12-21-17-33-22.png)
 
 Then choose two of the private subnets:
 
-![](/assets/img/2024-12-21-17-33-28.png)
+[![](/assets/img/2024-12-21-17-33-28.png)](/assets/img/2024-12-21-17-33-28.png)
 
 Choose the identity (SG) for your lobalancer:
 
-![](/assets/img/2024-12-21-17-33-41.png)
+[![](/assets/img/2024-12-21-17-33-41.png)](/assets/img/2024-12-21-17-33-41.png)
 
 And finally add the listeners and target groups:
 
-![](/assets/img/2024-12-21-17-33-48.png)
+[![](/assets/img/2024-12-21-17-33-48.png)](/assets/img/2024-12-21-17-33-48.png)
 
 ##### Internet-facing load balancers
 
@@ -189,7 +189,7 @@ Same as the previous one, but you need add your load balancer at public subnets 
 
 Go to `VPC > Endpoints` create your end points with appropriate service name:
 
-![](/assets/img/2024-12-21-17-33-54.png)
+[![](/assets/img/2024-12-21-17-33-54.png)](/assets/img/2024-12-21-17-33-54.png)
 
 For Cloudwatch we need `com.amazonaws.<region-name>.logs`.
 

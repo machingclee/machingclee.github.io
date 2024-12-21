@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.4cf52b72.chunk.css",
-    "main.js": "/static/js/main.b66556fe.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.f6a01ec1.js",
+    "main.js": "/static/js/main.554c9e88.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.b2c98538.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.8afd04f4.chunk.js": "/static/js/2.8afd04f4.chunk.js",
-    "static/js/3.09425bd0.chunk.js": "/static/js/3.09425bd0.chunk.js",
-    "static/js/4.2a1ab335.chunk.js": "/static/js/4.2a1ab335.chunk.js",
-    "static/js/5.e2b9eefb.chunk.js": "/static/js/5.e2b9eefb.chunk.js",
+    "static/js/2.b1311bd8.chunk.js": "/static/js/2.b1311bd8.chunk.js",
+    "static/js/3.a1375139.chunk.js": "/static/js/3.a1375139.chunk.js",
+    "static/js/4.3b9ff039.chunk.js": "/static/js/4.3b9ff039.chunk.js",
+    "static/js/5.a6c6429e.chunk.js": "/static/js/5.a6c6429e.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.8afd04f4.chunk.js.LICENSE.txt": "/static/js/2.8afd04f4.chunk.js.LICENSE.txt",
-    "static/js/3.09425bd0.chunk.js.LICENSE.txt": "/static/js/3.09425bd0.chunk.js.LICENSE.txt",
-    "static/js/4.2a1ab335.chunk.js.LICENSE.txt": "/static/js/4.2a1ab335.chunk.js.LICENSE.txt",
+    "static/js/2.b1311bd8.chunk.js.LICENSE.txt": "/static/js/2.b1311bd8.chunk.js.LICENSE.txt",
+    "static/js/3.a1375139.chunk.js.LICENSE.txt": "/static/js/3.a1375139.chunk.js.LICENSE.txt",
+    "static/js/4.3b9ff039.chunk.js.LICENSE.txt": "/static/js/4.3b9ff039.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.52b1ef07.md",
     "static/media/002-Lazy-React-Router.md": "/static/media/002-Lazy-React-Router.48295ca9.md",
@@ -330,7 +330,7 @@
     "static/media/337-lambda-function-python-docker-image.md": "/static/media/337-lambda-function-python-docker-image.48e2cd3e.md",
     "static/media/338-decorators.md": "/static/media/338-decorators.d05e5327.md",
     "static/media/339-doubly-linked-list.md": "/static/media/339-doubly-linked-list.914c0d69.md",
-    "static/media/340-lambda-function-springboot.md": "/static/media/340-lambda-function-springboot.7a60df96.md",
+    "static/media/340-lambda-function-springboot.md": "/static/media/340-lambda-function-springboot.803cddf0.md",
     "static/media/341-useful-api-testing-in-postman.md": "/static/media/341-useful-api-testing-in-postman.25ad7ec5.md",
     "static/media/342-test-container-for-testing.md": "/static/media/342-test-container-for-testing.6c31c57c.md",
     "static/media/343-logger-in-spring.md": "/static/media/343-logger-in-spring.1759a725.md",
@@ -339,7 +339,8 @@
     "static/media/346-jpa-logging.md": "/static/media/346-jpa-logging.be7e3a37.md",
     "static/media/347-eslint.md": "/static/media/347-eslint.ce6aad2c.md",
     "static/media/348-ngorks.md": "/static/media/348-ngorks.dfe9ddf1.md",
-    "static/media/349-lambda-in-subnet.md": "/static/media/349-lambda-in-subnet.3aeba0c0.md",
+    "static/media/349-lambda-in-subnet.md": "/static/media/349-lambda-in-subnet.15b07658.md",
+    "static/media/350-domain-transfer.md": "/static/media/350-domain-transfer.2085b692.md",
     "static/media/CV_Portfolio.04b3ce0d.pdf": "/static/media/CV_Portfolio.04b3ce0d.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -389,10 +390,10 @@
     "static/media/transformer-date-fomatter.18a2d3fc.pdf": "/static/media/transformer-date-fomatter.18a2d3fc.pdf"
   },
   "entrypoints": [
-    "static/js/runtime-main.f6a01ec1.js",
+    "static/js/runtime-main.b2c98538.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.8afd04f4.chunk.js",
+    "static/js/2.b1311bd8.chunk.js",
     "static/css/main.4cf52b72.chunk.css",
-    "static/js/main.b66556fe.chunk.js"
+    "static/js/main.554c9e88.chunk.js"
   ]
 }

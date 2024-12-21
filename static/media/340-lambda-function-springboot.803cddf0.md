@@ -2,7 +2,7 @@
 title: "Snapstarted Lambda running Spring Boot and Transition into Spring Boot as a Node.js Developer"
 date: 2024-11-16
 id: blog0340
-tag: springboot, aws, lamdba
+tag: springboot, aws, lambda
 toc: true
 intro: "Record miscellaneous detail of transitioning into Spring Boot as a node.js developer."
 ---
