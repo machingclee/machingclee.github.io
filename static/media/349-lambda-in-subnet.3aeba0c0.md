@@ -1,0 +1,201 @@
+---
+title: "Architecture for Private Lamdba functions called via another lambda function"
+date: 2024-12-19
+id: blog0349
+tag: docker
+toc: true
+intro: "Let's discuss how to orchistrate the interaction of lambda functions which are network-isolated, especially how to endow lambda functions with security group."
+---
+
+<style>
+  img {
+    max-width: 660px;
+  }
+</style>
+
+#### Overview
+
+[![](/assets/img/2024-12-21-17-28-00.png)](/assets/img/2024-12-21-17-28-00.png)
+
+
+#### Strategy
+
+##### Resource to be protected
+
+Place our protect resourced (target lambda function) behind **internal** load balancer.
+
+![](/assets/img/2024-12-21-17-28-30.png)
+
+##### Endow lambda functions with security group
+
+Place our public-facing lambda functions into private subnet so that:
+
+- the lambda function can be endowed with an ENI (Elastic Network Interface)
+- that ENI can carry a security group (SG) so that **_now lambda function can carry an SG_**.
+
+![](/assets/img/2024-12-21-17-28-40.png)
+
+##### Calling protected resourcess
+
+######## Public facing lambdas
+
+Since our protected lambda function $\lambda_\text{protected}$ stay behind internal load balancer, suppose that the load balancer has an DNS name:
+
+- `my-internal-loadbalancer`
+
+then inside of private subneted lambda function $\lambda_\text{private\_subnetted}$, calling $\lambda_\text{protected}$ is as simple as calling
+
+- Make a request to `http://my-internal-loadbalancer:<port-number>/suitable/route`
+- Allow SG to access port `port-number`
+
+here we assume that our lambda function is acting like a web server.
+
+######## Public facing ECS services
+
+For ECS since by default each service already has an SG, by allowing this SG to access `port-number`, we get access to protected resource easily.
+
+#### How to Connect a Lambda Function to a VPC and then a private subnet
+
+##### VPC configuration in Lambda Functions Console
+
+1. Go to your lambda function and choose `Configruation > VPC`
+
+    <img src="/assets/img/2024-12-21-17-29-46.png" width="400"/>
+    <p></p>
+
+2. Choose a VPC, then choose an `AZ` and hence a private subnet
+
+   ![](/assets/img/2024-12-21-17-29-55.png)
+
+   Finally Choose an SG and congradulation! Our lambda has an SG now!
+
+##### Caveat of connecting lambdas to a VPC/subnet
+
+- By default each lambda function **_cannot make any request from inside_** when they are connected to a VPC (due to security reason).
+
+- It makes no difference using public or private subnet to place our lambda functions.
+
+- **_Cloudwatch log endpoint connection is also lost_** in this scenario. For logging purpose, one should always add `VPC endpoints` to this private subnet.
+
+  ![](/assets/img/2024-12-21-17-31-12.png)
+
+  you will need to choose
+
+  | Option         | Choice                                                                                                                                                 |
+  | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+  | Type           | AWS Service                                                                                                                                            |
+  | Services       | com.amazonaws.your-region.logs                                                                                                                         |
+  | VPC            | Your target VPC                                                                                                                                        |
+  | Subnet         | Your target private subnet                                                                                                                             |
+  | Security Group | This is tricky, SG in this context means the group of resources that is available to this endpoint, not related to any security inbound/outbound rules |
+
+#### Create Necessary Resources
+
+##### Creation of subsets and discussion on available CIDR blocks
+
+![](/assets/img/2024-12-21-17-31-49.png)
+
+By default the following are available:
+
+```text
+172.30.0.0/20 (0-15)   ← existing
+172.30.16.0/20 (16-31) ← existing
+172.30.32.0/20 (32-47) ← existing
+172.30.48.0/20 (48-63) ← you can use this
+172.30.64.0/20 (64-79) ← or this
+```
+
+For example `172.31.64.0/24` will be a good choice, which means that any resource created in this subnet has a flexible choices of $2^8 = 256$ private addresses.
+
+If we want to further subdivide `172.31.64.0/24` into 3 pieces, we can use:
+
+```text
+├── Subnet 1: 172.31.64.0/28 (first 16 IPs)
+├── Subnet 2: 172.31.64.16/28 (next 16 IPs)
+├── Subnet 3: 172.31.64.32/28 (next 16 IPs)
+...and so on
+```
+
+##### Set up NAT gateway
+
+######## Creation of NAT Gateway
+
+![](/assets/img/2024-12-21-17-32-10.png)
+
+1. Arbitrary Name
+2. Any **_Public Subnet_**
+3. Must be of **_Public Connectivity Type_**
+4. Must **_have an Elastic IP_** (which we have at most 5 for each region)
+
+######## Association to a Subnest by creating RouteTables
+
+First create a route table:
+
+![](/assets/img/2024-12-21-17-32-27.png)
+
+Next view the detail of the route table, edit it and add `0.0.0.0/0 <- nat-xxxx`.
+
+![](/assets/img/2024-12-21-17-32-34.png)
+
+Finally associate **_all private subnets_** for which you wish to apply the route table:
+
+![](/assets/img/2024-12-21-17-32-40.png)
+
+##### Setup private subnet and internal load balancers
+
+######## Subnets and Route Table
+
+By default the creation of load-balancer requires **_at least two private subnets_** in two separate AZ's
+
+![](/assets/img/2024-12-21-17-32-47.png)
+
+Next our private subnets need outwards traffic, create a route table for this purpose:
+
+![](/assets/img/2024-12-21-17-32-52.png)
+
+and of course we add outward traffic rules
+
+![](/assets/img/2024-12-21-17-32-59.png)
+
+for the new private subsets:
+
+![](/assets/img/2024-12-21-17-33-08.png)
+
+######## Internal load balancer
+
+![](/assets/img/2024-12-21-17-33-13.png)
+
+Choose Internal Type with IPv4 addresses:
+
+![](/assets/img/2024-12-21-17-33-22.png)
+
+Then choose two of the private subnets:
+
+![](/assets/img/2024-12-21-17-33-28.png)
+
+Choose the identity (SG) for your lobalancer:
+
+![](/assets/img/2024-12-21-17-33-41.png)
+
+And finally add the listeners and target groups:
+
+![](/assets/img/2024-12-21-17-33-48.png)
+
+##### Internet-facing load balancers
+
+Same as the previous one, but you need add your load balancer at public subnets and for listeners you need to asscoiate it a **_certificate_**.
+
+##### VPC endpoints (for cloudwatch)
+
+Go to `VPC > Endpoints` create your end points with appropriate service name:
+
+![](/assets/img/2024-12-21-17-33-54.png)
+
+For Cloudwatch we need `com.amazonaws.<region-name>.logs`.
+
+Other service endpoints that reuqired an endpoint in privatee subnet:
+
+- S3 Gateway Endpoint (Free)
+- DynamoDB Gateway Endpoint (Free)
+
+In our case if we want to get access to our **_internal load-balancer_**, **_no endpoint_** is needed.
