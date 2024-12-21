@@ -91,7 +91,7 @@ For ECS since by default each service already has an SG, by allowing this SG to 
 
 #### Create Necessary Resources
 
-##### Creation of subsets and discussion on available CIDR blocks
+##### Create subnets and what are the available CIDR blocks?
 
 [![](/assets/img/2024-12-21-17-31-49.png)](/assets/img/2024-12-21-17-31-49.png)
 
@@ -118,7 +118,7 @@ If we want to further subdivide `172.31.64.0/24` into 3 pieces, we can use:
 
 ##### Set up NAT gateway
 
-###### Creation of NAT Gateway
+###### Create an NAT Gateway
 
 [![](/assets/img/2024-12-21-17-32-10.png)](/assets/img/2024-12-21-17-32-10.png)
 
@@ -127,7 +127,7 @@ If we want to further subdivide `172.31.64.0/24` into 3 pieces, we can use:
 3. Must be of **_Public Connectivity Type_**
 4. Must **_have an Elastic IP_** (which we have at most 5 for each region)
 
-###### Association to a Subnest by creating RouteTables
+###### Associate to a subnet by creating route tables
 
 First create a route table:
 
