@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.4cf52b72.chunk.css",
-    "main.js": "/static/js/main.10b72dd7.chunk.js",
+    "main.js": "/static/js/main.b918605f.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.b2c98538.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.b1311bd8.chunk.js": "/static/js/2.b1311bd8.chunk.js",
@@ -339,8 +339,8 @@
     "static/media/346-jpa-logging.md": "/static/media/346-jpa-logging.be7e3a37.md",
     "static/media/347-eslint.md": "/static/media/347-eslint.ce6aad2c.md",
     "static/media/348-ngorks.md": "/static/media/348-ngorks.dfe9ddf1.md",
-    "static/media/349-lambda-in-subnet.md": "/static/media/349-lambda-in-subnet.5de71e43.md",
-    "static/media/350-domain-transfer.md": "/static/media/350-domain-transfer.2085b692.md",
+    "static/media/349-lambda-in-subnet.md": "/static/media/349-lambda-in-subnet.4b4d5a77.md",
+    "static/media/350-domain-transfer.md": "/static/media/350-domain-transfer.d64f9248.md",
     "static/media/CV_Portfolio.04b3ce0d.pdf": "/static/media/CV_Portfolio.04b3ce0d.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -394,6 +394,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.b1311bd8.chunk.js",
     "static/css/main.4cf52b72.chunk.css",
-    "static/js/main.10b72dd7.chunk.js"
+    "static/js/main.b918605f.chunk.js"
   ]
 }

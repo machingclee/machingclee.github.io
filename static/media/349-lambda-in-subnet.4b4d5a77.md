@@ -11,6 +11,12 @@ intro: "Let's discuss how to orchistrate the interaction of lambda functions whi
   img {
     max-width: 660px;
   }
+  table th {
+    min-width: 160px;
+  }
+  table td {
+    vertical-align: top;
+  }
 </style>
 
 #### Overview
@@ -70,24 +76,24 @@ For ECS since by default each service already has an SG, by allowing this SG to 
    Finally Choose an SG and congradulation! Our lambda has an SG now!
 
 ##### Caveat of connecting lambdas to a VPC/subnet
-
+###### Outbound Traffics are Lost
 - By default each lambda function **_cannot make any request from inside_** when they are connected to a VPC (due to security reason).
-
+###### Connect Lambda Functions to Public or Private Subnet?
 - It makes no difference using public or private subnet to place our lambda functions.
-
+###### Cloudwatch log Becomes Unavailable
 - **_Cloudwatch log endpoint connection is also lost_** in this scenario. For logging purpose, one should always add `VPC endpoints` to this private subnet.
 
   ![](/assets/img/2024-12-21-17-31-12.png)
 
-  you will need to choose
+  upon clicking `create endpoint`, you will need to choose
 
-  | Option         | Choice                                                                                                                                                 |
-  | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-  | Type           | AWS Service                                                                                                                                            |
-  | Services       | com.amazonaws.your-region.logs                                                                                                                         |
-  | VPC            | Your target VPC                                                                                                                                        |
-  | Subnet         | Your target private subnet                                                                                                                             |
-  | Security Group | This is tricky, SG in this context means the group of resources that is available to this endpoint, not related to any security inbound/outbound rules |
+  |   Option    | Value                                                                                                                                                 |
+  | ------------------------| ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+  | `Type`           | AWS Service                                                                                                                                            |
+  | `Services`       | com.amazonaws.your-region.logs                                                                                                                         |
+  | `VPC`            | Your target  VPC                                                                                               |
+  | `Subnet`         | Your target private subnet                                                                                                                             |
+  | `Security Group` | SG in this context means the group of resources that is available to this endpoint, not related to any security inbound or outbound rules |
 
 #### Create Necessary Resources
 
@@ -109,7 +115,7 @@ For example `172.31.64.0/24` will be a good choice, which means that any resourc
 
 If we want to further subdivide `172.31.64.0/24` into 3 pieces, we can use:
 
-```text
+```texthttps://www.facebook.com/groups/
 ├── Subnet 1: 172.31.64.0/28 (first 16 IPs)
 ├── Subnet 2: 172.31.64.16/28 (next 16 IPs)
 ├── Subnet 3: 172.31.64.32/28 (next 16 IPs)

@@ -30,11 +30,25 @@ Assume that we have deployed a webpage using cloudfront, the main target is to s
 Let's achieve this target in the following steps:
 
 ##### Update cloudfront distribution
-1. When updating the distribution setting, we will need to
-   - input the sub-domain name and
-   - choose an certificate authenticated by the 3rd party DNS provider:
+1. When updating the distribution setting there are two (and only two) inputs that are ***not available for the moment***:
 
-   [![](/assets/img/2024-12-22-01-37-15.png)](/assets/img/2024-12-22-01-37-15.png)
+    [![](/assets/img/2024-12-22-01-37-15.png)](/assets/img/2024-12-22-01-37-15.png)
+
+    They are respectively:
+    - The desired alternative domain name;
+    - A certificate authroized to the 3rd party DNS provider 
+        
+    
+    For the moment please leave both the *Alternative Domain Name* and the *Custom SSL Certifiacte* ***blank***. In step 3 below we will be
+      1. Verifying we own the domain (and thereby turning the certificate into valid state)
+
+      2. Then we can add CName record which route traffic from Alternative Domain Name to our cloudfront distribution
+    
+    After that we can fill in the blank options.
+
+   
+
+   
 
 ##### Request certificate, what is CNAME, CNAME Name and CNAME Value by the way?
 
@@ -64,7 +78,7 @@ Let's achieve this target in the following steps:
 
 ##### Adjust alternative domain name after cert-validation is completed
 
-4. Just wait our certificate to be validated, then we can update the alternative domain name successfully:
+4. Just wait our certificate to be validated, then we can return to step 1 and update the alternative domain name successfully:
 
    [![](/assets/img/2024-12-22-01-37-39.png)](/assets/img/2024-12-22-01-37-39.png)
 
