@@ -64,7 +64,7 @@ For ECS since by default each service already has an SG, by allowing this SG to 
 
 ##### VPC configuration in Lambda Functions Console
 
-1. Go to your lambda function and choose `Configruation > VPC`
+1. Go to our lambda function and choose `Configruation > VPC`
 
     <img src="/assets/img/2024-12-21-17-29-46.png" width="400"/>
     <p></p>
@@ -85,7 +85,7 @@ For ECS since by default each service already has an SG, by allowing this SG to 
 
   ![](/assets/img/2024-12-21-17-31-12.png)
 
-  upon clicking `create endpoint`, you will need to choose
+  upon clicking `create endpoint`, we will need to choose
 
   |   Option    | Value                                                                                                                                                 |
   | ------------------------| ------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -101,7 +101,7 @@ For ECS since by default each service already has an SG, by allowing this SG to 
 
 [![](/assets/img/2024-12-21-17-31-49.png)](/assets/img/2024-12-21-17-31-49.png)
 
-By default the following are available:
+By default the following are available CIDR blocks:
 
 ```text
 172.30.0.0/20 (0-15)   ← existing
@@ -111,15 +111,16 @@ By default the following are available:
 172.30.64.0/20 (64-79) ← or this
 ```
 
-For example `172.31.64.0/24` will be a good choice, which means that any resource created in this subnet has a flexible choices of $2^8 = 256$ private addresses.
+For example `172.30.64.0/24` will be a good choice, which means that any resource created in this subnet has a flexible choices of $2^8 = 256$ private addresses.
 
-If we want to further subdivide `172.31.64.0/24` into 3 pieces, we can use:
+If we want to further divide `172.30.64.0/24` ($2^8$ choices) into 16 pieces, we can use:
 
-```texthttps://www.facebook.com/groups/
-├── Subnet 1: 172.31.64.0/28 (first 16 IPs)
-├── Subnet 2: 172.31.64.16/28 (next 16 IPs)
-├── Subnet 3: 172.31.64.32/28 (next 16 IPs)
-...and so on
+```text
+├── Subnet 1: 172.30.64.0/28 (first 16 IPs)
+├── Subnet 2: 172.30.64.16/28 (next 16 IPs)
+├── Subnet 3: 172.30.64.32/28 (next 16 IPs)
+├── ...
+├── Subnet 16: 172.30.64.240/28 (final 16 IPs)
 ```
 
 ##### Set up NAT gateway
@@ -143,7 +144,7 @@ Next view the detail of the route table, edit it and add `0.0.0.0/0 <- nat-xxxx`
 
 [![](/assets/img/2024-12-21-17-32-34.png)](/assets/img/2024-12-21-17-32-34.png)
 
-Finally associate **_all private subnets_** for which you wish to apply the route table:
+Finally associate **_all private subnets_** for which we wish to apply the route table:
 
 [![](/assets/img/2024-12-21-17-32-40.png)](/assets/img/2024-12-21-17-32-40.png)
 
@@ -159,7 +160,7 @@ Next our private subnets need outwards traffic, create a route table for this pu
 
 [![](/assets/img/2024-12-21-17-32-52.png)](/assets/img/2024-12-21-17-32-52.png)
 
-and of course we add outward traffic rules
+and of course we add outwards traffic rules
 
 [![](/assets/img/2024-12-21-17-32-59.png)](/assets/img/2024-12-21-17-32-59.png)
 
@@ -179,7 +180,7 @@ Then choose two of the private subnets:
 
 [![](/assets/img/2024-12-21-17-33-28.png)](/assets/img/2024-12-21-17-33-28.png)
 
-Choose the identity (SG) for your lobalancer:
+Choose a new identity (SG) for our internal load balancer:
 
 [![](/assets/img/2024-12-21-17-33-41.png)](/assets/img/2024-12-21-17-33-41.png)
 
@@ -189,19 +190,26 @@ And finally add the listeners and target groups:
 
 ##### Internet-facing load balancers
 
-Same as the previous one, but you need add your load balancer at public subnets and for listeners you need to asscoiate it a **_certificate_**.
+Same as the previous one, but we need to:
+- Add our internet-facing load balancer at public subnets and, 
+- For listeners at any port with HTTPS we need to asscoiate it a **_certificate_**.
 
 ##### VPC endpoints (for cloudwatch)
 
-Go to `VPC > Endpoints` create your end points with appropriate service name:
+Go to `VPC > Endpoints`, then create our VPC endpoints with appropriate service name:
 
 [![](/assets/img/2024-12-21-17-33-54.png)](/assets/img/2024-12-21-17-33-54.png)
 
-For Cloudwatch we need `com.amazonaws.<region-name>.logs`.
+***For Cloudwatch*** we need `com.amazonaws.<region-name>.logs`.
 
-Other service endpoints that reuqired an endpoint in privatee subnet:
+Other possible service endpoints that require an endpoint in private subnet:
 
+- Cloudwatch Monitoring
 - S3 Gateway Endpoint (Free)
 - DynamoDB Gateway Endpoint (Free)
 
-In our case if we want to get access to our **_internal load-balancer_**, **_no endpoint_** is needed.
+For a more comprehensive list of available AWS services integrated with AWS PrivateLink (i.e., accessible via VPC endpoints in private subnet):
+
+- https://docs.aws.amazon.com/vpc/latest/privatelink/aws-services-privatelink-support.html
+
+**Remark.** In our case if we want to get access to our **_internal load-balancer_**, **_no endpoint_** is needed.
