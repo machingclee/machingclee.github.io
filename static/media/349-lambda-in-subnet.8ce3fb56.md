@@ -28,7 +28,7 @@ intro: "Let's discuss how to orchistrate the interaction of lambda functions whi
 
 ##### Resource to be protected
 
-Place our protect resourced (target lambda function) behind **internal** load balancer.
+Place our protected resourced (target lambda function) behind **internal** load balancer.
 
 ![](/assets/img/2024-12-21-17-28-30.png)
 
