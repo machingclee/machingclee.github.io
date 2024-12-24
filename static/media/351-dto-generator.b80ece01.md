@@ -13,6 +13,166 @@ intro: "We record the use of ksp package that auto-generates DTO mapper for anno
   }
 </style>
 
+#### Sample Result
+
+Let's choose the following entity class and annotate it by `@GenerateDTO`:
+
+```kts{20}
+package dev.james.alicetimetable.commons.database.entities
+
+
+import dev.james.alicetimetable.commons.database.enums.Gender
+import dev.james.alicetimetable.events.StudentEvents
+import dev.james.processor.GenerateDTO
+import jakarta.persistence.*
+import org.hibernate.annotations.DynamicInsert
+import org.hibernate.dialect.PostgreSQLEnumJdbcType
+import org.hibernate.annotations.JdbcType
+import org.springframework.data.domain.AbstractAggregateRoot
+
+import java.io.Serializable
+import java.util.UUID
+
+
+@Suppress("UNCHECKED_CAST")
+@Entity
+@DynamicInsert
+@GenerateDTO
+@Table(
+    name = "student",
+    schema = "public"
+)
+class Student(
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(generator = "ulid_as_uuid")
+    var id: UUID? = null,
+    @Column(name = "first_name", nullable = false)
+    var firstName: String,
+    @Column(name = "last_name", nullable = false)
+    var lastName: String,
+    @Column(name = "chinese_first_name")
+    var chineseFirstName: String? = null,
+    @Column(name = "chinese_last_name")
+    var chineseLastName: String? = null,
+    @Column(name = "school_name", nullable = false)
+    var schoolName: String,
+    @Column(name = "student_code")
+    var studentCode: String? = null,
+    @Column(name = "grade", nullable = false)
+    var grade: String,
+    @Column(name = "phone_number")
+    var phoneNumber: String? = null,
+    @Column(name = "wechat_id")
+    var wechatId: String? = null,
+    @Column(name = "birthdate", nullable = false)
+    var birthdate: Double,
+    @Column(name = "parent_email", nullable = false)
+    var parentEmail: String,
+    @Column(name = "created_at")
+    var createdAt: Double? = null,
+    @Column(name = "created_at_hk")
+    var createdAtHk: String? = null,
+    @Column(name = "parent_id")
+    var parentId: UUID? = null,
+    @Column(name = "gender", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @JdbcType(PostgreSQLEnumJdbcType::class)
+    var gender: Gender,
+) : AbstractAggregateRoot<Student>() {
+    @OneToMany
+    @JoinTable(
+        name = "rel_student_studentpackage",
+        joinColumns = [JoinColumn(name = "student_id", referencedColumnName = "id")],
+        inverseJoinColumns = [JoinColumn(name = "student_package_id", referencedColumnName = "id")]
+    )
+    var studentPackages: MutableList<StudentPackage> = mutableListOf()
+
+    fun deletePackage(studentPackageId: Int) {
+        registerEvent(StudentEvents.DeletePackageRequested(studentPackageId))
+    }
+
+    fun addPackage(pkg: StudentPackage) {
+        studentPackages.add(pkg)
+    }
+}
+
+```
+
+Upon our kspKotlin task we get
+
+![](/assets/img/2024-12-24-04-35-48.png)
+
+where 
+
+```kts
+package dev.james.alicetimetable.commons.database.entities
+
+import dev.james.alicetimetable.commons.database.enums.Gender
+import java.util.UUID
+import kotlin.Double
+import kotlin.String
+
+public data class StudentDTO(
+  public val id: UUID?,
+  public val firstName: String,
+  public val lastName: String,
+  public val chineseFirstName: String?,
+  public val chineseLastName: String?,
+  public val schoolName: String,
+  public val studentCode: String?,
+  public val grade: String,
+  public val phoneNumber: String?,
+  public val wechatId: String?,
+  public val birthdate: Double,
+  public val parentEmail: String,
+  public val createdAt: Double?,
+  public val createdAtHk: String?,
+  public val parentId: UUID?,
+  public val gender: Gender,
+)
+
+public object StudentMapper {
+  public fun toDTO(entity: Student): StudentDTO = StudentDTO(
+      entity.id,
+      entity.firstName,
+      entity.lastName,
+      entity.chineseFirstName,
+      entity.chineseLastName,
+      entity.schoolName,
+      entity.studentCode,
+      entity.grade,
+      entity.phoneNumber,
+      entity.wechatId,
+      entity.birthdate,
+      entity.parentEmail,
+      entity.createdAt,
+      entity.createdAtHk,
+      entity.parentId,
+      entity.gender,
+  )
+
+  public fun fromDTO(dto: StudentDTO): Student = Student(
+      dto.id,
+      dto.firstName,
+      dto.lastName,
+      dto.chineseFirstName,
+      dto.chineseLastName,
+      dto.schoolName,
+      dto.studentCode,
+      dto.grade,
+      dto.phoneNumber,
+      dto.wechatId,
+      dto.birthdate,
+      dto.parentEmail,
+      dto.createdAt,
+      dto.createdAtHk,
+      dto.parentId,
+      dto.gender,
+  )
+}
+```
+
 #### Processor Module
 
 
@@ -292,162 +452,4 @@ Now we can generate `DTO` and `Mapper` (which by default is executed on `bootRun
 
 ![](/assets/img/2024-12-24-04-30-58.png)
 
-#### Example
 
-Let's choose the following entity class and annotate it by `@GenerateDTO`:
-
-```kts
-package dev.james.alicetimetable.commons.database.entities
-
-
-import dev.james.alicetimetable.commons.database.enums.Gender
-import dev.james.alicetimetable.events.StudentEvents
-import dev.james.processor.GenerateDTO
-import jakarta.persistence.*
-import org.hibernate.annotations.DynamicInsert
-import org.hibernate.dialect.PostgreSQLEnumJdbcType
-import org.hibernate.annotations.JdbcType
-import org.springframework.data.domain.AbstractAggregateRoot
-
-import java.io.Serializable
-import java.util.UUID
-
-
-@Suppress("UNCHECKED_CAST")
-@Entity
-@DynamicInsert
-@GenerateDTO
-@Table(
-    name = "student",
-    schema = "public"
-)
-class Student(
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(generator = "ulid_as_uuid")
-    var id: UUID? = null,
-    @Column(name = "first_name", nullable = false)
-    var firstName: String,
-    @Column(name = "last_name", nullable = false)
-    var lastName: String,
-    @Column(name = "chinese_first_name")
-    var chineseFirstName: String? = null,
-    @Column(name = "chinese_last_name")
-    var chineseLastName: String? = null,
-    @Column(name = "school_name", nullable = false)
-    var schoolName: String,
-    @Column(name = "student_code")
-    var studentCode: String? = null,
-    @Column(name = "grade", nullable = false)
-    var grade: String,
-    @Column(name = "phone_number")
-    var phoneNumber: String? = null,
-    @Column(name = "wechat_id")
-    var wechatId: String? = null,
-    @Column(name = "birthdate", nullable = false)
-    var birthdate: Double,
-    @Column(name = "parent_email", nullable = false)
-    var parentEmail: String,
-    @Column(name = "created_at")
-    var createdAt: Double? = null,
-    @Column(name = "created_at_hk")
-    var createdAtHk: String? = null,
-    @Column(name = "parent_id")
-    var parentId: UUID? = null,
-    @Column(name = "gender", nullable = false)
-    @Enumerated(EnumType.STRING)
-    @JdbcType(PostgreSQLEnumJdbcType::class)
-    var gender: Gender,
-) : AbstractAggregateRoot<Student>() {
-    @OneToMany
-    @JoinTable(
-        name = "rel_student_studentpackage",
-        joinColumns = [JoinColumn(name = "student_id", referencedColumnName = "id")],
-        inverseJoinColumns = [JoinColumn(name = "student_package_id", referencedColumnName = "id")]
-    )
-    var studentPackages: MutableList<StudentPackage> = mutableListOf()
-
-    fun deletePackage(studentPackageId: Int) {
-        registerEvent(StudentEvents.DeletePackageRequested(studentPackageId))
-    }
-
-    fun addPackage(pkg: StudentPackage) {
-        studentPackages.add(pkg)
-    }
-}
-
-```
-
-Upon our kspKotlin task we get
-
-![](/assets/img/2024-12-24-04-35-48.png)
-
-where 
-
-```kts
-package dev.james.alicetimetable.commons.database.entities
-
-import dev.james.alicetimetable.commons.database.enums.Gender
-import java.util.UUID
-import kotlin.Double
-import kotlin.String
-
-public data class StudentDTO(
-  public val id: UUID?,
-  public val firstName: String,
-  public val lastName: String,
-  public val chineseFirstName: String?,
-  public val chineseLastName: String?,
-  public val schoolName: String,
-  public val studentCode: String?,
-  public val grade: String,
-  public val phoneNumber: String?,
-  public val wechatId: String?,
-  public val birthdate: Double,
-  public val parentEmail: String,
-  public val createdAt: Double?,
-  public val createdAtHk: String?,
-  public val parentId: UUID?,
-  public val gender: Gender,
-)
-
-public object StudentMapper {
-  public fun toDTO(entity: Student): StudentDTO = StudentDTO(
-      entity.id,
-      entity.firstName,
-      entity.lastName,
-      entity.chineseFirstName,
-      entity.chineseLastName,
-      entity.schoolName,
-      entity.studentCode,
-      entity.grade,
-      entity.phoneNumber,
-      entity.wechatId,
-      entity.birthdate,
-      entity.parentEmail,
-      entity.createdAt,
-      entity.createdAtHk,
-      entity.parentId,
-      entity.gender,
-  )
-
-  public fun fromDTO(dto: StudentDTO): Student = Student(
-      dto.id,
-      dto.firstName,
-      dto.lastName,
-      dto.chineseFirstName,
-      dto.chineseLastName,
-      dto.schoolName,
-      dto.studentCode,
-      dto.grade,
-      dto.phoneNumber,
-      dto.wechatId,
-      dto.birthdate,
-      dto.parentEmail,
-      dto.createdAt,
-      dto.createdAtHk,
-      dto.parentId,
-      dto.gender,
-  )
-}
-```
