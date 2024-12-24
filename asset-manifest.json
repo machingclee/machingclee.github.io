@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.4cf52b72.chunk.css",
-    "main.js": "/static/js/main.168ce757.chunk.js",
+    "main.js": "/static/js/main.ecdb635a.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.95b5e9d6.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.83a87afa.chunk.js": "/static/js/2.83a87afa.chunk.js",
@@ -326,7 +326,7 @@
     "static/media/333-Create-html-via-pdf.md": "/static/media/333-Create-html-via-pdf.1b085686.md",
     "static/media/334-Scheduled-Task-ECS.md": "/static/media/334-Scheduled-Task-ECS.932d0f4f.md",
     "static/media/335-clone-db-contd-mongo-ver.md": "/static/media/335-clone-db-contd-mongo-ver.b4036c3f.md",
-    "static/media/336-get-cloudwatch-log-in-githubaction copy.md": "/static/media/336-get-cloudwatch-log-in-githubaction copy.c5fba52f.md",
+    "static/media/336-get-cloudwatch-log-in-githubaction copy.md": "/static/media/336-get-cloudwatch-log-in-githubaction copy.f01458b2.md",
     "static/media/337-lambda-function-python-docker-image.md": "/static/media/337-lambda-function-python-docker-image.48e2cd3e.md",
     "static/media/338-decorators.md": "/static/media/338-decorators.d05e5327.md",
     "static/media/339-doubly-linked-list.md": "/static/media/339-doubly-linked-list.914c0d69.md",
@@ -395,6 +395,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.83a87afa.chunk.js",
     "static/css/main.4cf52b72.chunk.css",
-    "static/js/main.168ce757.chunk.js"
+    "static/js/main.ecdb635a.chunk.js"
   ]
 }

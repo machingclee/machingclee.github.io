@@ -2,7 +2,7 @@
 title: "Github Action: Docker Action in Python to get Artifact of CloudWatch Logging"
 date: 2024-11-05
 id: blog0336
-tag: github-action
+tag: github-actions
 toc: true
 intro: "Installing python and executing a python script with argument can be tedious to teammates who are not used to python. The same siutation can apply to all other languages, let's simplify the execution by doing it on github actions."
 ---
