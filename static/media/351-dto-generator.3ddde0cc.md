@@ -1,5 +1,5 @@
 ---
-title: "Auto-generator for Entity Classes into DTO Classes"
+title: "Auto-generated Mapper From Entity Classes into DTO Classes"
 date: 2024-12-24
 id: blog0350
 tag: springboot
