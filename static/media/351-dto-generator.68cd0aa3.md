@@ -108,50 +108,43 @@ where
 ```kts
 package dev.james.alicetimetable.commons.database.entities
 
-import dev.james.alicetimetable.commons.database.enums.Gender
+import dev.james.alicetimetable.commons.database.enums.Classroom
 import java.util.UUID
 import kotlin.Double
+import kotlin.Int
 import kotlin.String
 
-public data class StudentDTO(
-  public val id: UUID?,
-  public val firstName: String,
-  public val lastName: String,
-  public val chineseFirstName: String?,
-  public val chineseLastName: String?,
-  public val schoolName: String,
-  public val studentCode: String?,
-  public val grade: String,
-  public val phoneNumber: String?,
-  public val wechatId: String?,
-  public val birthdate: Double,
-  public val parentEmail: String,
+public data class StudentPackageDTO(
+  public val startDate: Double,
+  public val paidAt: Double?,
+  public val officialEndDate: Double?,
+  public val expiryDate: Double?,
+  public val min: Int,
+  public val courseId: Int,
   public val createdAt: Double?,
   public val createdAtHk: String?,
-  public val parentId: UUID?,
-  public val gender: Gender,
+  public val numOfClasses: Int,
+  public val defaultClassroom: Classroom?,
+  public val studentid: UUID?,
+  public val uuid: UUID?,
+  public val id: Int?,
 )
 
-public object StudentMapper {
-  public fun toDTO(entity: Student): StudentDTO = StudentDTO(
-      entity.id,
-      entity.firstName,
-      entity.lastName,
-      entity.chineseFirstName,
-      entity.chineseLastName,
-      entity.schoolName,
-      entity.studentCode,
-      entity.grade,
-      entity.phoneNumber,
-      entity.wechatId,
-      entity.birthdate,
-      entity.parentEmail,
-      entity.createdAt,
-      entity.createdAtHk,
-      entity.parentId,
-      entity.gender,
-  )
-}
+public fun StudentPackage.toDTO(): StudentPackageDTO = StudentPackageDTO(
+    startDate,
+    paidAt,
+    officialEndDate,
+    expiryDate,
+    min,
+    courseId,
+    createdAt,
+    createdAtHk,
+    numOfClasses,
+    defaultClassroom,
+    studentid,
+    uuid,
+    id,
+)
 ```
 
 #### Processor Module
@@ -258,13 +251,13 @@ class GenerateDTOProcessor(
             .filterIsInstance<KSClassDeclaration>()
 
         symbols.forEach { classDeclaration ->
-            generateDTOAndMapper(classDeclaration)
+            generateDTOAndExtension(classDeclaration)
         }
 
         return emptyList()
     }
 
-    private fun generateDTOAndMapper(classDeclaration: KSClassDeclaration) {
+    private fun generateDTOAndExtension(classDeclaration: KSClassDeclaration) {
         val packageName = classDeclaration.packageName.asString()
         val className = classDeclaration.simpleName.asString()
 
@@ -299,30 +292,25 @@ class GenerateDTOProcessor(
             )
             .build()
 
-        // Generate Mapper class
-        val mapperClassName = "${className}Mapper"
-        val mapperTypeSpec = TypeSpec.objectBuilder(mapperClassName)
-            .addFunction(
-                FunSpec.builder("toDTO")
-                    .addParameter("entity", ClassName(packageName, className))
-                    .returns(ClassName(packageName, dtoClassName))
-                    .addCode(
-                        buildString {
-                            append("return $dtoClassName(\n")
-                            fields.forEach { field ->
-                                append("    entity.${field.simpleName.asString()},\n")
-                            }
-                            append(")")
-                        }
-                    )
-                    .build()
+        // Generate extension function
+        val extensionFunction = FunSpec.builder("toDTO")
+            .receiver(ClassName(packageName, className))
+            .returns(ClassName(packageName, dtoClassName))
+            .addCode(
+                buildString {
+                    append("return $dtoClassName(\n")
+                    fields.forEach { field ->
+                        append("    ${field.simpleName.asString()},\n")
+                    }
+                    append(")")
+                }
             )
             .build()
 
-        // Write the DTO and Mapper classes to files
+        // Write the DTO class and extension function to file
         val fileSpec = FileSpec.builder(packageName, dtoClassName)
             .addType(dtoTypeSpec)
-            .addType(mapperTypeSpec)
+            .addFunction(extensionFunction)
             .build()
 
         val dependencies = Dependencies(true, *listOfNotNull(classDeclaration.containingFile).toTypedArray())
