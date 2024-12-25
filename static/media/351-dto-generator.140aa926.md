@@ -151,25 +151,6 @@ public object StudentMapper {
       entity.parentId,
       entity.gender,
   )
-
-  public fun fromDTO(dto: StudentDTO): Student = Student(
-      dto.id,
-      dto.firstName,
-      dto.lastName,
-      dto.chineseFirstName,
-      dto.chineseLastName,
-      dto.schoolName,
-      dto.studentCode,
-      dto.grade,
-      dto.phoneNumber,
-      dto.wechatId,
-      dto.birthdate,
-      dto.parentEmail,
-      dto.createdAt,
-      dto.createdAtHk,
-      dto.parentId,
-      dto.gender,
-  )
 }
 ```
 
@@ -330,21 +311,6 @@ class GenerateDTOProcessor(
                             append("return $dtoClassName(\n")
                             fields.forEach { field ->
                                 append("    entity.${field.simpleName.asString()},\n")
-                            }
-                            append(")")
-                        }
-                    )
-                    .build()
-            )
-            .addFunction(
-                FunSpec.builder("fromDTO")
-                    .addParameter("dto", ClassName(packageName, dtoClassName))
-                    .returns(ClassName(packageName, className))
-                    .addCode(
-                        buildString {
-                            append("return $className(\n")
-                            fields.forEach { field ->
-                                append("    dto.${field.simpleName.asString()},\n")
                             }
                             append(")")
                         }
