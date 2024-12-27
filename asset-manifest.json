@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.4cf52b72.chunk.css",
-    "main.js": "/static/js/main.8ac4aacb.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.95b5e9d6.js",
+    "main.js": "/static/js/main.519a51b5.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.068f18df.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.83a87afa.chunk.js": "/static/js/2.83a87afa.chunk.js",
-    "static/js/3.299769a8.chunk.js": "/static/js/3.299769a8.chunk.js",
-    "static/js/4.5172d9a1.chunk.js": "/static/js/4.5172d9a1.chunk.js",
-    "static/js/5.b9040a1b.chunk.js": "/static/js/5.b9040a1b.chunk.js",
+    "static/js/2.a6454a31.chunk.js": "/static/js/2.a6454a31.chunk.js",
+    "static/js/3.8e377f55.chunk.js": "/static/js/3.8e377f55.chunk.js",
+    "static/js/4.cd9ee666.chunk.js": "/static/js/4.cd9ee666.chunk.js",
+    "static/js/5.43bcaeff.chunk.js": "/static/js/5.43bcaeff.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.83a87afa.chunk.js.LICENSE.txt": "/static/js/2.83a87afa.chunk.js.LICENSE.txt",
-    "static/js/3.299769a8.chunk.js.LICENSE.txt": "/static/js/3.299769a8.chunk.js.LICENSE.txt",
-    "static/js/4.5172d9a1.chunk.js.LICENSE.txt": "/static/js/4.5172d9a1.chunk.js.LICENSE.txt",
+    "static/js/2.a6454a31.chunk.js.LICENSE.txt": "/static/js/2.a6454a31.chunk.js.LICENSE.txt",
+    "static/js/3.8e377f55.chunk.js.LICENSE.txt": "/static/js/3.8e377f55.chunk.js.LICENSE.txt",
+    "static/js/4.cd9ee666.chunk.js.LICENSE.txt": "/static/js/4.cd9ee666.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.52b1ef07.md",
     "static/media/002-Lazy-React-Router.md": "/static/media/002-Lazy-React-Router.48295ca9.md",
@@ -320,7 +320,7 @@
     "static/media/326-appEventPublisher.md": "/static/media/326-appEventPublisher.50b92bdc.md",
     "static/media/328-distributive-log-kotlin.md": "/static/media/328-distributive-log-kotlin.2756a5c1.md",
     "static/media/329-revenue-cat.md": "/static/media/329-revenue-cat.f0f7e4c4.md",
-    "static/media/330-pojo-to-jpa.md": "/static/media/330-pojo-to-jpa.417dd094.md",
+    "static/media/330-pojo-to-jpa.md": "/static/media/330-pojo-to-jpa.e926a2ec.md",
     "static/media/331-git-action-dispatch.md": "/static/media/331-git-action-dispatch.5f9e703b.md",
     "static/media/332-clone-db-contd.md": "/static/media/332-clone-db-contd.2c90d3e5.md",
     "static/media/333-Create-html-via-pdf.md": "/static/media/333-Create-html-via-pdf.1b085686.md",
@@ -341,7 +341,9 @@
     "static/media/348-ngorks.md": "/static/media/348-ngorks.dfe9ddf1.md",
     "static/media/349-lambda-in-subnet.md": "/static/media/349-lambda-in-subnet.8ce3fb56.md",
     "static/media/350-domain-transfer.md": "/static/media/350-domain-transfer.d64f9248.md",
-    "static/media/351-dto-generator.md": "/static/media/351-dto-generator.68cd0aa3.md",
+    "static/media/351-dto-generator.md": "/static/media/351-dto-generator.76de2701.md",
+    "static/media/352-jpa-trick.md": "/static/media/352-jpa-trick.28f4eb42.md",
+    "static/media/353-general-purpose-dialog.md": "/static/media/353-general-purpose-dialog.1eeefc04.md",
     "static/media/CV_Portfolio.468a68da.pdf": "/static/media/CV_Portfolio.468a68da.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -391,10 +393,10 @@
     "static/media/transformer-date-fomatter.18a2d3fc.pdf": "/static/media/transformer-date-fomatter.18a2d3fc.pdf"
   },
   "entrypoints": [
-    "static/js/runtime-main.95b5e9d6.js",
+    "static/js/runtime-main.068f18df.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.83a87afa.chunk.js",
+    "static/js/2.a6454a31.chunk.js",
     "static/css/main.4cf52b72.chunk.css",
-    "static/js/main.8ac4aacb.chunk.js"
+    "static/js/main.519a51b5.chunk.js"
   ]
 }

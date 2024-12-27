@@ -1,7 +1,7 @@
 ---
 title: "Auto-generated Mapper From Entity Classes into DTO Classes"
 date: 2024-12-24
-id: blog0350
+id: blog0351
 tag: springboot
 toc: true
 intro: "We record the use of ksp package that auto-generates DTO mapper for annotated entity classes."
@@ -103,7 +103,7 @@ Upon our kspKotlin task we get
 
 ![](/assets/img/2024-12-24-04-35-48.png)
 
-where 
+where
 
 ```kts
 package dev.james.alicetimetable.commons.database.entities
@@ -149,14 +149,11 @@ public fun StudentPackage.toDTO(): StudentPackageDTO = StudentPackageDTO(
 
 #### Processor Module
 
-
 Create a submodule with the following structure:
 
 [![](/assets/img/2024-12-24-04-18-30.png)](/assets/img/2024-12-24-04-18-30.png)
 
 ##### Module Configurations
-
-
 
 ###### settings.gradle.kts
 
@@ -170,11 +167,9 @@ pluginManagement {
 dependencyResolutionManagement {
     repositories.mavenCentral()
 }
-
-include("processor")
 ```
 
-######  build.gradle.kts
+###### build.gradle.kts
 
 ```kts
 plugins {
@@ -354,7 +349,7 @@ dev.james.processor.GenerateDTOProcessorProvider
 
 ##### Main module settings.gradle.kts
 
-```kts{12}
+```kts{13}
 pluginManagement {
     repositories {
         maven { url = uri("https://repo.spring.io/milestone") }
@@ -366,7 +361,7 @@ pluginManagement {
 }
 rootProject.name = "Alice-Timetable-System"
 
-//
+// make processor module available to the main module
 include("processor")
 ```
 
@@ -405,5 +400,3 @@ dependencies {
 Now we can generate `DTO` and `Mapper` (which by default is executed on `bootRun` as well) by the gradle task
 
 ![](/assets/img/2024-12-24-04-30-58.png)
-
-

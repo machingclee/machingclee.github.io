@@ -15,10 +15,11 @@ intro: Working with existing database via jpa amounts to the need to manually mo
 
 ![](/assets/img/2024-10-23-21-54-16.png)
 
-
 #### Surgery on JOOQ generated POJO
-##### Introduction to the POJO and the Strategy of the Surgery 
-We have set `jooq` to generate `pojo` file with `withJpaAnnotation`. 
+
+##### Introduction to the POJO and the Strategy of the Surgery
+
+We have set `jooq` to generate `pojo` file with `withJpaAnnotation`.
 
 A typical example of a JOOQ generated `pojo`:
 
@@ -61,13 +62,13 @@ What we will be automating:
 
 - Get rid of all kotlin-specific `@get:`'s which cause error by experiment
 - Rename `Order` to `OrderEntity_`
-- Detect all `enum` type, for each declaration of `enum` we add 
+- Detect all `enum` type, for each declaration of `enum` we add
   ```kt
   @Enumerated(EnumType.STRING)
   @JdbcType(PostgreSQLEnumJdbcType::class)
   ```
   this is to enable `jpa` to correctly convert kotlin's `enum` into postgres' `enum` (`jpa` treats `enum` as `small int` by default)
-- For every `id: UUID? = null` we add 
+- For every `id: UUID? = null` we add
   ```kt
   @GeneratedValue(generator = "ulid_as_uuid")
   ```
@@ -75,7 +76,6 @@ What we will be automating:
 - Remove index part in `@Table()` as indexing has been done in db-first step and `@Table` must be bundled with `@Entity`
 - Remove `Serializable`
 - Get rid of everything inside `{ ... }` since no method declaration is needed
-
 
 ##### Sample Result After Surgery
 
@@ -123,13 +123,13 @@ class OrderEntity_(
      var createdat: Double? = null,
     @Column(name = "createdAtHK")
      var createdathk: String? = null
-) 
+)
 ```
-
 
 #### Execution of the Surgery via Customized Gradle Task in `build.gradle.kts`
 
 ##### The Original Configuration of JOOQ Generation Task
+
 ```kts{45-46}
 tasks.create("generate") {
     val pojoDir = File("$projectDir/src/main/kotlin/com/billie/db/tables/pojos")
@@ -180,7 +180,7 @@ tasks.create("generate") {
 }
 ```
 
-The `adjustJooqFilesForJPA` will 
+The `adjustJooqFilesForJPA` will
 
 1. Copy the pojos to another folder
 
@@ -188,15 +188,14 @@ The `adjustJooqFilesForJPA` will
 
 ##### The Extra Amendment Step: adjustJooqFilesForJPA
 
-
-- Here we copy all `pojos/XXX.kt` into `preentities/XXXEntity_.kt`. 
+- Here we copy all `pojos/XXX.kt` into `preentities/XXXEntity_.kt`.
 
 - We then do the text manipulation in `adjustJooqFilesForJPA` to simplify the jooq's `@Entity` classes
-- We later copy the whole definition by creating our `AbstractAggregateRoot` where 
-  - We can define our custom `join-column` behaviour (aggregates) and 
+- We later copy the whole definition by creating our `AbstractAggregateRoot` where
+
+  - We can define our custom `join-column` behaviour (aggregates) and
 
   - custom domain behaviours.
-
 
 ```kt
 fun getEnumList(): Sequence<String> {
@@ -258,10 +257,10 @@ fun adjustJooqFilesForJPA(pojoDir: File, preEntityDir: File) {
                     @Entity
                     @DynamicInsert
                 """.trimIndent())
-                .replace("@GeneratedValue(strategy = GenerationType.IDENTITY)", "")
+                .replace("@Generate()", "")
                 .replace("var id: Int? = null",
                          """
-                         @GeneratedValue(strategy = GenerationType.IDENTITY)
+                         @Generate()
                          |    var id: Int? = null
                          """.trimIndent().trimMargin())
                 .replace(Regex("""\{.*\}""", RegexOption.DOT_MATCHES_ALL), "")
@@ -448,10 +447,10 @@ class OrderStripeEntity(
 }
 ```
 
-
 ##### Finally, Avoid Back Reference that Causes Infinite Loop in Data Serialization
 
 In short
+
 - inside of aggregate root we annotate subaggregate/subdomain object by `@JsonManagedReference`.
 - inside of subdomain object we add `@JsonBackReference` to the backward reference.
 
@@ -472,13 +471,14 @@ class Child {
 }
 ```
 
-
 #### JpaRepository
-#####  The naming convention of findByXXX
 
-For a complete of convention please visit the 
-- [official documentation](https://docs.spring.io/spring-data/jpa/reference/jpa/query-methods.html). 
-We just discuss the most common one: `findbyXXX`.
+##### The naming convention of findByXXX
+
+For a complete of convention please visit the
+
+- [official documentation](https://docs.spring.io/spring-data/jpa/reference/jpa/query-methods.html).
+  We just discuss the most common one: `findbyXXX`.
 
 Let's look at our entity class:
 
@@ -489,7 +489,7 @@ Let's look at our entity class:
 class QuotaFreeEntity(
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Generate()
     var id: Int? = null,
     @Column(name = "userEmail", nullable = false)
     var useremail: String,
@@ -509,19 +509,21 @@ class QuotaFreeEntity(
     }
 }
 ```
-Note that our member name is `useremail`, we ***capitalize*** the ***first*** letter to get:
+
+Note that our member name is `useremail`, we **_capitalize_** the **_first_** letter to get:
+
 ```kt
 @Repository
 interface FreeQuotaJpaRepository : JpaRepository<QuotaFreeEntity, Int> {
     fun findByUseremail(email: String): QuotaFreeEntity?
 }
 ```
-the custom repository method depends on the member name of our entity class but ***not on the actual column name***.
 
+the custom repository method depends on the member name of our entity class but **_not on the actual column name_**.
 
 ##### When Tables and Columns are not Named in Snake Case
 
-Since we use camel case in table and column name instead of lower-letter snake case which `jpa` recognizes by default, in every query we have to ***enclose every single*** occurence of table and column name by two double quote `"`'s. 
+Since we use camel case in table and column name instead of lower-letter snake case which `jpa` recognizes by default, in every query we have to **_enclose every single_** occurence of table and column name by two double quote `"`'s.
 
 We archive this by setting custom naming strategy for `jpa`:
 
@@ -575,13 +577,10 @@ spring:
           EnumType: STRING
 ```
 
-
-
-
-
 ##### Test Cases
 
 ###### Set the stage in our test:
+
 ```kt-1
 @SpringBootTest
 class RepositoryTest {
@@ -596,7 +595,9 @@ class RepositoryTest {
         System.setProperty("spring.profiles.active", "uat,james_db_and_james_stripe")
     }
 ```
+
 ###### Test if we are abole to persist an entity:
+
 ```kt-14
   @Test
   fun `repository save`() {
@@ -613,6 +614,7 @@ class RepositoryTest {
 ```
 
 ###### Test if the "back-reference" works, and test if the domain event can be caught by `@EventListener`.
+
 ```kt-39
     @Test
     fun `repository get`() {
@@ -629,7 +631,9 @@ class RepositoryTest {
 ```
 
 ##### Example of Adding Domain Behaviour and How it Actually Works with Our Controller
+
 ###### The Entity Class
+
 ```kt
 data class SeatSummaryCountedEvent(
     val entity: QuotaSeatCounterEntity,
@@ -667,7 +671,8 @@ class QuotaSeatCounterEntity(
 ```
 
 ###### The Controller Method
-- The highlighted demonstrates the state change can be managemented by the entity itself. 
+
+- The highlighted demonstrates the state change can be managemented by the entity itself.
 
 - In the past without ORM we have to handle state change in eventListener. With ORM we can now arrange all the in-memory change, and let `jpa` figure out and persist the changes by `repo.save(entity)`.
 
@@ -689,13 +694,12 @@ class QuotaSeatCounterEntity(
         return Response.Success(result = IncreaseSummaryCountResponse(counterId))
     }
 ```
+
 Therefore when we execute `repo.save()` method, we are actually doing:
+
 - Persist the state change
 
 - Notify all domains which is interested in the `SeatSummaryCountedEvent`.
-
-
-
 
 #### @EntityScan
 
