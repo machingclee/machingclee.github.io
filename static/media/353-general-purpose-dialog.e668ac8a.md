@@ -2,7 +2,7 @@
 title: "General Purpose Dialog using MUI with Flexible { xs, sm, md, lg, ...etc } Widths"
 date: 2024-12-28
 id: blog0353
-tag: springboot
+tag: react
 toc: true
 intro: "We record a general purpose dialog whose width can be sm, md, lg, etc to avoid the consideration of width of the dialog content."
 ---

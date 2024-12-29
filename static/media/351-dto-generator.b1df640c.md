@@ -2,7 +2,7 @@
 title: "Auto-generated Mapper From Entity Classes into DTO Classes"
 date: 2024-12-24
 id: blog0351
-tag: springboot
+tag: springboot, jpa
 toc: true
 intro: "We record the use of ksp package that auto-generates DTO mapper for annotated entity classes."
 ---
