@@ -1,10 +1,10 @@
 ---
-title: "General Purpose Dialog using MUI"
+title: "General Purpose Dialog using MUI with Flexible { xs, sm, md, lg, ...etc } Widths"
 date: 2024-12-28
 id: blog0353
 tag: springboot
 toc: true
-intro: "We record a general purpose Dialog whose width can be sm, md, lg, etc."
+intro: "We record a general purpose dialog whose width can be sm, md, lg, etc to avoid the consideration of width of the dialog content."
 ---
 
 <style>
@@ -12,6 +12,20 @@ intro: "We record a general purpose Dialog whose width can be sm, md, lg, etc."
     max-width: 660px;
   }
 </style>
+
+#### Usage
+
+```js
+ConfirmAssignmentContentDialog.setWidth("sm");
+ConfirmAssignmentContentDialog.setContent(() => () => (
+  <ConfirmAssignmentContent />
+));
+ConfirmAssignmentContentDialog.setOpen(true);
+```
+
+In fact we have the following options:
+
+![](/assets/img/2024-12-28-03-24-35.png)
 
 #### Definition of GeneralDialog
 
@@ -67,17 +81,3 @@ export default class GeneralDialog {
     }
 }
 ```
-
-#### Usage
-
-```js
-ConfirmAssignmentContentDialog.setWidth("sm");
-ConfirmAssignmentContentDialog.setContent(() => () => (
-  <ConfirmAssignmentContent />
-));
-ConfirmAssignmentContentDialog.setOpen(true);
-```
-
-In fact we have the following options:
-
-![](/assets/img/2024-12-28-03-24-35.png)
