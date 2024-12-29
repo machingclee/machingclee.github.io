@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.4cf52b72.chunk.css",
-    "main.js": "/static/js/main.16e11251.chunk.js",
+    "main.js": "/static/js/main.3b6f28f3.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.d8693e44.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.c897f6dd.chunk.js": "/static/js/2.c897f6dd.chunk.js",
@@ -342,7 +342,7 @@
     "static/media/349-lambda-in-subnet.md": "/static/media/349-lambda-in-subnet.8ce3fb56.md",
     "static/media/350-domain-transfer.md": "/static/media/350-domain-transfer.d64f9248.md",
     "static/media/351-dto-generator.md": "/static/media/351-dto-generator.b1df640c.md",
-    "static/media/352-jpa-trick.md": "/static/media/352-jpa-trick.b24a4de1.md",
+    "static/media/352-jpa-trick.md": "/static/media/352-jpa-trick.1595e94e.md",
     "static/media/353-general-purpose-dialog.md": "/static/media/353-general-purpose-dialog.e668ac8a.md",
     "static/media/354-drag-and-drop.md": "/static/media/354-drag-and-drop.4b186bf0.md",
     "static/media/CV_Portfolio.468a68da.pdf": "/static/media/CV_Portfolio.468a68da.pdf",
@@ -398,6 +398,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.c897f6dd.chunk.js",
     "static/css/main.4cf52b72.chunk.css",
-    "static/js/main.16e11251.chunk.js"
+    "static/js/main.3b6f28f3.chunk.js"
   ]
 }

@@ -392,7 +392,13 @@ Ok, how about moving the method to an upper level, say to `StudentPackage`, so t
 
 Now we can implement our data validations inside a domain object (it is the most natural candidate to do this since it has _almost all_ domain knowledge to do the validation).
 
-Tentatively the validations will be executed at the beginning of `StudentPackage.moveClass(classId, ...)`:
+The validations will be executed at the beginning of
+
+```kotlin
+StudentPackage.moveClass(classId, ...)
+```
+
+tentatively
 
 [![](/assets/img/2024-12-29-19-40-28.png)](/assets/img/2024-12-29-19-40-28.png)
 
@@ -400,7 +406,7 @@ Tentatively the validations will be executed at the beginning of `StudentPackage
 
 No No No, a student can register multiple courses (therefore multiple packages), a single package is not enough!
 
-Finally let's move the method to the next upper level --- The Student!
+Finally let's move the method to the next upper level --- The `Student`!
 
 ##### Final version
 
