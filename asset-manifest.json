@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.4cf52b72.chunk.css",
-    "main.js": "/static/js/main.8fde043b.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.e1f9796d.js",
+    "main.js": "/static/js/main.47d0b939.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.81589cac.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.50938007.chunk.js": "/static/js/2.50938007.chunk.js",
-    "static/js/3.8d53c781.chunk.js": "/static/js/3.8d53c781.chunk.js",
-    "static/js/4.2037395f.chunk.js": "/static/js/4.2037395f.chunk.js",
-    "static/js/5.201e49e4.chunk.js": "/static/js/5.201e49e4.chunk.js",
+    "static/js/2.7669107b.chunk.js": "/static/js/2.7669107b.chunk.js",
+    "static/js/3.d2bfb1af.chunk.js": "/static/js/3.d2bfb1af.chunk.js",
+    "static/js/4.6919ec3b.chunk.js": "/static/js/4.6919ec3b.chunk.js",
+    "static/js/5.0d4a0343.chunk.js": "/static/js/5.0d4a0343.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.50938007.chunk.js.LICENSE.txt": "/static/js/2.50938007.chunk.js.LICENSE.txt",
-    "static/js/3.8d53c781.chunk.js.LICENSE.txt": "/static/js/3.8d53c781.chunk.js.LICENSE.txt",
-    "static/js/4.2037395f.chunk.js.LICENSE.txt": "/static/js/4.2037395f.chunk.js.LICENSE.txt",
+    "static/js/2.7669107b.chunk.js.LICENSE.txt": "/static/js/2.7669107b.chunk.js.LICENSE.txt",
+    "static/js/3.d2bfb1af.chunk.js.LICENSE.txt": "/static/js/3.d2bfb1af.chunk.js.LICENSE.txt",
+    "static/js/4.6919ec3b.chunk.js.LICENSE.txt": "/static/js/4.6919ec3b.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.52b1ef07.md",
     "static/media/002-Lazy-React-Router.md": "/static/media/002-Lazy-React-Router.48295ca9.md",
@@ -345,8 +345,9 @@
     "static/media/352-jpa-trick.md": "/static/media/352-jpa-trick.1595e94e.md",
     "static/media/353-general-purpose-dialog.md": "/static/media/353-general-purpose-dialog.e668ac8a.md",
     "static/media/354-drag-and-drop.md": "/static/media/354-drag-and-drop.4b186bf0.md",
-    "static/media/355-unit-testing-in-jpa.md": "/static/media/355-unit-testing-in-jpa.5ebad4bf.md",
-    "static/media/CV_Portfolio.468a68da.pdf": "/static/media/CV_Portfolio.468a68da.pdf",
+    "static/media/355-unit-testing-in-jpa.md": "/static/media/355-unit-testing-in-jpa.3af3aaad.md",
+    "static/media/356-react-query-fundamental.md": "/static/media/356-react-query-fundamental.2fe908dc.md",
+    "static/media/CV_Portfolio.22cadef9.pdf": "/static/media/CV_Portfolio.22cadef9.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
     "static/media/Midterm_Review_limsupinf.1e2193c7.pdf": "/static/media/Midterm_Review_limsupinf.1e2193c7.pdf",
@@ -395,10 +396,10 @@
     "static/media/transformer-date-fomatter.18a2d3fc.pdf": "/static/media/transformer-date-fomatter.18a2d3fc.pdf"
   },
   "entrypoints": [
-    "static/js/runtime-main.e1f9796d.js",
+    "static/js/runtime-main.81589cac.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.50938007.chunk.js",
+    "static/js/2.7669107b.chunk.js",
     "static/css/main.4cf52b72.chunk.css",
-    "static/js/main.8fde043b.chunk.js"
+    "static/js/main.47d0b939.chunk.js"
   ]
 }

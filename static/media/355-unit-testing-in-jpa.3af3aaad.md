@@ -2,7 +2,7 @@
 title: "Unit Testing in Kotlin with MockK"
 date: 2024-12-31
 id: blog0355
-tag: springboot, testing, mockk
+tag: springboot, test, mockk
 toc: true
 intro: "Let's get rid of the deprecated react beautiful dnd."
 ---
