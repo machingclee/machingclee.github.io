@@ -4,7 +4,7 @@ date: 2024-12-01
 id: blog0345
 tag: springboot
 toc: true
-intro: "We record LUSH and BRPOP in kotlin"
+intro: "Due to the lambda-nature, snapStarted spring boot differs from ordinary spring boot application as it lacks the write permission to the /var/task of the lambda function."
 ---
 
 <style>

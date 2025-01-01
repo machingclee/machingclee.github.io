@@ -1,10 +1,10 @@
 ---
 title: "React-Query Fundamentals"
 date: 2025-01-01
-id: blog0355
+id: blog0356
 tag: react, react-query
 toc: true
-intro: "Let's get rid of the deprecated react beautiful dnd."
+intro: "Record the basic usage of react-query."
 ---
 
 <style>
@@ -72,7 +72,9 @@ const getData =async  () => {
 
 const { data, isError, isLoading } = useQuery({
     queryKey: ["my-list", <some-id>],
-    queryFn: getData
+    queryFn: getData,
+    staleTime: 30* 1000,
+    gcTime: 5 * 60 * 1000
 })
 ```
 
@@ -147,6 +149,38 @@ const selectSomething = (someId: string) => {
 - Note that after mutation the booleans `isSuccess` and `isPending` will be persistent ***unless*** we manually reset it
 - This could be a problem because when we try to select something new, we don't wish the failed / loading message remaining there
 - So in line 12 above we must ***reset*** it
+
+##### Optimistic Update
+```js
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+
+function useUpdateTodo() {
+  const queryClient = useQueryClient()
+  
+  return useMutation({
+    mutationFn: updateTodo, // your API call
+
+    onMutate: async (newTodo) => {
+      // cancel any outgoing refetches to avoid overwriting optimistic update
+      await queryClient.cancelQueries({ queryKey: ['todos'] })
+      const previousTodos = queryClient.getQueryData(['todos'])
+      queryClient.setQueryData(['todos'], (oldTodos) => {
+        return oldTodos.map(todo => 
+          todo.id === newTodo.id ? newTodo : todo
+        )
+      })
+      return { previousTodos }
+    },
+    onError: (err, newTodo, context) => {
+      queryClient.setQueryData(['todos'], context.previousTodos)
+    },
+    onSettled: () => {
+      // always refetch after error or success
+      queryClient.invalidateQueries({ queryKey: ['todos'] })
+    },
+  })
+}
+```
 
 #### Cache Invalidations
 
