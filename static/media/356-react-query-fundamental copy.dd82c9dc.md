@@ -63,7 +63,7 @@ function App() {
 ##### Basic Example for Queries
 
 ```js
-const getData =async  () => { 
+const getData = async  () => { 
         const res = await apiClient.get("..."); 
         // do data transformation here
         const transformedData = ...
@@ -113,7 +113,7 @@ export default function SomeContent () {
 
     useEffect(() => {
        const nextPage = currentPage + 1;
-       queryClient.prefetchQuery({ queryKet: ["posts", nextPage]})
+       queryClient.prefetchQuery({ queryKey: ["posts", nextPage]})
     }, [currnetPage]);
 
     const { data } = useQuery({

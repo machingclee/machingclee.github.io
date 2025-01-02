@@ -312,7 +312,7 @@ class AuthContorller(
 }
 ```
 
-Note that by default `swagger-ui` arrange them in `descending` order. To order the controllers correctly let's add:
+Note that by default `swagger-ui` arranges them in `descending` order. To order the controllers correctly let's add:
 
 ```yml
 # application.yml
