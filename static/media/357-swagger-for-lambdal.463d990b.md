@@ -31,31 +31,54 @@ dependencies {
 
 #### Component: SwaggerConfig
 
-##### What to configure?
+##### What to configure and why?
 
-The config in the current section aims at achieve 2 tasks:
+###### Task 1. Solve the swagger configuration problem due to the deployment via API-Gateway.
 
-1. Solve the swagger configuration problem due to the deployment via API-Gateway.
+When deploying via api-gateway we need to divide our resource paths by `dev`, `uat` and `prod`.
 
-    <Example>
+For example, a lambda function deployed to api-gateway of stage `dev` can be accessed via 
+- https://rkfm9k8phd.execute-api.ap-northeast-1.amazonaws.com/dev
+By default the `spring-doc` framework has done the following incorrectly since the auto-generated swagger-rosources do not belong to the spring framework: The `swagger-ui/index.html`
+- fetches its `swagger-config` from `/v3/api-docs/swagger-config`
+- fetches its `apiDoc-config` from `/v3/api-docs`
+which are both incorrect as we need to start with `/dev/v3/`. 
+    
+To solve these, we either 
+- set different paths from `application-<stage>.yml`'s
+- set them programmatically by creating the beans according to the deployment stage:
+```kotlin
+@Primary
+@Bean
+fun swaggerUiConfig(swaggerUiConfig: SwaggerUiConfigProperties): SwaggerUiConfigParameters {
+    val prefix = getLambdaPrefix()
+    return SwaggerUiConfigParameters(swaggerUiConfig).apply {
+        url = "$prefix/v3/api-docs"
+        configUrl = "$prefix/v3/api-docs/swagger-config"
+        path = "/api"
+    }
+}
 
-    **Detail.** When deploying via api-gateway we need to divide our resource paths by `local`, `dev`, `uat` and `prod`.
+@Primary
+@Bean
+fun apiDocsConfig(apiDocsProperties: SpringDocConfigProperties): SpringDocConfigProperties {
+    val prefix = getLambdaPrefix()
+    return apiDocsProperties.apply {
+        apiDocs.path = "$prefix/v3/api-docs"
+    }
+}
+```
+###### Task 2. Accomplish the automation of the "authorization-header assignment" once we are authenticated via `login-url`
 
-    For example, a lambda function deployed to api-gateway of stage `dev` will have a path 
+As in postman  with  `Scripts` tab:
 
-    - https://rkfm9k8phd.execute-api.ap-northeast-1.amazonaws.com/dev
+![](/assets/img/2025-01-05-14-36-16.png)
 
-    By default the `spring-doc` framework has done the following incorrectly since the auto-generated swagger-rosources do not belong to the spring framework: The `swagger-ui/index.html`
-    - fetches its `swagger-config` from `/v3/api-docs/swagger-config`
-    - fetches its `apiDoc-config` from `/v3/api-docs`
-    which are both incorrect as we need to prefix them by `/dev`
+we can set the resulting token into our environment variable and start the API testing, we wish to ***automate*** this process as well in swagger-ui.
 
-    </Example>
+##### The SwaggerConfig: WebMvcConfigurer 
 
-2. Accomplish the automation of the "authorization-header assignment" once we are authenticated via `login-url` (`/auth/login` in our case).
-
-
-Let's start our configuration with the imports:
+###### Imports
 
 ```kotlin-1
 package dev.james.alicetimetable.commons.config
@@ -84,7 +107,7 @@ import java.net.URI
 import java.net.URL
 ```
 
-##### Util functions for prefixes (dev, uat, prod)
+###### Util functions for prefixes (dev, uat, prod)
 
 ```kotlin-26
 @Configuration
@@ -113,7 +136,7 @@ class SwaggerConfig(
     }
 ```
 
-##### Inject custom javascript to automation the process of setting authorization header after login
+###### Inject custom javascript to automation the process of setting authorization header after login
 
 Next we inject the logic for `requestInterceptor` and `responseInterceptor`, they are used to automate the following:
 
@@ -161,7 +184,7 @@ The injection of interceptors is achieved by surgery on `swagger-initializer.js`
         }
     }
 ```
-Here we also define `springdoc.swagger-ui.<property>`'s, they only differ by the deployment stage so that we don't need to make variants on `application-<stage>.yml`:
+In the following *injection* we also define `springdoc.swagger-ui.<property>`'s, they only differ by the deployment stage and we don't need to make variants on `application-<stage>.yml`:
 ```kotlin-88
     private fun newSwaggerUiConfig(): String {
         val prefix = getLambdaPrefix()
@@ -169,56 +192,56 @@ Here we also define `springdoc.swagger-ui.<property>`'s, they only differ by the
         val configUrl = "$prefix/v3/api-docs/swagger-config"
         val path = "$prefix/api"
         return """
-                        url: "$url",
-                        path: "$path",
-                        configUrl: "$configUrl",
-                        tagsSorter: "alpha",
-                        requestInterceptor: (request) => {
-                            const token = localStorage.getItem('bearer_token');
-                            if (token) {
-                                request.headers['Authorization'] = `Bearer ${'$'}{token}`;
-                            }
-                            return request;
-                        },
-                        responseInterceptor: (response) => {
-                            if (response.url.endsWith('$loginUrl')) {
-                                try {
-                                    const responseBody = JSON.parse(response.text);
-                                    if (responseBody.result && responseBody.${this.accessTokenPath}) {
-                                        const token = responseBody.${this.accessTokenPath};
-                                        localStorage.setItem('bearer_token', token);
-                                        const bearerAuth = {
-                                            bearerAuth: {
-                                                name: "Authorization",
-                                                schema: { type: "http", scheme: "bearer" },
-                                                value: `Bearer ${'$'}{token}`
-                                            }
-                                        };
-                                        window.ui.authActions.authorize(bearerAuth);
-                                    }
-                                } catch (e) {
-                                    console.error('Error processing login response:', e);
-                                }
-                            }
-                            return response;
-                        },
-                        onComplete: () => {
-                            const storedToken = localStorage.getItem('bearer_token');
-                            if (storedToken) {
-                                const bearerAuth = {
-                                    bearerAuth: {
-                                        name: "Authorization",
-                                        schema: { type: "http", scheme: "bearer" },
-                                        value: `Bearer ${'$'}{storedToken}`
-                                    }
-                                };
-                                window.ui.authActions.authorize(bearerAuth);
-                            }
+    url: "$url",
+    path: "$path",
+    configUrl: "$configUrl",
+    tagsSorter: "alpha",
+    requestInterceptor: (request) => {
+        const token = localStorage.getItem('bearer_token');
+        if (token) {
+            request.headers['Authorization'] = `Bearer ${'$'}{token}`;
+        }
+        return request;
+    },
+    responseInterceptor: (response) => {
+        if (response.url.endsWith('$loginUrl')) {
+            try {
+                const responseBody = JSON.parse(response.text);
+                if (responseBody.result && responseBody.${this.accessTokenPath}) {
+                    const token = responseBody.${this.accessTokenPath};
+                    localStorage.setItem('bearer_token', token);
+                    const bearerAuth = {
+                        bearerAuth: {
+                            name: "Authorization",
+                            schema: { type: "http", scheme: "bearer" },
+                            value: `Bearer ${'$'}{token}`
                         }
+                    };
+                    window.ui.authActions.authorize(bearerAuth);
+                }
+            } catch (e) {
+                console.error('Error processing login response:', e);
+            }
+        }
+        return response;
+    },
+    onComplete: () => {
+        const storedToken = localStorage.getItem('bearer_token');
+        if (storedToken) {
+            const bearerAuth = {
+                bearerAuth: {
+                    name: "Authorization",
+                    schema: { type: "http", scheme: "bearer" },
+                    value: `Bearer ${'$'}{storedToken}`
+                }
+            };
+            window.ui.authActions.authorize(bearerAuth);
+        }
+    }
         """
     }
 ```
-##### Configure `baseURL`'s and api-info to the swagger documentation
+###### Configure `baseURL`'s and api-info to the swagger documentation
 
 
 
@@ -253,9 +276,9 @@ Here we also define `springdoc.swagger-ui.<property>`'s, they only differ by the
     }
 }
 ```
-##### Demonstration
+##### Demonstration Video
 
-<center>
+<center style="padding-top: 20px">
   <video controls width="500">
     <source  src="/assets/img/2025-01-05-00-09-52.mp4" type="video/mp4">
     Sorry, your browser doesn't support embedded videos.
@@ -283,12 +306,12 @@ server:
       charset: UTF-8
       force: true
 ```
-in application.yml. Now API-Gateway understand how to decode it when they read:
+in `application.yml`. Now API-Gateway understands how to decode it when they read:
 
 ![](/assets/img/2025-01-03-01-39-18.png)
 
 
-#### Let's Dive Deeper
+#### Common Usages
 
 ##### Add multiple servers for API testing
 
@@ -325,28 +348,6 @@ Let's extend the `customOpenAPI` from the previous section:
     }
 ```
 
-##### Add default example value to `@PathVariable` and `@RequestParam`
-
-```kotlin
-    @GetMapping("/{studentId}/student-packages")
-    fun getStudentPackages(
-        @Parameter(
-            description = "Student ID",
-            example = "4b05543b-4ee5-4ce7-b045-a8975b305b09",
-            required = true
-        )
-        @PathVariable("studentId") studentId: String
-    ): APIResponse<List<StudentPackageResposne>> {
-        val packages = AliceLoggingUtil.hibernateSQL {
-            studentApplicationService.getStudentPackages(studentId)
-        }
-        return APIResponse(packages)
-    }
-```
-
-Which results in 
-
-[![](/assets/img/2025-01-03-02-49-33.png)](/assets/img/2025-01-03-02-49-33.png)
 
 ##### Add default example value to `@RequestBody`
 
@@ -378,6 +379,30 @@ Which results in
 Which results in 
 
 [![](/assets/img/2025-01-03-02-53-40.png)](/assets/img/2025-01-03-02-53-40.png)
+
+##### Add default example value to `@PathVariable` and `@RequestParam`
+
+```kotlin
+    @GetMapping("/{studentId}/student-packages")
+    fun getStudentPackages(
+        @Parameter(
+            description = "Student ID",
+            example = "4b05543b-4ee5-4ce7-b045-a8975b305b09",
+            required = true
+        )
+        @PathVariable("studentId") studentId: String
+    ): APIResponse<List<StudentPackageResposne>> {
+        val packages = AliceLoggingUtil.hibernateSQL {
+            studentApplicationService.getStudentPackages(studentId)
+        }
+        return APIResponse(packages)
+    }
+```
+
+Which results in 
+
+[![](/assets/img/2025-01-03-02-49-33.png)](/assets/img/2025-01-03-02-49-33.png)
+
 
 ##### Add ordering to the Controllers by Tags
 

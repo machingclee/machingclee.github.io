@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.4cf52b72.chunk.css",
-    "main.js": "/static/js/main.8ca09bfb.chunk.js",
+    "main.js": "/static/js/main.d1a01551.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.e8b457c0.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.395df945.chunk.js": "/static/js/2.395df945.chunk.js",
@@ -347,7 +347,7 @@
     "static/media/354-drag-and-drop.md": "/static/media/354-drag-and-drop.4b186bf0.md",
     "static/media/355-unit-testing-in-jpa.md": "/static/media/355-unit-testing-in-jpa.3af3aaad.md",
     "static/media/356-react-query-fundamental copy.md": "/static/media/356-react-query-fundamental copy.dd82c9dc.md",
-    "static/media/357-swagger-for-lambdal.md": "/static/media/357-swagger-for-lambdal.296d06c9.md",
+    "static/media/357-swagger-for-lambdal.md": "/static/media/357-swagger-for-lambdal.463d990b.md",
     "static/media/CV_Portfolio.c6da9a24.pdf": "/static/media/CV_Portfolio.c6da9a24.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -401,6 +401,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.395df945.chunk.js",
     "static/css/main.4cf52b72.chunk.css",
-    "static/js/main.8ca09bfb.chunk.js"
+    "static/js/main.d1a01551.chunk.js"
   ]
 }
