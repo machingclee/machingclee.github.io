@@ -159,38 +159,6 @@ export const handler = async (event) => {
 };
 ```
 
-##### Problems of using websocket api from api-gateway
-
-###### Scenario: Let's reconnect
-
-Suppose a user has joined a number of chatrooms (can possibly be multiple because users can browse our webpage by multiple tabs), when it disconnects due to any reason, we need to
-
-1. Remove all connections in all chatrooms (directly triggered from websocket-connected lambda)
-2. When new connection (retry) succeeded, we need to rejoin all those chatrooms (should be requested from frontend).
-
-###### Trouble: Yes we can reconnect, but ...
-
-- We don't have retry mechanism for the raw `WebSocket` API.
-- And we should never use that raw api for serious application.
-- Morever, the implementation of joining a channel is tedious as we are risking ourself to unnecessary bugs (for which `socket.io` have already handled well).
-
-###### A tentative diagram for chat system using websocket-API from api-gateway
-
-The following is just a design to think about how websocket-api would work if we were to make use of it. It is literally painful and even don't want to start working with:
-
-[![](/assets/img/2025-01-06-00-47-58.png)](/assets/img/2025-01-06-00-47-58.png)
-
-- Why the hack I need to manage the socket participantions of channels for connection and disconnection?
-
-- Why the hack I need to manage the retry on my own?
-- With `socket.io` it is as simple as connecting to our backend and let the backend to `userSocket.join(channel)`, we never need to think of disconnection on backend side.
-- In `socket.io` each `socket` is a rich object for which we can inject `data`. But for websocket-api this is just a plain `connectionId: string`.
-- `socket.io` is easily extensible horizontally by using [redis-adaptor](https://socket.io/docs/v4/redis-adapter/).
-
-#### Conclusion
-
-We **_should not_** consider websocket-api from api-gateway for any serious application, given that we already have good solution from other frameworks.
-
 #### Reference
 
 - https://medium.com/globant/real-time-nodejs-chat-application-using-aws-websocket-and-lambda-71ec20cd2b0b
