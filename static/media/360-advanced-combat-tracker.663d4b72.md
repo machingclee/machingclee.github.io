@@ -58,7 +58,7 @@ const createPresignedUrl = async (params: PresignedUrlParams): Promise<string> =
 };
 ```
 
-When then create a controller to handle presigned-url request:
+We then create a controller to handle presigned-url request:
 
 ```js
 export default class AwsController {
