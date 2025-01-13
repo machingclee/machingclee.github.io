@@ -30,8 +30,56 @@ intro: "Record a simple script to create a presigned-url for file uploading in f
 ![](/assets/img/2025-01-12-17-51-49.png)
 
 
+#### S3 Bucket
+##### Bucket Policy
+
+As usual if we wish to let everyone download the files in the bucket, we simply add:
+```js
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "Statement1",
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::wb-admin-frontend/*"
+    }
+  ]
+}
+```
+
+##### The CORS Problem
+
+There is no  CORS restriction to `GET` requests, but it does for `PUT` request. To successfully upload file to the S3 bucket we need to go to `permissions > CORS` (scroll down) and write:
+
+
+
+```js
+[
+  {
+    "AllowedHeaders": [
+        "*"
+    ],
+    "AllowedMethods": [
+        "PUT",
+        "GET"
+    ],
+    "AllowedOrigins": [
+        "http://localhost:5173"
+    ],
+    "ExposeHeaders": [
+        "ETag"
+    ]
+  }
+]
+```
+
+
 #### Backend: `createPresignedURL (props: { bucket:string, key: string })`
 ```js
+// awsS3Util.ts
+
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { Request, Response } from "express";
@@ -42,7 +90,7 @@ type PresignedUrlParams = {
 }
 
 const createPresignedUrl = async (params: PresignedUrlParams): Promise<string> => {
-    const region = process.env.FILE_SYNC_BUCKET_REGION
+    const region = process.env.BUCKET_REGION
     const client = new S3Client({
         region,
         endpoint: `https://s3.${region}.amazonaws.com`,
@@ -56,6 +104,10 @@ const createPresignedUrl = async (params: PresignedUrlParams): Promise<string> =
 
     return await getSignedUrl(client, command, { expiresIn: 3600 });
 };
+
+export default {
+    createPresignedUrl
+}
 ```
 
 We then create a controller to handle presigned-url request:
@@ -67,7 +119,7 @@ export default class AwsController {
         try {
             const bucket = process.env.FILE_SYNC_BUCKET || "";
             const presignedUrls = await Promise.all(filenames.map(filename => {
-                return createPresignedUrl({ bucket, key: filename })
+                return awsS3Util.createPresignedUrl({ bucket, key: filename })
             }))
             res.json({
                 success: true,
@@ -98,8 +150,8 @@ export default () => {
     };
     
     const uploadFile = async () => {
-        const uploadUrl = await getPresignedURL([file.name]);
-        await uploadFileS3Browser(uploadUrl, file)
+        const uploadUrl = await getPresignedURL([file.name]); // make api call
+        await uploadFileToS3(uploadUrl, file)
     }
 
     return (
@@ -111,7 +163,7 @@ export default () => {
 }
 
 // util function: 
-const uploadFileS3Browser = async (uploadUrl: string, file: File) => {
+const uploadFileToS3 = async (uploadUrl: string, file: File) => {
     const res = await fetch(uploadUrl, {
         method: "PUT",
         body: file,
@@ -126,7 +178,7 @@ const uploadFileS3Browser = async (uploadUrl: string, file: File) => {
 ##### React Native
 
 ```js
-export const uploadFileS3Browser = async ({ uploadUrl, fileUri }: { uploadUrl: string; fileUri: string }) => {
+export const uploadFileToS3 = async ({ uploadUrl, fileUri }: { uploadUrl: string; fileUri: string }) => {
     const file = await fetch(fileUri).then((res) => res.blob())
     const res = await fetch(uploadUrl, {
         method: "PUT",
