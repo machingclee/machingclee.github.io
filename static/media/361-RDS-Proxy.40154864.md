@@ -19,7 +19,7 @@ intro: "We study the configuration of IAM roles and permissions to enable lambda
 
 #### Security Groups
 
-We create two security group:
+We create two security groups:
 
 - `Lambda-SG`
 - `RDS-SG`
@@ -152,4 +152,4 @@ Since RDS is one of the `endpoint` resources in AWS (other example is `cloudwatc
 
 #### Connection to RDS-Proxy
 
-Finally, we simply replace the RDS endpoint by RDS-Proxy endpoint, we are done!
+Finally, we simply replace the RDS endpoint by RDS-Proxy endpoint and we are done!
