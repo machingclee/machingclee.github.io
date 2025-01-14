@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.4cf52b72.chunk.css",
-    "main.js": "/static/js/main.6e79f59f.chunk.js",
+    "main.js": "/static/js/main.1a86c2be.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.9da5d796.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.e71dbb1d.chunk.js": "/static/js/2.e71dbb1d.chunk.js",
@@ -348,10 +348,10 @@
     "static/media/355-unit-testing-in-jpa.md": "/static/media/355-unit-testing-in-jpa.3af3aaad.md",
     "static/media/356-react-query-fundamental copy.md": "/static/media/356-react-query-fundamental copy.dd82c9dc.md",
     "static/media/357-swagger-for-lambdal.md": "/static/media/357-swagger-for-lambdal.78587116.md",
-    "static/media/358-websocket-api.md": "/static/media/358-websocket-api.20c7fb25.md",
+    "static/media/358-websocket-api.md": "/static/media/358-websocket-api.be004b55.md",
     "static/media/359-advanced-combat-tracker.md": "/static/media/359-advanced-combat-tracker.b4e93026.md",
     "static/media/360-presigned-urls.md": "/static/media/360-presigned-urls.6b6fc42b.md",
-    "static/media/361-RDS-Proxy.md": "/static/media/361-RDS-Proxy.40154864.md",
+    "static/media/361-RDS-Proxy.md": "/static/media/361-RDS-Proxy.d0ed5e4d.md",
     "static/media/CV_Portfolio.152d913f.pdf": "/static/media/CV_Portfolio.152d913f.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -405,6 +405,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.e71dbb1d.chunk.js",
     "static/css/main.4cf52b72.chunk.css",
-    "static/js/main.6e79f59f.chunk.js"
+    "static/js/main.1a86c2be.chunk.js"
   ]
 }

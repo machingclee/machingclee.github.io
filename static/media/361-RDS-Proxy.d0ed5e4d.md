@@ -108,35 +108,6 @@ Edit the IAM-Role of the RDS-Proxy instance and add:
 },
 ```
 Here `secret:billie-uat-rds-proxy-corrected-nMKcow` is the ***secret id***. If we change to use other secret for RDS-Proxy, then we need to adjust the permission here as well.
-```js
-{
-    "Sid": "DecryptSecretValue",
-    "Action": [
-        "kms:Decrypt"
-    ],
-    "Effect": "Allow",
-    "Resource": [
-        "arn:aws:kms:ap-southeast-2:798404461798:key/154ed61c-114f-4fd5-9434-e2761190506d"
-    ],
-    "Condition": {
-        "StringEquals": {
-            "kms:ViaService": "secretsmanager.ap-southeast-2.amazonaws.com"
-        }
-    }
-},
-```
-This `DecryptSecretValue` is auto-generated, and finally
-```js
-{
-    "Sid": "VisualEditor1",
-    "Effect": "Allow",
-    "Action": [
-        "secretsmanager:GetRandomPassword",
-        "secretsmanager:ListSecrets"
-    ],
-    "Resource": "*"
-}
-```
 
 #### VPC Endpoints for RDS
 

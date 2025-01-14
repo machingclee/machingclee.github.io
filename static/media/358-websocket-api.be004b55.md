@@ -64,12 +64,14 @@ We create an `inline`-policy in json format:
 {
   "Version": "2012-10-17",
   "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": ["execute-api:*"],
-      "Resource": [
-        "arn:aws:execute-api:ap-northeast-1:562976154517:3hfbt7ivk0/*"
-      ]
+     {
+        "Effect": "Allow",
+        "Action": [
+          "execute-api:ManageConnections"
+        ],
+        "Resource": [
+          "arn:aws:execute-api:ap-southeast-2:798404461798:smcflfkjb6/dev/POST/@connections/*"
+        ]
     }
   ]
 }
