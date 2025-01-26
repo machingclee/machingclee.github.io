@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.4cf52b72.chunk.css",
-    "main.js": "/static/js/main.b2eb7c0f.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.f7fb0fd9.js",
+    "main.js": "/static/js/main.d3c1f2a2.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.0723f181.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.7887adcd.chunk.js": "/static/js/2.7887adcd.chunk.js",
-    "static/js/3.8b380fbb.chunk.js": "/static/js/3.8b380fbb.chunk.js",
-    "static/js/4.00785041.chunk.js": "/static/js/4.00785041.chunk.js",
-    "static/js/5.f871071e.chunk.js": "/static/js/5.f871071e.chunk.js",
+    "static/js/2.50f84f61.chunk.js": "/static/js/2.50f84f61.chunk.js",
+    "static/js/3.62466451.chunk.js": "/static/js/3.62466451.chunk.js",
+    "static/js/4.ed5c877f.chunk.js": "/static/js/4.ed5c877f.chunk.js",
+    "static/js/5.878bf749.chunk.js": "/static/js/5.878bf749.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.7887adcd.chunk.js.LICENSE.txt": "/static/js/2.7887adcd.chunk.js.LICENSE.txt",
-    "static/js/3.8b380fbb.chunk.js.LICENSE.txt": "/static/js/3.8b380fbb.chunk.js.LICENSE.txt",
-    "static/js/4.00785041.chunk.js.LICENSE.txt": "/static/js/4.00785041.chunk.js.LICENSE.txt",
+    "static/js/2.50f84f61.chunk.js.LICENSE.txt": "/static/js/2.50f84f61.chunk.js.LICENSE.txt",
+    "static/js/3.62466451.chunk.js.LICENSE.txt": "/static/js/3.62466451.chunk.js.LICENSE.txt",
+    "static/js/4.ed5c877f.chunk.js.LICENSE.txt": "/static/js/4.ed5c877f.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.52b1ef07.md",
     "static/media/002-Lazy-React-Router.md": "/static/media/002-Lazy-React-Router.48295ca9.md",
@@ -353,6 +353,7 @@
     "static/media/360-presigned-urls.md": "/static/media/360-presigned-urls.6b6fc42b.md",
     "static/media/361-RDS-Proxy.md": "/static/media/361-RDS-Proxy.d0ed5e4d.md",
     "static/media/362-Terraform-Revisit.md": "/static/media/362-Terraform-Revisit.8e48b06f.md",
+    "static/media/363-Terraform-deeper.md": "/static/media/363-Terraform-deeper.cc303b50.md",
     "static/media/CV_Portfolio.152d913f.pdf": "/static/media/CV_Portfolio.152d913f.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -402,10 +403,10 @@
     "static/media/transformer-date-fomatter.18a2d3fc.pdf": "/static/media/transformer-date-fomatter.18a2d3fc.pdf"
   },
   "entrypoints": [
-    "static/js/runtime-main.f7fb0fd9.js",
+    "static/js/runtime-main.0723f181.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.7887adcd.chunk.js",
+    "static/js/2.50f84f61.chunk.js",
     "static/css/main.4cf52b72.chunk.css",
-    "static/js/main.b2eb7c0f.chunk.js"
+    "static/js/main.d3c1f2a2.chunk.js"
   ]
 }
