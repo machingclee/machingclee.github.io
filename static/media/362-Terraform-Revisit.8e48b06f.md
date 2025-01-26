@@ -452,6 +452,16 @@ output "full_domain_name" {
 }
 ```
 
+###### Practical Example
+
+[![](/assets/img/2025-01-24-12-13-03.png)](/assets/img/2025-01-24-12-13-03.png)
+
+Here we have used `module.web_app.instance_ip_addr`, this `instance_ip_addr` is defined inside the `output` block of the `hello-world` module:
+
+[![](/assets/img/2025-01-24-12-17-34.png)](/assets/img/2025-01-24-12-17-34.png)
+
+Recall that in terraform a module is the same as a folder.
+
 ##### Setting input variables with priorities
 
 ###### The priority list
@@ -611,6 +621,211 @@ Sometimes an entity outside of terraform will automatically modify a resource (e
 ##### prevent_destroy
 
 `prevent_destroy` provides an additional stopgap against accidentally destroying resources with terraform. If set to true, Terraform will reject any attempt to destroy that resource.
+
+#### Modules
+
+##### Project Structure
+
+Treat `main.tf` as an extrypoint of each module, our root project has the following structure
+
+<a href="/assets/img/2025-01-22-17-55-32.png">
+  <img src="/assets/img/2025-01-22-17-55-32.png" width="300"/>
+</a>
+<p/>
+
+- The naming convention `main.tf` is not fixed, any `.tf` files inside the folder will be looped, therefore a **_module_** should be seen as a **_folder_**.
+
+- Now at `06-organization-and-modules/`, we can `terraform init` to initiate modules and resources.
+
+- We can organize resources into an **_individual_** `.tf` file as a logical group.
+- When we define modules we usually don't define those `*.tfvars` files as we will pass those arguments when we use the module.
+
+- There is **_no need_** to provide **_terraform backend_** and **_terraform provider_** in a module as we will declare it in our main project.
+
+##### Consume a module with arguments
+
+Inside of `web-app/main.tf` we apply the module defined in `web-app-module/` by:
+
+```hcl
+module "web_app_1" {
+  source = "../web-app-module"
+
+  # Input Variables
+  bucket_prefix    = "web-app-1-data"
+  domain           = "devopsdeployed.com"
+  app_name         = "web-app-1"
+  environment_name = "production"
+  instance_type    = "t2.micro"
+  create_dns_zone  = true
+  db_name          = "webapp1db"
+  db_user          = "foo"
+  db_pass          = var.db_pass_1
+}
+
+module "web_app_2" {
+  source = "../web-app-module"
+
+  # Input Variables
+  bucket_prefix    = "web-app-2-data"
+  domain           = "anotherdevopsdeployed.com"
+  app_name         = "web-app-2"
+  environment_name = "production"
+  instance_type    = "t2.micro"
+  create_dns_zone  = true
+  db_name          = "webapp2db"
+  db_user          = "bar"
+  db_pass          = var.db_pass_2
+}
+```
+
+where the arguments are `variables` defined in those `web-app-module/variables.tf` (technically it can be a `variable` defined in any `.tf` file).
+
+Also terraform will skim through all the files of the form `web-app-module/**/*.tf` and init the resources defined.
+
+#### Manage Multiple Environments
+
+Two main approches:
+
+![](/assets/img/2025-01-22-18-26-33.png)
+
+##### Workspaces
+
+###### When to use it over modularizing into folders
+
+- When there is absolutely no configuration difference
+- When we want to test an infrastructure and later delete it conveniently
+
+###### List all workspaces
+
+```hcl
+terraform init
+terraform workspace list
+```
+
+We will get the `default` workspace by defualt.
+
+###### Create a new workspace
+
+```hcl
+terraform workspace new production
+```
+
+Now we have created and switched to a new workspace, if we execute
+
+```hcl
+terraform apply
+```
+
+we will init and create those new resources.
+
+###### Switch to another workspace
+
+```hcl
+terraform workspace select prod
+```
+
+###### Destroy a workspace
+
+To destroy everything, we simply execute
+
+```hcl
+terraform destroy
+```
+
+in the workspace.
+
+##### File Structure
+
+###### Folders
+
+<a href="/assets/img/2025-01-22-19-09-26.png">
+<img src="/assets/img/2025-01-22-19-09-26.png" width="200"/>
+</a>
+<p/>
+
+- Here global contains those resources that are shared by different environments.
+
+- Now to deploy resources in production, we simply `cd` into the `production/` directory and execute
+  ```hcl
+  terraform init
+  terraform apply
+  ```
+
+#### Testing Terraform Code
+
+##### terratest (in golang)
+
+```go
+package test
+
+import (
+	"crypto/tls"
+	"fmt"
+	"testing"
+	"time"
+
+	"github.com/gruntwork-io/terratest/modules/http-helper"
+	"github.com/gruntwork-io/terratest/modules/terraform"
+)
+
+func TestTerraformHelloWorldExample(t *testing.T) {
+	// retryable errors in terraform testing.
+	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
+		TerraformDir: "../../examples/hello-world",
+	})
+
+	defer terraform.Destroy(t, terraformOptions)
+
+	terraform.InitAndApply(t, terraformOptions)
+
+	instanceURL := terraform.Output(t, terraformOptions, "url")
+	tlsConfig := tls.Config{}
+	maxRetries := 30
+	timeBetweenRetries := 10 * time.Second
+
+	http_helper.HttpGetWithRetryWithCustomValidation(
+		t, instanceURL, &tlsConfig, maxRetries, timeBetweenRetries, validate,
+	)
+
+}
+
+func validate(status int, body string) bool {
+	fmt.Println(body)
+	return status == 200
+}
+
+```
+
+- run `go mod download` to install all the dependencies listed in `go.mod` file:
+
+  ```go
+  // go.mod
+  module hello-world
+
+  go 1.15
+
+  require (
+    github.com/gruntwork-io/terratest v0.34.8
+    github.com/stretchr/testify v1.7.0
+  )
+  ```
+
+  recall that if we create a project from scratch, we `go mod init <project-name>` and `go get <module-name>`.
+
+#### Additional Tools
+
+##### Terragrunt
+
+- Minimizes code repetition
+- Enables multi-account separation (improved isolation/security)
+
+##### cloud-nuke
+
+- Easy cleanup of cloud resources
+
+##### Makefiles
+
+- Prevent human error
 
 #### References
 
