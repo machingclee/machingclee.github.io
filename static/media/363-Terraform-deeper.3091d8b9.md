@@ -3,7 +3,6 @@ title: "AWS Resources via Terraform"
 date: 2025-01-26
 id: blog0363
 tag: terraform
-toc: true
 intro: "We study terraform pracitcally by creating common resources in daily work."
 ---
 

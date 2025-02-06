@@ -3,7 +3,6 @@ title: "General Concept in Terraform: A Revisit"
 date: 2025-01-19
 id: blog0362
 tag: terraform
-toc: true
 intro: "After real project experience with AWS cloud, I revisit the knowledge in terraform in order to replicate the cloud infrastructure from UAT to PROD effectively."
 ---
 
