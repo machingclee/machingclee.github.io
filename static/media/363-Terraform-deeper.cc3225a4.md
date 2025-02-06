@@ -582,3 +582,5 @@ Note in this module we have used `k3s` connected with `rds` to share `kubenetes 
 #### References
 
 - [More than Certified in Terraform 2025](https://www.udemy.com/course/terraform-certified/?couponCode=24T2MT070225)
+
+- [Making Terraform and Serverless framework work together](https://theburningmonk.com/2019/03/making-terraform-and-serverless-framework-work-together/#Reference_Terraform_resources_in_Serverless_Framework)
