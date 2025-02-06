@@ -1,5 +1,5 @@
 ---
-title: "Terraform Revisit"
+title: "General Concept in Terraform: A Revisit"
 date: 2025-01-19
 id: blog0362
 tag: terraform
@@ -626,7 +626,7 @@ Sometimes an entity outside of terraform will automatically modify a resource (e
 
 ##### Project Structure
 
-Treat `main.tf` as an extrypoint of each module, our root project has the following structure
+Treat `main.tf` as an entrypoint of each module, our root project has the following structure
 
 <a href="/assets/img/2025-01-22-17-55-32.png">
   <img src="/assets/img/2025-01-22-17-55-32.png" width="300"/>
