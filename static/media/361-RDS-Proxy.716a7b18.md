@@ -16,7 +16,6 @@ intro: "We study the configuration of IAM roles and permissions to enable lambda
   }
 </style>
 
-
 #### Security Groups
 
 We create two security groups:
@@ -27,14 +26,15 @@ We create two security groups:
 ![](/assets/img/2025-01-14-02-41-27.png)
 
 As in the diagram indicated:
-- The `RDS-SG` accpets inbound traffic from `Lambda-SG`. 
+
+- The `RDS-SG` accpets inbound traffic from `Lambda-SG`.
 - `RDS-SG` again accepts inbound traffic from `RDS-SG`.
-The main challenge is to figure out the appropriate permissions for `RDS-Proxy` to connect to `RDS` and that for  `Lambda` (inside of a VPC) to get access to the `RDS` service.
-
-
+  The main challenge is to figure out the appropriate permissions for `RDS-Proxy` to connect to `RDS` and that for `Lambda` (inside of a VPC) to get access to the `RDS` service.
 
 #### Connect RDS and RDS-Proxy From Lambda Functions
+
 ##### Permissions to Lambda for RDS and RDS-Proxy Connection
+
 ```js
 {
   "Effect": "Allow",
@@ -47,8 +47,10 @@ The main challenge is to figure out the appropriate permissions for `RDS-Proxy` 
   "Resource": "arn:aws:rds:ap-southeast-2:798404461798:db-proxy:prx-0226dec8098d1321d"
 },
 ```
-These two are all we need to connect to `rds` and `rds-proxy`. 
-- Here `798404461798` is our `AWS Account ID` (viewable at the top right corner) and 
+
+These two are all we need to connect to `rds` and `rds-proxy`.
+
+- Here `798404461798` is our `AWS Account ID` (viewable at the top right corner) and
 - We can find our `proxy-id` here:
 
   ![](/assets/img/2025-01-14-01-50-26.png)
@@ -56,6 +58,7 @@ These two are all we need to connect to `rds` and `rds-proxy`.
 ##### Permission to Lambda for VPC Assignment
 
 The following
+
 ```js
 {
   "Effect": "Allow",
@@ -67,26 +70,26 @@ The following
   "Resource": "*"
 }
 ```
-allows a lambda function to be connected to a VPC network because it enables us to create ***Elastic Network Interface*** in order to assign security group to a lambda function.
+
+allows a lambda function to be connected to a VPC network because it enables us to create **_Elastic Network Interface_** in order to assign security group to a lambda function.
 
 More detail on Lambda Functions and VPC can be found in [this article on architecture of private lambda functions](/blog/article/Architecture-for-Private-Lamdba-functions-called-via-another-lambda-function).
-
-
 
 #### RDS-Proxy
 
 ##### Methods to Connect RDS
 
 RDS-Proxy can get access to our RDS instance in either way:
+
 - Get credential from secrets manager
 - Authenticate by IAM-Role
-We choose to use secret manager because we don't need to introduce `aws-sdk` (language specific) for new approach of connecting to our DB. That is, if we created a new proxy-endpoint, we simply use it as if it is a usual endpoint.
+  We choose to use secret manager because we don't need to introduce `aws-sdk` (language specific) for new approach of connecting to our DB. That is, if we created a new proxy-endpoint, we simply use it as if it is a usual endpoint.
 
 ![](/assets/img/2025-01-14-02-00-17.png)
 
-We need to remark that RDS-Proxy endpoint is a `VPC`-bounded resource. We are ***not able*** to connect to it outside of the VPC unless we create additional proxy mechanism, e.g., via EC2 instances.
+We need to remark that RDS-Proxy endpoint is a `VPC`-bounded resource. We are **_not able_** to connect to it outside of the VPC unless we create additional proxy mechanism, e.g., via EC2 instances.
 
-Nevertheless enabling RDS-Proxy ***does not mean*** deleting our original RDS endpoint, we can use both as we please.
+Nevertheless enabling RDS-Proxy **_does not mean_** deleting our original RDS endpoint, we can use both as we please.
 
 ##### Permissions for RDS-Proxy
 
@@ -107,19 +110,22 @@ Edit the IAM-Role of the RDS-Proxy instance and add:
     ]
 },
 ```
-Here `secret:billie-uat-rds-proxy-corrected-nMKcow` is the ***secret id***. If we change to use other secret for RDS-Proxy, then we need to adjust the permission here as well.
+
+Here `secret:billie-uat-rds-proxy-corrected-nMKcow` is the **_secret id_**. If we change to use other secret for RDS-Proxy, then we need to adjust the permission here as well.
 
 #### VPC Endpoints for RDS
 
 Since RDS is one of the `endpoint` resources in AWS (other example is `cloudwatch`), accessing an `endpoint` is as simple as:
-1. Adding this endpoint to the private subnet ***of lambda functions***
 
-    ![](/assets/img/2025-01-14-02-32-34.png)
+1. Adding this endpoint to the private subnet **_of lambda functions_**
 
-    and;
+   ![](/assets/img/2025-01-14-02-32-34.png)
+
+   and;
+
 2. Assigning a security group to that endpoint to identify which group of resources is available to use that endpoint
 
-    ![](/assets/img/2025-01-14-02-33-03.png)
+   ![](/assets/img/2025-01-14-02-33-03.png)
 
 #### Connection to RDS-Proxy
 
