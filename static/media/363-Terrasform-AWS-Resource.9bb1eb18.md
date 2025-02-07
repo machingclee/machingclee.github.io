@@ -3,8 +3,8 @@ title: "Create AWS Resources via Terraform"
 date: 2025-01-26
 id: blog0363
 tag: terraform
-intro: "We study terraform pracitcally by creating common resources in daily work."
 toc: true
+intro: "We study terraform pracitcally by creating common resources in daily work."
 ---
 
 <style>
