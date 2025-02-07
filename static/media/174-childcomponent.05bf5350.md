@@ -283,7 +283,7 @@ We use the same concept but define only **_two_** child components:
 - For the biggest components (the whole form in our case) we devide it by grabbing relatively smaller component.
 - For relatively smaller components we divide it by injecting dynamic components by props.
 
-```js
+```jsx
 export class DC {
 	public static InputRow({ left, right }: {
 		left: ReactNode,
