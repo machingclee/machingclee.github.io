@@ -1,5 +1,5 @@
 ---
-title: "General Concept in Terraform Revisit"
+title: "General Concept in Terraform (Revisited)"
 date: 2025-01-19
 id: blog0362
 tag: terraform
