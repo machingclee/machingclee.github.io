@@ -1,5 +1,5 @@
 ---
-title: "Record and Caveat of Terraform from Real Project Experience"
+title: "Caveat and Record of Terraform from Real Project Experience"
 date: 2025-02-15
 id: blog0363
 tag: terraform
@@ -18,7 +18,7 @@ intro: "Record the success configuration of usual resources"
 
 #### Documentation
 
-A reading that we refer most refrequently:
+A reference that we refer most refrequently:
 
 - https://registry.terraform.io/providers/hashicorp/aws/latest/docs
 
@@ -28,7 +28,7 @@ Here is a basic project structure:
 
 ![](/assets/img/2025-02-15-18-45-36.png)
 
-We synchronize DEV, UAT and PROD by sharing the common modules
+We synchronize `DEV`, `UAT` and `PROD` by sharing the common modules
 
 ##### dev/backends.tf (Terraform Cloud)
 
@@ -114,6 +114,8 @@ db_username                        = "BillieRDSDEVSuperUser"
 db_password                        = "BillieRDSDEV2025!BillieRDSDEV2025!!"
 billie_kotlin_lambda_function_name = "kotlin-dev-rds-proxy-dev-api"
 ```
+
+#### Entrypoint to Create Resources: dev/main.tf
 
 ##### dev/main.tf
 
@@ -241,6 +243,8 @@ In `main.tf` if we write an `output` block, the value will be displayed in CLI w
 
 ###### ecs/locals.tf
 
+We simply define a constant when `Tag` or `Name` is set.
+
 ```hcl
 locals {
   app_name = var.container_name
@@ -259,6 +263,24 @@ resource "aws_cloudwatch_log_group" "ecs_logging" {
 ```
 
 ###### ecs/resource_iam.tf
+
+Here we define
+
+- Task execution role (responsible for granting permissions to create and connecte aws services)
+
+  **Remark 1.** We keep using AWS managed `ecsTaskExecutionRole`.
+
+  **Remark 2.** Note that the default role has `AmazonECSTaskExecutionRolePolicy`
+
+  ![](/assets/img/2025-02-16-01-02-23.png)
+
+  which allows **(i)** pulling all images from ECR and **(ii)** creating log stream in any log group:
+
+  ![](/assets/img/2025-02-16-01-03-50.png)
+
+  Therefore the default task-execution-role almost covers any standard usecase.
+
+- Task role (responsible for granting permissions to resouces needed by the code in container listed in task definition)
 
 ```hcl
 # task execution role (pulling images etc) --manage--> task role (using s3 etc)
@@ -285,63 +307,13 @@ resource "aws_iam_role" "ecs_task_role" {
     ]
   })
 }
-
-# <--- duplicate a task execution role from official ecsTaskExecutionRole
-resource "aws_iam_role" "ecs_task_execution_role" {
-  name = "${local.app_name}-task-execution-role"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Principal = {
-          Service = "ecs-tasks.amazonaws.com"
-        }
-      }
-    ]
-  })
-}
-
-# clone base policy to the task execution role
-resource "aws_iam_role_policy_attachment" "task_execution_role_policy" {
-  role       = aws_iam_role.ecs_task_execution_role.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
-}
-# duplicate a task execution role from official ecsTaskExecutionRole --->
-
-# if we need RDS connection or S3 connection we need to add permission in task role
-# <--- assign logging permission to our custom task executoin role
-# task execution role manage how to execute the task, such as pulling images,
-resource "aws_iam_role_policy" "ecs_task_execution_enable_logs" {
-  name = "${local.app_name}-task-execution-role-policy"
-  role = aws_iam_role.ecs_task_execution_role.name
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Action = [
-          "logs:CreateLogGroup",
-          "logs:CreateLogStream",
-          "logs:PutLogEvents",
-          "logs:DescribeLogStreams",
-          "logs:GetLogEvents"
-        ]
-        Resource = [
-          "${aws_cloudwatch_log_group.ecs_logging.arn}",
-          "${aws_cloudwatch_log_group.ecs_logging.arn}:*"
-        ]
-      }
-    ]
-  })
-}
-# assign logging permission to our custom task executoin role --->
 ```
 
 ###### ecs/resource_scaling_policy.tf
+
+We have constraint the max and min `capacity` to be 1. Note that by default it is still capable of launching two instances simultaneously in order for rolling update.
+
+Nevertheless we have still included scaling policy for completeness:
 
 ```hcl
 # Auto Scaling Target
@@ -390,39 +362,9 @@ resource "aws_appautoscaling_policy" "memory_policy" {
 }
 ```
 
-###### ecs/resource_service.tf
+###### ecs/resource_cluster_and_task_def.tf
 
-```hcl
-
-resource "aws_ecs_service" "service" {
-  name                   = local.app_name
-  cluster                = aws_ecs_cluster.cluster.id
-  task_definition        = aws_ecs_task_definition.task.arn
-  desired_count          = 1 # starts with 1
-  launch_type            = "FARGATE"
-  enable_execute_command = false
-
-  network_configuration {
-    subnets          = var.billie_private_subnets[*].id
-    security_groups  = [var.ecs_service_security_group_id]
-    assign_public_ip = false
-  }
-
-  load_balancer {
-    target_group_arn = var.target_group.arn
-    container_name   = local.app_name
-    container_port   = var.container_port
-  }
-
-  depends_on = [
-    aws_cloudwatch_log_group.ecs_logging,
-    var.load_balancer,
-    var.target_group
-  ]
-}
-```
-
-###### ecs/resource_task.tf
+We combine everything up til now to create a `task`. We will next create a `ECS Service` using this task definition:
 
 ```hcl
 resource "aws_ecs_cluster" "cluster" {
@@ -471,6 +413,39 @@ resource "aws_ecs_task_definition" "task" {
 }
 ```
 
+###### ecs/resource_service.tf
+
+Finally we combine cluster and task definition to create an `ECS Service`:
+
+```hcl
+resource "aws_ecs_service" "service" {
+  name                   = local.app_name
+  cluster                = aws_ecs_cluster.cluster.id
+  task_definition        = aws_ecs_task_definition.task.arn
+  desired_count          = 1 # starts with 1
+  launch_type            = "FARGATE"
+  enable_execute_command = false
+
+  network_configuration {
+    subnets          = var.billie_private_subnets[*].id
+    security_groups  = [var.ecs_service_security_group_id]
+    assign_public_ip = false
+  }
+
+  load_balancer {
+    target_group_arn = var.target_group.arn
+    container_name   = local.app_name
+    container_port   = var.container_port
+  }
+
+  depends_on = [
+    aws_cloudwatch_log_group.ecs_logging,
+    var.load_balancer,
+    var.target_group
+  ]
+}
+```
+
 ###### ecs/variables.tf
 
 ```hcl
@@ -509,7 +484,6 @@ variable "cpu_scaling_threshold_in_percentage" {
   type = number
 }
 
-
 variable "memory_scaling_threshold_in_percentage" {
   type = number
 }
@@ -519,6 +493,7 @@ variable "ecs_service_security_group_id" {
 }
 
 variable "target_group" {}
+
 variable "aws_region" {
   type = string
 }
@@ -532,7 +507,42 @@ variable "load_balancer" {}
 
 ##### RDS and RDS Proxy
 
+###### Security Group Schema
+
+![](/assets/img/2025-02-16-01-47-19.png)
+
+###### rds_and_rds_proxy/resource_rds_secrets.tf
+
+- RDS Proxy can be connected either by `db_username` and `db_password`, or by IAM role authentication.
+
+- Here we choose to use `db_username` and `db_password`, for that, we need to create a secret in Secret Manager and let RDS Proxy to access it.
+
+```hcl
+resource "random_id" "rds_proxy_random_id" {
+  byte_length = 4
+  # keepers = {
+  #   key_name = var.db_identifier
+  # }
+}
+
+resource "aws_secretsmanager_secret" "billie_rds_proxy_credentials" {
+  name = "terraform/${var.env}/rds/billie/proxy/${random_id.rds_proxy_random_id.hex}/credentials"
+}
+
+resource "aws_secretsmanager_secret_version" "proxy_credentials" {
+  secret_id = aws_secretsmanager_secret.billie_rds_proxy_credentials.id
+  secret_string = jsonencode({
+    username = var.db_username
+    password = var.db_password
+  })
+}
+```
+
+Note that the `username` and `password` here must be the same as that used by the `rds` instance.
+
 ###### rds_and_rds_proxy/resource_iam.tf
+
+As mentioned before, we now define custom role for `RDS Proxy` and grant permission to access the target secret in AWS Secret Manager.
 
 ```hcl
 # IAM role for RDS Proxy
@@ -574,26 +584,6 @@ resource "aws_iam_role_policy" "billie_rds_proxy_policy" {
 }
 ```
 
-###### rds_and_rds_proxy/resource_rds_proxy_default_targetgroup.tf
-
-```hcl
-resource "aws_db_proxy_default_target_group" "billie_rds_proxy_default_tg" {
-  db_proxy_name = aws_db_proxy.billie_rds_proxy.name
-
-  connection_pool_config {
-    max_connections_percent      = 100
-    max_idle_connections_percent = 50
-    connection_borrow_timeout    = 120
-  }
-}
-
-resource "aws_db_proxy_target" "billie_rds_proxy_target" {
-  db_proxy_name          = aws_db_proxy.billie_rds_proxy.name
-  target_group_name      = aws_db_proxy_default_target_group.billie_rds_proxy_default_tg.name
-  db_instance_identifier = aws_db_instance.billie.identifier
-}
-```
-
 ###### rds_and_rds_proxy/resource_rds_proxy.tf
 
 ```hcl
@@ -620,29 +610,6 @@ resource "aws_db_proxy" "billie_rds_proxy" {
 }
 ```
 
-###### rds_and_rds_proxy/resource_rds_secrets.tf
-
-```hcl
-resource "random_id" "rds_proxy_random_id" {
-  byte_length = 4
-  # keepers = {
-  #   key_name = var.db_identifier
-  # }
-}
-
-resource "aws_secretsmanager_secret" "billie_rds_proxy_credentials" {
-  name = "terraform/${var.env}/rds/billie/proxy/${random_id.rds_proxy_random_id.hex}/credentials"
-}
-
-resource "aws_secretsmanager_secret_version" "proxy_credentials" {
-  secret_id = aws_secretsmanager_secret.billie_rds_proxy_credentials.id
-  secret_string = jsonencode({
-    username = var.db_username
-    password = var.db_password
-  })
-}
-```
-
 ###### rds_and_rds_proxy/resource_rds.tf
 
 ```hcl
@@ -663,6 +630,28 @@ resource "aws_db_instance" "billie" {
     Name = var.db_tag_name
   }
   depends_on = [var.db_aws_subnet_group]
+}
+```
+
+###### rds_and_rds_proxy/resource_rds_proxy_default_targetgroup.tf
+
+Next we need to associate RDS Proxy with our target database.
+
+```hcl
+resource "aws_db_proxy_default_target_group" "billie_rds_proxy_default_tg" {
+  db_proxy_name = aws_db_proxy.billie_rds_proxy.name
+
+  connection_pool_config {
+    max_connections_percent      = 100
+    max_idle_connections_percent = 50
+    connection_borrow_timeout    = 120
+  }
+}
+
+resource "aws_db_proxy_target" "billie_rds_proxy_target" {
+  db_proxy_name          = aws_db_proxy.billie_rds_proxy.name
+  target_group_name      = aws_db_proxy_default_target_group.billie_rds_proxy_default_tg.name
+  db_instance_identifier = aws_db_instance.billie.identifier
 }
 ```
 
@@ -714,6 +703,8 @@ We will reference to the existing resources, we need to keep the configuration *
 
 ###### lambdas/data_kotlin_lambda.tf
 
+Since our lambda functions are not managed by terraform, we use data block to retrieve the state:
+
 ```hcl
 data "aws_lambda_function" "billie_backend_kotlin_api" {
   function_name = var.billie_kotlin_lambda_function_name
@@ -728,6 +719,11 @@ data "aws_caller_identity" "current" {}
 ```
 
 ###### lambdas/resource_lambda_rds_proxy_config.tf
+
+For these lambda functions we need to grant their `iam` role permissions to
+
+1. Access RDS
+2. Access RDS-proxy
 
 ```hcl
 resource "aws_iam_role_policy" "lambda_rds_proxy_policy" {
@@ -751,6 +747,25 @@ resource "aws_iam_role_policy" "lambda_rds_proxy_policy" {
   })
 }
 ```
+
+and additionally
+
+3. We need to set them into VPC and assign the auto-generated `ENI` (Elastic Network Interface) a Security Group in order to access the RDS Proxy (a VPC resource).
+
+For that, we will set the lambda functions into private subnets and assign them a security group in `serverless.yml` as follows
+
+```yml
+provider:
+  vpc:
+    securityGroupIds:
+      - sg-xxxxxx
+    subnetIds:
+      - subnet-0cxxx
+      - subnet-0cxyy
+      - subnet-0cxyz
+```
+
+Since lambda functions are external resource, the configuration of those lambda functions in terraform should be minimal to **_minimize the impact_** to the terraform project **_caused_** by the accidental deletion of the lambda functions.
 
 ###### lambdas/outputs.tf
 
@@ -1416,15 +1431,78 @@ variable "aws_region" {
 
 #### More on EC2: Create Custom Kubenetes node using k3s and Multiple EC2s
 
-Nowadays we don't manage EC2s on our own due to the advent of ECS and the flexble scaling policy.
+- Nowadays we don't manage EC2s on our own due to the advent of ECS and the flexble scaling policy. However, an EC2 may still be useful when treated as a bastion host for our private VPC RDS instance.
 
-However, an EC2 may still be useful when treated as a bastion host for our private VPC RDS instance.
+- To enrich the content let's include how to define EC2 and let's define a cluster of EC2s as a module, in each EC2 instance we execute a `k3s` associated with an `RDS` instance to share `kubenetes state`, these EC2s will form a small worker node.
 
-For richer content let's include how to define EC2 and let's define a cluster of EC2s as a module.
+##### Entrypoint --- main.tf
 
-In each EC2 we execute a `k3s` associated with an `RDS` instance to share `kubenetes state`, these EC2s will form a small worker node.
+```hcl
+module "networking" {
+  source                 = "./modules/networking"
+  vpc_cidr               = "10.123.0.0/16"                                     // this is used to create a custom VPC
+  public_cidrs           = ["10.123.2.0/24", "10.123.4.0/24"]                  // this is for public subnets
+  private_cidrs          = ["10.123.1.0/24", "10.123.3.0/24", "10.123.5.0/24"] // this is for privae subnets
+  ssh_access_ip          = var.ssh_access_ip
+  create_db_subnet_group = true
+}
+module "database" {
+  source                 = "./modules/database"
+  db_storage             = 10
+  db_engine              = "mysql"
+  db_engine_version      = "5.7.44"
+  db_instance_class      = "db.t3.micro"
+  db_name                = var.db_name
+  db_username            = var.db_username
+  db_password            = var.db_password
+  db_identifier          = "james-love-love-db"
+  skip_final_snapshot    = true
+  db_subnet_group_name   = length(module.networking.db_subnet_group_names) == 1 ? module.networking.db_subnet_group_names[0] : ""
+  vpc_security_group_ids = [module.networking.db_security_group_id]
+}
 
-##### ec2/main.tf
+module "loadbalancing" {
+  source                 = "./modules/loadbalancing"
+  public_security_groups = [module.networking.public_http_sg.id, module.networking.public_ssh_sg.id]
+  public_subnets         = module.networking.public_subnet_ids
+  tg_port                = 8000
+  tg_protocol            = "HTTP"
+  vpc_id                 = module.networking.vpc_id
+  lb_healthy_threshold   = 2
+  lb_unhealthy_threshold = 2
+  lb_timeout             = 3
+  lb_interval            = 30
+  listener_port          = 8000
+  listener_portocol      = "HTTP"
+}
+
+module "compute" {
+  source                = "./modules/compute"
+  instance_count        = 1
+  instance_type         = "t3.micro"
+  vol_size              = 10
+  ec2_security_group_id = module.networking.james_ec2_sg.id
+  public_security_gp_ids = [
+    module.networking.public_ssh_sg.id,
+    module.networking.public_http_sg.id
+  ]
+  public_subnet_ids = module.networking.public_subnet_ids
+  key_name          = "james_ec2_key"
+  # public_key_path       = "C:\\Users\\machingclee\\.ssh\\jameskey.pub" # windows specific
+  # generated by ssh-keygen -t ed25519 -f ~/.ssh/james_ec2_key
+  public_key_path        = "/Users/chingcheonglee/.ssh/james_ec2_key.pub"
+  db_endpoint            = module.database.db_endpoint
+  db_name                = var.db_name
+  db_password            = var.db_password
+  db_user                = var.db_username
+  user_data_path         = "${path.root}/userdata.tpl"
+  james_target_group_arn = module.loadbalancing.james_target_group_arn
+}
+```
+
+##### Compute Module
+
+###### compute/main.tf
 
 ```hcl
 data "aws_ami" "server_ami" {
@@ -1490,7 +1568,16 @@ resource "aws_lb_target_group_attachment" "james_tg_attach" {
 }
 ```
 
-##### ec2/variables.tf
+###### compute/outputs.tf
+
+```hcl
+output "instance" {
+  value     = aws_instance.james_node[*]
+  sensitive = true
+}
+```
+
+###### compute/variables.tf
 
 ```hcl
 variable "instance_count" {
@@ -1547,7 +1634,429 @@ variable "james_target_group_arn" {
 }
 ```
 
-##### ec2/userdata.tpl
+##### Database Module
+
+###### database/main.tf
+
+```hcl
+resource "aws_db_instance" "james_db" {
+  allocated_storage      = var.db_storage
+  engine                 = var.db_engine
+  engine_version         = var.db_engine_version
+  instance_class         = var.db_instance_class
+  db_name                = var.db_name
+  username               = var.db_username
+  password               = var.db_password
+  db_subnet_group_name   = var.db_subnet_group_name
+  vpc_security_group_ids = var.vpc_security_group_ids // the RDS instance must be assigned at least one security group.
+  identifier             = var.db_identifier
+  skip_final_snapshot    = var.skip_final_snapshot
+  tags = {
+    Name = "james-db"
+  }
+}
+```
+
+###### database/outputs.tf
+
+```hcl
+output "db_endpoint" {
+  value = aws_db_instance.james_db.endpoint
+}
+```
+
+###### datanbase/variables.tf
+
+```hcl
+variable "db_storage" {
+  type        = number
+  description = "Should be an integer in GB"
+}
+
+variable "db_engine" {
+  type    = string
+  default = "mysql"
+}
+
+variable "db_engine_version" {
+  type = string
+}
+
+
+variable "db_instance_class" {
+  type = string
+}
+
+variable "db_name" {
+  type = string
+}
+
+variable "db_username" {
+  type = string
+}
+
+variable "db_password" {
+  type = string
+}
+
+
+variable "db_subnet_group_name" {
+  type = string
+}
+
+variable "vpc_security_group_ids" {
+  type = list(string)
+}
+
+variable "db_identifier" {
+  type = string
+}
+
+variable "skip_final_snapshot" {
+  type = bool
+}
+```
+
+##### Load Balancer Module
+
+###### loadbalancing/main.tf
+
+```hcl
+resource "aws_lb" "james_lb" {
+  name            = "james-loadbalancer"
+  subnets         = var.public_subnets
+  security_groups = var.public_security_groups
+  idle_timeout    = 900
+}
+
+/*
+Avoid naming conflicts during recreate/redeploy:
+When you destroy and recreate resources, AWS keeps the old name in a "cooling period"
+Without random suffixes, you might get errors like "name already exists" when redeploying
+*/
+
+resource "aws_lb_target_group" "james_target_group" {
+  name     = "james-lb-tg-${substr(uuid(), 0, 4)}"
+  port     = var.tg_port
+  protocol = var.tg_protocol
+  vpc_id   = var.vpc_id
+  lifecycle {
+    ignore_changes        = [name]
+    create_before_destroy = true
+    // when set to false, the destruction will be halted because:
+    // when we change the port, the target group will be destroyed,
+    // and the listener has no where to route the traffic until the new target group is created
+    // but listener cannot live without target group, the deletion of the target group will get halted due to AWS's own validation
+    // we use create_before_destroy = true to make sure there must be an existing target group assignable to the listener
+  }
+  health_check {
+    healthy_threshold   = var.lb_healthy_threshold
+    unhealthy_threshold = var.lb_unhealthy_threshold
+    timeout             = var.lb_timeout
+    interval            = var.lb_interval
+  }
+}
+
+
+resource "aws_lb_listener" "james_lb_listener" {
+  load_balancer_arn = aws_lb.james_lb.arn
+  port              = var.listener_port
+  protocol          = var.listener_portocol
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.james_target_group.arn
+  }
+}
+```
+
+###### loadbalancing/outputs.tf
+
+```hcl
+output "james_target_group_arn" {
+  value = aws_lb_target_group.james_target_group.arn
+}
+
+output "lb_endpoint" {
+  value = aws_lb.james_lb.dns_name
+}
+```
+
+###### loadbalancing/variables.tf
+
+```hcl
+variable "public_security_groups" {
+  type = list(string)
+}
+
+variable "public_subnets" {
+  type = list(string)
+}
+
+variable "tg_port" {
+  type = string
+}
+variable "tg_protocol" {
+  type = string
+}
+
+variable "vpc_id" {
+  type = string
+}
+
+variable "lb_healthy_threshold" {
+  type = string
+}
+
+variable "lb_unhealthy_threshold" {
+  type = string
+}
+
+variable "lb_timeout" {
+  type = number
+}
+
+variable "lb_interval" {
+  type = number
+}
+
+variable "listener_port" {
+  type = number
+}
+
+variable "listener_portocol" {
+  type = string
+}
+```
+
+##### Network Module
+
+###### network/main.tf
+
+```hcl
+resource "random_integer" "random" {
+  min = 1
+  max = 100
+}
+
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+
+
+resource "aws_vpc" "james_vpc" {
+  cidr_block           = var.vpc_cidr
+  enable_dns_hostnames = true
+  enable_dns_support   = true
+
+  tags = {
+    Name = "james_vpc-${random_integer.random.id}"
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_route_table_association" "james_public_subnet_association" {
+  count          = length(var.public_cidrs)
+  subnet_id      = aws_subnet.james_public_subnet.*.id[count.index]
+  route_table_id = aws_route_table.james_public_route_table.id
+}
+
+
+resource "aws_subnet" "james_public_subnet" {
+  count                   = length(var.public_cidrs)
+  vpc_id                  = aws_vpc.james_vpc.id
+  cidr_block              = var.public_cidrs[count.index]
+  map_public_ip_on_launch = true
+  availability_zone       = data.aws_availability_zones.available.names[count.index]
+
+  tags = {
+    Name = "james_public_subnet_${count.index + 1}"
+  }
+}
+
+
+resource "aws_subnet" "james_private_subnet" {
+  count                   = length(var.private_cidrs)
+  vpc_id                  = aws_vpc.james_vpc.id
+  cidr_block              = var.private_cidrs[count.index]
+  map_public_ip_on_launch = false
+  availability_zone       = data.aws_availability_zones.available.names[count.index]
+
+  tags = {
+    Name = "james_private_subnet_${count.index + 1}"
+  }
+}
+
+resource "aws_internet_gateway" "james_internet_gateway" {
+  vpc_id = aws_vpc.james_vpc.id
+  tags = {
+    Name = "james_igw"
+  }
+}
+
+resource "aws_route_table" "james_public_route_table" {
+  vpc_id = aws_vpc.james_vpc.id
+  tags = {
+    Name = "james_public_route_table"
+  }
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.james_internet_gateway.id
+  }
+}
+
+# default VPC comes with an Internet Gateway and internet access pre-configured because
+# it's designed for immediate use and backward compatibility with EC2-Classic.
+# It's meant to help users get started quickly, while custom VPCs follow stricter security practices.
+
+# for new VPC there is no internet gateway and therefore its default route table is a suitable candidate to be assigned
+# to private subnet, and we create additional one for public subnet with a record from igw to 0.0.0.0/0
+resource "aws_default_route_table" "james_private_route_table" {
+  default_route_table_id = aws_vpc.james_vpc.default_route_table_id
+
+  tags = {
+    Name = "james_private_route_table"
+  }
+}
+
+resource "aws_security_group" "james_ssh_sg" {
+  name        = "ssh_sg"
+  description = "Security Group for SSH Access"
+  vpc_id      = aws_vpc.james_vpc.id
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = [var.ssh_access_ip]
+    description = "for SSH access"
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_security_group" "james_http_sg" {
+  name        = "james_http_sg"
+  description = "Security Group for Http"
+  vpc_id      = aws_vpc.james_vpc.id
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "port 80 for public access"
+  }
+
+  ingress {
+    from_port   = 8000
+    to_port     = 8000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "port 8000 for public access"
+  }
+}
+
+resource "aws_security_group" "ec2_security_group" {
+  name        = "james_ec2_sg"
+  description = "Security Group for EC2"
+  vpc_id      = aws_vpc.james_vpc.id
+}
+
+
+resource "aws_security_group" "james_private_rds" {
+  name        = "james_private_rds"
+  description = "Security Group for Private RDS"
+  vpc_id      = aws_vpc.james_vpc.id
+
+  ingress {
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "tcp"
+    cidr_blocks = [var.vpc_cidr]
+    description = "pgsql allows everything in the VPC to access"
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_db_subnet_group" "james_rds_subnet_group" {
+  count      = var.create_db_subnet_group == true ? 1 : 0
+  name       = "james_rds_subnet_group"
+  subnet_ids = aws_subnet.james_private_subnet.*.id
+  tags = {
+    Name = "james_rds_subnet_group"
+  }
+}
+```
+
+###### network/outputs.tf
+
+```hcl
+output "vpc_id" {
+  value = aws_vpc.james_vpc.id
+}
+
+output "db_subnet_group_names" {
+  value = aws_db_subnet_group.james_rds_subnet_group.*.name
+}
+
+output "db_security_group_id" {
+  value = aws_security_group.james_private_rds.id
+}
+
+output "public_subnet_ids" {
+  value = aws_subnet.james_public_subnet.*.id
+}
+
+output "public_http_sg" {
+  value = aws_security_group.james_http_sg
+}
+
+output "public_ssh_sg" {
+  value = aws_security_group.james_ssh_sg
+}
+
+output "james_ec2_sg" {
+  value = aws_security_group.ec2_security_group
+}
+```
+
+###### network/variables.tf
+
+```hcl
+variable "vpc_cidr" {
+  type = string
+}
+
+variable "public_cidrs" {
+  type = list(string)
+}
+
+
+variable "private_cidrs" {
+  type = list(string)
+}
+
+variable "ssh_access_ip" {
+  type = string
+}
+
+variable "create_db_subnet_group" {
+  type = bool
+}
+```
+
+##### \<project-root\>/userdata.tpl
 
 ```sh
 #!/bin/bash
@@ -1559,15 +2068,7 @@ curl -sfL https://get.k3s.io | sh -s - server \
 --token="th1s1sat0k3n!"
 ```
 
-#### Troubleshootings and Useful Remarks
-
-##### Cannot delete a security group because of unknown dependencies
-
-Try executing
-
-```text
-aws ec2 describe-network-interfaces --filters "Name=group-id,Values=sg-08597314e84ca01e6"
-```
+#### Useful Remarks
 
 ##### RDS-Proxy endpoint remains the same even I destroyed and recreated it
 
@@ -1582,6 +2083,21 @@ You'll get the same endpoint URL. This is actually beneficial for
 - DNS caching
 - Application configuration stability
 - Avoiding the need to update connection strings frequently
+
+##### AWS SSM: Share the terrform outputs to other aws resources
+
+Resources like
+
+```hcl
+resource "aws_ssm_parameter" "private_subnet_ids" {
+  name  = "/${var.env}/vpc/private_subnet_ids"
+  type  = "String"
+  value = join(",", aws_subnet.billie_private_subnets[*].id)
+}
+```
+
+can be found in `AWS Systems Manager > 
+Parameter Store`. These parameters can be access by `aws-sdk` when the resource has appropriate permission in their policy to access this paramter store.
 
 ##### Logging when creating aws resources
 
@@ -1599,23 +2115,17 @@ For any resource we can add `local-exec` povisioner to log desired content:
   }
 ```
 
-##### AWS SSM: Share the terrform outputs to other aws resources
+#### Troubleshootings
 
-Resources like
+##### Cannot delete a security group because of unknown dependencies
 
-```hcl
-resource "aws_ssm_parameter" "private_subnet_ids" {
-  name  = "/${var.env}/vpc/private_subnet_ids"
-  type  = "String"
-  value = join(",", aws_subnet.billie_private_subnets[*].id)
-}
+Try executing
 
+```text
+aws ec2 describe-network-interfaces --filters "Name=group-id,Values=sg-08597314e84ca01e6"
 ```
 
-can be found in `AWS Systems Manager > 
-Parameter Store`. These parameters can be access by `aws-sdk` when the resource has appropriate permission in their policy to access this paramter store.
-
-##### ENI assigned to lambda function is stuck at deletion, causing failure of deletion for subnets
+##### ENI assigned to lambda function is stuck at deletion, blocking the deletion of subnets
 
 When a lambda function is put into a VPC, each subnet will create an ENI to this lambda function.
 
