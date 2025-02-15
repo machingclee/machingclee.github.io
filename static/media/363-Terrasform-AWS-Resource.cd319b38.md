@@ -266,7 +266,7 @@ resource "aws_cloudwatch_log_group" "ecs_logging" {
 
 Here we define
 
-- Task execution role (responsible for granting permissions to create and connecte aws services)
+- Task execution role (responsible for granting permissions to create and connect aws services)
 
   **Remark 1.** We keep using AWS managed `ecsTaskExecutionRole`.
 
@@ -311,7 +311,7 @@ resource "aws_iam_role" "ecs_task_role" {
 
 ###### ecs/resource_scaling_policy.tf
 
-We have constraint the max and min `capacity` to be 1. Note that by default it is still capable of launching two instances simultaneously in order for rolling update.
+We have constrainted the max and min `capacity` to be 1. Note that by default it is still capable of launching two instances simultaneously in order for rolling update.
 
 Nevertheless we have still included scaling policy for completeness:
 
@@ -802,6 +802,8 @@ data "aws_route53_zone" "hosted_zone" {
 
 ###### loadbalancing/data_lambda_functions.tf
 
+Recall that our lambda wrapping a spring boot application is a snap-started function specialized for Java-based:
+
 ```hcl
 data "aws_lambda_function" "billie_backend_kotlin_api" {
   function_name = var.billie_kotlin_lambda_function_name
@@ -814,6 +816,8 @@ data "aws_lambda_alias" "billie_snapstart" {
 ```
 
 ###### loadbalancing/resource_cert_and_route53record.tf
+
+Here we will be creating two `Route53` records. One is to **_validate_** we are the owner of the domain (`aws_route53_record.cert_validation`):
 
 ```hcl
 resource "aws_acm_certificate" "billie_alb_cert" {
@@ -842,11 +846,95 @@ resource "aws_route53_record" "cert_validation" {
 }
 ```
 
+###### loadbalancing/resource_loadbalancer_alias_route53record.tf
+
+(Cont'd) Another one is an alias `Route53` record that **_routes_** traffics into our load balancer:
+
+```hcl
+resource "aws_route53_record" "app" {
+  zone_id = data.aws_route53_zone.hosted_zone.id
+  name    = var.cert_domain
+  type    = "A"
+
+  alias {
+    name                   = aws_alb.public_loadbalancer.dns_name
+    zone_id                = aws_alb.public_loadbalancer.zone_id
+    evaluate_target_health = true
+  }
+}
+```
+
+###### loadbalancing/resource_target_groups.tf
+
+For EC2 or resources with elastic IP, we usually define **_both_** `aws_lb_target_group` and `aws_lb_target_group_attachment`
+
+```hcl
+# target-definition
+resource "aws_lb_target_group" "example" {
+  ...
+}
+
+# binding
+resource "aws_lb_target_group_attachment" "example" {
+  target_group_arn = aws_lb_target_group.example.arn
+  target_id        = aws_instance.example.id  # EC2 instance ID
+  # in case we use elastic IP:
+  # target_id        = "172.16.0.1"
+  port             = 80
+}
+```
+
+However, for ECS we **_don't need to_** do a target_id-binding, we config ECS service to bind this target group instead (see the `load_balancer` config of resource `aws_ecs_service.service`).
+
+```hcl
+# resource_target_groups.tf
+
+resource "aws_lb_target_group" "billie_nodejs_app" {
+  name        = "billie-nodejs-${var.env}"
+  port        = var.billie_container_port
+  protocol    = "HTTP"
+  vpc_id      = var.billie_vpc_id
+  target_type = "ip"
+
+  health_check {
+    path                = var.health_check_path
+    healthy_threshold   = 2
+    unhealthy_threshold = 10
+    timeout             = 5
+    interval            = 30
+    matcher             = "200"
+  }
+}
+
+# <<<--- start of creating target group of alb for kotlin api lambda
+resource "aws_lb_target_group" "billie_kotlin_lambda_target_group" {
+  name        = "terraform-billie-kotlin-${var.env}"
+  target_type = "lambda"
+}
+
+# Target Group Attachment - using the SnapStart alias
+resource "aws_lb_target_group_attachment" "billie_kotlin_lambda_target_group_attachment" {
+  target_group_arn = aws_lb_target_group.billie_kotlin_lambda_target_group.arn
+  # for non-snapstarted functions, simply use the function.arn:
+  target_id        = data.aws_lambda_alias.billie_snapstart.arn
+  depends_on       = [aws_lambda_permission.allow_alb_to_execute_billie_kotlin_lambda]
+}
+
+resource "aws_lambda_permission" "allow_alb_to_execute_billie_kotlin_lambda" {
+  statement_id  = "AllowALBInvoke"
+  action        = "lambda:InvokeFunction"
+  function_name = data.aws_lambda_function.billie_backend_kotlin_api.function_name
+  qualifier     = data.aws_lambda_alias.billie_snapstart.name
+  principal     = "elasticloadbalancing.amazonaws.com"
+  source_arn    = aws_lb_target_group.billie_kotlin_lambda_target_group.arn
+}
+
+# end of creating target group of alb for kotlin api lambda --->>>
+```
+
 ###### loadbalancing/resource_listeners.tf
 
 ```hcl
-# need 1. listener 2. targetgroup and 3. ecs alb definition for 2-way binding
-
 resource "aws_lb_listener" "https_nodejs_billie" {
   load_balancer_arn = aws_alb.public_loadbalancer.arn
   port              = 9090
@@ -874,22 +962,6 @@ resource "aws_lb_listener" "https_kotlin_billie" {
 }
 ```
 
-###### loadbalancing/resource_loadbalancer_alias_route53record.tf
-
-```hcl
-resource "aws_route53_record" "app" {
-  zone_id = data.aws_route53_zone.hosted_zone.id
-  name    = var.cert_domain
-  type    = "A"
-
-  alias {
-    name                   = aws_alb.public_loadbalancer.dns_name
-    zone_id                = aws_alb.public_loadbalancer.zone_id
-    evaluate_target_health = true
-  }
-}
-```
-
 ###### loadbalancing/resource_loadbalancers.tf
 
 ```hcl
@@ -900,53 +972,6 @@ resource "aws_alb" "public_loadbalancer" {
   security_groups    = [var.billie_public_loadbalancer_sg_id]
   subnets            = var.billie_vpc_public_subnets[*].id
 }
-```
-
-###### loadbalancing/resource_target_groups.tf
-
-```hcl
-# we don't need to bind ECS here, we config ECS service to bind this target group instead
-# (see the load_balancer config of resource "aws_ecs_service" "service")
-resource "aws_lb_target_group" "billie_nodejs_app" {
-  name        = "billie-nodejs-${var.env}"
-  port        = var.billie_container_port
-  protocol    = "HTTP"
-  vpc_id      = var.billie_vpc_id
-  target_type = "ip"
-
-  health_check {
-    path                = var.health_check_path
-    healthy_threshold   = 2
-    unhealthy_threshold = 10
-    timeout             = 5
-    interval            = 30
-    matcher             = "200"
-  }
-}
-
-# <<<--- start of creating target group of alb for kotlin api lambda
-resource "aws_lb_target_group" "billie_kotlin_lambda_target_group" {
-  name        = "terraform-billie-kotlin-${var.env}"
-  target_type = "lambda"
-}
-
-# Target Group Attachment - using the SnapStart alias
-resource "aws_lb_target_group_attachment" "billie_kotlin_lambda_target_group_attachment" {
-  target_group_arn = aws_lb_target_group.billie_kotlin_lambda_target_group.arn
-  target_id        = data.aws_lambda_alias.billie_snapstart.arn
-  depends_on       = [aws_lambda_permission.allow_alb_to_execute_billie_kotlin_lambda]
-}
-
-resource "aws_lambda_permission" "allow_alb_to_execute_billie_kotlin_lambda" {
-  statement_id  = "AllowALBInvoke"
-  action        = "lambda:InvokeFunction"
-  function_name = data.aws_lambda_function.billie_backend_kotlin_api.function_name
-  qualifier     = data.aws_lambda_alias.billie_snapstart.name
-  principal     = "elasticloadbalancing.amazonaws.com"
-  source_arn    = aws_lb_target_group.billie_kotlin_lambda_target_group.arn
-}
-
-# end of creating target group of alb for kotlin api lambda --->>>
 ```
 
 ###### loadbalancing/outputs.tf
@@ -991,6 +1016,20 @@ variable "billie_kotlin_lambda_function_name" {
   type = string
 }
 ```
+
+###### Short summary for listener to route traffics to ECS and Lambda
+
+- **ECS.** We need
+
+  1. `aws_lb_listener`
+  2. `aws_lb_target_group` (without `aws_lb_target_group_attachment`) and
+  3. ECS service's `load_balancer` definition for 1-way binding
+
+- **Lambda Function.** We need
+
+  1. `aws_lb_listener`
+  2. `aws_lb_target_group` and `aws_lb_target_group_attachment` binding the lambda function
+  3. `aws_lambda_permission` to grant invokation permission to target group
 
 ##### Networking
 
@@ -1209,6 +1248,8 @@ resource "aws_security_group" "rds_endpoint_sg" {
 
 ###### networking/resource_ssm.tf
 
+We can share terraform state to other aws resources via aws-sdk once appropriate permission is granted to the IAM role.
+
 ```hcl
 resource "aws_ssm_parameter" "billie_lambda_sg" {
   name  = "/billie/${var.env}/terraform/sg/billie-lambda/id"
@@ -1302,6 +1343,10 @@ resource "aws_route_table_association" "billie_private_subnet_association" {
 ```
 
 ###### networking/resource_vpc_endpoints.tf
+
+Resources inside our private VPC require VPC-endpoints to reach the "Endpoint Services" such as Cloudwatch and RDS.
+
+Otherwise we need a costly NAT-Gateway with target resources being publicly accessible since NAT Gateway can't provide private access to AWS services.
 
 ```hcl
 resource "aws_vpc_endpoint" "cloudwatch_logs" {
@@ -1431,9 +1476,9 @@ variable "aws_region" {
 
 #### More on EC2: Create Custom Kubenetes node using k3s and Multiple EC2s
 
-- Nowadays we don't manage EC2s on our own due to the advent of ECS and the flexble scaling policy. However, an EC2 may still be useful when treated as a bastion host for our private VPC RDS instance.
+Nowadays we don't manage EC2s on our own due to the advent of ECS and the flexble scaling policy. However, an EC2 may still be useful in certain scenarios such as a bastion host for an RDS instance sitting in a private VPC.
 
-- To enrich the content let's include how to define EC2 and let's define a cluster of EC2s as a module, in each EC2 instance we execute a `k3s` associated with an `RDS` instance to share `kubenetes state`, these EC2s will form a small worker node.
+To enrich the content let's include how to define EC2 and let's define a cluster of EC2s as a module, of which every EC2 instance executes a `k3s` associated with a common `RDS` instance to share `kubenetes state`, these EC2s will form a small worker node.
 
 ##### Entrypoint --- main.tf
 
@@ -1665,7 +1710,7 @@ output "db_endpoint" {
 }
 ```
 
-###### datanbase/variables.tf
+###### database/variables.tf
 
 ```hcl
 variable "db_storage" {
@@ -1682,7 +1727,6 @@ variable "db_engine_version" {
   type = string
 }
 
-
 variable "db_instance_class" {
   type = string
 }
@@ -1698,7 +1742,6 @@ variable "db_username" {
 variable "db_password" {
   type = string
 }
-
 
 variable "db_subnet_group_name" {
   type = string
@@ -1720,6 +1763,8 @@ variable "skip_final_snapshot" {
 ##### Load Balancer Module
 
 ###### loadbalancing/main.tf
+
+Here the binding (attachment) of `aws_lb_target_group.james_target_group` is done in `compute/main.tf`:
 
 ```hcl
 resource "aws_lb" "james_lb" {
@@ -1756,7 +1801,6 @@ resource "aws_lb_target_group" "james_target_group" {
     interval            = var.lb_interval
   }
 }
-
 
 resource "aws_lb_listener" "james_lb_listener" {
   load_balancer_arn = aws_lb.james_lb.arn
@@ -1841,7 +1885,6 @@ resource "random_integer" "random" {
 data "aws_availability_zones" "available" {
   state = "available"
 }
-
 
 resource "aws_vpc" "james_vpc" {
   cidr_block           = var.vpc_cidr
@@ -2097,7 +2140,7 @@ resource "aws_ssm_parameter" "private_subnet_ids" {
 ```
 
 can be found in `AWS Systems Manager > 
-Parameter Store`. These parameters can be access by `aws-sdk` when the resource has appropriate permission in their policy to access this paramter store.
+Parameter Store`. These parameters can be accessed by `aws-sdk` when the resource has appropriate permission in their policy to access this paramter store.
 
 ##### Logging when creating aws resources
 
