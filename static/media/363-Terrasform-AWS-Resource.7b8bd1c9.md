@@ -18,7 +18,7 @@ intro: "Record the success configuration of usual resources"
 
 #### Documentation
 
-A reference that we refer most refrequently:
+A reference that we refer most frequently:
 
 - https://registry.terraform.io/providers/hashicorp/aws/latest/docs
 
@@ -28,9 +28,11 @@ Here is a basic project structure:
 
 ![](/assets/img/2025-02-15-18-45-36.png)
 
-We synchronize `DEV`, `UAT` and `PROD` by sharing the common modules
+We synchronize `DEV`, `UAT` and `PROD` by sharing the common modules.
 
 ##### dev/backends.tf (Terraform Cloud)
+
+###### State Sharing
 
 Register an account in [terrform cloud](https://app.terraform.io/session), then specify your target workspace:
 
@@ -47,7 +49,38 @@ terraform {
 }
 ```
 
-Upon terraform init, you will be asked for a token and prompted to a webpage for login. A token will be retrieved on successful login, paste that token into the CLI to continue.
+Upon `terraform init`, you will be asked for a token and prompted to a webpage for login. A token will be retrieved on successful login, paste that token into the CLI to continue.
+
+When `terraform init` succeeded, the terraform state file will be pulled from the remote cloud.
+
+###### Teams
+
+As in many platforms there can be an admin account which invites others as a member. First go to `Settings > Teams`
+
+![](/assets/img/2025-02-16-13-27-34.png)
+
+Then you can add a member once you have invited he/she into your **_organization_** (just follow the instruction _Manage organization users_):
+
+![](/assets/img/2025-02-16-13-19-21.png)
+
+By default **_free account_** only has **_one_** team (named _owner_).
+
+###### Local Execution (Terrafrom Cloud Specific)
+
+Click into the project, and make sure to change Execution mode to `Local`:
+
+![](/assets/img/2025-02-16-13-31-15.png)
+
+because we are not doing CI/CD on the cloud. Without this mode change, we cannot `terraform apply` to make changes in our CLI locally.
+
+###### Other Backend Options (S3 Bucket)
+
+Apart from terraform backend, another option is to set up
+
+- S3 Buckets (State Storage)
+- DynamoDB (State Locking).
+
+Any decent language model can proide the terraform configuration easily.
 
 ##### dev/provider.tf (AWS)
 
@@ -2183,6 +2216,14 @@ When a lambda function is put into a VPC, each subnet will create an ENI to this
 - Run the shell script to delete all ENI's manually
 
 - Then continue to use `terraform delete`
+
+#### Other Open Source Toolings
+
+##### Terragrunt
+
+To be studied:
+
+- https://blog.gruntwork.io/how-to-use-terraform-as-a-team-251bc1104973
 
 #### References
 
