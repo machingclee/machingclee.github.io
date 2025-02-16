@@ -1,5 +1,5 @@
 ---
-title: "More About Lambda Functions, Thottling, Concurrency, RDS Proxy and Integration with CloudWatch Events"
+title: "More About Lambda Functions, Thottling, Concurrency, RDS-Proxy and Integration with CloudWatch Events"
 date: 2024-04-04
 id: blog0253
 tag: aws
@@ -13,28 +13,27 @@ toc: true
   }
 </style>
 
-#### Concurrency 
+#### Concurrency
+
 ##### Unreserved Concurrency
 
 - Free for all functions in $\displaystyle \frac{\text{account}}{\text{region}}$.
 
 - If one function concumes all concurrency, the others will get throttled.
 
-
 ##### Reserved Concurrency
 
-- This is the ***number of containers*** allowed to run concurrently for a specific lambda function.
+- This is the **_number of containers_** allowed to run concurrently for a specific lambda function.
 
 - This number is taken away from the unreserved concurrency pool.
 
-- You can use reserved concurrency to ***minimize*** or ***maximize*** the processing rate.
+- You can use reserved concurrency to **_minimize_** or **_maximize_** the processing rate.
 
-- By default, the maximum number of concurrency is set to 1000, but that ***doesn't mean*** you are allowed to  spawn 1000 containers by default.
+- By default, the maximum number of concurrency is set to 1000, but that **_doesn't mean_** you are allowed to spawn 1000 containers by default.
 
-- By default my applied account-level quota value ***is just 10***.
+- By default my applied account-level quota value **_is just 10_**.
 
   [![](/assets/img/2024-04-04-21-11-39.png)](/assets/img/2024-04-04-21-11-39.png)
-
 
 - To get the maximum number of concurrency we need to request it from:
 
@@ -60,16 +59,13 @@ toc: true
 
 - It supports autoscaling group policies.
 
-
-
 #### Database Proxies for RDS
 
 - Lambda functions are executed inside a container, and when concurrency reaches to some level, the database is unable to handle large amount of concurrent requests for new connections
 
-- RDS Proxy helps minimize the number of requests for new connections unless it is necessary:
+- RDS-Proxy helps minimize the number of requests for new connections unless it is necessary:
 
   ![](/assets/img/2024-04-05-01-38-01.png)
-
 
 #### CloudWatch Events with Lambda
 

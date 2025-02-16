@@ -67,9 +67,9 @@ By default **_free account_** only has **_one_** team (named _owner_).
 
 ###### Local Execution (Terrafrom Cloud Specific)
 
-Click into the project, and make sure to change Execution mode to `Local`:
+Click into the project, and make sure to change the Execution mode to `Local`:
 
-![](/assets/img/2025-02-16-13-31-15.png)
+[![](/assets/img/2025-02-16-13-31-15.png)](/assets/img/2025-02-16-13-31-15.png)
 
 because we are not doing CI/CD on the cloud. Without this mode change, we cannot `terraform apply` to make changes in our CLI locally.
 
@@ -538,17 +538,17 @@ variable "env" {
 variable "load_balancer" {}
 ```
 
-##### RDS and RDS Proxy
+##### RDS and RDS-Proxy
 
 ###### Security Group Schema
 
-![](/assets/img/2025-02-16-01-47-19.png)
+![](/assets/img/2025-02-17-01-19-22.png)
 
 ###### rds_and_rds_proxy/resource_rds_secrets.tf
 
-- RDS Proxy can be connected either by `db_username` and `db_password`, or by IAM role authentication.
+- RDS-Proxy can be connected either by `db_username` and `db_password`, or by IAM role authentication.
 
-- Here we choose to use `db_username` and `db_password`, for that, we need to create a secret in Secret Manager and let RDS Proxy to access it.
+- Here we choose to use `db_username` and `db_password`, for that, we need to create a secret in Secret Manager and let RDS-Proxy to access it.
 
 ```hcl
 resource "random_id" "rds_proxy_random_id" {
@@ -575,10 +575,10 @@ Note that the `username` and `password` here must be the same as that used by th
 
 ###### rds_and_rds_proxy/resource_iam.tf
 
-As mentioned before, we now define custom role for `RDS Proxy` and grant permission to access the target secret in AWS Secret Manager.
+As mentioned before, we now define custom role for RDS-Proxy and grant permission to access the target secret in AWS Secret Manager.
 
 ```hcl
-# IAM role for RDS Proxy
+# IAM role for RDS-Proxy
 resource "aws_iam_role" "billie_rds_proxy" {
   name = "terraform-${var.env}-rds-billie-proxy-role"
   # trust policy
@@ -594,7 +594,7 @@ resource "aws_iam_role" "billie_rds_proxy" {
   })
 }
 
-# IAM policy to allow RDS Proxy to access secrets
+# IAM policy to allow RDS-Proxy to access secrets
 resource "aws_iam_role_policy" "billie_rds_proxy_policy" {
   name = "terraform-${var.env}-billie-rds-proxy-policy"
   role = aws_iam_role.billie_rds_proxy.id
@@ -620,7 +620,7 @@ resource "aws_iam_role_policy" "billie_rds_proxy_policy" {
 ###### rds_and_rds_proxy/resource_rds_proxy.tf
 
 ```hcl
-# RDS Proxy
+# RDS-Proxy
 resource "aws_db_proxy" "billie_rds_proxy" {
   name                   = "terraform-billie-rds-${var.env}-proxy"
   debug_logging          = false
@@ -668,7 +668,7 @@ resource "aws_db_instance" "billie" {
 
 ###### rds_and_rds_proxy/resource_rds_proxy_default_targetgroup.tf
 
-Next we need to associate RDS Proxy with our target database.
+Next we need to associate RDS-Proxy with our target database.
 
 ```hcl
 resource "aws_db_proxy_default_target_group" "billie_rds_proxy_default_tg" {
@@ -723,7 +723,7 @@ variable "billie_public_subnets" {}
 variable "billie_private_subnets" {}
 ```
 
-##### Lambda Functions with RDS Proxy Configuration
+##### Lambda Functions with RDS-Proxy Configuration
 
 ###### Prerequisite: Serverless Framework
 
@@ -783,7 +783,7 @@ resource "aws_iam_role_policy" "lambda_rds_proxy_policy" {
 
 and additionally
 
-3. We need to set them into VPC and assign the auto-generated `ENI` (Elastic Network Interface) a Security Group in order to access the RDS Proxy (a VPC resource).
+3. We need to set the lambda function into VPC and assign the auto-generated `ENI` (Elastic Network Interface) a Security Group in order to access the RDS-Proxy (a VPC resource).
 
 For that, we will set the lambda functions into private subnets and assign them a security group in `serverless.yml` as follows
 
@@ -879,6 +879,8 @@ resource "aws_route53_record" "cert_validation" {
 }
 ```
 
+Another one is in `resource_loadbalancer_alias_route53record.tf`:
+
 ###### loadbalancing/resource_loadbalancer_alias_route53record.tf
 
 (Cont'd) Another one is an alias `Route53` record that **_routes_** traffics into our load balancer:
@@ -917,7 +919,7 @@ resource "aws_lb_target_group_attachment" "example" {
 }
 ```
 
-However, for ECS we **_don't need to_** do a target_id-binding, we config ECS service to bind this target group instead (see the `load_balancer` config of resource `aws_ecs_service.service`).
+However, for ECS we **_don't need to_** do a `target_id`-binding, we config ECS service to bind this target group instead (see the `load_balancer` config of resource `aws_ecs_service.service`).
 
 ```hcl
 # resource_target_groups.tf
@@ -1153,7 +1155,7 @@ resource "aws_security_group" "billie_rds_sg" {
 }
 resource "aws_security_group" "billie_rds_proxy" {
   name        = "billie_rds_${var.env}_proxy"
-  description = "Security group for Billie RDS Proxy for ${var.env} environment"
+  description = "Security group for Billie RDS-Proxy for ${var.env} environment"
   vpc_id      = aws_vpc.billie_vpc.id
 
   ingress {
