@@ -4,7 +4,7 @@ date: 2025-02-15
 id: blog0363
 tag: terraform
 toc: true
-intro: "Record the success configuration of usual resources."
+intro: "Record the functioning configuration of usual resources."
 ---
 
 <style>
