@@ -2,18 +2,16 @@
 title: "Run Blocking Servlet Requests to Achieve Non-Blocking Performance"
 date: 2024-09-23
 id: blog0325
-tag: kotin, springboot
+tag: kotlin, springboot
 toc: true
 intro: "We study how to effectively deliver request to non-blocking coroutine scope and release that thread for other request."
 ---
-
 
 <style>
   img {
     max-width: 660px;
   }
 </style>
-
 
 #### The DeferredResult<T> Trick
 
@@ -30,6 +28,7 @@ class SomeController() {
     }
 }
 ```
+
 - When we return `DeferredResult`, Spring understands that the result is not immediately available. It doesn't block the servlet thread but instead releases it back to the thread pool.
 
 - Spring sets up an asynchronous context to handle the `DeferredResult`. It doesn't actively wait for the result but is prepared to process it when it becomes available.
@@ -41,7 +40,6 @@ class SomeController() {
 - Spring then uses one of its own servlet container threads to process the result and send it back to the client.
 
 #### What Happens in Application Service?
-
 
 We initiate `DeferredResult(timeout in Long)` as a placeholder, we later `setResult` in a coroutine scope asynchronously:
 
@@ -71,8 +69,6 @@ class SomeApplicationService() {
     }
 }
 ```
-
-
 
 #### Customer DSL to Simplify the Logic Via Trailing Closure
 

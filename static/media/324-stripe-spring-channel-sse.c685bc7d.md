@@ -2,11 +2,10 @@
 title: "SSE, Coroutine and Channel to Notify Frontend for Stripe Events in Spring Boot and Kotlin"
 date: 2024-09-21
 id: blog0324
-tag: kotin, springboot
+tag: kotlin, springboot
 toc: true
 intro: "A Stripe event is always delayed, and some system relies on database persistent change by Stripe events. We study how frontend can wait for the event before fetching latest data."
 ---
-
 
 <style>
   img {
@@ -14,12 +13,12 @@ intro: "A Stripe event is always delayed, and some system relies on database per
   }
 </style>
 
-
 #### SSE via WebFlux in the Past
 
-We have a simple illustration of `SSE` using spring boot via Java in 
-- [Server-Sent-Event-in-Java-and-Node-js-Backend](/blog/article/Server-Sent-Event-in-Java-and-Node-js-Backend/) 
-That post is optional and can be skipped because this time ***although*** we are still using SSE, we will discard the reliance on `WebFlux` framework.
+We have a simple illustration of `SSE` using spring boot via Java in
+
+- [Server-Sent-Event-in-Java-and-Node-js-Backend](/blog/article/Server-Sent-Event-in-Java-and-Node-js-Backend/)
+  That post is optional and can be skipped because this time **_although_** we are still using SSE, we will discard the reliance on `WebFlux` framework.
 
 Moreover, we stick everything with native Kotlin nature using coroutines.
 
@@ -36,7 +35,7 @@ In the sequel we plan to achieve the following:
 
 2. Once the request is finished, we send a `GET` request for `SSE` connection
 
-3. The `SSE`-get request handler responses an header to ask the frontend to keep connection, meanwhile, it launches a coroutine in which a channel (defined below) is created with channel identifier: `orderId` (for each subscription update we have a self-managed table recording all orders), and we ***suspend*** the coroutine by a `channel.receive()` method.
+3. The `SSE`-get request handler responses an header to ask the frontend to keep connection, meanwhile, it launches a coroutine in which a channel (defined below) is created with channel identifier: `orderId` (for each subscription update we have a self-managed table recording all orders), and we **_suspend_** the coroutine by a `channel.receive()` method.
 
 4. The thread pool shared with `Dispatchers.IO` will resume the task once `channel.receive()` gets resolved.
 
@@ -44,12 +43,10 @@ In the sequel we plan to achieve the following:
 
 6. Finally we close the scope lauching the `channel` to avoid memory leakage.
 
-
 Before we dive into it, let's build a machinery:
 
-
-
 #### Channel
+
 We will use the following abstraction:
 
 ```kotlin
@@ -80,32 +77,29 @@ class SuccessResponseChannelManager<T> {
 }
 ```
 
-
-
-We start off from a simple illustrative example. Later we will modify it into  the one  we use in the sequence diagram:
+We start off from a simple illustrative example. Later we will modify it into the one we use in the sequence diagram:
 
 #### Simple Illustration First
 
 ##### Frontend with `EventSourcePolyfill`
 
-
 ```js
 const evtSource = new EventSourcePolyfill(
-    "http://localhost:8081/order/sse-get-stripe-event-notification",
-    { headers: { "Authorization": "Bearer " + authToken } }
+  "http://localhost:8081/order/sse-get-stripe-event-notification",
+  { headers: { Authorization: "Bearer " + authToken } }
 );
 evtSource.addEventListener("SomeEvent", (event) => {
-    console.log("eventevent", event);
+  console.log("eventevent", event);
 });
 ```
 
 - We use `EventSourcePolyfill` because the native API `EventSource` in the browser does not support setting custom headers.
 
-
 ##### Backend Simply Steaming 1 to 100
 
 Next in the backend we use a blocking way to deliver the request and let a non-blocking coroutine-block handles the SSE Task:
-```kotlin 
+
+```kotlin
 @GetMapping("/sse-get-stripe-event-notification", produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
 fun getOrderNotificationViaChannel(): SseEmitter {
     println("Hint SSE Rroute")
@@ -129,15 +123,16 @@ fun getOrderNotificationViaChannel(): SseEmitter {
     return emitter
 }
 ```
-- The emitter is returned and the coroutine is launched ***at the same time***. The main thread delivering the request to handler is released
+
+- The emitter is returned and the coroutine is launched **_at the same time_**. The main thread delivering the request to handler is released
 
 - The async task is delegated to the thread-pool allocated to `Dispatchers.IO`
 
-- Note that in nodejs (see [this post](/blog/article/Server-Sent-Event-in-Java-and-Node-js-Backend#Counterpart-in-Node.js)) we need to add 
+- Note that in nodejs (see [this post](/blog/article/Server-Sent-Event-in-Java-and-Node-js-Backend#Counterpart-in-Node.js)) we need to add
   ```js
   res.writeHead(200, {
     "Content-Type": "text/event-stream",
-    "Connection": "keep-alive",
+    Connection: "keep-alive",
     "Cache-Control": "no-cache",
   });
   ```
@@ -155,7 +150,7 @@ event: { id: "1", type: "SomeEvent", data: <JSON.stringified data> }
 
 ##### Frontend
 
-Based on the ***result*** in the previous section, we define a helper hook
+Based on the **_result_** in the previous section, we define a helper hook
 
 ```js{12-21}
 export default <EventDataType extends { success: boolean }>() => {
@@ -193,36 +188,42 @@ export default <EventDataType extends { success: boolean }>() => {
 It is a simple wrapper to hide the detail, next inside of our component we define:
 
 ```js
-const { subscribe } = useSSE()
+const { subscribe } = useSSE();
 
 const addAndAssign = async () => {
-    PurchaseSeatAlertDialog.close();
-    const { orderId } = await addTeamplan(1); // remark 1
+  PurchaseSeatAlertDialog.close();
+  const { orderId } = await addTeamplan(1); // remark 1
 
-    const { success } = await subscribe({     // remark 2.
-        sseEventURL: apiRoutes.GET_ORDER_SUCCESS_SSE(orderId),
-        eventName: "DatabaseUpdated"
-    });
-    if (success) {                            // remark 3.
-        await dispatch(SeatThunkAction.assignTeamPlan({ targetUserEmails: [userEmail] })).unwrap();
-        dispatch(SeatThunkAction.getSeatsFromDB());
-    }
-}
+  const { success } = await subscribe({
+    // remark 2.
+    sseEventURL: apiRoutes.GET_ORDER_SUCCESS_SSE(orderId),
+    eventName: "DatabaseUpdated",
+  });
+  if (success) {
+    // remark 3.
+    await dispatch(
+      SeatThunkAction.assignTeamPlan({ targetUserEmails: [userEmail] })
+    ).unwrap();
+    dispatch(SeatThunkAction.getSeatsFromDB());
+  }
+};
 ```
 
 **Remark 1.**
+
 - `Teamplan` is a stripe product
 
 - `orderId` is our self-managed database record id
 
 **Remark 2.**
+
 - Waiting for Stripe event and waiting for database update to be completed
 
 **Remark 3.**
+
 - Once succeeded, we fetch request to change the database (which is only valid when database is synced with Stripe's event, otherwise we get an exception of not-enough resource for assignment)
 
 - Finally we fetch finalized result
-
 
 ##### Backend
 

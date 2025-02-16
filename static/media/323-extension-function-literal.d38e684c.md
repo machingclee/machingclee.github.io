@@ -2,7 +2,7 @@
 title: "Function Literals with Receiver"
 date: 2024-09-16
 id: blog0323
-tag: kotin
+tag: kotlin
 toc: true
 intro: "Study the syntax for function literals which helps construct DSL-like syntax."
 ---
@@ -13,21 +13,20 @@ intro: "Study the syntax for function literals which helps construct DSL-like sy
   }
 </style>
 
-
 #### Introduction of Function Literals
 
-
-- Function literals are frequently used ***as a constructor*** of objects.
+- Function literals are frequently used **_as a constructor_** of objects.
 
 - Well known examples are `build.gradle.kts` and `jetpack-compose` for Andriod or Desktop UIs.
 
-In the sequel let's consider the following builder function, a ***function literal*** takes the form 
+In the sequel let's consider the following builder function, a **_function literal_** takes the form
 
 ```kotlin
 fun builder(dummyName: ClassA.() -> Unit) {
     ...
 }
 ```
+
 which means that:
 
 1. We define a lambda function that can be treated as a method of `ClassA`
@@ -64,7 +63,8 @@ class SpringBootExtension {
 ```
 
 Let's create a builder function which builds a `SpringBootExtension` object.
-```kotlin 
+
+```kotlin
 // builder function
 fun springBootEextension(build: SpringBootExtension.() -> Unit) {
     val extension = SpringBootExtension()
@@ -72,9 +72,12 @@ fun springBootEextension(build: SpringBootExtension.() -> Unit) {
     return extension
 }
 ```
-Which means that 
-1. `springBootEextension` accepts a lambda function which is defined ***as if we are inside of***  the class definition of `SpringBootExtension`, 
+
+Which means that
+
+1. `springBootEextension` accepts a lambda function which is defined **_as if we are inside of_** the class definition of `SpringBootExtension`,
 2. The name `build` is in fact dummy and can be anything we want, it is just a name to invoke the execution of the lambda.
+
 ```kotlin
 fun createExtension() {
     val extension = springBootEextension { // trailing closure without input params
@@ -88,9 +91,9 @@ fun createExtension() {
 }
 ```
 
-- In short, `ClassA.() -> Unit` can be read as configuration of `ClassA` in many cases (and bear in mind that it is a lambda function defined inside of `ClassA`). 
+- In short, `ClassA.() -> Unit` can be read as configuration of `ClassA` in many cases (and bear in mind that it is a lambda function defined inside of `ClassA`).
 
-- In terms of this terminology: 
+- In terms of this terminology:
   - `springBootEextension(_: SpringBootExtension.() -> Unit)` accepts a configuration of `SpringBootExtension`
   - `withBuildInfo(_: BuildInfo.() -> Unit)` accepts a configuration of `BuildInfo`
-  - `withProperties(_: Properties.() -> Unit)` accepts a configuration of `Properties` 
+  - `withProperties(_: Properties.() -> Unit)` accepts a configuration of `Properties`
