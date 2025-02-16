@@ -835,7 +835,7 @@ data "aws_route53_zone" "hosted_zone" {
 
 ###### loadbalancing/data_lambda_functions.tf
 
-Recall that our lambda wrapping a spring boot application is a snap-started function specialized for Java-based:
+Recall that our lambda function is a **_snap-started_** function (not ordinary lambda function) wrapping a spring boot application specialized for Java-based projects:
 
 ```hcl
 data "aws_lambda_function" "billie_backend_kotlin_api" {
