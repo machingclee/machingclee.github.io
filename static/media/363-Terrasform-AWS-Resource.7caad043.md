@@ -75,7 +75,7 @@ because we are not doing CI/CD on the cloud. Without this mode change, we cannot
 
 ###### Other Backend Options (S3 Bucket)
 
-Apart from terraform backend, another option is to set up
+Apart from terraform cloud backend, another option is to set up
 
 - S3 Buckets (State Storage)
 - DynamoDB (State Locking).
