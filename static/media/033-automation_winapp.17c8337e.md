@@ -125,13 +125,24 @@ return
 Run %comspec% /k code "C:\Users\machingclee\Repos\wonderbricks\2024-02-03-wb-billie-web",, Hide
 return
 !3::
-Run %comspec% /k code "C:\Repos\some\backend",, Hide
+Run %comspec% /k code "C:\Users\machingclee\Repos\wonderbricks\2024-02-03-wonderbricks-wiki",, Hide
 return
 !4::
 Run %comspec% /k code "C:\Users\machingclee\Repos\wonderbricks\2024-02-03-wb-backend-node",, Hide
 return
+!9::
+Run %comspec% /k code "C:\Users\machingclee\Repos\freelance\2024-07-30-Alice-Timetable-System-Frontend" && code "C:\Users\machingclee\Repos\freelance\2024-07-30-Alice-Timetable-System-Backend",, Hide
+return
 !0::
 Run %comspec% /k code "C:\Users\machingclee\Repos\2024-02-18-blogs\machingclee.github.io.source\app",, Hide
+return
+!-::
+Run %comspec% /k code "C:\Users\machingclee\Repos\javascript\2024-03-18-react-pdf-rerender-CV-generation",, Hide
+!Numpad1::
+Run %comspec% /k code "C:\Users\machingclee\Repos\freelance\2024-07-30-Alice-Timetable-System-Frontend",, Hide
+return
+!Numpad2::
+Run %comspec% /k idea "C:\Users\machingclee\Repos\freelance\2024-11-23-Alice-Tiemtable-System-Kotlin",, Hide
 return
 #If
 
@@ -189,7 +200,7 @@ Return
   Send {ctrl up}{shift up}{alt up}
 Return
 
-#If !(WinActive("ahk_exe ffxiv_dx11.exe") or WinActive("ahk_exe Photoshop.exe") or WinActive("ahk_exe chrome.exe") or WinActive("ahk_exe Code.exe") or WinActive("TwitchUI.exe"))
+#If !(WinActive("ahk_exe ffxiv_dx11.exe") or WinActive("ahk_exe Photoshop.exe") or WinActive("ahk_exe chrome.exe") or WinActive("ahk_exe Code.exe") or WinActive("ahk_exe idea64.exe") or WinActive("ahk_exe TablePlus.exe"))
 ^w::
 Send !{Space}n
 Return
@@ -317,11 +328,11 @@ Return
     {
       If (A_TimeSinceThisHotkey < 250)
       {
-        Sendinput ^y                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
-        sleep, 250     
-      } 
+        Sendinput ^y
+        sleep, 250
+      }
       else
-      { 
+      {
         SendInput ^y
         Sleep, 100
       }
@@ -335,11 +346,11 @@ Return
     KeyWait, MButton
 
     Send {Space up}{LButton up}
-  Return   
-#ifWinActive   
+  Return
+#ifWinActive
 
-#IfWinActive ahk_exe ffxiv_dx11.exe 
-  NumpadEnd::l   
+#IfWinActive ahk_exe ffxiv_dx11.exe
+  NumpadEnd::l
 
 
   NumpadSub::
@@ -367,10 +378,7 @@ Return
     Send {CtrlUp}
   Return
 
-
-
   NumLock::Return
-
 
   Numpad0::
     Send {CtrlDown}{F7}
