@@ -23,7 +23,7 @@ For sure it is very handy to define lambda functions, and then test it and deplo
 1. You have **_plenty of them_**,
 2. with each being granted appropriate **_policy_** for differnet AWS **_resources_**, or even internal VPC resources.
 3. You need to define the common connection-endpoint/credential (like database host, service API-key, etc) which are shared by many lambda functions
-4. Y0ou need to replicate all of the above in `DEV`, `UAT` and `PROD` environment.
+4. You need to replicate all of the above in `DEV`, `UAT` and `PROD` environment.
 
 Without a terraform project to manage all of them, you are bound to run into chaos in very early stage.
 
@@ -260,7 +260,7 @@ resource "aws_ssm_parameter" "billie_notificatoin_socket" {
 }
 ```
 
-##### Prototype of Project Confugruation in DEV: variables.tf
+##### Prototype of Project Configuration in DEV: variables.tf
 
 This file serves as a strong typing of `terraform.tfvars`:
 

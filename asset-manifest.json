@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.4cf52b72.chunk.css",
-    "main.js": "/static/js/main.7899a722.chunk.js",
+    "main.js": "/static/js/main.054bc260.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.fc83fc6a.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.6e829bf9.chunk.js": "/static/js/2.6e829bf9.chunk.js",
@@ -355,7 +355,7 @@
     "static/media/363-Terrasform-AWS-Resource.md": "/static/media/363-Terrasform-AWS-Resource.7caad043.md",
     "static/media/364-k3s.md": "/static/media/364-k3s.b6b58d9d.md",
     "static/media/365-file-handling-in-go.md": "/static/media/365-file-handling-in-go.aff61ad2.md",
-    "static/media/366-lambda-functions.md": "/static/media/366-lambda-functions.33ecbe61.md",
+    "static/media/366-lambda-functions.md": "/static/media/366-lambda-functions.9539961e.md",
     "static/media/CV_Portfolio.680379f4.pdf": "/static/media/CV_Portfolio.680379f4.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -409,6 +409,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.6e829bf9.chunk.js",
     "static/css/main.4cf52b72.chunk.css",
-    "static/js/main.7899a722.chunk.js"
+    "static/js/main.054bc260.chunk.js"
   ]
 }
