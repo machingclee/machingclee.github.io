@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.4cf52b72.chunk.css",
-    "main.js": "/static/js/main.57f0b144.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.ee71efa3.js",
+    "main.js": "/static/js/main.7899a722.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.fc83fc6a.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.3bb02e82.chunk.js": "/static/js/2.3bb02e82.chunk.js",
-    "static/js/3.854011f6.chunk.js": "/static/js/3.854011f6.chunk.js",
-    "static/js/4.f5fda445.chunk.js": "/static/js/4.f5fda445.chunk.js",
-    "static/js/5.878bf749.chunk.js": "/static/js/5.878bf749.chunk.js",
+    "static/js/2.6e829bf9.chunk.js": "/static/js/2.6e829bf9.chunk.js",
+    "static/js/3.76334c9d.chunk.js": "/static/js/3.76334c9d.chunk.js",
+    "static/js/4.1a916654.chunk.js": "/static/js/4.1a916654.chunk.js",
+    "static/js/5.7b82dbbf.chunk.js": "/static/js/5.7b82dbbf.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.3bb02e82.chunk.js.LICENSE.txt": "/static/js/2.3bb02e82.chunk.js.LICENSE.txt",
-    "static/js/3.854011f6.chunk.js.LICENSE.txt": "/static/js/3.854011f6.chunk.js.LICENSE.txt",
-    "static/js/4.f5fda445.chunk.js.LICENSE.txt": "/static/js/4.f5fda445.chunk.js.LICENSE.txt",
+    "static/js/2.6e829bf9.chunk.js.LICENSE.txt": "/static/js/2.6e829bf9.chunk.js.LICENSE.txt",
+    "static/js/3.76334c9d.chunk.js.LICENSE.txt": "/static/js/3.76334c9d.chunk.js.LICENSE.txt",
+    "static/js/4.1a916654.chunk.js.LICENSE.txt": "/static/js/4.1a916654.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.52b1ef07.md",
     "static/media/002-Lazy-React-Router.md": "/static/media/002-Lazy-React-Router.48295ca9.md",
@@ -354,6 +354,8 @@
     "static/media/362-Terraform-Revisit.md": "/static/media/362-Terraform-Revisit.84be4f1a.md",
     "static/media/363-Terrasform-AWS-Resource.md": "/static/media/363-Terrasform-AWS-Resource.7caad043.md",
     "static/media/364-k3s.md": "/static/media/364-k3s.b6b58d9d.md",
+    "static/media/365-file-handling-in-go.md": "/static/media/365-file-handling-in-go.aff61ad2.md",
+    "static/media/366-lambda-functions.md": "/static/media/366-lambda-functions.33ecbe61.md",
     "static/media/CV_Portfolio.680379f4.pdf": "/static/media/CV_Portfolio.680379f4.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -403,10 +405,10 @@
     "static/media/transformer-date-fomatter.18a2d3fc.pdf": "/static/media/transformer-date-fomatter.18a2d3fc.pdf"
   },
   "entrypoints": [
-    "static/js/runtime-main.ee71efa3.js",
+    "static/js/runtime-main.fc83fc6a.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.3bb02e82.chunk.js",
+    "static/js/2.6e829bf9.chunk.js",
     "static/css/main.4cf52b72.chunk.css",
-    "static/js/main.57f0b144.chunk.js"
+    "static/js/main.7899a722.chunk.js"
   ]
 }
