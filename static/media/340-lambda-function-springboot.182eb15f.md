@@ -2,7 +2,7 @@
 title: "Snapstarted Lambda running Spring Boot and Transition into Spring Boot as a Node.js Developer"
 date: 2024-11-16
 id: blog0340
-tag: springboot, aws, lambda
+tag: springboot, aws, lambda, serverless
 toc: true
 intro: "Record miscellaneous detail of transitioning into Spring Boot as a node.js developer."
 ---
@@ -12,7 +12,6 @@ intro: "Record miscellaneous detail of transitioning into Spring Boot as a node.
     max-width: 660px;
   }
 </style>
-
 
 #### Lambda function configuration
 
@@ -175,31 +174,28 @@ tasks.withType<BootJar> {
 }
 ```
 
-
-
-
 #### Spring Boot in Node.js Developer Perspective
 
 ##### Replacement of Middleware by AOP Programming
 
-In node.js we usually write 
+In node.js we usually write
 
 ```ts
 app.use("/file", jwtAuthMiddleware, fileRouter);
 app.use("/search", jwtAuthMiddleware, searchRouter);
 ```
 
-
-to validate incoming requests or to inject desired object into our ***context*** object before reaching any of our routers (in `express` case, the context is our `req`).
+to validate incoming requests or to inject desired object into our **_context_** object before reaching any of our routers (in `express` case, the context is our `req`).
 
 ###### `Filter` and `HandlerInterceptor`, no, not what we want
 
-
 In spring boot there are two similar concepts that serve this purpose:
+
 - `Filter` (Servlet Level)
 - `Interceptor` (Application Level in which `@Bean`'s are available)
 
-The drawback using these approches is the interception is ***highly implicit***. For example, to add an interceptor at applicaiton level we need to define our customer `HandlerInterceptor` class object and add it manually:
+The drawback using these approches is the interception is **_highly implicit_**. For example, to add an interceptor at applicaiton level we need to define our customer `HandlerInterceptor` class object and add it manually:
+
 ```kt
 @Configuration
 class JwtWebMvcConfigurer(
@@ -215,8 +211,6 @@ class JwtWebMvcConfigurer(
 Adding a filter follows a simular pattern.
 
 ###### Adding middleware via direct annotation
-
-
 
 Instead we can annotate a controller by `@AccessToken` which do all the token-validation and "user-data-injection" for us:
 
@@ -235,10 +229,10 @@ class HelloController(
     @Transactional
     ...
 ```
+
 Let's define our `@AccessToke`!
 
 ###### Define an Aspect Triggered by `@AccessToken`
-
 
 ```kt
 package com.your.package.commons.aop
@@ -357,10 +351,9 @@ Now we get the parsed user object easily via anntation!
 
 ![](/assets/img/2024-11-16-18-38-00.png)
 
-
 ##### File Uploading
 
-In node.js we handle file uploading (with `formdata` as request body) by using 
+In node.js we handle file uploading (with `formdata` as request body) by using
 
 ```js
 import multiparty from "multiparty";
@@ -368,11 +361,12 @@ import multiparty from "multiparty";
 const handler = (req: Request, res: Response) => {
     const form = new multiparty.Form();
     form.parse(req);
-    form.on("part", async (inputStream: multiparty.Part) => { 
+    form.on("part", async (inputStream: multiparty.Part) => {
         ...
     })
 }
 ```
+
 Now in spring boot:
 
 ```kt
@@ -383,7 +377,9 @@ fun fileUpload(@RequestPart("file") file: MultipartFile?) {
     }
 }
 ```
+
 Remember to enable `Multipart` file option:
+
 ```yml
 # appplication.yml
 spring:
@@ -394,19 +390,19 @@ spring:
       max-request-size: 10MB
 ```
 
-
 ##### JPA using relation tables
+
 ###### The Prisma Model
 
-By mentioning Prisma with spring boot, it implicitly means that we are using database-first approach. Therefore we need to reverse-engineer existing database into jpa `@Entity` classes. We have mentioned how to do it in [***this article***](/blog/article/JPA-with-DB-First-Approach-Surgery-on-JOOQ-s-POJO-into-Base-Entity-Class) with the help of JOOQ. 
+By mentioning Prisma with spring boot, it implicitly means that we are using database-first approach. Therefore we need to reverse-engineer existing database into jpa `@Entity` classes. We have mentioned how to do it in [**_this article_**](/blog/article/JPA-with-DB-First-Approach-Surgery-on-JOOQ-s-POJO-into-Base-Entity-Class) with the help of JOOQ.
 
-Beware of the detail of: 
-- how to handle PostgreSQL enums and 
+Beware of the detail of:
+
+- how to handle PostgreSQL enums and
 - how to config PostgreSQL to enclose the table name in every single query by double quotes.
-These are discussed in depth in the article as well.
+  These are discussed in depth in the article as well.
 
-Let's read about a prisma definition of our 3 tables, which is basically a ***one-to-many*** model (one role has many permissions):
-
+Let's read about a prisma definition of our 3 tables, which is basically a **_one-to-many_** model (one role has many permissions):
 
 ```prisma
 model Role {
@@ -452,6 +448,7 @@ model Rel_Role_Permission {
   @@index([permissionId, roleId])
 }
 ```
+
 ###### The JPA Equivalent Definition
 
 Now let's try to model this relation by an `@Entity` class in `jpa`:
@@ -491,19 +488,22 @@ class Role(
     val permissions: MutableSet<Permission> = mutableSetOf()
 }
 ```
-- Note that our relation table name must be ***enclosed by double quotes*** due to the presence of capital letters.
-- We use `@Cascade(CascadeType.ALL)` to ask `jpa` to help us persist the in-memory state of `Rel_Role_Permission` and `Permission` tables. 
+
+- Note that our relation table name must be **_enclosed by double quotes_** due to the presence of capital letters.
+- We use `@Cascade(CascadeType.ALL)` to ask `jpa` to help us persist the in-memory state of `Rel_Role_Permission` and `Permission` tables.
 
   Note that we even didn't mention the presense of the `Permission` table in our `@JoinTable` definition! It is implicit in our foreign-key relation (if defined correctly).
 
 ###### The Magic Happens
 
-Now in the past when creating a relation with data-centric approach we need to 
+Now in the past when creating a relation with data-centric approach we need to
+
 1. persist an entity in `Role`
 2. persist an entity in `Permission`
 3. finally persist an entity in `Rel_Role_Permission`
 
-Now the creation of these entities boils down to an object-oriented orchestration: 
+Now the creation of these entities boils down to an object-oriented orchestration:
+
 ```kt
 @Transactional
 fun createRoleAndPermission () {
@@ -517,16 +517,19 @@ fun createRoleAndPermission () {
     roleRepository.save(newRole)
 }
 ```
+
 and 3 entities are persisted automatically.
 
 ###### The $N+1$ Problem
 
-In spring boot there is a well-known trap for beginners called $N+1$ problem. Which basically means 
-- $\Large \mathbf 1$ query for fetching $N$ entities and 
-- each of $\Large \mathbf N$ entities dispatches one ***additional*** query;
-causing a total of $N+1$ queries for a single data-fetching.
+In spring boot there is a well-known trap for beginners called $N+1$ problem. Which basically means
+
+- $\Large \mathbf 1$ query for fetching $N$ entities and
+- each of $\Large \mathbf N$ entities dispatches one **_additional_** query;
+  causing a total of $N+1$ queries for a single data-fetching.
 
 Let's explain it and solve it by a concrete example. But before that let's add the following to investigate the generated SQL:
+
 ```yml
 # application.yml
 
@@ -544,6 +547,7 @@ Now consider the following relations:
 ![](/assets/img/2024-11-21-00-52-22.png)
 
 which by code is modelled as follows:
+
 ```kt
 class Projectmember(
     @Id
@@ -568,7 +572,8 @@ class Projectmember(
     var project: Project? = null
 }
 ```
-Suppose that we run 
+
+Suppose that we run
 
 ```kt
 @Transactional
@@ -576,28 +581,30 @@ fun getMembersRecord() {
     return projectMemberRepository.findByUserid(UUID.fromString(userId))
 }
 ```
+
 then we get two records from our database:
 
 ![](/assets/img/2024-11-21-00-55-23.png)
 
-***Trouble Happended.***  Since we directly return the result, behind the scene an eager-loading is triggered to dispatch ***2 additional*** queries due to the `@OneToOne` relation (the case is worse if it is `@OneToMany`), resulting in $2+1$ queries:
+**_Trouble Happended._** Since we directly return the result, behind the scene an eager-loading is triggered to dispatch **_2 additional_** queries due to the `@OneToOne` relation (the case is worse if it is `@OneToMany`), resulting in $2+1$ queries:
+
 ```text
-Hibernate: 
+Hibernate:
     select
         p1_0."id",
         p1_0."createdAt",
         p1_0."createdAtHK",
         p1_0."roleId",
         p1_0."userId",
-        p1_1."projectId" 
+        p1_1."projectId"
     from
-        "public"."ProjectMember" p1_0 
+        "public"."ProjectMember" p1_0
     left join
-        "Rel_Project_ProjectMember" p1_1 
-            on p1_0."id"=p1_1."projectMemberId" 
+        "Rel_Project_ProjectMember" p1_1
+            on p1_0."id"=p1_1."projectMemberId"
     where
         p1_0."userId"=?
-Hibernate: 
+Hibernate:
     select
         p1_0."id",
         p1_0."address",
@@ -610,12 +617,12 @@ Hibernate:
         p1_0."name",
         p1_0."region",
         p1_0."userId",
-        p1_0."utc" 
+        p1_0."utc"
     from
-        "public"."Project" p1_0 
+        "public"."Project" p1_0
     where
         p1_0."id"=?
-Hibernate: 
+Hibernate:
     select
         p1_0."id",
         p1_0."address",
@@ -628,13 +635,15 @@ Hibernate:
         p1_0."name",
         p1_0."region",
         p1_0."userId",
-        p1_0."utc" 
+        p1_0."utc"
     from
-        "public"."Project" p1_0 
+        "public"."Project" p1_0
     where
         p1_0."id"=?
 ```
+
 To solve it, in our repository we add:
+
 ```kt{3}
 interface ProjectMemberRepository : CrudRepository<Projectmember, UUID> {
     // or @EntityGraph(attributePaths = ["project"])
@@ -642,10 +651,11 @@ interface ProjectMemberRepository : CrudRepository<Projectmember, UUID> {
     fun findByUserid(userid: UUID): List<Projectmember>?
 }
 ```
+
 Now our new results are all fetched by simply one query!
 
 ```text
-Hibernate: 
+Hibernate:
     select
         p1_0."id",
         p1_0."createdAt",
@@ -663,23 +673,25 @@ Hibernate:
         p2_0."name",
         p2_0."region",
         p2_0."userId",
-        p2_0."utc" 
+        p2_0."utc"
     from
-        "public"."ProjectMember" p1_0 
+        "public"."ProjectMember" p1_0
     left join
-        "Rel_Project_ProjectMember" p1_1 
-            on p1_0."id"=p1_1."projectMemberId" 
+        "Rel_Project_ProjectMember" p1_1
+            on p1_0."id"=p1_1."projectMemberId"
     left join
-        "public"."Project" p2_0 
-            on p2_0."id"=p1_1."projectId" 
+        "public"."Project" p2_0
+            on p2_0."id"=p1_1."projectId"
     where
         p1_0."userId"=?
 ```
-**Remarks.** 
-- Here we ***prefer*** to use the JPQL `@Query` approach because it provides a certain extent of ***type-safty*** (we even get an auto-completion based on the properties in the class of `Projectmember`) while `@EntityGraph` does not.
+
+**Remarks.**
+
+- Here we **_prefer_** to use the JPQL `@Query` approach because it provides a certain extent of **_type-safty_** (we even get an auto-completion based on the properties in the class of `Projectmember`) while `@EntityGraph` does not.
 
 - Also try to avoid having multiple `left join fetch`'s in a single JPQL as it might be buggy and not performant:
 
-  > The error ***cannot simultaneously fetch multiple bags*** occurs in JPA when trying to eagerly fetch multiple collection relationships (like @OneToMany or @ManyToMany) in a single query. This is due to limitations in how JPA handles collections with JOIN fetches.
+  > The error **_cannot simultaneously fetch multiple bags_** occurs in JPA when trying to eagerly fetch multiple collection relationships (like @OneToMany or @ManyToMany) in a single query. This is due to limitations in how JPA handles collections with JOIN fetches.
 
   You can define `findByUseridFetchA`, `findByUseridFetchB` with different `left join fetch` clauses based on your actual need.

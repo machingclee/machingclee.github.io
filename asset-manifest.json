@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.4cf52b72.chunk.css",
-    "main.js": "/static/js/main.054bc260.chunk.js",
+    "main.js": "/static/js/main.354b067c.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.fc83fc6a.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.6e829bf9.chunk.js": "/static/js/2.6e829bf9.chunk.js",
@@ -181,7 +181,6 @@
     "static/media/164-google-login.md": "/static/media/164-google-login.4598d39c.md",
     "static/media/165-forwardRef.md": "/static/media/165-forwardRef.fc573469.md",
     "static/media/166-Rerender-component.md": "/static/media/166-Rerender-component.d74b4620.md",
-    "static/media/167-gov-analyst-programmer.md": "/static/media/167-gov-analyst-programmer.842e2477.md",
     "static/media/168-boxshadow.md": "/static/media/168-boxshadow.b6b760e0.md",
     "static/media/169-ruststudynotes.md": "/static/media/169-ruststudynotes.c5c09982.md",
     "static/media/170-scroll.md": "/static/media/170-scroll.9729cc59.md",
@@ -329,7 +328,7 @@
     "static/media/337-lambda-function-python-docker-image.md": "/static/media/337-lambda-function-python-docker-image.48e2cd3e.md",
     "static/media/338-decorators.md": "/static/media/338-decorators.d05e5327.md",
     "static/media/339-doubly-linked-list.md": "/static/media/339-doubly-linked-list.914c0d69.md",
-    "static/media/340-lambda-function-springboot.md": "/static/media/340-lambda-function-springboot.803cddf0.md",
+    "static/media/340-lambda-function-springboot.md": "/static/media/340-lambda-function-springboot.182eb15f.md",
     "static/media/341-useful-api-testing-in-postman.md": "/static/media/341-useful-api-testing-in-postman.25ad7ec5.md",
     "static/media/342-test-container-for-testing.md": "/static/media/342-test-container-for-testing.6c31c57c.md",
     "static/media/343-logger-in-spring.md": "/static/media/343-logger-in-spring.1759a725.md",
@@ -356,6 +355,7 @@
     "static/media/364-k3s.md": "/static/media/364-k3s.b6b58d9d.md",
     "static/media/365-file-handling-in-go.md": "/static/media/365-file-handling-in-go.aff61ad2.md",
     "static/media/366-lambda-functions.md": "/static/media/366-lambda-functions.9539961e.md",
+    "static/media/367-prune-lambdas.md": "/static/media/367-prune-lambdas.a7ef2609.md",
     "static/media/CV_Portfolio.680379f4.pdf": "/static/media/CV_Portfolio.680379f4.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -409,6 +409,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.6e829bf9.chunk.js",
     "static/css/main.4cf52b72.chunk.css",
-    "static/js/main.054bc260.chunk.js"
+    "static/js/main.354b067c.chunk.js"
   ]
 }
