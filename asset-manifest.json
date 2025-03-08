@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.4cf52b72.chunk.css",
-    "main.js": "/static/js/main.a39fead2.chunk.js",
+    "main.js": "/static/js/main.bbb320c2.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.4eb7adc0.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.791a3b5a.chunk.js": "/static/js/2.791a3b5a.chunk.js",
@@ -357,7 +357,7 @@
     "static/media/365-file-handling-in-go.md": "/static/media/365-file-handling-in-go.aff61ad2.md",
     "static/media/366-lambda-functions.md": "/static/media/366-lambda-functions.9539961e.md",
     "static/media/367-prune-lambdas.md": "/static/media/367-prune-lambdas.a7ef2609.md",
-    "static/media/368-prune-lambdas copy.md": "/static/media/368-prune-lambdas copy.412843ea.md",
+    "static/media/368-prune-lambdas copy.md": "/static/media/368-prune-lambdas copy.1a4d66c2.md",
     "static/media/CV_Portfolio.680379f4.pdf": "/static/media/CV_Portfolio.680379f4.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -411,6 +411,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.791a3b5a.chunk.js",
     "static/css/main.4cf52b72.chunk.css",
-    "static/js/main.a39fead2.chunk.js"
+    "static/js/main.bbb320c2.chunk.js"
   ]
 }
