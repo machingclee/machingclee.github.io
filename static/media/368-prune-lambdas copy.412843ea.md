@@ -86,9 +86,11 @@ func Start() {
 }
 ```
 
+Let's first introduce our `View` interface:
+
 ##### View Interface
 
-The `Start` method above have introduced a concept of `View` models, which is an interface of the form:
+The `Start` method above has introduced `View` models, which is an interface of the form:
 
 ```go
 type View interface {
@@ -97,7 +99,7 @@ type View interface {
 }
 ```
 
-`View` is essentially a simplified version of `Model`. The `Update` method slightly deviates from `Model` as it accepts `*ApplicationModel` to get global state.
+`View` is essentially a simplified version of `Model`. The `Update` method slightly deviates from `Model`'s one as it accepts `*ApplicationModel` to get global state.
 
 In the sequel we will define our `ApplicationModel` struct, which will implement `Model` interface and we embed all the necessary data into it.
 
@@ -205,7 +207,7 @@ func (m *ApplicationModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
   type createProjectMsg struct {}
   ```
 
-  Recall that our `View` model return `tea.Cmd` in any update, and this custom message type is the return value of the following function:
+  Recall that our `View` model return `tea.Cmd` in any update, and this custom message type `createProjectMsg` is the return value of the following function:
 
   ```go
   func createProject() tea.Cmd {
@@ -225,7 +227,7 @@ func (m *ApplicationModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
   }
   ```
 
-- Analogous to Redux, a `tea.Msg` is like a `ThunkAction`, which is a function that returns `{ action, payload }` in the redux world.
+- Analogous to Redux, a `tea.Cmd` is like a `ThunkAction`, which is a function that returns `{ action, payload }` in the redux world. If necessary we can define payload inside of `createProjectMsg`.
 
 #### ProjectNameView
 
