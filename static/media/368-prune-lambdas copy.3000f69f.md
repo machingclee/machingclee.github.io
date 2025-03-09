@@ -16,6 +16,10 @@ intro: "We record the basic and elements of bubble tea."
   }
 </style>
 
+#### Visual Result
+
+[![](/assets/img/2025-03-09-20-13-27.png)](/assets/img/2025-03-09-20-13-27.png)
+
 #### Project Structure
 
 ![](/assets/img/2025-03-09-03-46-49.png)
