@@ -16,7 +16,7 @@ intro: "This is a record of machineries in a springboot project for my own conve
   }
 </style>
 
-#### RestTeamplate
+#### RestTemplate
 
 ```kotlin
 @Service
@@ -44,20 +44,23 @@ Then the following can make a post request:
 
 ###### The Parent
 
+When we start from parent we don't need to specify the id used for the linkage.
+
 ```kotlin
 class Team {
-	// don't need to specify the id used for the linkage
 	@OneToMany(
 		fetch = FetchType.LAZY,
 		mappedBy = "team",
 		cascade = [CascadeType.ALL],
 		orphanRemoval = true
 	)
-	var tags: MutableList<Tags> = mutableListOf()
+	var tags: MutableList<Tag> = mutableListOf()
 }
 ```
 
 ###### The Children
+
+When we start from children we specify the column that is used to forward the reference to target entity.
 
 ```kotlin
 class Tag(
