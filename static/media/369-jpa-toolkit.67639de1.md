@@ -1,5 +1,5 @@
 ---
-title: "Springboot Toolkit (Mainly with JPA)"
+title: "Toolkits and Caveats Working with Spring Boot and JPA"
 date: 2025-03-13
 id: blog0369
 tag: springboot
@@ -123,3 +123,14 @@ class Team(
 For a **_complete deletion_** we set `orphanRemoval = true`. Otherwise when we remove an entity from a child list, the dirty check mechanism at the end of transactional session simply remove the record in **_relation table_**, but the `Tag` entity will remain there.
 
 If we want to retain the object and simply break the relation, we set `orphanRemoval = false`, this will result in a soft-deletion.
+
+#### Not Everyone of @OneToOne, @OneToMany, @ManyToOne, @ManyToOne is Lazy-Loading by Default
+
+- **_EAGER_** by default:
+  - @OneToOne
+  - @ManyToOne
+- **_LAZY_** by default:
+  - @OneToMany
+  - @ManyToMany
+
+To play safe we might annotate **_each of them_** by fetch-mode lazy!
