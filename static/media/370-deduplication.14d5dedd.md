@@ -29,7 +29,7 @@ messageId   createdAt           translation
 321         1850000000000       Hi James, nice to meet you
 ```
 
-We want to reduce these group of records into simply one, let's say only the latest one:
+We want to reduce these groups of records into simply one per group, let's say only the latest one:
 
 ```text
 messageId   createdAt           translation
@@ -55,6 +55,8 @@ delete from "MessageTranslation" where id not in (
 
   - We first order the results by `messageId`
   - next we further order them by `createdAt desc`
-  - finally we `select distinct on ("messageId")` to select the **_first occurence_** of results "grouped by" the `order by` clause.
+  - We `select distinct on ("messageId")` to select the **_first occurence_** of results "grouped by" the `order by` clause.
+
+    Note that if we need to order by $n$ ($n\ge2$) columns, we would need to `distinct on` the first $n-1$ columns.
 
 - Finally we have selected desired results, we delete those that are not desired.

@@ -2,7 +2,7 @@
 title: "Speed up Data Migration using JPA with Channels and CountDownLatch"
 date: 2025-03-15
 id: blog0371
-tag: sql
+tag: springboot, kotlin
 toc: false
 intro: "We record a rate-limited concurrent tasks technical borrowed from golang."
 ---

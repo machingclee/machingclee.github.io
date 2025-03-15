@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.4cf52b72.chunk.css",
-    "main.js": "/static/js/main.583b0a29.chunk.js",
+    "main.js": "/static/js/main.daea494d.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.8717a854.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.765f132e.chunk.js": "/static/js/2.765f132e.chunk.js",
@@ -359,8 +359,8 @@
     "static/media/367-prune-lambdas.md": "/static/media/367-prune-lambdas.a7ef2609.md",
     "static/media/368-cli-bubble-tea.md": "/static/media/368-cli-bubble-tea.3000f69f.md",
     "static/media/369-jpa-toolkit.md": "/static/media/369-jpa-toolkit.67639de1.md",
-    "static/media/370-deduplication.md": "/static/media/370-deduplication.77301623.md",
-    "static/media/371-speed-up-data-migration.md": "/static/media/371-speed-up-data-migration.bf0f49e6.md",
+    "static/media/370-deduplication.md": "/static/media/370-deduplication.14d5dedd.md",
+    "static/media/371-speed-up-data-migration.md": "/static/media/371-speed-up-data-migration.04f8dbfa.md",
     "static/media/CV_Portfolio.680379f4.pdf": "/static/media/CV_Portfolio.680379f4.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -414,6 +414,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.765f132e.chunk.js",
     "static/css/main.4cf52b72.chunk.css",
-    "static/js/main.583b0a29.chunk.js"
+    "static/js/main.daea494d.chunk.js"
   ]
 }
