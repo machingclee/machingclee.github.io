@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.4cf52b72.chunk.css",
-    "main.js": "/static/js/main.daea494d.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.8717a854.js",
+    "main.js": "/static/js/main.1f785de0.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.0cfbc82d.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.765f132e.chunk.js": "/static/js/2.765f132e.chunk.js",
-    "static/js/3.632294bd.chunk.js": "/static/js/3.632294bd.chunk.js",
-    "static/js/4.28a7d695.chunk.js": "/static/js/4.28a7d695.chunk.js",
-    "static/js/5.96008686.chunk.js": "/static/js/5.96008686.chunk.js",
+    "static/js/2.8e5e8feb.chunk.js": "/static/js/2.8e5e8feb.chunk.js",
+    "static/js/3.0dfbd51c.chunk.js": "/static/js/3.0dfbd51c.chunk.js",
+    "static/js/4.f57328f2.chunk.js": "/static/js/4.f57328f2.chunk.js",
+    "static/js/5.817b0d2f.chunk.js": "/static/js/5.817b0d2f.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.765f132e.chunk.js.LICENSE.txt": "/static/js/2.765f132e.chunk.js.LICENSE.txt",
-    "static/js/3.632294bd.chunk.js.LICENSE.txt": "/static/js/3.632294bd.chunk.js.LICENSE.txt",
-    "static/js/4.28a7d695.chunk.js.LICENSE.txt": "/static/js/4.28a7d695.chunk.js.LICENSE.txt",
+    "static/js/2.8e5e8feb.chunk.js.LICENSE.txt": "/static/js/2.8e5e8feb.chunk.js.LICENSE.txt",
+    "static/js/3.0dfbd51c.chunk.js.LICENSE.txt": "/static/js/3.0dfbd51c.chunk.js.LICENSE.txt",
+    "static/js/4.f57328f2.chunk.js.LICENSE.txt": "/static/js/4.f57328f2.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.52b1ef07.md",
     "static/media/002-Lazy-React-Router.md": "/static/media/002-Lazy-React-Router.48295ca9.md",
@@ -361,6 +361,7 @@
     "static/media/369-jpa-toolkit.md": "/static/media/369-jpa-toolkit.67639de1.md",
     "static/media/370-deduplication.md": "/static/media/370-deduplication.14d5dedd.md",
     "static/media/371-speed-up-data-migration.md": "/static/media/371-speed-up-data-migration.04f8dbfa.md",
+    "static/media/372-multiple-sshes.md": "/static/media/372-multiple-sshes.f4439633.md",
     "static/media/CV_Portfolio.680379f4.pdf": "/static/media/CV_Portfolio.680379f4.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -410,10 +411,10 @@
     "static/media/transformer-date-fomatter.18a2d3fc.pdf": "/static/media/transformer-date-fomatter.18a2d3fc.pdf"
   },
   "entrypoints": [
-    "static/js/runtime-main.8717a854.js",
+    "static/js/runtime-main.0cfbc82d.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.765f132e.chunk.js",
+    "static/js/2.8e5e8feb.chunk.js",
     "static/css/main.4cf52b72.chunk.css",
-    "static/js/main.daea494d.chunk.js"
+    "static/js/main.1f785de0.chunk.js"
   ]
 }
