@@ -4,7 +4,7 @@ date: 2025-03-16
 id: blog0372
 tag: git
 toc: true
-intro: "Record a standard step to alter the authentication method (which account to authenticate) when we push changes to a repository."
+intro: "Record a standard step to alter the authentication method (choose which account to authenticate) when we push changes to a repository."
 ---
 
 <style>
