@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.4cf52b72.chunk.css",
-    "main.js": "/static/js/main.0a823b63.chunk.js",
+    "main.js": "/static/js/main.6c3fe50a.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.d46e00ae.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.03191ade.chunk.js": "/static/js/2.03191ade.chunk.js",
@@ -361,7 +361,7 @@
     "static/media/369-jpa-toolkit.md": "/static/media/369-jpa-toolkit.67639de1.md",
     "static/media/370-deduplication.md": "/static/media/370-deduplication.14d5dedd.md",
     "static/media/371-speed-up-data-migration.md": "/static/media/371-speed-up-data-migration.04f8dbfa.md",
-    "static/media/372-multiple-sshes.md": "/static/media/372-multiple-sshes.62689641.md",
+    "static/media/372-multiple-sshes.md": "/static/media/372-multiple-sshes.1db2a682.md",
     "static/media/373-use-mongo-spring-data.md": "/static/media/373-use-mongo-spring-data.34ea366f.md",
     "static/media/CV_Portfolio.680379f4.pdf": "/static/media/CV_Portfolio.680379f4.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
@@ -416,6 +416,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.03191ade.chunk.js",
     "static/css/main.4cf52b72.chunk.css",
-    "static/js/main.0a823b63.chunk.js"
+    "static/js/main.6c3fe50a.chunk.js"
   ]
 }
