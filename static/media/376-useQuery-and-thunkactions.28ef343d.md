@@ -1,5 +1,5 @@
 ---
-title: "Combine useQuery and Redux toolkit Thunk Actions"
+title: "Combine useQuery and Redux Toolkit Thunk Actions"
 date: 2025-03-21
 id: blog0376
 tag: react, redux
@@ -47,7 +47,7 @@ And most importantly:
 
 > We don't want to introduce **_any_** complexity coming from redux's `RTK-query`, which simply mimic react-query with much complex syntax.
 
-What I hate `RTK-qury` so much: The auto-generated `useXXXQuery`'s and `useXXXMutation` can never be located properly in the IDE, making the debug process very unpleasant.
+What I **_hate_** `RTK-qury` so much: The _auto-generated_ `useXXXQuery`'s and `useXXXMutation`'s can never be located properly in the IDE, making the debug process very unpleasant.
 
 And finally:
 
@@ -151,7 +151,7 @@ export default <T,>(param: {
 
   The change of react-query data should also be reflected to the state in redux-store.
 
-- At the end wrapper is simply calling `useQuery({..., queryFn})`, with queryFn being the dispatched thunk action.
+- At the end the wrapper is simply calling `useQuery({..., queryFn})`, with queryFn being the dispatched thunk action.
 - Default `staleTime` and `gcTime` are set to 1000 to bring the debounce capability to thunk actions.
 
 #### Usecases
@@ -164,7 +164,9 @@ export default <T,>(param: {
 
 [![](/assets/img/2025-03-23-12-13-13.png)](/assets/img/2025-03-23-12-13-13.png)
 
-Note that you can still get access to the `invalidation` function and the `query` object from `react-query` as usual.
+- Note that you can still get access to the `invalidation` function and the `query` object from `react-query` as usual.
+
+- It is not strictly necessary to pass the data to redux store and get the data from the store.
 
 ##### Case 2: In the past
 
