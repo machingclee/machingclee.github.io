@@ -2,7 +2,7 @@
 title: "Scaling Websocket Chat Sever by Redis"
 date: 2023-09-20
 id: blog0181
-tag: redis, socketio, nodejs
+tag: redis, web-socket, nodejs
 intro: "We study how to scale up the chat services horizontally by Redis."
 toc: false
 ---

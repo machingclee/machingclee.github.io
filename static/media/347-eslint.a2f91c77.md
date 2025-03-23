@@ -107,14 +107,14 @@ Here we can adjust the `linting rule` as a `warning` or `error`.
 
 ```json
 {
-    "printWidth": 120,
-    "tabWidth": 4,
-    "semi": true,
-    "singleQuote": true,
-    "trailingComma": "es5",
-    "bracketSpacing": true,
-    "arrowParens": "avoid",
-    "endOfLine": "auto"
+  "printWidth": 120,
+  "tabWidth": 4,
+  "semi": true,
+  "singleQuote": true,
+  "trailingComma": "es5",
+  "bracketSpacing": true,
+  "arrowParens": "avoid",
+  "endOfLine": "auto"
 }
 ```
 
@@ -122,18 +122,18 @@ Here we can adjust the `linting rule` as a `warning` or `error`.
 
 ```json
 {
-    "printWidth": 80,
-    "tabWidth": 4,
-    "semi": true,
-    "singleQuote": true,
-    "trailingComma": "es5",
-    "bracketSpacing": true,
-    "arrowParens": "avoid",
-    "endOfLine": "auto"
+  "printWidth": 80,
+  "tabWidth": 4,
+  "semi": true,
+  "singleQuote": true,
+  "trailingComma": "es5",
+  "bracketSpacing": true,
+  "arrowParens": "avoid",
+  "endOfLine": "auto"
 }
 ```
 
-####  vite.config.ts
+#### vite.config.ts
 
 we `yarn add -D vite-plugin-eslint` and then add that plugin:
 
@@ -175,20 +175,29 @@ export default defineConfig(({ command, mode }) => {
 ```
 
 #### Ignore a file or a line to skip Eslint
+
 ##### For a line
+
 ```js
 // eslint-disable-next-line
 ```
+
 ##### For an Entire file:
 
 ```js
-// eslint-disable-next-line
+/* eslint-disable */
 ```
 
+##### For an error that needs reason (where `// eslint-disable-next-line` is not enough)
+
+```js
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+```
 
 #### .eslintignore and .prettierignore
 
 Both ignore-files can accpet the following expression
+
 ```sh
 # file that you don't want to handle
 **/pages/Competitions/**
