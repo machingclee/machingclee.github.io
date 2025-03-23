@@ -4,7 +4,7 @@ date: 2025-03-18
 id: blog0373
 tag: mongo, jpa, springboot
 toc: true
-intro: Record how to interact with mongodb in a ***JPA*** manner.
+intro: "Record how to interact with mongodb in a ***JPA*** manner."
 ---
 
 <style>
@@ -167,13 +167,10 @@ For complex query we can write custom filter using `@Query` and custom aggregati
 Note that the `@Update` part can be an object or an **_array_** of objects, as in the native `updateMany` API in `javascript` world:
 
 ```js
-db.collection.updateMany(
-    { filter }, 
-    [
-        { $set: { field: expression } },
-        { $unset: ["fieldToRemove"] },
-    ]
-);
+db.collection.updateMany({ filter }, [
+  { $set: { field: expression } },
+  { $unset: ["fieldToRemove"] },
+]);
 ```
 
 #### Indexing
