@@ -2,7 +2,7 @@
 title: "Combine useQuery and Redux Toolkit Thunk Actions"
 date: 2025-03-21
 id: blog0376
-tag: react, redux
+tag: react, redux, react-query
 toc: true
 intro: "We discuss how to bring the power of caching/debouncing, the cahcing and cache-invalidatin, and also the handy booleans like `isLoading` of react query into world of react thunk actions."
 ---
@@ -26,20 +26,9 @@ The following from **theo-t3.gg** gives a brief introduction to the concept of `
 
 The mix of `zustand` and `react-query` is a typical solution to handling both states separately, instead of storing everything into a single store.
 
-But what if I want data from the UI (coming from the server) **_without_** making that API call again? We either set a incredibly large `staleTime` or store that data back into `zustand`.
-
-Worse still there can be multiple places to perform data-postprocessing. They can come form `queryFn` in `react-query`, or come from custom methods in `create` factory of `zustand`.
-
-However, back to redux:
-
-- Every data post-processing happens in `fulfilled` handler of each thunk actions.
-- We can add middleware to `pending` and `fulfill` actions for different purposes (the most easy yet common case would be adding a fullscreen loading spinner).
-
-The use of `redux-toolkit` forcefully brought us to a unique architecture with less freedom and also decoupled the side-effect by registering those state changes to desired actions.
-
 ##### Objective of this article
 
-For me storing everything in redux and accessing cached/unstaled (without extra api call) data are all what I need. In this article we discuss how to:
+For me storing everything in redux and accessing cached/unstaled data are all what I need. In this article we discuss how to:
 
 > **_Sync_** the cache from `react-query` back to redux store.
 
@@ -62,14 +51,13 @@ And finally:
 Our first hook wraps up the `useQuery` method to reduce boilerplate code:
 
 ```tsx
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
-
+// useBaseQuery
 export default <T,>(props: {
   queryKey: string[];
   queryFn: () => Promise<T>;
   onDataChanged?: (data: T) => void;
   gcTime?: number;
+  enabled: boolean;
   staleTime?: number;
 }) => {
   const {
@@ -78,6 +66,7 @@ export default <T,>(props: {
     gcTime = 100,
     staleTime = 100,
     onDataChanged,
+    enabled,
   } = props;
   const queryClient = useQueryClient();
   const query = useQuery({
@@ -87,6 +76,7 @@ export default <T,>(props: {
     queryKey,
     gcTime,
     staleTime,
+    enabled,
     refetchOnWindowFocus: false,
   });
 
@@ -106,35 +96,60 @@ export default <T,>(props: {
 
 ##### useQueryThunk
 
-Let's define the following custom hook:
+###### hashUtil.ts
+
+In the sequel we will be using the thunkAction name as first part of our react-query key
+
+[![](/assets/img/2025-03-24-00-36-27.png)](/assets/img/2025-03-24-00-36-27.png)
+
+which can be accessed by `thunkAction.typePrefix`. Our next part will be the param that make our API call, which will be hashed into a string as the second part of our query key:
 
 ```tsx
-// useQueryThunk
-import { AsyncThunk } from "@reduxjs/toolkit";
-import useBaseQuery from "./useBaseQuery";
-import hashUtil from "../utils/hashUtil";
-import { useAppDispatch } from "../redux/hooks";
+// hasuUtil
+import sha256 from "crypto-js/sha256";
 
-export default <T,>(param: {
-    thunk: AsyncThunk<any, T, any>;
+const hash = (jsonObj: object) => {
+  const sortedJsonStr = JSON.stringify(jsonObj, Object.keys(jsonObj).sort());
+  return sha256(sortedJsonStr).toString();
+};
+
+export default {
+  hash,
+};
+```
+
+Our target key will be of the form `[thunkAction.typePrefix, hashUtil.hash(reqParam)]`
+
+###### Our Hook
+
+Let's define the following target hook:
+
+```tsx
+// eslint-disable-next-line react-refresh/only-export-components
+export default <ThunkInputParam, ReturnType>(param: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    thunk: AsyncThunk<ReturnType, ThunkInputParam, any>;
     staleTime?: number;
+    enabled?: boolean;
   }) =>
-  (req?: T) => {
-    const { thunk, staleTime = 1000 } = param;
+  (inputParam?: ThunkInputParam) => {
+    const { thunk, staleTime = 1000, enabled = true } = param;
     const dispatch = useAppDispatch();
     return useBaseQuery({
-      queryKey: [thunk.typePrefix, hashUtil.hash(req || {})],
+      queryKey: [thunk.typePrefix, hashUtil.hash(inputParam || {})],
       queryFn: async () => {
         // @ts-expect-error, don't try to handle the error
-        const res = await dispatch(req ? thunk(req) : thunk()).unwrap();
+        const res = (await dispatch(
+          inputParam ? thunk(inputParam) : thunk()
+        ).unwrap()) as ReturnType;
         return res;
       },
       onDataChanged: (data) => {
+        const requestID = crypto.randomUUID() || Math.random() + "";
         // eslint-disable-next-line
-        dispatch(
-          thunk.fulfilled(data, Math.random() + "", (req || null) as any)
-        );
+        dispatch(thunk.fulfilled(data, requestID, inputParam as any));
       },
+      enabled,
       gcTime: staleTime,
       staleTime: staleTime,
     });
@@ -149,7 +164,7 @@ export default <T,>(param: {
   - no API call has been invoked;
   - the react-query state (data part) has changed but state in redux-store does not change.
 
-  The change of react-query data should also be reflected to the state in redux-store.
+- We have made sure the change of react-query data is reflected to the state in redux-store.
 
 - At the end the wrapper is simply calling `useQuery({..., queryFn})`, with queryFn being the dispatched thunk action.
 - Default `staleTime` and `gcTime` are set to 1000 to bring the debounce capability to thunk actions.
@@ -177,3 +192,17 @@ Our custom hook `useQueryThunk` also caters for the case of empty input paramete
 ##### Case 2: Now
 
 [![](/assets/img/2025-03-23-12-17-15.png)](/assets/img/2025-03-23-12-17-15.png)
+
+##### Case 3: The `enabled: false` option in react query to prevent API call
+
+By using our `useQueryThunk` hook the only way to make sure everything gets refetched is to invalidate the `queryKey`.
+
+Some component does not need the query data, but they do need the cache-invalidation method. For that we pass `enabled: false` as follows:
+
+[![](/assets/img/2025-03-24-00-42-58.png)](/assets/img/2025-03-24-00-42-58.png)
+
+Note that **_query_** with `{ enabled: false }` option will **_never_** get updated until we execute `query.refetch()`. In our case since our component only want to invalidate caches, no refetch is needed:
+
+[![](/assets/img/2025-03-24-00-46-59.png)](/assets/img/2025-03-24-00-46-59.png)
+
+Not only that, `query.refetch()` simply refreshes data, it does not update `staleTime` and `gcTime`, which can potentially cause unexpected behaviour.
