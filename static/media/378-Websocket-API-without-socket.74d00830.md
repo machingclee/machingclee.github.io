@@ -486,9 +486,6 @@ fun createClass(reqBody: CreateClassRequest) {
 
 ###### Factory implementation file
 
-<details>
-<summary> StudentPackageFactory.kt </summary>
-
 ```kotlin
 package dev.james.alicetimetable.commons.database.factories
 
@@ -546,5 +543,3 @@ class StudentPackageFactory() {
 
 }
 ```
-
-</details>
