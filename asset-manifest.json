@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.4cf52b72.chunk.css",
-    "main.js": "/static/js/main.19b95932.chunk.js",
+    "main.js": "/static/js/main.9b5d6cb7.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.bde632e5.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.78f4c029.chunk.js": "/static/js/2.78f4c029.chunk.js",
@@ -366,7 +366,7 @@
     "static/media/374-run-shell-script-in-gradle copy.md": "/static/media/374-run-shell-script-in-gradle copy.921e8f1a.md",
     "static/media/375-generate-typescript-types-from-swagger-ui.md": "/static/media/375-generate-typescript-types-from-swagger-ui.9cd5343b.md",
     "static/media/376-useQuery-and-thunkactions.md": "/static/media/376-useQuery-and-thunkactions.d2ec2b04.md",
-    "static/media/377-Websocket-API-without-socketio.md": "/static/media/377-Websocket-API-without-socketio.7f700fd8.md",
+    "static/media/377-Websocket-API-without-socketio.md": "/static/media/377-Websocket-API-without-socketio.9c2696c7.md",
     "static/media/378-Websocket-API-without-socket.md": "/static/media/378-Websocket-API-without-socket.be1fba53.md",
     "static/media/CV_Portfolio.680379f4.pdf": "/static/media/CV_Portfolio.680379f4.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
@@ -421,6 +421,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.78f4c029.chunk.js",
     "static/css/main.4cf52b72.chunk.css",
-    "static/js/main.19b95932.chunk.js"
+    "static/js/main.9b5d6cb7.chunk.js"
   ]
 }

@@ -351,14 +351,11 @@ class WebsocketNotificationService(
 }
 ```
 
-Back to highlighted line 52 in _Define a custom hook to initiate websocket connection_ section we have
+Back to highlighted line 54 in _Define a custom hook to initiate websocket connection_ section we have
 
 ```ts
+type Payload = { type: string, data: any }
 const parsedData = JSON.parse(e?.data || "{}") as Payload;
 ```
 
-This `e?.data` is exactly (if exists) the json string of `Payload` object from kotlin side. When we `JSON.parse()` it, we obtain
-
-```json
-{ type: string, data: any }
-```
+This `e?.data` is exactly (if exists) the json string of `Payload` object from kotlin side.
