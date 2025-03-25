@@ -76,9 +76,6 @@ The lambda function accepted by `studentPackage.action` can access the methods i
 
 ##### `StudentPackage` Class (reduced into standard Entity class)
 
-<details>
-<summary> StudentPackage.kt </summary>
-
 ```kotlin
 package dev.james.alicetimetable.commons.database.entities
 
@@ -166,12 +163,9 @@ class StudentPackage(
 }
 ```
 
-</details>
 
-##### with Action
+##### `StudentPackageAction` Class
 
-<details>
-<summary> StudentPackageAction.kt </summary>
 
 ```kotlin
 // StudentPackageAction.kt
@@ -324,12 +318,8 @@ class StudentPackageAction(private val pkg: StudentPackage) {
 }
 ```
 
-</details>
 
-##### with Validation
-
-<details>
-<summary> StudentPackageValidation.kt </summary>
+##### `StduentPackageValidation` Class
 
 ```kotlin
 // StduentPackageValidation
@@ -455,11 +445,20 @@ class StudentPackageValidation(private val pkg: StudentPackage) {
 }
 ```
 
-</details>
-
 ##### The factory methods
 
-Unlike the previous examples, factory **_method_** usually has no instantiated instance to stick with (as they are static). We create a placeholder to work with extension function:
+Unlike the previous examples, factory **_method_** usually has no instantiated instance to stick with (as they are static). We create a placeholder to work with extension function (an empty `Factory` class):
+
+##### Empty Factory placeholder class
+
+```kotlin
+package dev.james.alicetimetable.commons.database.factories
+
+class Factory
+```
+
+We will be using extension function to provide new scope to access factory methods (does it taste very Golang?).
+
 
 ###### Example of resulting code style
 
@@ -484,16 +483,6 @@ fun createClass(reqBody: CreateClassRequest) {
     studentPackageRepository.save(targetPackage)
 }
 ```
-
-###### Empty Factory placeholder class
-
-```kotlin
-package dev.james.alicetimetable.commons.database.factories
-
-class Factory
-```
-
-We will be using extension function to provide new scope to access factory methods (does it taste very Golang?).
 
 ###### Factory implementation file
 
