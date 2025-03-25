@@ -52,7 +52,7 @@ class BuildInfo {
 }
 
 class SpringBootExtension {
-    private buildInfo: BuildInfo? = null
+    private var buildInfo: BuildInfo? = null
 
     fun withBuildInfo(configure: BuildInfo.() -> Unit) {
         val _buildInfo = BuildInfo()
@@ -66,7 +66,7 @@ Let's create a builder function which builds a `SpringBootExtension` object.
 
 ```kotlin
 // builder function
-fun springBootEextension(build: SpringBootExtension.() -> Unit) {
+fun springBootEextension(build: SpringBootExtension.() -> Unit): SpringBootExtension {
     val extension = SpringBootExtension()
     extension.build()
     return extension
