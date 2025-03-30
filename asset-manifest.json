@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.4cf52b72.chunk.css",
-    "main.js": "/static/js/main.bc3b1f9e.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.bde632e5.js",
+    "main.js": "/static/js/main.bc08a5b1.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.acf56251.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.78f4c029.chunk.js": "/static/js/2.78f4c029.chunk.js",
-    "static/js/3.4736e304.chunk.js": "/static/js/3.4736e304.chunk.js",
-    "static/js/4.eb585750.chunk.js": "/static/js/4.eb585750.chunk.js",
-    "static/js/5.2e1479ad.chunk.js": "/static/js/5.2e1479ad.chunk.js",
+    "static/js/2.236a1cf0.chunk.js": "/static/js/2.236a1cf0.chunk.js",
+    "static/js/3.6951641a.chunk.js": "/static/js/3.6951641a.chunk.js",
+    "static/js/4.c60e4831.chunk.js": "/static/js/4.c60e4831.chunk.js",
+    "static/js/5.976873c1.chunk.js": "/static/js/5.976873c1.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.78f4c029.chunk.js.LICENSE.txt": "/static/js/2.78f4c029.chunk.js.LICENSE.txt",
-    "static/js/3.4736e304.chunk.js.LICENSE.txt": "/static/js/3.4736e304.chunk.js.LICENSE.txt",
-    "static/js/4.eb585750.chunk.js.LICENSE.txt": "/static/js/4.eb585750.chunk.js.LICENSE.txt",
+    "static/js/2.236a1cf0.chunk.js.LICENSE.txt": "/static/js/2.236a1cf0.chunk.js.LICENSE.txt",
+    "static/js/3.6951641a.chunk.js.LICENSE.txt": "/static/js/3.6951641a.chunk.js.LICENSE.txt",
+    "static/js/4.c60e4831.chunk.js.LICENSE.txt": "/static/js/4.c60e4831.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.52b1ef07.md",
     "static/media/002-Lazy-React-Router.md": "/static/media/002-Lazy-React-Router.48295ca9.md",
@@ -321,7 +321,7 @@
     "static/media/329-revenue-cat.md": "/static/media/329-revenue-cat.f0f7e4c4.md",
     "static/media/330-pojo-to-jpa.md": "/static/media/330-pojo-to-jpa.e926a2ec.md",
     "static/media/331-git-action-dispatch.md": "/static/media/331-git-action-dispatch.5f9e703b.md",
-    "static/media/332-clone-db-contd.md": "/static/media/332-clone-db-contd.2c90d3e5.md",
+    "static/media/332-clone-db-contd.md": "/static/media/332-clone-db-contd.13b1b2a9.md",
     "static/media/333-Create-html-via-pdf.md": "/static/media/333-Create-html-via-pdf.1b085686.md",
     "static/media/334-Scheduled-Task-ECS.md": "/static/media/334-Scheduled-Task-ECS.932d0f4f.md",
     "static/media/335-clone-db-contd-mongo-ver.md": "/static/media/335-clone-db-contd-mongo-ver.cc1711af.md",
@@ -367,7 +367,8 @@
     "static/media/375-generate-typescript-types-from-swagger-ui.md": "/static/media/375-generate-typescript-types-from-swagger-ui.9cd5343b.md",
     "static/media/376-useQuery-and-thunkactions.md": "/static/media/376-useQuery-and-thunkactions.d2ec2b04.md",
     "static/media/377-Websocket-API-without-socketio.md": "/static/media/377-Websocket-API-without-socketio.9c2696c7.md",
-    "static/media/378-Websocket-API-without-socket.md": "/static/media/378-Websocket-API-without-socket.74d00830.md",
+    "static/media/378-Websocket-API-without-socket.md": "/static/media/378-Websocket-API-without-socket.b34d2010.md",
+    "static/media/379-modals.md": "/static/media/379-modals.c5e68a7e.md",
     "static/media/CV_Portfolio.680379f4.pdf": "/static/media/CV_Portfolio.680379f4.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -417,10 +418,10 @@
     "static/media/transformer-date-fomatter.18a2d3fc.pdf": "/static/media/transformer-date-fomatter.18a2d3fc.pdf"
   },
   "entrypoints": [
-    "static/js/runtime-main.bde632e5.js",
+    "static/js/runtime-main.acf56251.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.78f4c029.chunk.js",
+    "static/js/2.236a1cf0.chunk.js",
     "static/css/main.4cf52b72.chunk.css",
-    "static/js/main.bc3b1f9e.chunk.js"
+    "static/js/main.bc08a5b1.chunk.js"
   ]
 }

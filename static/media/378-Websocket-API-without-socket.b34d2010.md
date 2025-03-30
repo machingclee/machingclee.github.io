@@ -1,7 +1,7 @@
 ---
 title: "Code Sepration of Domain Entity Class, Domain Behaviour (Actions) and the Corresponding Validations"
 date: 2025-03-24
-id: blog0377
+id: blog0378
 tag: DDD, kotlin
 toc: true
 intro: "When business grows, a domain object becomes very bulky if all behaviour and the corresponding validation are added to the same entity file. We study code separation by the language feature of Kotlin using function literal with receiver."
@@ -163,9 +163,7 @@ class StudentPackage(
 }
 ```
 
-
 ##### `StudentPackageAction` Class
-
 
 ```kotlin
 // StudentPackageAction.kt
@@ -318,7 +316,6 @@ class StudentPackageAction(private val pkg: StudentPackage) {
 }
 ```
 
-
 ##### `StduentPackageValidation` Class
 
 ```kotlin
@@ -458,7 +455,6 @@ class Factory
 ```
 
 We will be using extension function to provide new scope to access factory methods (does it taste very Golang?).
-
 
 ###### Example of resulting code style
 

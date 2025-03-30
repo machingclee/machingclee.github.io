@@ -54,12 +54,15 @@ export SOURCE_DB_NAME=
 echo "Cloning Remote DB ..."
 docker run --rm -v $(pwd):/backup \
   -e PGPASSWORD=$SOURCE_DB_PASSWORD \
-  postgres:15 pg_dump \
+  postgres:16 pg_dump \
   -h $SOURCE_DB_HOST \
   -U $SOURCE_DB_USER \
   -d $SOURCE_DB_NAME \
   -F c -f /backup/database_dump.dump
 ```
+
+If you encounter problem of pgsql version,
+Here we omit the original table owner from old table (as it does not exist in the new table).
 
 ##### Step 2. (Optional) Create a Database in a PostgreSQL Server
 
@@ -91,11 +94,13 @@ export TARGET_DB_NAME="some-name"
 echo "Dumping DB Data Into $TARGET_DB_HOST/$TARGET_DB_NAME"
 docker run --rm -v $(pwd):/backup \
   -e PGPASSWORD=$TARGET_DB_PASSWORD \
-  postgres:15 pg_restore \
+  postgres:16 pg_restore \
   -h $TARGET_DB_HOST \
   -U $TARGET_DB_USER \
   -d $TARGET_DB_NAME \
-  -c -C /backup/database_dump.dump
+  --if-exists \
+  --no-owner --no-acl \
+  -c /backup/database_dump.dump
 ```
 
 Beware of the meaning of
@@ -146,6 +151,7 @@ TRUNCATE TABLE parent_table CASCADE;
 ```
 
 #### Conversion From `.dump` into `.sql`
+
 ##### Why?
 
 - For one reason we can observe what is actually done by the `.dump` script;
@@ -156,16 +162,17 @@ TRUNCATE TABLE parent_table CASCADE;
 ##### The Conversion Script from `.dump` into `.sql`
 
 Given a `database_dump.dump` file in the current diectory, we can execute
-```bash 
+
+```bash
 docker run --rm -v $(pwd):/backup \
   postgres:15 pg_restore -f /backup/database_dump.sql -Fc /backup/database_dump.dump
 ```
+
 to convert a `database_dump.dump` file back to `database_dump.sql` file.
 
-
-
 ##### Execute the `.sql` file
-To execute this `sql` script for backup we simply run 
+
+To execute this `sql` script for backup we simply run
 
 ```bash
 export TARGET_DB_HOST="host.docker.internal"
@@ -181,6 +188,7 @@ docker run --rm -v $(pwd):/backup \
   -d $TARGET_DB_NAME \
   -f /backup/database_dump.sql
 ```
+
 ##### Typical Exmaple of a `database_dump.sql` and how to Change it to avoid Duplicate key
 
 A typical backup `database_dump.sql` script consists of the following block for each table:
@@ -196,9 +204,10 @@ COPY public."Quota_UsageCounter" (id, "seatId", ..., "summaryGenerated") FROM st
 730	603	0	1729337500635	2024-10-19 19:31:40	f	1729337499664	1729337499664	0
 \.
 ```
+
 Here we use `...` to omit the dummy names (not a valid `sql` syntax!).
 
-The `COPY` clause can be replaced by 
+The `COPY` clause can be replaced by
 
 ```sql{1,3,9-11}
 CREATE TEMP TABLE temp_table AS TABLE public."Quota_UsageCounter" WITH NO DATA;
@@ -214,20 +223,21 @@ ON CONFLICT DO NOTHING;
 DROP TABLE temp_table;
 ```
 
-
 #### User Role Management
+
 ##### Who is the owner of the table whose Original owner does not exist in the new Database?
+
 Sometimes we clone from a database where the owner of the table does not exist in our new database, then
 
-- the ownership of the table defaults to the user ***performing the restore*** operation (the user running `pg_restore`)
+- the ownership of the table defaults to the user **_performing the restore_** operation (the user running `pg_restore`)
 
 Most of the time this user will be of `superuser` grade, but we wish to delegate the tables to an account with inferior power, for that:
 
 ##### View the tables and their owner
 
 ```sql
-SELECT tablename, tableowner 
-FROM pg_tables 
+SELECT tablename, tableowner
+FROM pg_tables
 WHERE schemaname = 'public';
 ```
 
@@ -243,7 +253,7 @@ DO $$
 DECLARE
     r record;
 BEGIN
-    FOR r IN SELECT tablename FROM pg_tables 
+    FOR r IN SELECT tablename FROM pg_tables
     WHERE schemaname = 'public' AND tableowner = 'postgres'
     LOOP
         EXECUTE 'ALTER TABLE public.' || quote_ident(r.tablename) || ' OWNER TO new_user';
@@ -255,10 +265,10 @@ DO $$
 DECLARE
     r record;
 BEGIN
-    FOR r IN SELECT sequence_name FROM information_schema.sequences 
+    FOR r IN SELECT sequence_name FROM information_schema.sequences
     WHERE sequence_schema = 'public'
     LOOP
-        EXECUTE 'ALTER SEQUENCE public.' || quote_ident(r.sequence_name) || 
+        EXECUTE 'ALTER SEQUENCE public.' || quote_ident(r.sequence_name) ||
         ' OWNER TO new_user';
     END LOOP;
 END $$;
@@ -268,7 +278,7 @@ DO $$
 DECLARE
     r record;
 BEGIN
-    FOR r IN SELECT viewname FROM pg_views 
+    FOR r IN SELECT viewname FROM pg_views
     WHERE schemaname = 'public' AND viewowner = 'postgres'
     LOOP
         EXECUTE 'ALTER VIEW public.' || quote_ident(r.viewname) || ' OWNER TO new_user';
@@ -293,15 +303,15 @@ GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO new_user;
 GRANT REFERENCES ON ALL TABLES IN SCHEMA public TO new_user;
 --- for future tables:
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT REFERENCES ON TABLES TO new_user;
---- grant to all existing tables, including: SELECT, INSERT, UPDATE, 
+--- grant to all existing tables, including: SELECT, INSERT, UPDATE,
 --- DELETE, TRUNCATE, REFERENCES, TRIGGER:
 GRANT ALL ON ALL TABLES IN SCHEMA public TO new_user;
 --- or grant to all future tables more selectively:
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO testuser;
 ```
 
-
 Note that to remove this user, one needs to:
+
 ```sql
 REASSIGN OWNED BY new_user TO postgres;
 ```
