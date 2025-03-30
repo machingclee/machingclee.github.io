@@ -157,13 +157,13 @@ Note that we set the `ok-action` and `ok-text` here. Which under the hood update
 As in the `AddUserModal` we slightly change the siguature:
 
 ```tsx
-export default function AddUserModal(props: AliceModalProps & { someValue: string }) {
+export default function AddUserModal(props: CustsomModalProps & { someValue: string }) {
 ```
 now we inject our props by
 ```tsx
-<AliceModalTrigger modalContent={props => <AddUserModal {...props} someValue="Hello" />}>
+<CustsomModalTrigger modalContent={props => <AddUserModal {...props} someValue="Hello" />}>
     <Button type="primary">Add Staff</Button>
-</AliceModalTrigger>
+</CustsomModalTrigger>
 ```
 
 
@@ -175,17 +175,17 @@ import { Button, Modal } from 'antd';
 import { BaseButtonProps } from 'antd/es/button/button';
 import { ReactNode, useRef, useState } from 'react';
 
-export type CustomModalProps = {
+export type CustsomModalProps = {
     setOnOk: (action: Action) => void;
     setOkText: (text: string) => void;
 };
 
 type Action = () => void | Promise<void>;
 
-const CustomModalTrigger = (props: {
+const CustsomModalTrigger = (props: {
     modalClassName?: string;
     okButtonType?: BaseButtonProps['type'];
-    modalContent: (props: CustomModalProps) => ReactNode;
+    modalContent: (props: CustsomModalProps) => ReactNode;
     children: ReactNode;
 }) => {
     const { okButtonType = 'primary' } = props;
@@ -213,6 +213,7 @@ const CustomModalTrigger = (props: {
                 {props.children}
             </div>
             <Modal
+                destroyOnClose={true}
                 styles={{
                     content: {
                         maxHeight: '80vh',
@@ -250,7 +251,7 @@ const CustomModalTrigger = (props: {
                             }
                         }}
                     >
-                        Submit
+                        {modalRef.current.okText}
                     </Button>,
                 ]}
             >
@@ -263,5 +264,5 @@ const CustomModalTrigger = (props: {
     );
 };
 
-export default CustomModalTrigger;
+export default CustsomModalTrigger;
 ```

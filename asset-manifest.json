@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.4cf52b72.chunk.css",
-    "main.js": "/static/js/main.bc08a5b1.chunk.js",
+    "main.js": "/static/js/main.73765075.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.acf56251.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.236a1cf0.chunk.js": "/static/js/2.236a1cf0.chunk.js",
@@ -368,7 +368,7 @@
     "static/media/376-useQuery-and-thunkactions.md": "/static/media/376-useQuery-and-thunkactions.d2ec2b04.md",
     "static/media/377-Websocket-API-without-socketio.md": "/static/media/377-Websocket-API-without-socketio.9c2696c7.md",
     "static/media/378-Websocket-API-without-socket.md": "/static/media/378-Websocket-API-without-socket.b34d2010.md",
-    "static/media/379-modals.md": "/static/media/379-modals.c5e68a7e.md",
+    "static/media/379-modals.md": "/static/media/379-modals.49523fad.md",
     "static/media/CV_Portfolio.680379f4.pdf": "/static/media/CV_Portfolio.680379f4.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -422,6 +422,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.236a1cf0.chunk.js",
     "static/css/main.4cf52b72.chunk.css",
-    "static/js/main.bc08a5b1.chunk.js"
+    "static/js/main.73765075.chunk.js"
   ]
 }
