@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.4cf52b72.chunk.css",
-    "main.js": "/static/js/main.73765075.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.acf56251.js",
+    "main.js": "/static/js/main.57e6348d.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.c996b952.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.236a1cf0.chunk.js": "/static/js/2.236a1cf0.chunk.js",
-    "static/js/3.6951641a.chunk.js": "/static/js/3.6951641a.chunk.js",
-    "static/js/4.c60e4831.chunk.js": "/static/js/4.c60e4831.chunk.js",
-    "static/js/5.976873c1.chunk.js": "/static/js/5.976873c1.chunk.js",
+    "static/js/2.76fa5aa4.chunk.js": "/static/js/2.76fa5aa4.chunk.js",
+    "static/js/3.cc53a074.chunk.js": "/static/js/3.cc53a074.chunk.js",
+    "static/js/4.f41230a6.chunk.js": "/static/js/4.f41230a6.chunk.js",
+    "static/js/5.d1eaac06.chunk.js": "/static/js/5.d1eaac06.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.236a1cf0.chunk.js.LICENSE.txt": "/static/js/2.236a1cf0.chunk.js.LICENSE.txt",
-    "static/js/3.6951641a.chunk.js.LICENSE.txt": "/static/js/3.6951641a.chunk.js.LICENSE.txt",
-    "static/js/4.c60e4831.chunk.js.LICENSE.txt": "/static/js/4.c60e4831.chunk.js.LICENSE.txt",
+    "static/js/2.76fa5aa4.chunk.js.LICENSE.txt": "/static/js/2.76fa5aa4.chunk.js.LICENSE.txt",
+    "static/js/3.cc53a074.chunk.js.LICENSE.txt": "/static/js/3.cc53a074.chunk.js.LICENSE.txt",
+    "static/js/4.f41230a6.chunk.js.LICENSE.txt": "/static/js/4.f41230a6.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.52b1ef07.md",
     "static/media/002-Lazy-React-Router.md": "/static/media/002-Lazy-React-Router.48295ca9.md",
@@ -368,7 +368,8 @@
     "static/media/376-useQuery-and-thunkactions.md": "/static/media/376-useQuery-and-thunkactions.d2ec2b04.md",
     "static/media/377-Websocket-API-without-socketio.md": "/static/media/377-Websocket-API-without-socketio.9c2696c7.md",
     "static/media/378-Websocket-API-without-socket.md": "/static/media/378-Websocket-API-without-socket.b34d2010.md",
-    "static/media/379-modals.md": "/static/media/379-modals.49523fad.md",
+    "static/media/379-modals.md": "/static/media/379-modals.77bfdf1d.md",
+    "static/media/380-lambda-client.md": "/static/media/380-lambda-client.2d3ec7ac.md",
     "static/media/CV_Portfolio.680379f4.pdf": "/static/media/CV_Portfolio.680379f4.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -418,10 +419,10 @@
     "static/media/transformer-date-fomatter.18a2d3fc.pdf": "/static/media/transformer-date-fomatter.18a2d3fc.pdf"
   },
   "entrypoints": [
-    "static/js/runtime-main.acf56251.js",
+    "static/js/runtime-main.c996b952.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.236a1cf0.chunk.js",
+    "static/js/2.76fa5aa4.chunk.js",
     "static/css/main.4cf52b72.chunk.css",
-    "static/js/main.73765075.chunk.js"
+    "static/js/main.57e6348d.chunk.js"
   ]
 }

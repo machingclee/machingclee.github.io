@@ -1,0 +1,200 @@
+---
+title: "Lambda Client"
+date: 2025-04-01
+id: blog0380
+tag: aws, lambda, serverless
+toc: true
+intro: "It is very common to have lamdba function being called by another function. This time we study two kind of lambda function to be invoked, one is snapstarted springboot lambda function, another is an ordinary console simplest lambda function."
+---
+
+<style>
+  video {
+    border-radius: 4px
+  }
+  img {
+    max-width: 660px;
+  }
+</style>
+
+#### Use case
+
+Sometimes our lambda function must be set into VPC (assigning security group and private subnets to the lambda configuration) in order to
+
+- access VPC-specific resources such as RDS-proxy;
+- or access other internal-loadbalanced endpoints that is projected physically from outside.
+
+However, it is hard to call non-VPC resources inside of VPC-lambdas, such as accessing websocket-api of API-Gateway as we will need VPC-endpoint to reach it.
+
+Many policies might be attached to make "internal invokation" working. On the other hand, there is almost no policy needed for public lambdas to access non-VPC resources. Therefore inside of a private lambda there is a standard trick to execute another "public lambda" using **_client-lambda_**.
+
+#### Client-Lambda
+
+##### How to invoke snap-started springboot lambda function
+
+###### Using Nodejs
+
+Supose that the function name `billie-ms-notification-dev-v2-api` represents a snap-started lambda function executing a springboot application. Now let's try to invoke the `/ping` API via another resources.
+
+The `/ping` API returns the following via loadbalancer:
+
+![](/assets/img/2025-04-02-03-08-06.png)
+
+In the following we will invoke the endpoing `/ping` inside of a private (i.e., sit in private subnets) ECS instance written in nodejs, but we can translate the following to any other language with corresponding `client-lambda` library.
+
+The result:
+
+![](/assets/img/2025-04-02-03-18-21.png)
+
+```js
+import express from "express";
+import { InvokeCommand, LambdaClient, ListLayersCommand } from "@aws-sdk/client-lambda";
+const lambdaRouter = express.Router();
+
+lambdaRouter.get("/test", async (req, res) => {
+    const client = new LambdaClient({ region: process.env.FILE_SYNC_BUCKET_REGION });
+
+    const apiGatewayEvent = {
+        httpMethod: "GET",
+        path: "/ping",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        requestContext: {
+            identity: {
+                sourceIp: "127.0.0.1"
+            },
+            stage: "dev"
+        }
+    };
+
+    const command = new InvokeCommand({
+        FunctionName: "billie-ms-notification-dev-v2-api",
+        Payload: JSON.stringify(apiGatewayEvent),
+        InvocationType: "RequestResponse"
+    });
+
+    const response = await client.send(command);
+    let response_ = null
+    if (response.Payload) {
+        response_ = JSON.parse((JSON.parse(Buffer.from(response.Payload).toString('utf-8'))?.body as string) || "{}")
+    }
+    res.json({ success: true, result: response_ })
+})
+
+export default lambdaRouter;
+```
+
+##### How to invoke ordinary console lambda function
+
+Assume that we have a standard lambda function in AWS console:
+
+```js
+// function_name: forward-websocket-api
+
+export const handler = async (event) => {
+  console.log("this is the event:", event);
+  return { statusCode: 200, body: "Connected." };
+};
+```
+
+We are trying to invoke this lambda function inside of a kotlin application:
+
+###### Using Kotlin and Springboot
+
+Let's add the following in `build.gradle.kts`:
+
+```kts
+    implementation("software.amazon.awssdk:lambda:2.20.45")
+    implementation("software.amazon.awssdk:core:2.20.45")
+```
+
+Now we create a simple endpoint to trigger the invokation to the above lambda function:
+
+```kotlin
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
+import software.amazon.awssdk.core.SdkBytes
+import software.amazon.awssdk.regions.Region
+import software.amazon.awssdk.services.lambda.LambdaClient
+import software.amazon.awssdk.services.lambda.model.InvokeRequest
+
+
+@Configuration
+class LambdaClientConfig(
+    @Value("\${aws.region}")
+    val awsRegion: String
+) {
+    @Bean
+    fun createLambdaClient(): LambdaClient {
+        val lambdaClient = LambdaClient.builder()
+            .region(Region.of(awsRegion))
+            .build()
+        return lambdaClient
+    }
+}
+
+@RestController
+@RequestMapping("/lambda")
+class LambdaController(
+    private val lambdaClient: LambdaClient
+) {
+
+    @GetMapping("/test")
+    fun test() {
+        val payload = """
+        {
+            "message": "Hello from Kotlin",
+            "timestamp": ${System.currentTimeMillis()},
+            "data": {
+                "key1": "value1",
+                "key2": 42
+            }
+        }
+    """.trimIndent()
+
+        val invokeRequest = InvokeRequest.builder()
+            .functionName("forward-websocket-api")
+            .payload(SdkBytes.fromUtf8String(payload))
+            .invocationType("RequestResponse")
+            .build()
+
+        val response = lambdaClient.invoke(invokeRequest)
+        println(response)
+
+        if (response.payload() != null) {
+            val responsePayload = response.payload().asUtf8String()
+            println("Response: $responsePayload")
+        }
+    }
+}
+```
+
+###### Handler event received
+
+And from cloudwatch the result is:
+
+```js
+this is the event: {
+  message: 'Hello from Kotlin',
+  timestamp: 1743533725690,
+  data: { key1: 'value1', key2: 42 }
+}
+```
+
+This is exactly what we have written in the payload json string.
+
+##### Policy attched on invoker
+
+Assume that an invoker try to invoke a lambda function with function name, let's say `billie-ms-notification-dev-v2-api`, then we need to add the inline-policy into the IAM role of the invoker:
+
+```json
+{
+  "Action": "lambda:InvokeFunction",
+  "Effect": "Allow",
+  "Resource": "arn:aws:lambda:ap-southeast-2:798404461798:function:billie-ms-notification-dev-v2-api"
+}
+```

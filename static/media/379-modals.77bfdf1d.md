@@ -16,8 +16,6 @@ intro: "Creation of modal is always a tedious task. We can create modal easily b
   }
 </style>
 
-
-
 #### Usage Example
 
 ```tsx{3-5}
@@ -30,10 +28,9 @@ intro: "Creation of modal is always a tedious task. We can create modal easily b
 ...
 ```
 
-And the resulting modal: 
+And the resulting modal:
 
 ![](/assets/img/2025-03-31-00-14-36.png)
-
 
 #### The Concret `AddUserModal` Example
 
@@ -41,8 +38,8 @@ We will be defining `CustomModalProps` in the next section, for reference we cop
 
 ```tsx
 type CustomModalProps = {
-    setOnOk: (action: Action) => void;
-    setOkText: (text: string) => void;
+  setOnOk: (action: Action) => void;
+  setOkText: (text: string) => void;
 };
 ```
 
@@ -87,7 +84,9 @@ export default function AddUserModal(props: CustomModalProps) {
     setOnOk(submit);
     setOkText('Submit');
 ```
-Note that we set the `ok-action` and `ok-text` here. Which under the hood update the value created by `useRef` in the modal created by our custom trigger. We ***would not*** do `useState` because that will definitely cause recurrsive rendering loop.
+
+Note that we set the `ok-action` and `ok-text` here. Which under the hood update the value created by `useRef` in the modal created by our custom trigger. We **_would not_** do `useState` because that will definitely cause recurrsive rendering loop.
+
 ```tsx
     return (
         <Box
@@ -152,6 +151,7 @@ Note that we set the `ok-action` and `ok-text` here. Which under the hood update
     );
 }
 ```
+
 #### Modal with more Custom Props
 
 As in the `AddUserModal` we slightly change the siguature:
@@ -159,109 +159,115 @@ As in the `AddUserModal` we slightly change the siguature:
 ```tsx
 export default function AddUserModal(props: CustsomModalProps & { someValue: string }) {
 ```
+
 now we inject our props by
+
 ```tsx
-<CustsomModalTrigger modalContent={props => <AddUserModal {...props} someValue="Hello" />}>
-    <Button type="primary">Add Staff</Button>
+<CustsomModalTrigger
+  modalContent={(props) => <AddUserModal {...props} someValue="Hello" />}
+>
+  <Button type="primary">Add Staff</Button>
 </CustsomModalTrigger>
 ```
-
-
 
 #### Code Implementation of CustomModalTrigger
 
 ```tsx
-import { Button, Modal } from 'antd';
-import { BaseButtonProps } from 'antd/es/button/button';
-import { ReactNode, useRef, useState } from 'react';
+import { Button, Modal } from "antd";
+import { BaseButtonProps } from "antd/es/button/button";
+import { ReactNode, useRef, useState } from "react";
 
 export type CustsomModalProps = {
-    setOnOk: (action: Action) => void;
-    setOkText: (text: string) => void;
+  setOnOk: (action: Action) => void;
+  setOkText: (text: string) => void;
 };
 
 type Action = () => void | Promise<void>;
 
-const CustsomModalTrigger = (props: {
-    modalClassName?: string;
-    okButtonType?: BaseButtonProps['type'];
-    modalContent: (props: CustsomModalProps) => ReactNode;
-    children: ReactNode;
+const CustomModalTrigger = (props: {
+  style?: CSSProperties;
+  modalClassName?: string;
+  okButtonType?: BaseButtonProps["type"];
+  modalContent: (props: CustomModalProps) => ReactNode;
+  children: ReactNode;
 }) => {
-    const { okButtonType = 'primary' } = props;
-    const [loading, setLoading] = useState(false);
-    const [open, setOpen] = useState(false);
+  const { okButtonType = "primary", style } = props;
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
 
-    const modalRef = useRef<{
-        okText: string;
-        onOk: Action;
-    }>({
-        okText: 'Ok',
-        onOk: () => {},
-    });
+  const modalRef = useRef<{
+    okText: string;
+    onOk: Action;
+  }>({
+    okText: "Ok",
+    onOk: () => {},
+  });
 
-    const setOkText = (text: string) => {
-        modalRef.current.okText = text;
-    };
-    const setOnOk = (action: Action) => {
-        modalRef.current.onOk = action;
-    };
+  const setOkText = (text: string) => {
+    modalRef.current.okText = text;
+  };
+  const setOnOk = (action: Action) => {
+    modalRef.current.onOk = action;
+  };
 
-    return (
-        <>
-            <div style={{ display: 'inline-block' }} onClick={() => setOpen(true)}>
-                {props.children}
-            </div>
-            <Modal
-                destroyOnClose={true}
-                styles={{
-                    content: {
-                        maxHeight: '80vh',
-                        maxWidth: '60vw',
-                        overflowY: 'scroll',
-                    },
-                }}
-                open={open}
-                className={props.modalClassName}
-                centered
-                closable={false}
-                onCancel={() => {
-                    setOpen(false);
-                }}
-                onClose={() => {
-                    setOpen(false);
-                }}
-                okText={modalRef.current.okText}
-                footer={[
-                    <Button key="back" onClick={() => setOpen(false)}>
-                        Cancel
-                    </Button>,
-                    <Button
-                        key="submit"
-                        type={okButtonType}
-                        loading={loading}
-                        onClick={async () => {
-                            try {
-                                setLoading(true);
-                                await modalRef.current.onOk();
-                                console.log('closing it');
-                                setOpen(false);
-                            } finally {
-                                setLoading(false);
-                            }
-                        }}
-                    >
-                        {modalRef.current.okText}
-                    </Button>,
-                ]}
-            >
-                {props.modalContent({
-                    setOkText,
-                    setOnOk,
-                })}
-            </Modal>
-        </>
-    );
+  return (
+    <>
+      <div
+        style={{ display: "inline-block", ...style }}
+        onClick={() => setOpen(true)}
+      >
+        {props.children}
+      </div>
+      <Modal
+        destroyOnClose={true}
+        styles={{
+          content: {
+            maxHeight: "80vh",
+            maxWidth: "60vw",
+            overflowY: "scroll",
+          },
+        }}
+        open={open}
+        className={props.modalClassName}
+        centered
+        closable={false}
+        onCancel={() => {
+          setOpen(false);
+        }}
+        onClose={() => {
+          setOpen(false);
+        }}
+        okText={modalRef.current.okText}
+        footer={[
+          <Button key="back" onClick={() => setOpen(false)}>
+            Cancel
+          </Button>,
+          <Button
+            key="submit"
+            type={okButtonType}
+            loading={loading}
+            onClick={async () => {
+              try {
+                setLoading(true);
+                await modalRef.current.onOk();
+                console.log("closing it");
+                setOpen(false);
+              } finally {
+                setLoading(false);
+              }
+            }}
+          >
+            {modalRef.current.okText}
+          </Button>,
+        ]}
+      >
+        {props.modalContent({
+          setOkText,
+          setOnOk,
+        })}
+      </Modal>
+    </>
+  );
 };
 
 export default CustsomModalTrigger;
