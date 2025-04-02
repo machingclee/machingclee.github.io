@@ -39,11 +39,11 @@ The `/ping` API returns the following via loadbalancer:
 
 ![](/assets/img/2025-04-02-03-08-06.png)
 
-In the following we will invoke the endpoing `/ping` inside of a private (i.e., sit in private subnets) ECS instance written in nodejs, but we can translate the following to any other language with corresponding `client-lambda` library.
-
-The result:
+In the following we will create an endpoint in a private nodejs instance (an ECS instance written in nodejs assigned in private subnets), with a nodejs endpoint `/lambda/test` invoking the springboot endpoing `/ping`, the final result after the invokation (no matter the springboot is private or not, as long as it is a lambda function):
 
 ![](/assets/img/2025-04-02-03-18-21.png)
+
+The script for the lambda invokation:
 
 ```js
 import express from "express";
@@ -84,6 +84,8 @@ lambdaRouter.get("/test", async (req, res) => {
 export default lambdaRouter;
 ```
 
+Note that this is language-agnostic, you can translate this same code to other language with their `client-lambda` library.
+
 ##### How to invoke ordinary console lambda function
 
 Assume that we have a standard lambda function in AWS console:
@@ -97,7 +99,7 @@ export const handler = async (event) => {
 };
 ```
 
-We are trying to invoke this lambda function inside of a kotlin application:
+We are trying to invoke this lambda function inside of a Kotlin application:
 
 ###### Using Kotlin and Springboot
 
@@ -187,9 +189,9 @@ this is the event: {
 
 This is exactly what we have written in the payload json string.
 
-##### Policy attched on invoker
+##### Policy attached to invoker
 
-Assume that an invoker try to invoke a lambda function with function name, let's say `billie-ms-notification-dev-v2-api`, then we need to add the inline-policy into the IAM role of the invoker:
+Assume that an invoker tries to invoke a lambda function `billie-ms-notification-dev-v2-api`, then we need to add the inline-policy into the IAM role **_of the invoker_**:
 
 ```json
 {

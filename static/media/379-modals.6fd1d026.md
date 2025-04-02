@@ -43,7 +43,7 @@ type CustomModalProps = {
 };
 ```
 
-```tsx{38,39}
+```tsx-1{38,39}
 export default function AddUserModal(props: CustomModalProps) {
     const { setOnOk: setOnOk, setOkText } = props;
     const dispatch = useAppDispatch();
@@ -87,7 +87,7 @@ export default function AddUserModal(props: CustomModalProps) {
 
 Note that we set the `ok-action` and `ok-text` here. Which under the hood update the value created by `useRef` in the modal created by our custom trigger. We **_would not_** do `useState` because that will definitely cause recurrsive rendering loop.
 
-```tsx
+```tsx-40
     return (
         <Box
             style={{
@@ -169,6 +169,8 @@ now we inject our props by
   <Button type="primary">Add Staff</Button>
 </CustsomModalTrigger>
 ```
+
+This is very helpful if our modal needs to be dynamic to some state of the current page.
 
 #### Code Implementation of CustomModalTrigger
 
