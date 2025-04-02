@@ -177,7 +177,16 @@ class LambdaController(
 
 ###### Handler event received
 
-And from cloudwatch the result is:
+Suppose the above lambda `/lambda/test` gets executed, then from our lambda handler:
+
+```js{2}
+export const handler = async (event) => {
+  console.log("this is the event:", event);
+  return { statusCode: 200, body: "Connected." };
+};
+```
+
+We can observe from cloudwatch that the result is:
 
 ```js
 this is the event: {
@@ -187,7 +196,90 @@ this is the event: {
 }
 ```
 
-This is exactly what we have written in the payload json string.
+Therefore the `payload` in `InvokeRequest` (from Kotlin endpoint) is exactly our `event` object.
+
+Although unclear from the cloudwatch log, this `event` is actually a **_string_**. In the next example we will `JSON.parse()` it in order to destructure the values.
+
+##### Example from WebsocketAPI of ApiGateway
+
+###### Kotlin Side
+
+```kotlin
+data class PreProxyRequest(
+    val connectionId: String,
+    val data: Any
+)
+
+@Component
+class ApiGatewayProxyClient(
+    @Value("\${socket.endpoint}")
+    private val socketEndpoint: String,
+    @Value("\${websocket-api-proxy.function-name}")
+    private val apiSocketProxyFunctionName: String,
+    private val proxyLambdaClient: LambdaClient,
+    private val gson: Gson
+) {
+    private val logger = KotlinLogging.logger {}
+
+    fun send(request: PreProxyRequest) {
+        val payload = gson.toJson(ProxyRequest(endpoint = socketEndpoint,
+                                               connectionId = request.connectionId,
+                                               data = request.data))
+        val payloadJsonStr = gson.toJson(payload)
+        val invokeRequest = InvokeRequest.builder()
+            .functionName(apiSocketProxyFunctionName)
+            .payload(SdkBytes.fromUtf8String(payloadJsonStr))
+            .invocationType("RequestResponse")
+            .build()
+
+        val response = proxyLambdaClient.invoke(invokeRequest)
+        if (response.payload() != null) {
+            val responsePayload = response.payload().asUtf8String()
+            logger.info { "Response: $responsePayload" }
+        }
+    }
+}
+```
+
+###### Nodejs lambda side
+
+Note that the `payload` of `InvokeRequest` is a stringified data with `endpoint`, `connectionId ` and `data`, we can parse it to destructure those values:
+
+```js{19}
+import {
+  ApiGatewayManagementApiClient,
+  PostToConnectionCommand,
+} from "@aws-sdk/client-apigatewaymanagementapi";
+
+const clientsCache = {};
+
+const getClient = (endpoint) => {
+  if (!clientsCache[endpoint]) {
+    clientsCache[endpoint] = new ApiGatewayManagementApiClient({
+      endpoint: endpoint,
+      region: process.env.AWS_REGION, // Lambda automatically provides this environment variable
+    });
+  }
+  return clientsCache[endpoint];
+};
+
+export const handler = async (event) => {
+  const { endpoint, connectionId, data } = JSON.parse(event);
+  const client = getClient(endpoint);
+
+  const command = new PostToConnectionCommand({
+    ConnectionId: connectionId,
+    Data: Buffer.from(JSON.stringify(data)),
+  });
+
+  await client.send(command);
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ message: "Message sent successfully" }),
+  };
+};
+```
 
 ##### Policy attached to invoker
 
