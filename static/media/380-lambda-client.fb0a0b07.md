@@ -4,7 +4,7 @@ date: 2025-04-01
 id: blog0380
 tag: aws, lambda, serverless
 toc: true
-intro: "It is very common to have lamdba function being called by another function. This time we study two kind of lambda function to be invoked, one is snapstarted springboot lambda function, another is an ordinary console simplest lambda function."
+intro: "It is very common to have lamdba function being called by another function. This time we study two kinds of lambda functions to be invoked, one is snapstarted springboot lambda function, another one is an ordinary console lambda function."
 ---
 
 <style>
