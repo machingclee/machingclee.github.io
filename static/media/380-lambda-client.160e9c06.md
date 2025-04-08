@@ -21,7 +21,7 @@ intro: "It is very common to have lamdba function being called by another functi
 Sometimes our lambda function must be set into VPC (assigning security group and private subnets to the lambda configuration) in order to
 
 - access VPC-specific resources such as RDS-proxy;
-- or access other internal-loadbalanced endpoints that is projected physically from outside.
+- or access other internal-loadbalanced endpoints that is protected physically from outside.
 
 However, it is hard to call non-VPC resources inside of VPC-lambdas, such as accessing websocket-api of API-Gateway as we will need VPC-endpoint to reach it.
 
