@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.4cf52b72.chunk.css",
-    "main.js": "/static/js/main.737931a3.chunk.js",
+    "main.js": "/static/js/main.667612df.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.0bd6539d.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.d7ff8295.chunk.js": "/static/js/2.d7ff8295.chunk.js",
@@ -369,7 +369,7 @@
     "static/media/377-Websocket-API-without-socketio.md": "/static/media/377-Websocket-API-without-socketio.9c2696c7.md",
     "static/media/378-Websocket-API-without-socket.md": "/static/media/378-Websocket-API-without-socket.b34d2010.md",
     "static/media/379-modals.md": "/static/media/379-modals.6fd1d026.md",
-    "static/media/380-lambda-client.md": "/static/media/380-lambda-client.160e9c06.md",
+    "static/media/380-lambda-client.md": "/static/media/380-lambda-client.f69d0cdb.md",
     "static/media/381-import-resources.md": "/static/media/381-import-resources.7b51b0e7.md",
     "static/media/382-terraform-modularization.md": "/static/media/382-terraform-modularization.40e05523.md",
     "static/media/383-lambda-self-invokation copy.md": "/static/media/383-lambda-self-invokation copy.79d292c1.md",
@@ -427,6 +427,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.d7ff8295.chunk.js",
     "static/css/main.4cf52b72.chunk.css",
-    "static/js/main.737931a3.chunk.js"
+    "static/js/main.667612df.chunk.js"
   ]
 }

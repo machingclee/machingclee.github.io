@@ -59,11 +59,16 @@ lambdaRouter.get("/test", async (req, res) => {
         headers: {
             "Content-Type": "application/json"
         },
+        // in post request:
+        // body: JSON.stringify({
+        //     // Your request body data here
+        //     key1: "value1",
+        //     key2: "value2"
+        // }),
         requestContext: {
             identity: {
                 sourceIp: "127.0.0.1"
-            },
-            stage: "dev"
+            }
         }
     };
 
