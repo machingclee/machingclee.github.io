@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.4cf52b72.chunk.css",
-    "main.js": "/static/js/main.667612df.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.0bd6539d.js",
+    "main.js": "/static/js/main.331e85c6.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.87039901.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.d7ff8295.chunk.js": "/static/js/2.d7ff8295.chunk.js",
-    "static/js/3.a0f29f29.chunk.js": "/static/js/3.a0f29f29.chunk.js",
-    "static/js/4.afef8013.chunk.js": "/static/js/4.afef8013.chunk.js",
-    "static/js/5.de636070.chunk.js": "/static/js/5.de636070.chunk.js",
+    "static/js/2.8f7e5814.chunk.js": "/static/js/2.8f7e5814.chunk.js",
+    "static/js/3.1779cb95.chunk.js": "/static/js/3.1779cb95.chunk.js",
+    "static/js/4.88b06ea2.chunk.js": "/static/js/4.88b06ea2.chunk.js",
+    "static/js/5.d36a906c.chunk.js": "/static/js/5.d36a906c.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.d7ff8295.chunk.js.LICENSE.txt": "/static/js/2.d7ff8295.chunk.js.LICENSE.txt",
-    "static/js/3.a0f29f29.chunk.js.LICENSE.txt": "/static/js/3.a0f29f29.chunk.js.LICENSE.txt",
-    "static/js/4.afef8013.chunk.js.LICENSE.txt": "/static/js/4.afef8013.chunk.js.LICENSE.txt",
+    "static/js/2.8f7e5814.chunk.js.LICENSE.txt": "/static/js/2.8f7e5814.chunk.js.LICENSE.txt",
+    "static/js/3.1779cb95.chunk.js.LICENSE.txt": "/static/js/3.1779cb95.chunk.js.LICENSE.txt",
+    "static/js/4.88b06ea2.chunk.js.LICENSE.txt": "/static/js/4.88b06ea2.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.52b1ef07.md",
     "static/media/002-Lazy-React-Router.md": "/static/media/002-Lazy-React-Router.48295ca9.md",
@@ -374,6 +374,7 @@
     "static/media/382-terraform-modularization.md": "/static/media/382-terraform-modularization.40e05523.md",
     "static/media/383-lambda-self-invokation copy.md": "/static/media/383-lambda-self-invokation copy.79d292c1.md",
     "static/media/384-google-login.md": "/static/media/384-google-login.20fda0b4.md",
+    "static/media/385-scheduling.md": "/static/media/385-scheduling.2c5eec8e.md",
     "static/media/CV_Portfolio.680379f4.pdf": "/static/media/CV_Portfolio.680379f4.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -423,10 +424,10 @@
     "static/media/transformer-date-fomatter.18a2d3fc.pdf": "/static/media/transformer-date-fomatter.18a2d3fc.pdf"
   },
   "entrypoints": [
-    "static/js/runtime-main.0bd6539d.js",
+    "static/js/runtime-main.87039901.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.d7ff8295.chunk.js",
+    "static/js/2.8f7e5814.chunk.js",
     "static/css/main.4cf52b72.chunk.css",
-    "static/js/main.667612df.chunk.js"
+    "static/js/main.331e85c6.chunk.js"
   ]
 }
