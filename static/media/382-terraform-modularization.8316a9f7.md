@@ -20,11 +20,11 @@ intro: "Discuss how to make our terraform project as DRY as possible."
 
 Although we might have
 
-- Modularized our resource by a logical group like `loadbalancer`, `networking`, `rds`, etc, and then
+- Modularized our resources by the logically grouped files like `loadbalancer.tf`, `networking.tf`, `rds.tf`, etc, and then;
 
-- Created all the related resources, policies, and even imported the `output`'s from one module to another for interaction between the boundaries of resources
+- Created all the related resources, policies, and even imported the `output`'s from one module to another one;
 
-We might be facing an **_intermediate situation_** like the following:
+We might still be facing an **_intermediate situation_** like the following:
 
 <a href="/assets/img/2025-04-09-02-43-45.png">
   <img src="/assets/img/2025-04-09-02-43-45.png" width="500" />
@@ -52,9 +52,9 @@ We might be facing an **_intermediate situation_** like the following:
 
 ##### Internal state transition
 
-Now problem arises, in the past we have `terraform apply`, aws resources are created and the aws resource ids are bound to our internal state.
+Now problem arises, in the past we have `terraform apply`-ed once, aws resources have been created and the aws resource ids have been bound to our internal state.
 
-The id of a resource in our internal state is created in the following manner, let's take a `networking` module as an example:
+An `id` in an internal state follows the following pattern, let's take a `networking` module as an example:
 
 ![](/assets/img/2025-04-09-03-07-14.png)
 
@@ -62,21 +62,21 @@ and in this module we have a resource:
 
 ![](/assets/img/2025-04-09-03-05-44.png)
 
-then in the internal state
+then terraform creates an `id` in the internal state
 
 <Example>
 <b>module.networking.aws_nat_gateway.main</b>
 </Example>
 
-becomes one of the ids that is bound to the aws resource id.
+and bind it to the aws resource id. The binding is saved in the terraform cloud.
 
 Now because of one more level of modularization, the new internal state id should be
 
 <Example>
-<b>module.billie.module.networking.aws_nat_gateway.main</b>
+module.billie.<b>module.networking.aws_nat_gateway.main</b>
 </Example>
 
-Namely, we simply prepend all the existing ids by `module.billie`. This can be achieved by:
+Namely, we simply prepend all the existing `id`'s by `module.billie`. This can be achieved by:
 
 ##### Transition script
 
@@ -101,6 +101,8 @@ echo "Migration completed!"
 echo "Run 'terraform plan' to verify the migration."
 ```
 
+Be patient about the process as each `terraform state mv` makes an API call to terraform cloud and each call takes 3 to 5 seconds.
+
 #### Critical Mistake to Avoid
 
 ##### Make sure to change the namespace
@@ -120,11 +122,11 @@ terraform {
 
 Otherwise we will remove the existing resources in `DEV` and create resources in `UAT`.
 
-#### Output After Re-Modularization
+#### Output After Further Modularization
 
 ##### New outputs.tf
 
-Before re-modularization we should have created a map that consists of all the value we wish to export:
+Before further modularization we should have created a map that consists of all the value we wish to export:
 
 ```hcl
 // application/billie/outputs.tf
@@ -167,7 +169,7 @@ output "config" {
 }
 ```
 
-Now in `environment/uat/outputs.tf` our target output is as simple as
+Now in `environment/uat/outputs.tf`, our new terraform output is as simple as
 
 ```hcl
 // environment/uat/outputs.tf
@@ -209,6 +211,8 @@ We get a `config.json` in `environment/uat`:
     ...
 }
 ```
+
+We can sync this `json` to a non-public s3-bucket and let a authentication-protected lambda accesses this `json` object.
 
 ##### Visualization of the resources
 

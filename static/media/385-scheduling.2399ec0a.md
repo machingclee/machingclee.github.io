@@ -22,6 +22,16 @@ intro: "Simple scheduling to our springboot lambda function's endpoint"
 
 ##### Create a Lambda Function and let the Schedule Triggers it
 
+Our execution flow involves the following steps:
+
+1. Scheduler triggers a lambda function in `js` written in the aws console.
+2. $\to$ This `js` lamdba invoke our springboot lambda via `client-lambda` sdk.
+3. $\to$ Springboot lambda handles the task.
+
+**Remark 1.** This springboot lamdba can be **_sheerly internal_**, meaning that this is simply a function and not exposed to the public via api-gateway nor via load-balancer.
+
+**Remark 2.** Unless our springboot lambda is also exposed to the public, we can add signature to the payload sent from `js` lambda to `springboot` lamdba (by using the **_same_** secret in both ends). For simplicity in this article we simply send a `GET` request to an endpoint.
+
 ```js{12}
 import {
   InvokeCommand,
