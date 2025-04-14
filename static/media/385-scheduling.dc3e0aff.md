@@ -1,6 +1,6 @@
 ---
 title: "Amazon EventBridge Schedule to Trigger Springboot Endpoint"
-date: 2025-04-14
+date: 2025-04-13
 id: blog0385
 tag: aws
 toc: true

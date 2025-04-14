@@ -2,7 +2,7 @@
 title: "Generate Excel by Openpyxl"
 date: 2023-10-20
 id: blog0199
-tag: python, openpyxl
+tag: python, openpyxl, excel
 intro: "We implement a reusable utility class that handle most of the jobs in creating excel programmatically."
 toc: true
 ---

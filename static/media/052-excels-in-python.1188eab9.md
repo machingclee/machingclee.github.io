@@ -2,7 +2,7 @@
 title: Two Methods to Read Excel Files in Python
 date: 2022-03-24
 id: blog052
-tag: python
+tag: python, excel
 intro: Record two methods to read excel files in Python
 ---
 

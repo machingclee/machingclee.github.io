@@ -1,6 +1,6 @@
 ---
 title: "Policy for  Self-Invokation Right for Lambda Functions"
-date: 2025-04-13
+date: 2025-04-11
 id: blog0383
 tag: lambda, aws, serverless
 toc: true
