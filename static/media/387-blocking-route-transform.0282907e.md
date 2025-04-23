@@ -22,7 +22,7 @@ export default function SomePage() {
   const hasUpdate = useAppSelector((s) => s.someDomain.hasUpdate);
 ```
 
-Here we control whether a trasffic should be blocked by a state variable. Then we plug this into our `useBlocker` hook:
+Here we control whether a traffic should be blocked by a state variable. Then we plug this into our `useBlocker` hook:
 
 ```tsx-4{4}
   useBlocker(({ currentLocation, nextLocation }) => {
