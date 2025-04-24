@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.4cf52b72.chunk.css",
-    "main.js": "/static/js/main.6c0846bd.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.37ac5438.js",
+    "main.js": "/static/js/main.c7f55d12.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.e70cce63.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.0b4e89ee.chunk.js": "/static/js/2.0b4e89ee.chunk.js",
-    "static/js/3.738cc60e.chunk.js": "/static/js/3.738cc60e.chunk.js",
-    "static/js/4.a9e0b814.chunk.js": "/static/js/4.a9e0b814.chunk.js",
-    "static/js/5.11517566.chunk.js": "/static/js/5.11517566.chunk.js",
+    "static/js/2.d2f793b2.chunk.js": "/static/js/2.d2f793b2.chunk.js",
+    "static/js/3.8256806d.chunk.js": "/static/js/3.8256806d.chunk.js",
+    "static/js/4.2fcdb5cf.chunk.js": "/static/js/4.2fcdb5cf.chunk.js",
+    "static/js/5.44ea3783.chunk.js": "/static/js/5.44ea3783.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.0b4e89ee.chunk.js.LICENSE.txt": "/static/js/2.0b4e89ee.chunk.js.LICENSE.txt",
-    "static/js/3.738cc60e.chunk.js.LICENSE.txt": "/static/js/3.738cc60e.chunk.js.LICENSE.txt",
-    "static/js/4.a9e0b814.chunk.js.LICENSE.txt": "/static/js/4.a9e0b814.chunk.js.LICENSE.txt",
+    "static/js/2.d2f793b2.chunk.js.LICENSE.txt": "/static/js/2.d2f793b2.chunk.js.LICENSE.txt",
+    "static/js/3.8256806d.chunk.js.LICENSE.txt": "/static/js/3.8256806d.chunk.js.LICENSE.txt",
+    "static/js/4.2fcdb5cf.chunk.js.LICENSE.txt": "/static/js/4.2fcdb5cf.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.52b1ef07.md",
     "static/media/002-Lazy-React-Router.md": "/static/media/002-Lazy-React-Router.48295ca9.md",
@@ -369,14 +369,15 @@
     "static/media/377-Websocket-API-without-socketio.md": "/static/media/377-Websocket-API-without-socketio.9c2696c7.md",
     "static/media/378-Websocket-API-without-socket.md": "/static/media/378-Websocket-API-without-socket.b34d2010.md",
     "static/media/379-modals.md": "/static/media/379-modals.6fd1d026.md",
-    "static/media/380-lambda-client.md": "/static/media/380-lambda-client.f69d0cdb.md",
+    "static/media/380-lambda-client.md": "/static/media/380-lambda-client.88b98756.md",
     "static/media/381-import-resources.md": "/static/media/381-import-resources.7b51b0e7.md",
     "static/media/382-terraform-modularization.md": "/static/media/382-terraform-modularization.8316a9f7.md",
-    "static/media/383-lambda-self-invokation copy.md": "/static/media/383-lambda-self-invokation copy.f39f6efb.md",
+    "static/media/383-lambda-self-invokation copy.md": "/static/media/383-lambda-self-invokation copy.ef6a97d7.md",
     "static/media/384-google-login.md": "/static/media/384-google-login.20fda0b4.md",
     "static/media/385-scheduling.md": "/static/media/385-scheduling.dc3e0aff.md",
     "static/media/386-transform-xlsx.md": "/static/media/386-transform-xlsx.a3587c32.md",
     "static/media/387-blocking-route-transform.md": "/static/media/387-blocking-route-transform.0282907e.md",
+    "static/media/388-multiple-env-in-nodejs-lambda.md": "/static/media/388-multiple-env-in-nodejs-lambda.f283abeb.md",
     "static/media/CV_Portfolio.680379f4.pdf": "/static/media/CV_Portfolio.680379f4.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -426,10 +427,10 @@
     "static/media/transformer-date-fomatter.18a2d3fc.pdf": "/static/media/transformer-date-fomatter.18a2d3fc.pdf"
   },
   "entrypoints": [
-    "static/js/runtime-main.37ac5438.js",
+    "static/js/runtime-main.e70cce63.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.0b4e89ee.chunk.js",
+    "static/js/2.d2f793b2.chunk.js",
     "static/css/main.4cf52b72.chunk.css",
-    "static/js/main.6c0846bd.chunk.js"
+    "static/js/main.c7f55d12.chunk.js"
   ]
 }

@@ -184,8 +184,9 @@ class LambdaController(
 
 Suppose the above lambda `/lambda/test` gets executed, then from our lambda handler:
 
-```js{2}
+```js{3}
 export const handler = async (event) => {
+  // caution: this event is a string, we need to JSON.parse() it for regular use.
   console.log("this is the event:", event);
   return { statusCode: 200, body: "Connected." };
 };
@@ -203,7 +204,9 @@ this is the event: {
 
 Therefore the `payload` in `InvokeRequest` (from Kotlin endpoint) is exactly our `event` object.
 
-Although unclear from the cloudwatch log, this `event` is actually a **_string_**. In the next example we will `JSON.parse()` it in order to destructure the values.
+###### Serious Warning to the `event` object in lambda receiver
+
+Although unclear from the cloudwatch log, this `event` is actually a **_string_**. We will need to `JSON.parse(event)` for any regular use.
 
 ##### Example from WebsocketAPI of ApiGateway
 
