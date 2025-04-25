@@ -1,6 +1,6 @@
 ---
 title: '"In-line" Policies via Serverless.yml: ① Self-Invokation ② s3 GetObject'
-date: 2025-04-24
+date: 2025-04-20
 id: blog0383
 tag: lambda, aws, serverless
 toc: true

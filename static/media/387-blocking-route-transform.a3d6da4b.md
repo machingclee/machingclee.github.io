@@ -1,6 +1,6 @@
 ---
 title: "`useBlocker` hook to Block the Change of Route for Unsaved Update"
-date: 2025-04-23
+date: 2025-04-22
 id: blog0387
 tag: react
 toc: false
