@@ -1,8 +1,8 @@
 ---
-title: Multiple ENV Files for Nodejs Lambda Functions
+title: Multiple ENV Files Management and Serverless.yml Configuration to load Multiple ENV files into Lambda Functions
 date: 2025-04-24
 id: blog0388
-tag: serverless, nodejs
+tag: serverless, nodejs, env
 toc: true
 intro: "Record `jsonParser` and special serverless plugins to intake multiple env files in a deployment."
 ---
@@ -17,6 +17,8 @@ intro: "Record `jsonParser` and special serverless plugins to intake multiple en
 </style>
 
 #### Usual Pattern for Multiple ENV Files
+
+##### Shared credentials via private repository
 
 Inspired from spring boot project, a natural organization of env files in nodejs would be
 
@@ -46,12 +48,42 @@ which tells spring boot to consume `application.yml` + `application-{a,b,c}.yml`
 
 This is proven to be a nice pattern, whenever we want to debug, just add a git-ignored `.env.local.json` env file that is **_not visible_** to any one.
 
+##### Pull credentials via shell script
+
+###### Example from Expo Project (React-Native)
+
+This is more secure but requires additional setup. A typical example in this approach is **_expo-backed_** mobile project.
+
+```json
+  "scripts": {
+    "env:pull:dev": "eas env:pull --environment development --non-interactive",
+    "env:pull:uat": "eas env:pull --environment preview --non-interactive",
+    "env:pull:prod": "eas env:pull --environment production --non-interactive",
+  }
+```
+
+This will pull the remote states into `.env.local`.
+
+###### Mimicing that from expo via aws secrets managers
+
+By mimicing the expo approach, we can use aws secrets manager to achieve similar result via:
+
+```bash-1{3}
+aws secretsmanager get-secret-value --secret-id your-secret-name \
+--query SecretString --output text \
+| jq -r 'to_entries|map("\(.key)=\(.value)")|.[]' \
+> .env.local
+```
+
+- Here line-3 is optional, if we use json file directly as environment variable (such as `env-cmd` in nodejs), then we skip this line.
+- Here `SecretString` is a **_type_** of fields stored in secrets manager, which is typically a json string (that's why we pipe it into `jq`).
+
 #### How to work with Serverless Framework for Multiple ENV files?
 
-##### Keypoints
+##### Requirements
 
-- Special plugin is required to load multiple env file and
-- we need to write custom `parser` when our env file is a `json` file (more readable than an ordinary `.env` file, especially when there is a long array).
+- Special plugin is required to load multiple env files and;
+- We need to write custom `parser` when our env file is a `json` file (more readable than an ordinary `.env` file, especially when there is a long array).
 
 ##### The `serverless.yml`
 

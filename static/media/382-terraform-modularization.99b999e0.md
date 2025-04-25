@@ -1,5 +1,5 @@
 ---
-title: "Terraform Modularization for DRY Deployment from DEV to UAT"
+title: "Terraform Modularization for DRY Deployment from DEV to UAT and Input Infrastructure Information"
 date: 2025-04-07
 id: blog0382
 tag: terraform
@@ -220,4 +220,4 @@ We may make a script to directly upload this `json` into a database. Only author
 
 In my case I have created a page in react and made use of this `json` file to generate:
 
-[![](/assets/img/2025-04-09-03-42-26.png)](/assets/img/2025-04-09-03-42-26.png)
+[![](/assets/img/2025-04-25-11-25-36.png)](/assets/img/2025-04-25-11-25-36.png)
