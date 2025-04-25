@@ -87,9 +87,3 @@ aws secretsmanager get-secret-value --secret-id your-secret-name \
 - line-3 is optional, if we use json file directly as environment variable (such as `env-cmd` in nodejs), then we skip this line.
 
 - Here `SecretString` is a **_type_** of fields stored in secrets manager, which is typically a json string (that's why we pipe it into `jq`).
-
-###### Should we do this?
-
-Pulling credentials from cloud will increase the complexity for maintainence and to my experience provide no exceptionally good advantage in the world of backend projects.
-
-Expo can do this becuase frontend world is just **_much simpler_** when it comes to managing variables.

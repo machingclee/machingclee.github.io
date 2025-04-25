@@ -1,5 +1,5 @@
 ---
-title: Recover bullet-points Overriden by Tailwinds
+title: Recover bullet-points Overriden by Tailwind
 date: 2025-04-25
 id: blog0390
 tag: react, tailwind
