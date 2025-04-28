@@ -58,7 +58,7 @@ docker run --rm -v $(pwd):/backup \
   -h $SOURCE_DB_HOST \
   -U $SOURCE_DB_USER \
   -d $SOURCE_DB_NAME \
-  -F c -f /backup/database_dump.dump
+  --no-owner --format=custom --file=/backup/database_dump.dump
 ```
 
 If you encounter problem of pgsql version,
@@ -229,7 +229,7 @@ DROP TABLE temp_table;
 
 Sometimes we clone from a database where the owner of the table does not exist in our new database, then
 
-- the ownership of the table defaults to the user **_performing the restore_** operation (the user running `pg_restore`)
+- the ownership of the table defaults to the user **_performing the restore_** operation (the user running `pg_restore`).
 
 Most of the time this user will be of `superuser` grade, but we wish to delegate the tables to an account with inferior power, for that:
 

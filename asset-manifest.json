@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.4cf52b72.chunk.css",
-    "main.js": "/static/js/main.ec445fa3.chunk.js",
+    "main.js": "/static/js/main.80682684.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.6ad06778.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.02e9f50f.chunk.js": "/static/js/2.02e9f50f.chunk.js",
@@ -321,7 +321,7 @@
     "static/media/329-revenue-cat.md": "/static/media/329-revenue-cat.f0f7e4c4.md",
     "static/media/330-pojo-to-jpa.md": "/static/media/330-pojo-to-jpa.e926a2ec.md",
     "static/media/331-git-action-dispatch.md": "/static/media/331-git-action-dispatch.5f9e703b.md",
-    "static/media/332-clone-db-contd.md": "/static/media/332-clone-db-contd.13b1b2a9.md",
+    "static/media/332-clone-db-contd.md": "/static/media/332-clone-db-contd.346c73fc.md",
     "static/media/333-Create-html-via-pdf.md": "/static/media/333-Create-html-via-pdf.1b085686.md",
     "static/media/334-Scheduled-Task-ECS.md": "/static/media/334-Scheduled-Task-ECS.932d0f4f.md",
     "static/media/335-clone-db-contd-mongo-ver.md": "/static/media/335-clone-db-contd-mongo-ver.cc1711af.md",
@@ -433,6 +433,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.02e9f50f.chunk.js",
     "static/css/main.4cf52b72.chunk.css",
-    "static/js/main.ec445fa3.chunk.js"
+    "static/js/main.80682684.chunk.js"
   ]
 }
