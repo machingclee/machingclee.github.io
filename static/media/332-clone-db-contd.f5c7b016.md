@@ -61,7 +61,8 @@ docker run --rm -v $(pwd):/backup \
   --no-owner --format=custom --file=/backup/database_dump.dump
 ```
 
-If you encounter problem of pgsql version,
+If you encounter problem of pgsql version, simply change the number in `postgres:<version>`.
+
 Here we omit the original table owner from old table (as it does not exist in the new table).
 
 ##### Step 2. (Optional) Create a Database in a PostgreSQL Server

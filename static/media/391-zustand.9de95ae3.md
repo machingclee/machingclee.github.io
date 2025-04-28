@@ -16,7 +16,7 @@ intro: "Record a standard setup as a transition from redux to zustand. This arti
   }
 </style>
 
-#### A Store that Mimic the one in Redux
+#### A Store Mimicing the Slice in Redux Toolkit
 
 In an ordinary redux slice we need to define the **state**, the **reducers**, and the **extra reducers** for successful thunk actions.
 
@@ -185,11 +185,11 @@ export default () => {
   });
 ```
 
-We choose to use `enabled = false` because we are not going to fetch data whenever a component gets (re)rerendered.
+- We choose to use `enabled = false` because we are not going to fetch data whenever a component gets (re)rerendered.
 
-We have further dicussion on `staleTime` and `gcTime` in [this article](/blog/article/React-Query-Fundamentals#stateTime-vs-gcTime).
+- We have further dicussion on `staleTime` and `gcTime` in [this article](/blog/article/React-Query-Fundamentals#stateTime-vs-gcTime).
 
-##### Do we store into zustand?
+##### Do we store data into zustand?
 
 The following `useEffect` is **_optional_** (but requires consideration):
 
