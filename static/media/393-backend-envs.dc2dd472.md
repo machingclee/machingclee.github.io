@@ -1,0 +1,287 @@
+---
+title: Environment Variables via Secret Managers in Backend using Expo Approach
+date: 2025-05-01
+id: blog0393
+tag: env
+toc: true
+intro: "We immitate the expo approach for all of our backend applications, here is how!"
+---
+
+<style>
+  video {
+    border-radius: 4px
+  }
+  img {
+    max-width: 660px;
+  }
+</style>
+
+#### How Expo works with Environment Variables?
+
+This is how EXPO work when using `eas` commands:
+
+```json
+"scripts": {
+    "env:pull:dev": "eas env:pull --environment development --non-interactive",
+    "env:pull:uat": "eas env:pull --environment preview --non-interactive",
+    "env:pull:prod": "eas env:pull --environment production --non-interactive"
+}
+```
+
+It pulls the variable defined in expo account
+
+[![](/assets/img/2025-05-01-16-59-05.png)](/assets/img/2025-05-01-16-59-05.png)
+
+into local file called `.env.local`.
+
+That means whenever we want to debug/develop in `dev` environement, we simply `yarn env:pull:dev` and starts our task.
+
+The same can be applied to backend and in the sequel we explain an approach applicable to both express and spring boot application.
+
+#### Secret Managers
+
+##### Define Variables
+
+Simply create a secret and save the key-value pairs into it:
+
+[![](/assets/img/2025-05-01-17-05-47.png)](/assets/img/2025-05-01-17-05-47.png)
+
+- Note that our variable are deliberately defined by `a.b.c` because on one hand this is a standard definition in application.properties, and on the other hand there is no way to define nested key-value pair.
+
+- We will use nodejs script to download the secret as a json string.
+- We will also use `lodash` to rewrite that json string into a json object with nested properites. From that we are free to translate this nested json into `yml` or keep it as it is.
+
+##### Objective
+
+Take spring boot as an example. For developers our resources folder is very clean:
+
+[![](/assets/img/2025-05-01-17-21-52.png)](/assets/img/2025-05-01-17-21-52.png)
+
+we just have a globally shared variables (application.yml). We will pull `application-local.yml` for DEV, UAT and PROD respectively for development purpose
+
+Yes, they have the **_same filename_**, as is the pattern in expo service.
+
+##### Nodejs Script
+
+###### Make sure you have correct credentials
+
+Assume that we have configured an account using aws cli in our machine (if not, install the cli and execute `aws configure`, then our credentials will be stored in `~/.aws`).
+
+Assume also that we have appropriate policy to read-write value in secret managers, then we can extract the secret in the by the following:
+
+###### package.json
+
+Here we define a set of `env:pull:{stage}`.
+
+```json
+{
+  "license": "MIT",
+  "scripts": {
+    "env:pull:dev": "yarn && npx tsm env-pull.ts --secret_name billie-backend-dev --format yml --save_at src/main/resources/application-local.yml",
+    "env:pull:dev-internal": "yarn && npx tsm env-pull.ts --secret_name billie-backend-dev-internal --format yml --save_at src/main/resources/application-local-internal.yml",
+    "env:pull:uat": "yarn && npx tsm env-pull.ts --secret_name billie-backend-uat --format yml --save_at src/main/resources/application-local.yml",
+    "env:pull:uat-internal": "yarn && npx tsm env-pull.ts --secret_name billie-backend-uat-internal --format yml --save_at src/main/resources/application-local-internal.yml",
+    "env:pull:prod": "yarn && npx tsm env-pull.ts --secret_name billie-backend-prod --format yml --save_at src/main/resources/application-local.yml",
+    "env:pull:prod-internal": "yarn && npx tsm env-pull.ts --secret_name billie-backend-prod-internal --format yml --save_at src/main/resources/application-local-internal.yml"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "js-yaml": "^4.1.0",
+    "serverless-offline": "^14.3.4",
+    "serverless-prune-plugin": "^2.1.0",
+    "serverless-scriptable-plugin": "^1.3.1",
+    "tsm": "^2.3.0"
+  },
+  "dependencies": {
+    "@aws-sdk/client-secrets-manager": "^3.799.0",
+    "@types/lodash": "^4.17.16",
+    "lodash": "^4.17.21",
+    "minimist": "^1.2.8",
+    "serverless": "^3.38.0"
+  }
+}
+```
+
+Note that we have `yarn add tsm` which is a light-weight binary to execute typescript files without writing any `tsconfig.json`.
+
+The `internal` variants are for lambda functions which use internal resource rather than public accessible resources and are simply for deployment purpose.
+
+###### env-pull.ts
+
+```js
+import minimist from "minimist"
+import fs from "fs";
+import SecretUtil, { FileFormat } from "./SecretUtil";
+
+const args = minimist(process.argv.slice(2));
+const secret_name = args.secret_name;
+const format = (args.format || "yml") as FileFormat
+const save_at = (args.save_at || "") as string;
+
+const secretUtil = new SecretUtil();
+
+const nestedJsonSecret = await secretUtil.getSecretAsJson(secret_name);
+const formatedSecret = secretUtil.toTargetFomat(nestedJsonSecret, format)
+
+if (save_at) {
+    fs.writeFileSync(save_at, formatedSecret);
+}
+```
+
+###### SecretUtil class
+
+```js
+import { GetSecretValueCommand, GetSecretValueCommandOutput, SecretsManagerClient } from "@aws-sdk/client-secrets-manager";
+import lodash from "lodash";
+import * as yaml from 'js-yaml';
+
+export type FileFormat = "yml" | "json"
+export type SecretConfig = { awsRegion: string }
+
+export default class SecretUtil {
+    private secretConfig: SecretConfig = { awsRegion: "ap-southeast-2" }
+
+    constructor(config: Partial<SecretConfig> = {}) {
+        this.secretConfig = { ...this.secretConfig, ...config };
+    }
+
+    toTargetFomat(nestedJsonSecret: any, format: FileFormat) {
+        if (format === "yml") {
+            return this.jsonToYml(nestedJsonSecret);
+        }
+        else if (format === "json") {
+            return JSON.stringify(nestedJsonSecret);
+        }
+        return "{}";
+    }
+
+    jsonToYml(nestedJson: any) {
+        const ymlString = yaml.dump(nestedJson, {
+            indent: 2,
+            lineWidth: -1,
+            noRefs: true,
+            noCompatMode: true,
+            schema: yaml.JSON_SCHEMA
+        });
+        return ymlString
+    }
+
+    async getSecretAsJson(secret_name: string) {
+        const client = new SecretsManagerClient({
+            region: this.secretConfig.awsRegion,
+        });
+        let response: GetSecretValueCommandOutput | null = null;
+
+        try {
+            response = await client.send(
+                new GetSecretValueCommand({ SecretId: secret_name })
+            );
+        } catch (error) {
+            throw error;
+        }
+
+        const secret = response.SecretString || "{}";
+        const json = JSON.parse(secret);
+        const nestedJson: { [key: string]: any } = {}
+        Object.entries(json).forEach(([k, v]) => {
+            lodash.set(nestedJson, k, v);
+        })
+        return nestedJson
+    }
+}
+```
+
+###### For spring boot, we define gradle tasks in build.gradle.kts
+
+```kotlin
+// build.gradle.kts
+
+tasks.register<Exec>("dev") {
+    description = "pull dev environment variables"
+    group = "environement variables"
+    configureNpmCommand(this, "env:pull:dev")
+    doLast {
+        handleCommandResult(this as Exec)
+    }
+}
+
+tasks.register<Exec>("dev-internal") {
+    description = "pull dev VPC internal variables"
+    group = "environement variables"
+    configureNpmCommand(this, "env:pull:dev-internal")
+    doLast {
+        handleCommandResult(this as Exec)
+    }
+}
+
+tasks.register<Exec>("uat") {
+    description = "pull uat environment variables"
+    group = "environement variables"
+    configureNpmCommand(this, "env:pull:uat")
+    doLast {
+        handleCommandResult(this as Exec)
+    }
+}
+
+tasks.register<Exec>("uat-internal") {
+    description = "pull uat VPC internal variables"
+    group = "environement variables"
+    configureNpmCommand(this, "env:pull:uat-internal")
+    doLast {
+        handleCommandResult(this as Exec)
+    }
+}
+
+tasks.register<Exec>("prod") {
+    description = "pull prod environment variables"
+    group = "environement variables"
+    configureNpmCommand(this, "env:pull:prod")
+    doLast {
+        handleCommandResult(this as Exec)
+    }
+}
+
+tasks.register<Exec>("prod-internal") {
+    description = "pull prod environment variables"
+    group = "environement variables"
+    configureNpmCommand(this, "env:pull:prod-internal")
+    doLast {
+        handleCommandResult(this as Exec)
+    }
+}
+
+
+fun configureNpmCommand(exec: ExecSpec, npmScript: String) {
+    // Use shell to execute command
+    if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+        exec.commandLine("cmd", "/c", "yarn $npmScript")
+    } else {
+        // For macOS/Linux - use the full path to npm
+        exec.commandLine("sh", "-c", "/usr/local/bin/yarn $npmScript")
+    }
+
+    // Continue even if there's an error
+    exec.isIgnoreExitValue = true
+}
+
+// Function to handle the command result
+fun handleCommandResult(execTask: Exec) {
+    if (execTask.executionResult.get().exitValue == 0) {
+        println("✅ Env variables pulled successfully")
+    } else {
+        println("❌ Failed to pull env variables. Exit code: ${execTask.executionResult.get().exitValue}")
+    }
+}
+```
+
+which gives us a list of nice command to execute:
+
+![](/assets/img/2025-05-01-17-33-51.png)
+
+#### Result
+
+After executing the gradle task to pull `dev` variables (or equivalently we run `yarn env:pull:dev`), we get:
+
+[![](/assets/img/2025-05-01-17-28-51.png)](/assets/img/2025-05-01-17-28-51.png)
+
+Now execute the spring boot project with profile `local`, we have run the application with combined "environment variables".
