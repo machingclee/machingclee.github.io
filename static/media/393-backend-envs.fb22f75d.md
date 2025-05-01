@@ -18,7 +18,7 @@ intro: "We immitate the expo approach for all of our backend applications, here 
 
 #### How Expo works with Environment Variables?
 
-This is how EXPO work when using `eas` commands:
+This is how EXPO works when using `eas` commands:
 
 ```json
 "scripts": {
@@ -28,13 +28,13 @@ This is how EXPO work when using `eas` commands:
 }
 ```
 
-It pulls the variable defined in expo account
+It pulls the variable defined in expo account:
 
 [![](/assets/img/2025-05-01-16-59-05.png)](/assets/img/2025-05-01-16-59-05.png)
 
 into local file called `.env.local`.
 
-That means whenever we want to debug/develop in `dev` environment, we simply `yarn env:pull:dev` and starts our task.
+That means whenever we want to debug/develop in `dev` environement, we simply `yarn env:pull:dev` and starts our task.
 
 The same can be applied to backend and in the sequel we explain an approach applicable to both express and spring boot application.
 
@@ -198,7 +198,7 @@ export default class SecretUtil {
 
 tasks.register<Exec>("dev") {
     description = "pull dev environment variables"
-    group = "environment variables"
+    group = "environement variables"
     configureNpmCommand(this, "env:pull:dev")
     doLast {
         handleCommandResult(this as Exec)
@@ -207,7 +207,7 @@ tasks.register<Exec>("dev") {
 
 tasks.register<Exec>("dev-internal") {
     description = "pull dev VPC internal variables"
-    group = "environment variables"
+    group = "environement variables"
     configureNpmCommand(this, "env:pull:dev-internal")
     doLast {
         handleCommandResult(this as Exec)
@@ -216,7 +216,7 @@ tasks.register<Exec>("dev-internal") {
 
 tasks.register<Exec>("uat") {
     description = "pull uat environment variables"
-    group = "environment variables"
+    group = "environement variables"
     configureNpmCommand(this, "env:pull:uat")
     doLast {
         handleCommandResult(this as Exec)
@@ -225,7 +225,7 @@ tasks.register<Exec>("uat") {
 
 tasks.register<Exec>("uat-internal") {
     description = "pull uat VPC internal variables"
-    group = "environment variables"
+    group = "environement variables"
     configureNpmCommand(this, "env:pull:uat-internal")
     doLast {
         handleCommandResult(this as Exec)
@@ -234,7 +234,7 @@ tasks.register<Exec>("uat-internal") {
 
 tasks.register<Exec>("prod") {
     description = "pull prod environment variables"
-    group = "environment variables"
+    group = "environement variables"
     configureNpmCommand(this, "env:pull:prod")
     doLast {
         handleCommandResult(this as Exec)
@@ -243,7 +243,7 @@ tasks.register<Exec>("prod") {
 
 tasks.register<Exec>("prod-internal") {
     description = "pull prod environment variables"
-    group = "environment variables"
+    group = "environement variables"
     configureNpmCommand(this, "env:pull:prod-internal")
     doLast {
         handleCommandResult(this as Exec)
@@ -276,7 +276,7 @@ fun handleCommandResult(execTask: Exec) {
 
 which gives us a list of nice command to execute:
 
-![](/assets/img/2025-05-01-17-33-51.png)
+[![](/assets/img/2025-05-02-01-05-32.png)](/assets/img/2025-05-02-01-05-32.png)
 
 #### Result
 
