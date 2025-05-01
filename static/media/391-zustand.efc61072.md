@@ -181,7 +181,7 @@ export default () => {
     },
     staleTime: 0,
     gcTime: 0,
-    enabled: false,
+    enabled: false
   });
 ```
 
