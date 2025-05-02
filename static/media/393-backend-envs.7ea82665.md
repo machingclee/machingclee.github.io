@@ -34,7 +34,7 @@ It pulls the variable defined in expo account:
 
 into local file called `.env.local`.
 
-That means whenever we want to debug/develop in `dev` environement, we simply `yarn env:pull:dev` and starts our task.
+That means whenever we want to debug/develop in `dev` environement, we simply `yarn env:pull:dev` and start our task.
 
 The same can be applied to backend and in the sequel we explain an approach applicable to both express and spring boot application.
 
