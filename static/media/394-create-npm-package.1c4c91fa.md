@@ -61,9 +61,9 @@ export default {
 };
 ```
 
-###### package.json
+###### package.json, setting homepage and repository info as well
 
-Only the highlighted lines are important. The remaining come from `npm init`.
+The highlighted lines are important to identify the entrypoint of our transpiled ts project. The remaining come from `npm init`.
 
 ```json-1{6,9,10}
 {
@@ -76,10 +76,27 @@ Only the highlighted lines are important. The remaining come from `npm init`.
   },
   "types": "dist/index.d.ts",
   "main": "dist/index.js",
+```
+
+Next to display the following
+
+[<img src="/assets/img/2025-05-04-20-24-10.png" width="350">](/assets/img/2025-05-04-20-24-10.png)
+
+we add
+
+```ts-11
   "repository": {
     "type": "git",
-    "url": "git@github.com-machingclee:machingclee/pull-env-from-secrets-manager.git"
+    "url": "https://github.com/machingclee/pull-env-from-secrets-manager.git"
   },
+  "homepage": "https://github.com/machingclee/pull-env-from-secrets-manager#readme",
+```
+
+Here the repository `url` comes from the https-clone option in github.
+
+Finally we fill in the rest:
+
+```ts-16
   "keywords": [
     "secrets-manager"
   ],

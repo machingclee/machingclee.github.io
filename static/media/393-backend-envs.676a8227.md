@@ -61,7 +61,7 @@ we just have a globally shared variables (application.yml). We will pull `applic
 
 Yes, they have the **_same filename_**, as is the pattern in expo service.
 
-##### Nodejs Script
+##### Nodejs Scripts in package.json
 
 ###### Make sure you have correct credentials
 
@@ -85,110 +85,36 @@ Here we define a set of `env:pull:{stage}`.
     "env:pull:prod-internal": "yarn && npx tsm env-pull.ts --secret_name billie-backend-prod-internal --format yml --save_at src/main/resources/application-local-internal.yml"
   },
   "devDependencies": {
-    "@types/js-yaml": "^4.0.9",
-    "js-yaml": "^4.1.0",
-    "serverless-offline": "^14.3.4",
-    "serverless-prune-plugin": "^2.1.0",
-    "serverless-scriptable-plugin": "^1.3.1",
-    "tsm": "^2.3.0"
+    "tsm": "^2.3.0".
+    ...
   },
-  "dependencies": {
-    "@aws-sdk/client-secrets-manager": "^3.799.0",
-    "@types/lodash": "^4.17.16",
-    "lodash": "^4.17.21",
-    "minimist": "^1.2.8",
-    "serverless": "^3.38.0"
-  }
 }
 ```
+
+We will explain the `env-pull.ts` right below this sub-section.
 
 Note that we have `yarn add tsm` which is a light-weight binary to execute typescript files without writing any `tsconfig.json`.
 
-The `internal` variants are for lambda functions which use internal resource rather than public accessible resources and are simply for deployment purpose.
+The `internal` variants are for lambda functions which use internal resource rather than publicly accessible resources and are simply for deployment purpose.
 
 ###### env-pull.ts
 
-```js
-import minimist from "minimist"
-import fs from "fs";
-import SecretUtil, { FileFormat } from "./SecretUtil";
+I have written an [**_npm package_**](https://www.npmjs.com/package/secrets-manager-to-config) on pulling variables from a secret in aws secrets-manager into `json | yml | flat_env` format, let's
 
-const args = minimist(process.argv.slice(2));
-const secret_name = args.secret_name;
-const format = (args.format || "yml") as FileFormat
-const save_at = (args.save_at || "") as string;
-
-const secretUtil = new SecretUtil();
-
-const nestedJsonSecret = await secretUtil.getSecretAsJson(secret_name);
-const formatedSecret = secretUtil.toTargetFomat(nestedJsonSecret, format)
-
-if (save_at) {
-    fs.writeFileSync(save_at, formatedSecret);
-}
+```ts
+yarn add secrets-manager-to-config
 ```
 
-###### SecretUtil class
+then create a file called `env-pull.ts`:
 
-```js
-import { GetSecretValueCommand, GetSecretValueCommandOutput, SecretsManagerClient } from "@aws-sdk/client-secrets-manager";
-import lodash from "lodash";
-import * as yaml from 'js-yaml';
+```ts
+import { downloadConfig, SecretConfig } from "secrets-manager-to-config";
 
-export type FileFormat = "yml" | "json"
-export type SecretConfig = { awsRegion: string }
+const secretConfig: SecretConfig = {
+  awsRegion: "ap-southeast-2",
+};
 
-export default class SecretUtil {
-    private secretConfig: SecretConfig = { awsRegion: "ap-southeast-2" }
-
-    constructor(config: Partial<SecretConfig> = {}) {
-        this.secretConfig = { ...this.secretConfig, ...config };
-    }
-
-    toTargetFomat(nestedJsonSecret: any, format: FileFormat) {
-        if (format === "yml") {
-            return this.jsonToYml(nestedJsonSecret);
-        }
-        else if (format === "json") {
-            return JSON.stringify(nestedJsonSecret);
-        }
-        return "{}";
-    }
-
-    jsonToYml(nestedJson: any) {
-        const ymlString = yaml.dump(nestedJson, {
-            indent: 2,
-            lineWidth: -1,
-            noRefs: true,
-            noCompatMode: true,
-            schema: yaml.JSON_SCHEMA
-        });
-        return ymlString
-    }
-
-    async getSecretAsJson(secret_name: string) {
-        const client = new SecretsManagerClient({
-            region: this.secretConfig.awsRegion,
-        });
-        let response: GetSecretValueCommandOutput | null = null;
-
-        try {
-            response = await client.send(
-                new GetSecretValueCommand({ SecretId: secret_name })
-            );
-        } catch (error) {
-            throw error;
-        }
-
-        const secret = response.SecretString || "{}";
-        const json = JSON.parse(secret);
-        const nestedJson: { [key: string]: any } = {}
-        Object.entries(json).forEach(([k, v]) => {
-            lodash.set(nestedJson, k, v);
-        })
-        return nestedJson
-    }
-}
+downloadConfig(secretConfig);
 ```
 
 ###### For spring boot, we define gradle tasks in build.gradle.kts
