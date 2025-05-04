@@ -1,10 +1,10 @@
 ---
-title: "Websocket-API from API-Gateway"
+title: "AWS Websocket-API 1: An overview from API Gateway"
 date: 2025-01-05
 id: blog0358
-tag: aws, api-gateway, websocket
+tag: aws, api-gateway, web-socket
 toc: true
-intro: "We study the integration of snapStarted lambda with API-gateway."
+intro: "We study the basic of websocket-api from api-gateway."
 ---
 
 <style>
@@ -64,14 +64,12 @@ We create an `inline`-policy in json format:
 {
   "Version": "2012-10-17",
   "Statement": [
-     {
-        "Effect": "Allow",
-        "Action": [
-          "execute-api:ManageConnections"
-        ],
-        "Resource": [
-          "arn:aws:execute-api:ap-southeast-2:798404461798:smcflfkjb6/dev/POST/@connections/*"
-        ]
+    {
+      "Effect": "Allow",
+      "Action": ["execute-api:ManageConnections"],
+      "Resource": [
+        "arn:aws:execute-api:ap-southeast-2:798404461798:smcflfkjb6/dev/POST/@connections/*"
+      ]
     }
   ]
 }

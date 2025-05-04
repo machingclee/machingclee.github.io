@@ -1,5 +1,5 @@
 ---
-title: "Websocket Connection using Websocket-API from API-Gateway"
+title: "AWS Websocket-API 2: Complete Integration of React and Spring Boot using Websocket-API from API-Gateway"
 date: 2025-03-22
 id: blog0377
 tag: web-socket
@@ -145,6 +145,8 @@ const deleteConnection = async (connectionId) => {
 };
 ```
 
+#### Receive Data from Frontend (React)
+
 ##### Define a custom hook to initiate websocket connection
 
 ```tsx-1{54}
@@ -268,7 +270,7 @@ useAWSGatewaySocket([
 ])
 ```
 
-- We need to agree the type definition of `payload.data` with backend developers. 
+- We need to agree the type definition of `payload.data` with backend developers.
 
 - Note that by this approach we didn't pass a closure to `socketRef.current.addEventListener`, any state change will directly change the listeners to handle socket messages.
 
@@ -354,7 +356,7 @@ class WebsocketNotificationService(
 Back to highlighted line 54 in _Define a custom hook to initiate websocket connection_ section we have
 
 ```ts
-type Payload = { type: string, data: any }
+type Payload = { type: string; data: any };
 const parsedData = JSON.parse(e?.data || "{}") as Payload;
 ```
 
