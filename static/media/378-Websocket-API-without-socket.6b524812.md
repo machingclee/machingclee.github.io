@@ -1,5 +1,5 @@
 ---
-title: "Code Sepration of Domain Entity Class, Domain Behaviour (Actions) and the Corresponding Validations"
+title: "Code Separation of Domain Entity Class, Domain Behaviour (Actions) and the Corresponding Validations"
 date: 2025-03-24
 id: blog0378
 tag: DDD, kotlin

@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.ce5bbb8d.chunk.css",
-    "main.js": "/static/js/main.4f6f17b2.chunk.js",
+    "main.js": "/static/js/main.a0112c74.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.5680fdba.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.9e3efc3d.chunk.js": "/static/js/2.9e3efc3d.chunk.js",
@@ -367,7 +367,7 @@
     "static/media/375-generate-typescript-types-from-swagger-ui.md": "/static/media/375-generate-typescript-types-from-swagger-ui.9cd5343b.md",
     "static/media/376-useQuery-and-thunkactions.md": "/static/media/376-useQuery-and-thunkactions.d2ec2b04.md",
     "static/media/377-Websocket-API-without-socketio.md": "/static/media/377-Websocket-API-without-socketio.8a9d2213.md",
-    "static/media/378-Websocket-API-without-socket.md": "/static/media/378-Websocket-API-without-socket.b34d2010.md",
+    "static/media/378-Websocket-API-without-socket.md": "/static/media/378-Websocket-API-without-socket.6b524812.md",
     "static/media/379-modals.md": "/static/media/379-modals.6fd1d026.md",
     "static/media/380-lambda-client.md": "/static/media/380-lambda-client.88b98756.md",
     "static/media/381-import-resources.md": "/static/media/381-import-resources.7b51b0e7.md",
@@ -437,6 +437,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.9e3efc3d.chunk.js",
     "static/css/main.ce5bbb8d.chunk.css",
-    "static/js/main.4f6f17b2.chunk.js"
+    "static/js/main.a0112c74.chunk.js"
   ]
 }
