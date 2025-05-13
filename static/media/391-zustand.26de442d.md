@@ -30,7 +30,7 @@ whether to store the fetched data from react-query into zustand store depends on
 - how often we need the most updated data and
 - how complicated are the data processing of the fetched data.
 
-For most cases we can keep putting the data into zustand store, and based the data purely from react-query when needed (like we want caching or special logic to fetch data).
+For most cases we can keep putting the data into zustand store for debug purpose. We make direct use of the `{ data }` part from react-query quen we need **_caching_** or **_prefetched_** data.
 
 ```js-1
 import { create } from 'zustand'
@@ -218,7 +218,7 @@ Finally we handle the error when needed:
 
 ```js-45
   useEffect(() => {
-    if (query.error) {
+    if (query.error || (query?.data?.success != null && !query.data.success)) {
       setAccessToken("");
       toast("Please login again", {
         action: {
@@ -230,6 +230,8 @@ Finally we handle the error when needed:
       });
     }
   }, [query.error]);
+  // in case the API always return 200 status code:
+  // }, [query.error, query?.data?.success]);
 
   return query;
 };
