@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.ce5bbb8d.chunk.css",
-    "main.js": "/static/js/main.e38694c8.chunk.js",
+    "main.js": "/static/js/main.c49ab5a1.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.5680fdba.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.9e3efc3d.chunk.js": "/static/js/2.9e3efc3d.chunk.js",
@@ -425,7 +425,7 @@
     "static/media/TutorialNote10.2941efe7.pdf": "/static/media/TutorialNote10.2941efe7.pdf",
     "static/media/WorkshopinAnalysis.402ecd08.pdf": "/static/media/WorkshopinAnalysis.402ecd08.pdf",
     "static/media/agent-classification.17931009.pdf": "/static/media/agent-classification.17931009.pdf",
-    "static/media/cartoonme.5d835469.png": "/static/media/cartoonme.5d835469.png",
+    "static/media/cartoonme.034bbefe.png": "/static/media/cartoonme.034bbefe.png",
     "static/media/convex-analysis.md": "/static/media/convex-analysis.101e3849.md",
     "static/media/modulus-of-continuity.md": "/static/media/modulus-of-continuity.837b37f9.md",
     "static/media/review.c9c071ab.pdf": "/static/media/review.c9c071ab.pdf",
@@ -437,6 +437,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.9e3efc3d.chunk.js",
     "static/css/main.ce5bbb8d.chunk.css",
-    "static/js/main.e38694c8.chunk.js"
+    "static/js/main.c49ab5a1.chunk.js"
   ]
 }
