@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.ce5bbb8d.chunk.css",
-    "main.js": "/static/js/main.a2934474.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.25670915.js",
+    "main.js": "/static/js/main.4a9beb10.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.5550eda8.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.8b0003e5.chunk.js": "/static/js/2.8b0003e5.chunk.js",
-    "static/js/3.0c2062e5.chunk.js": "/static/js/3.0c2062e5.chunk.js",
-    "static/js/4.49b58a7e.chunk.js": "/static/js/4.49b58a7e.chunk.js",
-    "static/js/5.c5bad06c.chunk.js": "/static/js/5.c5bad06c.chunk.js",
+    "static/js/2.8ea0bc28.chunk.js": "/static/js/2.8ea0bc28.chunk.js",
+    "static/js/3.f0dea549.chunk.js": "/static/js/3.f0dea549.chunk.js",
+    "static/js/4.8ed2ac4f.chunk.js": "/static/js/4.8ed2ac4f.chunk.js",
+    "static/js/5.97d88c80.chunk.js": "/static/js/5.97d88c80.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.8b0003e5.chunk.js.LICENSE.txt": "/static/js/2.8b0003e5.chunk.js.LICENSE.txt",
-    "static/js/3.0c2062e5.chunk.js.LICENSE.txt": "/static/js/3.0c2062e5.chunk.js.LICENSE.txt",
-    "static/js/4.49b58a7e.chunk.js.LICENSE.txt": "/static/js/4.49b58a7e.chunk.js.LICENSE.txt",
+    "static/js/2.8ea0bc28.chunk.js.LICENSE.txt": "/static/js/2.8ea0bc28.chunk.js.LICENSE.txt",
+    "static/js/3.f0dea549.chunk.js.LICENSE.txt": "/static/js/3.f0dea549.chunk.js.LICENSE.txt",
+    "static/js/4.8ed2ac4f.chunk.js.LICENSE.txt": "/static/js/4.8ed2ac4f.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.52b1ef07.md",
     "static/media/002-Lazy-React-Router.md": "/static/media/002-Lazy-React-Router.48295ca9.md",
@@ -426,7 +426,7 @@
     "static/media/TutorialNote10.2941efe7.pdf": "/static/media/TutorialNote10.2941efe7.pdf",
     "static/media/WorkshopinAnalysis.402ecd08.pdf": "/static/media/WorkshopinAnalysis.402ecd08.pdf",
     "static/media/agent-classification.17931009.pdf": "/static/media/agent-classification.17931009.pdf",
-    "static/media/cartoonme.034bbefe.png": "/static/media/cartoonme.034bbefe.png",
+    "static/media/cartoonme.46c87d32.png": "/static/media/cartoonme.46c87d32.png",
     "static/media/convex-analysis.md": "/static/media/convex-analysis.101e3849.md",
     "static/media/modulus-of-continuity.md": "/static/media/modulus-of-continuity.837b37f9.md",
     "static/media/review.c9c071ab.pdf": "/static/media/review.c9c071ab.pdf",
@@ -434,10 +434,10 @@
     "static/media/transformer-date-fomatter.18a2d3fc.pdf": "/static/media/transformer-date-fomatter.18a2d3fc.pdf"
   },
   "entrypoints": [
-    "static/js/runtime-main.25670915.js",
+    "static/js/runtime-main.5550eda8.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.8b0003e5.chunk.js",
+    "static/js/2.8ea0bc28.chunk.js",
     "static/css/main.ce5bbb8d.chunk.css",
-    "static/js/main.a2934474.chunk.js"
+    "static/js/main.4a9beb10.chunk.js"
   ]
 }
