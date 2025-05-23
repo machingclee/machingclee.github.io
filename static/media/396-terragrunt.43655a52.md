@@ -9,7 +9,7 @@ intro: "We study terragrunt via opentofu"
 
 <style>
   video {
-    border-radius: 4px
+    border-radius: 4px;
   }
   img {
     max-width: 660px;
@@ -26,81 +26,54 @@ We need to create
 
 - S3 Bucket
 
-- DynamocDB (for its distributive lock implemented by TTL row)
-
-  [![](/assets/img/2025-05-18-18-58-47.png)](/assets/img/2025-05-18-18-58-47.png)
-
 ##### Transit the State from Terraform Cloud to S3-Bucket
 
-###### Step 1. Configure providers.tf
+###### For existing state in HCP terrraform
+
+Unforturnately there is no simple migration from HCL terraform cloud to s3 bucket. When running `terraform init -migrate-state` we will get:
+
+<Example>
+Error: Migrating state from HCP Terraform or Terraform Enterprise to another backend is not
+yet implemented.
+
+Please use the API to do this: https://www.terraform.io/docs/cloud/api/state-versions.html
+/state-versions API reference for HCP Terraform | Terraform | HashiCorp Developer (https://developer.hashicorp.com/terraform/cloud-docs/api-docs/state-versions)
+
+</Example>
+
+So when we have stored our terraform state in terraform cloud, the easiest migration is to directly replicate the infrastructure with s3-bucket as the store.
+
+###### Create the `s3_backend.tf`
+
+The new `s3_backend.tf`:
 
 ```hcl
 terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0"
-    }
+  backend "s3" {
+    bucket       = "some-state-bucket"
+    key          = "my-application-prod-v5/state.tfstate"
+    region       = "ap-southeast-2"
+    encrypt      = true
+    use_lockfile = true
   }
 }
-
-provider "aws" {
-  region = var.aws_region
-}
 ```
 
-###### Step 2. Create the `s3_backend.tf` and leave existing `backend.tf` there
+Note that now we control our **_workspace_** by `key`.
 
-1. The old `backend.tf`:
+Unlike old documentation:
 
-   ```hcl
-   # backend.tf
-   terraform {
-     cloud {
-       organization = "billie"
-       workspaces {
-         name = "billie-prod"
-       }
-     }
-   }
-   ```
+- Nowadays latest terraform **_does not need_** the `dynamodb_table`.
 
-   Before migration let's leave the `backend.tf` there to let OpenTofu **_detect_** the **_existence_** of two backends.
+- Terraform does not rely on dynamodb as a distributive state lock, it simply uses **_conditional_** PUT operation to create a `.lock` file.
 
-2. The new `s3_backend.tf`:
+  The conditional header used by terraform is:
 
-   ```hcl{4}
-   terraform {
-     backend "s3" {
-       bucket         = "your-terraform-state-bucket"
-       key            = "billie-prod/state.tfstate"
-       region         = var.aws_region
-       encrypt        = true
-       dynamodb_table = "terraform-state-lock"
-     }
-   }
-   ```
+  - `If-None-Match: *`
 
-   Note that now we control our **_workspace_** by `key`. Among `DEV`, `UAT` and `PROD` we share the same `dynamodb_table` as it is simply for locking purpose when we transit the state of our infrastructure.
+  Which only succeeds if the object doesn't already exist.
 
-###### Step 3. Migrate the state into different backend
-
-Don't use `tofu` at this time for greatest compatibility before our state stabilizes:
-
-```bash
-terraform init -migrate-state
-```
-
-Enter **_Yes_** for the following question:
-
-```text
-Terraform detected that the backend type is changing from "cloud" to "s3".
-Do you want to copy existing state to the new backend?
-  Pre-existing state was found while migrating the previous "cloud" backend to the
-  newly configured "s3" backend. No existing state was found in the newly
-  configured "s3" backend. Do you want to copy this state to the new "s3"
-  backend? Enter "yes" to copy and "no" to start with an empty state.
-```
+- The presence of `.lock` file indicates there is currently a infra-migration process, and the operations will fail until the lock is released.
 
 #### Terragrunt
 
