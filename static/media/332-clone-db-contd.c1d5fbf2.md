@@ -34,9 +34,23 @@ DO $$
 DECLARE
   r RECORD;
 BEGIN
+  -- Drop tables
   FOR r IN (SELECT tablename FROM pg_tables WHERE schemaname = current_schema())
   LOOP
     EXECUTE 'DROP TABLE IF EXISTS ' || quote_ident(r.tablename) || ' CASCADE';
+  END LOOP;
+
+  -- Drop enums
+  FOR r IN (
+    SELECT t.typname
+    FROM pg_type t
+    JOIN pg_enum e ON t.oid = e.enumtypid
+    JOIN pg_namespace n ON n.oid = t.typnamespace
+    WHERE n.nspname = current_schema()
+    GROUP BY t.typname
+  )
+  LOOP
+    EXECUTE 'DROP TYPE ' || quote_ident(r.typname) || ' CASCADE';
   END LOOP;
 END $$;
 ```
