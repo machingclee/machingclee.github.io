@@ -9,7 +9,7 @@ intro: "Let's discuss how to clone a database again."
 
 <style>
   img {
-    max-width: 660px;
+    max-width: 660px
   }
 </style>
 

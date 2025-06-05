@@ -18,9 +18,7 @@ intro: "Record the study of standard concepts from nestjs while working in the c
 
 #### Life Cycle of Filters, Guards, Interceptors, Pipes
 
-
-
-[![](/assets/img/2025-06-05-04-01-39.png)](/assets/img/2025-06-05-04-01-39.png)
+[![](/assets/img/2025-06-06-04-02-07.png)](/assets/img/2025-06-06-04-02-07.png)
 
 #### Loading Environment Variables
 
@@ -108,9 +106,160 @@ Now we can access the return value by using `@Inject("SOME_SERVICE")` in the con
 
 #### Standard Commands to Memorize
 
+```bash
+nest g mo <path>          # module
+nest g co <path> --flat   # controller
+nest g s <path> --flat    # service
+```
+
+
 #### Swagger
 
-#### Pipe
+
+##### configSwagger(app: INestApplication)
+
+The following config a basic swagger doucmentation at `localhost:<port>/api`:
+
+```ts
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+
+function configSwagger(app: INestApplication<any>) {
+    const config = new DocumentBuilder()
+        .setVersion('1.0')
+        .setTitle('File Generation API')
+        .setDescription('File generation API with base URL at http://localhost:5090')
+        .addServer('http://localhost:5090')
+        .build();
+
+    const document = SwaggerModule.createDocument(app, config);
+
+    SwaggerModule.setup('api', app, document);
+}
+```
+
+##### injectAuthLogicIntoSwagger(app: NestExpressApplication<any>)
+
+Now the following inject custom logic to `swagger-ui-init.js` which intercepts all the request to the swagger documment page. 
+
+```js
+import { NestExpressApplication } from '@nestjs/platform-express';
+
+export function injectAuthLogicIntoSwagger(app: NestExpressApplication<any>) {
+    app.use('/api', (req, res, next) => {
+        if (
+            req.url.includes('swagger-ui-init.js') ||
+            req.url.includes('swagger-initializer.js')
+        ) {
+            const originalSend = res.send;
+            res.send = function (data) {
+                const modifiedData = data.replace(
+                    'window.ui = ui',
+                    `window.ui = ui
+          
+  // Custom request interceptor
+  ui.getConfigs().requestInterceptor = (request) => {
+    const token = localStorage.getItem('bearer_token');
+    if (token) {
+      request.headers['Authorization'] = \`Bearer \${token}\`;
+    }
+    return request;
+  };
+
+  // Custom response interceptor  
+  ui.getConfigs().responseInterceptor = (response) => {
+    if (response.url.includes('/auth/login')) {
+      try {
+        const responseBody = JSON.parse(response.text);
+        console.log("responseBodyresponseBody", responseBody)
+        if (responseBody.success && responseBody.result && responseBody.result.accessToken) {
+          const token = responseBody.result.accessToken;
+          localStorage.setItem('bearer_token', token);
+          
+          const bearerAuth = {
+            bearerAuth: {
+              name: "Authorization",
+              schema: { type: "http", scheme: "bearer" },
+              value: token
+            }
+          };
+          
+          setTimeout(() => {
+            ui.authActions.authorize(bearerAuth);
+          }, 100);
+        }
+      } catch (e) {
+        console.error('Error processing login response:', e);
+      }
+    }
+    return response;
+  };
+
+  // Auto-authorize on page load if token exists
+  const storedToken = localStorage.getItem('bearer_token');
+  if (storedToken) {
+    const bearerAuth = {
+      bearerAuth: {
+        name: "Authorization",
+        schema: { type: "http", scheme: "bearer" },
+        value: storedToken
+      }
+    };
+    
+    setTimeout(() => {
+      ui.authActions.authorize(bearerAuth);
+    }, 500);
+  }`,
+                );
+                originalSend.call(this, modifiedData);
+            };
+        }
+        next();
+    });
+}
+```
+
+What it does:
+
+- When `auth/login` was requested, then a response of the type
+  ```ts
+  {
+    result: {
+      accessToken: string
+    }
+  }
+  ```
+  will be returned from our `login` endpoint, and we save `response.result.accessToken` into local storage.
+  
+- For any other request, we check to see if `bearer_token` was found, we attach our request with authorization header with value `Bearer <token>` once it exists.
+
+- In this way we can test JWT authenticated endpoints easily.
+
+##### Apply these to nextjs app
+
+Now in `main.ts` we write 
+```ts{14,15}
+async function bootstrap() {
+    const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+        cors: true,
+    });
+    app.enableCors({
+        origin: '*',
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS', 'HEAD'],
+        allowedHeaders: '*',
+        credentials: false, // Set to false when using origin: "*"
+        optionsSuccessStatus: 200,
+        preflightContinue: false,
+    });
+    ...
+    injectAuthLogicIntoSwagger(app);
+    configSwagger(app);
+    ...
+    await app.listen(process.env.PORT ?? 5090).then(() => {
+        console.log('Listening on: http://localhost:5090');
+    });
+}
+```
+
 
 #### Guards and Middleware 
 
@@ -147,7 +296,6 @@ export class LoggingMiddleware implements NestMiddleware {
     }
 }
 ```
-Key Differences:
 
 **1. Purpose.**
 - Middleware: Request processing and modification
@@ -326,6 +474,56 @@ export class UsersController {
 
 
 #### Filter that acts as `ControllerAdvice`
+
+
+##### GlobalExceptionFilter
+
+```ts
+import {
+    ExceptionFilter,
+    Catch,
+    ArgumentsHost,
+    HttpStatus,
+    HttpException,
+} from '@nestjs/common';
+import { Response } from 'express';
+
+@Catch()
+export class GlobalExceptionFilter implements ExceptionFilter {
+    catch(exception: any, host: ArgumentsHost) {
+        const ctx = host.switchToHttp();
+        const response = ctx.getResponse<Response>();
+
+        let errorMessage = 'An error occurred';
+
+        // Extract error message from different exception types
+        if (exception instanceof HttpException) {
+            const exceptionResponse = exception.getResponse();
+            errorMessage =
+                typeof exceptionResponse === 'string'
+                    ? exceptionResponse
+                    : (exceptionResponse as any).message || exception.message;
+        } else if (exception instanceof Error) {
+            errorMessage = exception.message;
+        } else if (typeof exception === 'string') {
+            errorMessage = exception;
+        }
+
+        response.status(HttpStatus.BAD_REQUEST).json({
+            success: false,
+            errorMessage: errorMessage,
+        });
+    }
+}
+
+```
+##### Register the `GlobalExceptionFilter`
+
+Now in `main.ts` let's write
+
+```ts
+app.useGlobalFilters(new GlobalExceptionFilter());
+```
 
 
 #### LoggingInterceptor
