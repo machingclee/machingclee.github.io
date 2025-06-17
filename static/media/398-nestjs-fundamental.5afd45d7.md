@@ -488,34 +488,59 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 
+export class BaseException extends HttpException {
+    constructor(
+        params: {
+            message: string,
+            status: HttpStatus
+        }
+    ) {
+        const { message, status = HttpStatus.BAD_REQUEST } = params;
+        const response: ErrorResponse = {
+            statusCode: status,
+            message,
+        };
+        super(response, status);
+    }
+} 
+
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {
+    private readonly logger = new Logger(GlobalExceptionFilter.name);
+
     catch(exception: any, host: ArgumentsHost) {
         const ctx = host.switchToHttp();
         const response = ctx.getResponse<Response>();
 
         let errorMessage = 'An error occurred';
+        let httpStatus: HttpStatus = HttpStatus.BAD_REQUEST;
+
+        if (exception instanceof BaseException) {
+            errorMessage = exception.message;
+            httpStatus = exception.getStatus();
+        }
 
         // Extract error message from different exception types
-        if (exception instanceof HttpException) {
+        else if (exception instanceof HttpException) {
             const exceptionResponse = exception.getResponse();
             errorMessage =
                 typeof exceptionResponse === 'string'
                     ? exceptionResponse
                     : (exceptionResponse as any).message || exception.message;
-        } else if (exception instanceof Error) {
+        }
+        // normal error
+        else if (exception instanceof Error) {
             errorMessage = exception.message;
-        } else if (typeof exception === 'string') {
-            errorMessage = exception;
         }
 
-        response.status(HttpStatus.BAD_REQUEST).json({
+        this.logger.error(errorMessage);
+
+        response.status(httpStatus).json({
             success: false,
             errorMessage: errorMessage,
         });
     }
 }
-
 ```
 ##### Register the `GlobalExceptionFilter`
 
@@ -523,93 +548,6 @@ Now in `main.ts` let's write
 
 ```ts
 app.useGlobalFilters(new GlobalExceptionFilter());
-```
-
-
-#### LoggingInterceptor
-
-```ts
-import {
-    Injectable,
-    NestInterceptor,
-    ExecutionContext,
-    CallHandler,
-    Logger,
-} from '@nestjs/common';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
-
-@Injectable()
-export class LoggingInterceptor implements NestInterceptor {
-    private readonly logger = new Logger(LoggingInterceptor.name);
-
-    intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-        const request = context.switchToHttp().getRequest();
-        const { method, url, body, headers } = request;
-        const now = Date.now();
-
-        // Log request details
-        this.logger.log(
-            `Incoming Request: ${method} ${url}`,
-            {
-                headers: this.sanitizeHeaders(headers),
-                body: this.sanitizeBody(body),
-            },
-        );
-
-        return next.handle().pipe(
-            tap((responseBody) => {
-                const response = context.switchToHttp().getResponse();
-                const delay = Date.now() - now;
-                this.logger.log(
-                    `Outgoing Response: ${method} ${url} ${response.statusCode} - ${delay}ms`,
-                    {
-                        response: this.sanitizeBody(responseBody),
-                    },
-                );
-            }),
-        );
-    }
-
-    private sanitizeHeaders(headers: any): any {
-        const sanitized = { ...headers };
-        // Remove sensitive information
-        delete sanitized.authorization;
-        delete sanitized.cookie;
-        return sanitized;
-    }
-
-    private sanitizeBody(body: any): any {
-        if (!body) return body;
-
-        const sanitized = { ...body };
-        // Remove sensitive fields if they exist
-        if (sanitized.password) delete sanitized.password;
-        if (sanitized.token) delete sanitized.token;
-        if (sanitized.accessToken) delete sanitized.accessToken;
-        if (sanitized.refreshToken) delete sanitized.refreshToken;
-
-        return sanitized;
-    }
-} 
-```
-
-Now we register this global interceptor at the application root level:
-
-```ts{6}
-async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-    cors: true,
-  });
-  ...
-  app.useGlobalInterceptors(new LoggingInterceptor());
-  ...
-  await app.listen(process.env.PORT ?? 5090).then(() => {
-    console.log('Listening on: http://localhost:5090');
-  });
-}
-
-bootstrap();
 ```
 
 #### Customer Tag that Works with Guards
@@ -647,46 +585,71 @@ Now we can create an annotation to *unprotect* a route within a `@UseGuards(JwtG
 
 #### Interceptors
 
-##### Create @Transactional Dectorator
+##### For Transactions
+
 ###### Decorator to set metadata
 
 ```ts
 // transaction.decorator.ts
 import { SetMetadata } from '@nestjs/common';
+import MetaDataKey from './MetaDataKey';
 
-export const TRANSACTION_KEY = 'transaction';
-export const Transactional = () => SetMetadata(TRANSACTION_KEY, true);
-
-// transaction-manager.decorator.ts
-import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-
-export const TransactionManager = createParamDecorator(
-    (data: unknown, ctx: ExecutionContext) => {
-        const request = ctx.switchToHttp().getRequest();
-        return request.transactionManager;
-    },
-);
+export const Transactional = () => {
+    return SetMetadata(MetaDataKey.TRANSACTION_KEY, true);
+};
 ```
 
-###### Interceptor to handle the "before" and "after" behaviour of a function
 
-```ts
-// transaction.interceptor.ts
-import { Injectable, NestInterceptor, ExecutionContext, CallHandler } from '@nestjs/common';
-import { Observable } from 'rxjs';
+###### Interceptor to handle the "before" (to inject entity manager) and "after" (to rollback changes) behaviour of a function
+
+
+
+```ts{35-38}
+import {
+    Injectable,
+    NestInterceptor,
+    ExecutionContext,
+    CallHandler,
+    Logger,
+} from '@nestjs/common';
+import { Observable, of } from 'rxjs';
 import { DataSource } from 'typeorm';
-import { TRANSACTION_KEY } from './transaction.decorator';
+import MetaDataKey from '../decorators/MetaDataKey';
+import { firstValueFrom } from 'rxjs';
+import { Reflector } from '@nestjs/core';
 
 @Injectable()
 export class TransactionInterceptor implements NestInterceptor {
-    constructor(private readonly dataSource: DataSource) {}
+    private readonly logger = new Logger(TransactionInterceptor.name);
 
-    async intercept(context: ExecutionContext, next: CallHandler): Promise<Observable<any>> {
+    constructor(
+        private readonly dataSource: DataSource,
+        private readonly reflector: Reflector,
+    ) { }
+
+    async intercept(
+        context: ExecutionContext,
+        next: CallHandler,
+    ): Promise<Observable<any>> {
         const request = context.switchToHttp().getRequest();
         const handler = context.getHandler();
-        const isTransaction = Reflect.getMetadata(TRANSACTION_KEY, handler);
+        const classRef = context.getClass();
 
-        if (!isTransaction) {
+        this.logger.debug(
+            `Checking transaction metadata for ${classRef.name}.${handler.name}`,
+        );
+
+        const isTransactional = this.reflector.get<boolean>(
+            MetaDataKey.TRANSACTION_KEY,
+            handler,
+        );
+```
+- Since decorator `@Transactional` at the controller method level will be executed ***before*** interceptor, we can determine if a controller method requires an entity manager for a transaction at the lighted lines. 
+
+- These lines get the variable we set at `@Transactional`.
+
+```ts{10}
+        if (!isTransactional) {
             return next.handle();
         }
 
@@ -694,12 +657,13 @@ export class TransactionInterceptor implements NestInterceptor {
         await queryRunner.connect();
         await queryRunner.startTransaction();
 
+        // Store the transaction manager in the request
         request.transactionManager = queryRunner.manager;
 
         try {
-            const result = await next.handle().toPromise();
+            const result = await firstValueFrom(next.handle());
             await queryRunner.commitTransaction();
-            return result;
+            return of(result);
         } catch (error) {
             await queryRunner.rollbackTransaction();
             throw error;
@@ -710,45 +674,197 @@ export class TransactionInterceptor implements NestInterceptor {
 }
 ```
 
+Note that once `@Transactional()` was annotated to a method, the global interceptor above will set an entity manager into the request object, which can be resolved by annotation the following annotation at the argument:
+
+
+###### ParamDecorator to get EntityManager from Request Object
+
+```ts
+import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import { EntityManager } from 'typeorm';
+
+export const TransactionManager = createParamDecorator(
+    (data: unknown, ctx: ExecutionContext): EntityManager | undefined => {
+        const request = ctx.switchToHttp().getRequest();
+        return request.transactionManager;
+    },
+); 
+```
+
+###### Exmaple of using `@Transactional` annotation
+
+```ts
+@Transactional()
+@Post('/some-object')
+async createObj(
+    @RequestUser() user: JwtTokenPayload,
+    @TransactionManager() em: EntityManager, 
+    // Since we have @Transactional, 
+    // EntityManager becomes available
+) {
+    await this.exportTempalteAppService.createObject(user, em);
+    return new SuccessDto(null);
+}
+```
+
+Now for transaction to function normally:
+- We replace all `SomeTableRepository.someMethod(...args)` by `em.someMethod(SomeTable, ...args)` within our application service.
+
+
+
 ###### Register the interceptor globally
 
 Within `boostrap` let's add
 
 ```ts
-app.useGlobalInterceptors(new TransactionInterceptor(app.get(DataSource)));
+import { INestApplication } from '@nestjs/common';
+import { TransactionInterceptor } from '../../../common/interceptors/transaction.interceptor';
+import { DataSource } from 'typeorm';
+import { Reflector } from '@nestjs/core';
+
+const boostrap = (app: INestApplication) => {
+    ...
+    app.useGlobalInterceptors(
+        new TransactionInterceptor(app.get(DataSource), app.get(Reflector)),
+    );
+}
 ```
 
-##### Create Interceptor for data transformation
 
-Assume that we have defined an `API_VERSION` in environment variable, now we wish to attach this data in every response:
+##### For Request Logging (especially failed ones)
 
 ```ts
 import {
-  CallHandler,
-  ExecutionContext,
-  Injectable,
-  NestInterceptor,
+    Injectable,
+    NestInterceptor,
+    ExecutionContext,
+    CallHandler,
+    Logger,
 } from '@nestjs/common';
-import { Observable, map, tap } from 'rxjs';
-
-import { ConfigService } from '@nestjs/config';
+import { Observable, throwError } from 'rxjs';
+import { tap, catchError } from 'rxjs/operators';
 
 @Injectable()
-export class DataResponseInterceptor implements NestInterceptor {
-  constructor(private readonly configService: ConfigService) {}
+export class LoggingInterceptor implements NestInterceptor {
+    private readonly logger = new Logger(LoggingInterceptor.name);
 
-  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    return next.handle().pipe(
-      map((data) => ({
-        apiVersion: this.configService.get('API_VERSION'),
-        success: true,
-        result: data
-      })),
-    );
-  }
-}
+    intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+        const request = context.switchToHttp().getRequest();
+        const { method, url, body, headers } = request;
+        const now = Date.now();
+
+        // Log request details with more information
+        this.logger.log(
+            `Incoming Request: ${method} ${url}`,
+            {
+                headers: this.sanitizeHeaders(headers),
+                body: this.sanitizeBody(body),
+                contentType: headers['content-type'],
+                debug: {
+                    hasBody: !!body,
+                    bodyType: body ? typeof body : 'undefined',
+                    bodyKeys: body ? Object.keys(body) : []
+                }
+            },
+        );
+
+        return next.handle().pipe(
+            tap({
+                next: (responseBody) => {
+                    const response = context.switchToHttp().getResponse();
+                    const delay = Date.now() - now;
+
+                    // Log both successful and unsuccessful responses
+                    if (responseBody && responseBody.success === false) {
+                        this.logger.warn(
+                            `Unsuccessful Response: ${method} ${url} ${response.statusCode} - ${delay}ms`,
+                            {
+                                response: responseBody,
+                                request: {
+                                    body: this.sanitizeBody(body),
+                                    method,
+                                    url
+                                }
+                            },
+                        );
+                    } else {
+                        this.logger.log(
+                            `Outgoing Response: ${method} ${url} ${response.statusCode} - ${delay}ms`,
+                            {
+                                response: responseBody,
+                                request: {
+                                    body: this.sanitizeBody(body),
+                                    method,
+                                    url
+                                }
+                            },
+                        );
+                    }
+                },
+                error: (error) => {
+                    const response = context.switchToHttp().getResponse();
+                    const delay = Date.now() - now;
+                    this.logger.error(
+                        `Error Response: ${method} ${url} ${response.statusCode} - ${delay}ms`,
+                        {
+                            error: error.message,
+                            stack: error.stack,
+                            request: {
+                                body: this.sanitizeBody(body),
+                                method,
+                                url
+                            }
+                        },
+                    );
+                }
+            })
+        );
+    }
+
+    private sanitizeHeaders(headers: any): any {
+        const sanitized = { ...headers };
+        // Remove sensitive information
+        delete sanitized.authorization;
+        delete sanitized.cookie;
+        return sanitized;
+    }
+
+    private sanitizeBody(body: any): any {
+        if (!body) return 'No body';
+
+        const sanitized = { ...body };
+        // Remove sensitive fields if they exist
+        if (sanitized.password) delete sanitized.password;
+        if (sanitized.token) delete sanitized.token;
+        if (sanitized.accessToken) delete sanitized.accessToken;
+        if (sanitized.refreshToken) delete sanitized.refreshToken;
+
+        return sanitized;
+    }
+} 
 ```
-and we register this globally in `boostrap`:
+
+Now we register the logger at boostrap:
 ```ts
-app.useGlobalInterceptors(new DataResponseInterceptor(app.get(ConfigService)));
+    app.useGlobalInterceptors(new LoggingInterceptor());
+```
+
+#### More Error Logging for Debug Purpose
+
+By default when an error reach our `LoggingInterceptor` the error stackTrace is lost. To get more detail on which file and which line the exception occurs at which file, we need the following:
+
+```ts
+export class AppModule {
+    onModuleInit() {
+        process.on('uncaughtException', err => {
+            console.error('Uncaught Exception:', err.stack);
+            console.info('Node NOT Exiting...');
+        });
+
+        process.on('unhandledRejection', (reason, promise) => {
+            console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+        });
+    }
+}
+
 ```
