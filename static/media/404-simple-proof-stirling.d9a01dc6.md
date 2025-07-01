@@ -4,7 +4,7 @@ date: 2025-07-01
 id: blog0404
 tag: math
 toc: true
-intro: We record a study on the asymptotic behaviour of n!
+intro: We study the asymptotic behaviour of n!
 ---
 
 #### The Stirling's Formula
@@ -112,7 +112,10 @@ $$
 1<\frac{a_n}{a_{n+1}}<e^{\frac{1}{4}\left(\frac{1}{n}-\frac{1}{n+1}\right)}.\tag{$**$}
 $$
 
-Thus the first inequality in $(**)$ tells us $\{a_n\}$ converges to a nonnegative limit $\boxed{\alpha:=\lim_{n\to\infty} a_n}$; The second inequality in $(**)$ tell us $\{a_ne^{-\frac{1}{4n}}\}$ increases to $\alpha$, so $\alpha >0$. By using the following form of Walli's formula (modified from **Fact 4**)
+- The first inequality in $(**)$ tells us $\{a_n\}$ decreases to a limit $\alpha \ge 0$;
+- The second inequality in $(**)$ tells us $\{a_ne^{-\frac{1}{4n}}\}$ increases to $\alpha$, so $\alpha >0$.
+
+By using the following form of Walli's formula (modified from **Fact 4**)
 
 $$
 \frac{(n!)^2 2^{2n}}{(2n)!}\sim \sqrt{\pi n}
@@ -130,12 +133,8 @@ $$
 \lim_{n\to\infty} \frac{n!}{n^{n+1/2} e^{-n}}=\lim_{n\to\infty}a_n=\alpha =\sqrt{2\pi}.
 $$
 
-For the ease of memorization this result is usually written as
-
 <qed>
 
-$$
-\boxed{\displaystyle n!\sim \sqrt{2\pi n} \left(\frac{n}{e}\right)^n}.
-$$
+For the ease of memorization this result is usually written as $\boxed{\displaystyle n!\sim \sqrt{2\pi n} \left(\frac{n}{e}\right)^n}$.
 
 </qed>
