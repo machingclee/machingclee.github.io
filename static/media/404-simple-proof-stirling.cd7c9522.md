@@ -1,5 +1,5 @@
 ---
-title: A Simple Proof to Stirling's Formula
+title: A Simple Proof to Stirling's Formula $n!\sim \sqrt{2\pi n} \left(\frac{n}{e}\right)^n$
 date: 2025-07-01
 id: blog0404
 tag: math
@@ -127,7 +127,7 @@ $$
 Therefore we conclude that
 
 $$
-\lim_{n\to\infty} \frac{n!}{n^{n+1/2} e^{-n}}=\lim_{n\to\infty}a_n=\alpha =\sqrt{2\pi}
+\lim_{n\to\infty} \frac{n!}{n^{n+1/2} e^{-n}}=\lim_{n\to\infty}a_n=\alpha =\sqrt{2\pi}.
 $$
 
 For the ease of memorization this result is usually written as

@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/static/css/main.ce5bbb8d.chunk.css",
-    "main.js": "/static/js/main.10d5211c.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.00ffe69a.js",
+    "main.js": "/static/js/main.69c1f9fb.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.d0992c74.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.8a68c1aa.chunk.js": "/static/js/2.8a68c1aa.chunk.js",
-    "static/js/3.2e85e117.chunk.js": "/static/js/3.2e85e117.chunk.js",
+    "static/js/2.c95cd408.chunk.js": "/static/js/2.c95cd408.chunk.js",
+    "static/js/3.298b33e0.chunk.js": "/static/js/3.298b33e0.chunk.js",
     "static/js/4.0f99e04b.chunk.js": "/static/js/4.0f99e04b.chunk.js",
     "static/js/5.65432bfa.chunk.js": "/static/js/5.65432bfa.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.8a68c1aa.chunk.js.LICENSE.txt": "/static/js/2.8a68c1aa.chunk.js.LICENSE.txt",
-    "static/js/3.2e85e117.chunk.js.LICENSE.txt": "/static/js/3.2e85e117.chunk.js.LICENSE.txt",
+    "static/js/2.c95cd408.chunk.js.LICENSE.txt": "/static/js/2.c95cd408.chunk.js.LICENSE.txt",
+    "static/js/3.298b33e0.chunk.js.LICENSE.txt": "/static/js/3.298b33e0.chunk.js.LICENSE.txt",
     "static/js/4.0f99e04b.chunk.js.LICENSE.txt": "/static/js/4.0f99e04b.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.52b1ef07.md",
@@ -392,7 +392,7 @@
     "static/media/401-cases-study-jpa.md": "/static/media/401-cases-study-jpa.0698c6e5.md",
     "static/media/402-nestjs-cli.md": "/static/media/402-nestjs-cli.3747128a.md",
     "static/media/403-2side-effects.md": "/static/media/403-2side-effects.580ffc24.md",
-    "static/media/404-simple-proof-stirling.md": "/static/media/404-simple-proof-stirling.ff2b50fd.md",
+    "static/media/404-simple-proof-stirling.md": "/static/media/404-simple-proof-stirling.cd7c9522.md",
     "static/media/CV_Portfolio.0ad0042d.pdf": "/static/media/CV_Portfolio.0ad0042d.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -442,10 +442,10 @@
     "static/media/transformer-date-fomatter.18a2d3fc.pdf": "/static/media/transformer-date-fomatter.18a2d3fc.pdf"
   },
   "entrypoints": [
-    "static/js/runtime-main.00ffe69a.js",
+    "static/js/runtime-main.d0992c74.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.8a68c1aa.chunk.js",
+    "static/js/2.c95cd408.chunk.js",
     "static/css/main.ce5bbb8d.chunk.css",
-    "static/js/main.10d5211c.chunk.js"
+    "static/js/main.69c1f9fb.chunk.js"
   ]
 }
