@@ -1,7 +1,7 @@
 ---
 title: Two kinds of Side Effects in JPA
 date: 2025-06-28
-id: blog0402
+id: blog0403
 tag: jpa, event-driven, springboot
 toc: true
 intro: "We record a method on how to reorder folders based on our predefined pattern"

@@ -1,7 +1,7 @@
 ---
 title: A Simple Proof to Stirling's Formula
 date: 2025-07-01
-id: blog0403
+id: blog0404
 tag: math
 toc: true
 intro: We record a study on the asymptotic behaviour of n!
