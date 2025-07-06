@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.ce5bbb8d.chunk.css",
-    "main.js": "/static/js/main.b1dcbc99.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.6ee5d626.js",
+    "main.js": "/static/js/main.81bc93cd.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.f738659c.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.8b4eeb80.chunk.js": "/static/js/2.8b4eeb80.chunk.js",
-    "static/js/3.4072d659.chunk.js": "/static/js/3.4072d659.chunk.js",
-    "static/js/4.0f99e04b.chunk.js": "/static/js/4.0f99e04b.chunk.js",
-    "static/js/5.65432bfa.chunk.js": "/static/js/5.65432bfa.chunk.js",
+    "static/js/2.e0abf37e.chunk.js": "/static/js/2.e0abf37e.chunk.js",
+    "static/js/3.698d22f3.chunk.js": "/static/js/3.698d22f3.chunk.js",
+    "static/js/4.cc3d2569.chunk.js": "/static/js/4.cc3d2569.chunk.js",
+    "static/js/5.7007cb6f.chunk.js": "/static/js/5.7007cb6f.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.8b4eeb80.chunk.js.LICENSE.txt": "/static/js/2.8b4eeb80.chunk.js.LICENSE.txt",
-    "static/js/3.4072d659.chunk.js.LICENSE.txt": "/static/js/3.4072d659.chunk.js.LICENSE.txt",
-    "static/js/4.0f99e04b.chunk.js.LICENSE.txt": "/static/js/4.0f99e04b.chunk.js.LICENSE.txt",
+    "static/js/2.e0abf37e.chunk.js.LICENSE.txt": "/static/js/2.e0abf37e.chunk.js.LICENSE.txt",
+    "static/js/3.698d22f3.chunk.js.LICENSE.txt": "/static/js/3.698d22f3.chunk.js.LICENSE.txt",
+    "static/js/4.cc3d2569.chunk.js.LICENSE.txt": "/static/js/4.cc3d2569.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.52b1ef07.md",
     "static/media/002-Lazy-React-Router.md": "/static/media/002-Lazy-React-Router.48295ca9.md",
@@ -390,7 +390,6 @@
     "static/media/399-reorder-folder.md": "/static/media/399-reorder-folder.cb2862c6.md",
     "static/media/400-toolkit-to-rtk.md": "/static/media/400-toolkit-to-rtk.86125ea7.md",
     "static/media/401-cases-study-jpa.md": "/static/media/401-cases-study-jpa.0698c6e5.md",
-    "static/media/402-nestjs-cli.md": "/static/media/402-nestjs-cli.3747128a.md",
     "static/media/403-two-side-effects.md": "/static/media/403-two-side-effects.580ffc24.md",
     "static/media/404-simple-proof-stirling.md": "/static/media/404-simple-proof-stirling.d9a01dc6.md",
     "static/media/CV_Portfolio.0ad0042d.pdf": "/static/media/CV_Portfolio.0ad0042d.pdf",
@@ -442,10 +441,10 @@
     "static/media/transformer-date-fomatter.18a2d3fc.pdf": "/static/media/transformer-date-fomatter.18a2d3fc.pdf"
   },
   "entrypoints": [
-    "static/js/runtime-main.6ee5d626.js",
+    "static/js/runtime-main.f738659c.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.8b4eeb80.chunk.js",
+    "static/js/2.e0abf37e.chunk.js",
     "static/css/main.ce5bbb8d.chunk.css",
-    "static/js/main.b1dcbc99.chunk.js"
+    "static/js/main.81bc93cd.chunk.js"
   ]
 }
