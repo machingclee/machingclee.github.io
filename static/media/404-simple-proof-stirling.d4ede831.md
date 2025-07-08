@@ -106,7 +106,7 @@ $$
 \end{align*}
 $$
 
-by **Fact 3** we have $\displaystyle  \int_{n}^{n+1}\frac{1}{x}\,dx\leq\frac{1}{2}\left(\frac{1}{n}+\frac{1}{n+1}\right)$, therefore a simple computation yields
+by **Fact 3** we have $\int_{n}^{n+1}\frac{1}{x}\,dx\leq\frac{1}{2}(\frac{1}{n}+\frac{1}{n+1})$, therefore a simple computation yields
 
 $$
 1<\frac{a_n}{a_{n+1}}<e^{\frac{1}{4}\left(\frac{1}{n}-\frac{1}{n+1}\right)}.\tag{$**$}
