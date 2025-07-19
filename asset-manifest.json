@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/static/css/main.ce5bbb8d.chunk.css",
-    "main.js": "/static/js/main.12433b32.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.f738659c.js",
+    "main.js": "/static/js/main.621ad697.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.300e1f9c.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.80f69a76.chunk.js": "/static/js/2.80f69a76.chunk.js",
-    "static/js/3.698d22f3.chunk.js": "/static/js/3.698d22f3.chunk.js",
+    "static/js/2.afda85ab.chunk.js": "/static/js/2.afda85ab.chunk.js",
+    "static/js/3.4b9fcb79.chunk.js": "/static/js/3.4b9fcb79.chunk.js",
     "static/js/4.cc3d2569.chunk.js": "/static/js/4.cc3d2569.chunk.js",
     "static/js/5.7007cb6f.chunk.js": "/static/js/5.7007cb6f.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.80f69a76.chunk.js.LICENSE.txt": "/static/js/2.80f69a76.chunk.js.LICENSE.txt",
-    "static/js/3.698d22f3.chunk.js.LICENSE.txt": "/static/js/3.698d22f3.chunk.js.LICENSE.txt",
+    "static/js/2.afda85ab.chunk.js.LICENSE.txt": "/static/js/2.afda85ab.chunk.js.LICENSE.txt",
+    "static/js/3.4b9fcb79.chunk.js.LICENSE.txt": "/static/js/3.4b9fcb79.chunk.js.LICENSE.txt",
     "static/js/4.cc3d2569.chunk.js.LICENSE.txt": "/static/js/4.cc3d2569.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.52b1ef07.md",
@@ -392,7 +392,7 @@
     "static/media/401-cases-study-jpa.md": "/static/media/401-cases-study-jpa.0698c6e5.md",
     "static/media/403-two-side-effects.md": "/static/media/403-two-side-effects.580ffc24.md",
     "static/media/404-simple-proof-stirling.md": "/static/media/404-simple-proof-stirling.d4ede831.md",
-    "static/media/CV_Portfolio.0ad0042d.pdf": "/static/media/CV_Portfolio.0ad0042d.pdf",
+    "static/media/CV_Portfolio.c7d23e19.pdf": "/static/media/CV_Portfolio.c7d23e19.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
     "static/media/Midterm_Review_limsupinf.1e2193c7.pdf": "/static/media/Midterm_Review_limsupinf.1e2193c7.pdf",
@@ -441,10 +441,10 @@
     "static/media/transformer-date-fomatter.18a2d3fc.pdf": "/static/media/transformer-date-fomatter.18a2d3fc.pdf"
   },
   "entrypoints": [
-    "static/js/runtime-main.f738659c.js",
+    "static/js/runtime-main.300e1f9c.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.80f69a76.chunk.js",
+    "static/js/2.afda85ab.chunk.js",
     "static/css/main.ce5bbb8d.chunk.css",
-    "static/js/main.12433b32.chunk.js"
+    "static/js/main.621ad697.chunk.js"
   ]
 }
