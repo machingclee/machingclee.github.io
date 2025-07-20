@@ -4,7 +4,7 @@ date: 2025-03-15
 id: blog0371
 tag: springboot, kotlin
 toc: false
-intro: "We record a rate-limited concurrent tasks technical borrowed from golang."
+intro: "We record a rate-limited concurrent tasks techique borrowed from golang."
 ---
 
 <style>

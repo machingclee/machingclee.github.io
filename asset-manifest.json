@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.ce5bbb8d.chunk.css",
-    "main.js": "/static/js/main.93befdf1.chunk.js",
+    "main.js": "/static/js/main.91742daf.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.300e1f9c.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.afda85ab.chunk.js": "/static/js/2.afda85ab.chunk.js",
@@ -360,7 +360,7 @@
     "static/media/368-cli-bubble-tea.md": "/static/media/368-cli-bubble-tea.3000f69f.md",
     "static/media/369-jpa-toolkit.md": "/static/media/369-jpa-toolkit.67639de1.md",
     "static/media/370-deduplication.md": "/static/media/370-deduplication.14d5dedd.md",
-    "static/media/371-speed-up-data-migration.md": "/static/media/371-speed-up-data-migration.04f8dbfa.md",
+    "static/media/371-speed-up-data-migration.md": "/static/media/371-speed-up-data-migration.5d4631bd.md",
     "static/media/372-multiple-sshes.md": "/static/media/372-multiple-sshes.1db2a682.md",
     "static/media/373-use-mongo-spring-data.md": "/static/media/373-use-mongo-spring-data.84074772.md",
     "static/media/374-run-shell-script-in-gradle copy.md": "/static/media/374-run-shell-script-in-gradle copy.921e8f1a.md",
@@ -445,6 +445,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.afda85ab.chunk.js",
     "static/css/main.ce5bbb8d.chunk.css",
-    "static/js/main.93befdf1.chunk.js"
+    "static/js/main.91742daf.chunk.js"
   ]
 }
