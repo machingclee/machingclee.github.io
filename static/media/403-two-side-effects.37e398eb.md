@@ -4,7 +4,7 @@ date: 2025-06-28
 id: blog0403
 tag: jpa, event-driven, springboot
 toc: true
-intro: "We record a method on how to reorder folders based on our predefined pattern"
+intro: "We mention two common patterns in event-driven design for Spring boot that handles side effects due to domain events"
 ---
 
 #### When Atomic Behaviour Needed

@@ -4,7 +4,7 @@ date: 2025-06-30
 id: blog0401
 tag: jpa, event-driven, springboot
 toc: true
-intro: "We record a method on how to reorder folders based on our predefined pattern"
+intro: We study a special case where the repository.delete() can fail silently
 ---
 
 <style>

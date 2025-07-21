@@ -4,7 +4,7 @@ date: 2025-06-21
 id: blog0400
 tag: vscode
 toc: true
-intro: "We record a method on how to reorder folders based on our predefined pattern"
+intro: "A simple introduction to rtk-query"
 ---
 
 <style>
