@@ -4,7 +4,6 @@ date: 2025-07-30
 id: daily0001
 tag: personal, 物業
 toc: false
-wip: true
 intro: 購買居屋前後需要注意的時項及期限。
 ---
 
@@ -24,5 +23,5 @@ intro: 購買居屋前後需要注意的時項及期限。
 
     - 物業其他隱藏 defect
   
-  
+
 - [連登居屋裝修新手村](https://lihkg.com/thread/3949025/page/1)
