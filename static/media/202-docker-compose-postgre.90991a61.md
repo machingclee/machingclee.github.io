@@ -1,6 +1,6 @@
 ---
 title: "Postgresql and MySQL DB from Docker-Compose and Clone From Existing DB"
-date: 2024-09-08
+date: 2025-08-02
 id: blog0202
 tag: docker, sql, postgresql, mysql
 intro: "Record a docker-compose.yml to host a postgresql/mysql db locally. Also we clone existing DB by docker-command using postgres image"
@@ -119,3 +119,69 @@ docker run --rm -e PGPASSWORD=$TARGET_DB_PASSWORD -v $(pwd)/temp_script.sql:/tmp
 rm temp_script.sql
 echo "Done"
 ```
+
+#### Enable SSL Connection for PostgreSQL
+
+Some cloud database service provider often require SSL (such as AWS RDS)  as a default connection mode (indicated by `?sslmode=require` in our connection string).
+
+To replicate the remote setup locally we need to allow SSL connection as well.
+
+To do this, let's modify the docker-compose.yml:
+
+```yml{7,14-22}
+version: "2"
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+      - ./ssl:/var/lib/postgresql/ssl
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: pguser
+      POSTGRES_PASSWORD: pguser
+      POSTGRES_DB: pgdb
+      # Enable SSL
+      POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256 --auth-local=trust"
+    command: >
+
+      postgres
+      -c ssl=on
+      -c ssl_cert_file=/var/lib/postgresql/ssl/server.crt
+      -c ssl_key_file=/var/lib/postgresql/ssl/server.key
+      -c ssl_ca_file=/var/lib/postgresql/ssl/ca.crt
+```
+
+- Now `mkdir ssl && cd ssl` and then execute 
+  ```bash
+  openssl req -new -x509 -days 365 -nodes -text -out ca.crt \ 
+        -keyout ca.key -subj "/CN=postgres-ca"
+  ```
+- As shown below, our certificate only allows `localhost` as the domain of our database
+  ```bash
+  openssl req -new -nodes -text -out server.csr \
+        -keyout server.key -subj "/CN=localhost"
+  ```
+  we can connect to our database by `127.0.0.1` as well.
+
+- ```bash 
+  openssl x509 -req -in server.csr -text -days 365 -CA ca.crt \
+        -CAkey ca.key -CAcreateserial -out server.crt
+  ```
+- ```bash
+  chmod 600 server.key && chmod 644 server.crt ca.crt && ls -la
+  ```
+  At this point we have the following in our `ssl` directory:
+  ```text
+  total 56
+  drwxr-xr-x  8 chingcheonglee  staff   256 Aug  1 15:46 .
+  drwxr-xr-x  9 chingcheonglee  staff   288 Aug  1 15:45 ..
+  -rw-r--r--@ 1 chingcheonglee  staff  4140 Aug  1 15:46 ca.crt
+  -rw-------@ 1 chingcheonglee  staff  1704 Aug  1 15:46 ca.key
+  -rw-r--r--@ 1 chingcheonglee  staff    41 Aug  1 15:46 ca.srl
+  -rw-r--r--@ 1 chingcheonglee  staff  4042 Aug  1 15:46 server.crt
+  -rw-r--r--@ 1 chingcheonglee  staff  3357 Aug  1 15:46 server.csr
+  -rw-------@ 1 chingcheonglee  staff  1704 Aug  1 15:46 server.key
+  ```
+  And we can docker-compose up to spin up a server that allows SSL connection.
