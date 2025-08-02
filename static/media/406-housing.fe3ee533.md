@@ -24,4 +24,5 @@ intro: 購買居屋前後需要注意的時項及期限。
 
     - 物業其他隱藏 defect
   
+  
 - [連登居屋裝修新手村](https://lihkg.com/thread/3949025/page/1)

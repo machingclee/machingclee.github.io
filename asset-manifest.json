@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.ce5bbb8d.chunk.css",
-    "main.js": "/static/js/main.d05378c3.chunk.js",
+    "main.js": "/static/js/main.3722431d.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.7f737b93.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.5f216843.chunk.js": "/static/js/2.5f216843.chunk.js",
@@ -393,7 +393,7 @@
     "static/media/403-two-side-effects.md": "/static/media/403-two-side-effects.37e398eb.md",
     "static/media/404-simple-proof-stirling.md": "/static/media/404-simple-proof-stirling.d4ede831.md",
     "static/media/405-multi-thread-chrome.md": "/static/media/405-multi-thread-chrome.4b96f530.md",
-    "static/media/406-housing.md": "/static/media/406-housing.87c29a41.md",
+    "static/media/406-housing.md": "/static/media/406-housing.fe3ee533.md",
     "static/media/CV_Portfolio.876bfd0e.pdf": "/static/media/CV_Portfolio.876bfd0e.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -447,6 +447,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.5f216843.chunk.js",
     "static/css/main.ce5bbb8d.chunk.css",
-    "static/js/main.d05378c3.chunk.js"
+    "static/js/main.3722431d.chunk.js"
   ]
 }
