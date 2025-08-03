@@ -1,7 +1,7 @@
 ---
 title: 居屋 2024 注意時項
 date: 2025-07-30
-id: daily0001
+id: personal0001
 tag: personal, 物業
 toc: false
 intro: 購買居屋前後需要注意的時項及期限。

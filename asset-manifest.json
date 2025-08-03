@@ -1,19 +1,21 @@
 {
   "files": {
     "main.css": "/static/css/main.ce5bbb8d.chunk.css",
-    "main.js": "/static/js/main.f71a7901.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.7f737b93.js",
+    "main.js": "/static/js/main.fdffe438.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.6fdb05cb.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.5f216843.chunk.js": "/static/js/2.5f216843.chunk.js",
-    "static/js/3.8d794132.chunk.js": "/static/js/3.8d794132.chunk.js",
-    "static/js/4.5d54b388.chunk.js": "/static/js/4.5d54b388.chunk.js",
-    "static/js/5.ea3c1b59.chunk.js": "/static/js/5.ea3c1b59.chunk.js",
+    "static/js/2.9b0ea7bb.chunk.js": "/static/js/2.9b0ea7bb.chunk.js",
+    "static/js/3.495ed6ae.chunk.js": "/static/js/3.495ed6ae.chunk.js",
+    "static/js/4.bcee9825.chunk.js": "/static/js/4.bcee9825.chunk.js",
+    "static/js/5.f79c7ecb.chunk.js": "/static/js/5.f79c7ecb.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.5f216843.chunk.js.LICENSE.txt": "/static/js/2.5f216843.chunk.js.LICENSE.txt",
-    "static/js/3.8d794132.chunk.js.LICENSE.txt": "/static/js/3.8d794132.chunk.js.LICENSE.txt",
-    "static/js/4.5d54b388.chunk.js.LICENSE.txt": "/static/js/4.5d54b388.chunk.js.LICENSE.txt",
+    "static/js/2.9b0ea7bb.chunk.js.LICENSE.txt": "/static/js/2.9b0ea7bb.chunk.js.LICENSE.txt",
+    "static/js/3.495ed6ae.chunk.js.LICENSE.txt": "/static/js/3.495ed6ae.chunk.js.LICENSE.txt",
+    "static/js/4.bcee9825.chunk.js.LICENSE.txt": "/static/js/4.bcee9825.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
+    "static/media/001-housing.md": "/static/media/001-housing.37e59f9e.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.52b1ef07.md",
+    "static/media/002-3c-mac.md": "/static/media/002-3c-mac.0763d37c.md",
     "static/media/002-Lazy-React-Router.md": "/static/media/002-Lazy-React-Router.48295ca9.md",
     "static/media/002-closure-of-interior.md": "/static/media/002-closure-of-interior.d61226c6.md",
     "static/media/002-wpf.md": "/static/media/002-wpf.746842b6.md",
@@ -393,7 +395,6 @@
     "static/media/403-two-side-effects.md": "/static/media/403-two-side-effects.37e398eb.md",
     "static/media/404-simple-proof-stirling.md": "/static/media/404-simple-proof-stirling.d4ede831.md",
     "static/media/405-multi-thread-chrome.md": "/static/media/405-multi-thread-chrome.4b96f530.md",
-    "static/media/406-housing.md": "/static/media/406-housing.7b57f5cf.md",
     "static/media/CV_Portfolio.876bfd0e.pdf": "/static/media/CV_Portfolio.876bfd0e.pdf",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -443,10 +444,10 @@
     "static/media/transformer-date-fomatter.18a2d3fc.pdf": "/static/media/transformer-date-fomatter.18a2d3fc.pdf"
   },
   "entrypoints": [
-    "static/js/runtime-main.7f737b93.js",
+    "static/js/runtime-main.6fdb05cb.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.5f216843.chunk.js",
+    "static/js/2.9b0ea7bb.chunk.js",
     "static/css/main.ce5bbb8d.chunk.css",
-    "static/js/main.f71a7901.chunk.js"
+    "static/js/main.fdffe438.chunk.js"
   ]
 }
