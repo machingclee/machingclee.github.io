@@ -25,13 +25,13 @@ Install the following plugin in VSCode
 
 #####  Clone Remote Repository for Special Definitions
 
-In my case I clone it into `/Users/chingcheonglee/plantuml-lib`
+In my case I clone the following repository into `/Users/chingcheonglee/plantuml-lib`
 
-https://github.com/tmorin/plantuml-libs
+- https://github.com/tmorin/plantuml-libs
 
 ##### Modify Filepath to Refer Local Definition (Just Cloned)
 
-Now create a file named `trial.puml`, we copy an example from [official repository](https://github.com/tmorin/plantuml-libs/tree/master/distribution/eventstorming) and change the highlighted line for the your own location:
+Now create a file named `trial.puml`, we copy an example from [official repository](https://github.com/tmorin/plantuml-libs/tree/master/distribution/eventstorming) and change the highlighted line to the `distribution/` directory in your local file system:
 
 ```yml{4}
 @startuml
@@ -81,9 +81,9 @@ Note that we have included many syntaxes specifically for domain driven design, 
 
 ##### The Visualized Result
 
-Now we make use of the plugin we just installed in vscode:
+Now we make use of the plugin we just installed in vscode to preview the `puml` file:
 
-[![](/assets/img/2025-08-17-22-44-05.png)](/assets/img/2025-08-17-22-44-05.png)
+![](/assets/img/2025-08-21-04-34-22.png)
 
 We get the live-preview visualized from the PlantUML definitions:
 
