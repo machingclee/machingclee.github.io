@@ -229,16 +229,23 @@ package dev.james.processor
 
 import com.google.devtools.ksp.processing.*
 import com.squareup.kotlinpoet.*
-
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSAnnotated
+import com.google.devtools.ksp.symbol.KSPropertyDeclaration
+import com.squareup.kotlinpoet.ksp.TypeParameterResolver
 import com.squareup.kotlinpoet.ksp.toTypeName
 import com.squareup.kotlinpoet.ksp.toTypeParameterResolver
 import com.squareup.kotlinpoet.ksp.writeTo
 
+data class DTOProperty(
+    val name: String,
+    val type: TypeName,
+    val accessor: String, // How to access this field from the entity
+)
+
 class GenerateDTOProcessor(
     private val codeGenerator: CodeGenerator,
-    private val logger: KSPLogger
+    private val logger: KSPLogger,
 ) : SymbolProcessor {
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
@@ -246,22 +253,43 @@ class GenerateDTOProcessor(
             .filterIsInstance<KSClassDeclaration>()
 
         symbols.forEach { classDeclaration ->
-            generateDTOAndExtension(classDeclaration)
+            generateDTOAndExtension(classDeclaration, resolver)
         }
 
         return emptyList()
     }
 
-    private fun generateDTOAndExtension(classDeclaration: KSClassDeclaration) {
+    private fun generateDTOAndExtension(classDeclaration: KSClassDeclaration, resolver: Resolver) {
         val packageName = classDeclaration.packageName.asString()
         val className = classDeclaration.simpleName.asString()
 
         // Resolve type parameters for the class
         val typeParameterResolver = classDeclaration.typeParameters.toTypeParameterResolver()
 
-        // Get all fields annotated with @Column
-        val fields = classDeclaration.getAllProperties()
-            .filter { property -> property.annotations.any { it.shortName.asString() == "Column" } }
+        // Get all DTO properties (regular columns + flattened embedded fields)
+        val dtoProperties = mutableListOf<DTOProperty>()
+
+        classDeclaration.getAllProperties().forEach { property ->
+            when {
+                // Regular @Column properties
+                property.annotations.any { it.shortName.asString() == "Column" } -> {
+                    val columnName = getColumnName(property) ?: property.simpleName.asString()
+                    val camelCaseName = snakeToCamelCase(columnName)
+                    val typeName = property.type.toTypeName(typeParameterResolver)
+                    dtoProperties.add(DTOProperty(
+                        name = camelCaseName,
+                        type = typeName,
+                        accessor = property.simpleName.asString()
+                    ))
+                }
+
+                // @Embedded properties - flatten them
+                property.annotations.any { it.shortName.asString() == "Embedded" } -> {
+                    val embeddedProperties = getEmbeddedProperties(property, resolver, typeParameterResolver)
+                    dtoProperties.addAll(embeddedProperties)
+                }
+            }
+        }
 
         // Generate DTO class
         val dtoClassName = "${className}DTO"
@@ -270,20 +298,18 @@ class GenerateDTOProcessor(
             .primaryConstructor(
                 FunSpec.constructorBuilder()
                     .addParameters(
-                        fields.map { field ->
-                            val typeName = field.type.toTypeName(typeParameterResolver)
-                            ParameterSpec.builder(field.simpleName.asString(), typeName).build()
-                        }.toList()
+                        dtoProperties.map { property ->
+                            ParameterSpec.builder(property.name, property.type).build()
+                        }
                     )
                     .build()
             )
             .addProperties(
-                fields.map { field ->
-                    val typeName = field.type.toTypeName(typeParameterResolver)
-                    PropertySpec.builder(field.simpleName.asString(), typeName)
-                        .initializer(field.simpleName.asString())
+                dtoProperties.map { property ->
+                    PropertySpec.builder(property.name, property.type)
+                        .initializer(property.name)
                         .build()
-                }.toList()
+                }
             )
             .build()
 
@@ -294,8 +320,8 @@ class GenerateDTOProcessor(
             .addCode(
                 buildString {
                     append("return $dtoClassName(\n")
-                    fields.forEach { field ->
-                        append("    ${field.simpleName.asString()},\n")
+                    dtoProperties.forEach { property ->
+                        append("    ${property.accessor},\n")
                     }
                     append(")")
                 }
@@ -310,6 +336,67 @@ class GenerateDTOProcessor(
 
         val dependencies = Dependencies(true, *listOfNotNull(classDeclaration.containingFile).toTypedArray())
         fileSpec.writeTo(codeGenerator, dependencies)
+    }
+
+    private fun getEmbeddedProperties(
+        embeddedProperty: KSPropertyDeclaration,
+        resolver: Resolver,
+        typeParameterResolver: TypeParameterResolver,
+    ): List<DTOProperty> {
+        val embeddedProperties = mutableListOf<DTOProperty>()
+
+        // Get the type declaration of the embedded class
+        val embeddedTypeDeclaration = embeddedProperty.type.resolve().declaration as? KSClassDeclaration
+            ?: return emptyList()
+
+        // Check if it's marked as @Embeddable (optional validation)
+        val isEmbeddable = embeddedTypeDeclaration.annotations.any {
+            it.shortName.asString() == "Embeddable"
+        }
+
+        if (!isEmbeddable) {
+            logger.warn("Property ${embeddedProperty.simpleName.asString()} is marked @Embedded but its type is not @Embeddable")
+        }
+
+        // Get all properties from the embedded class that have @Column
+        embeddedTypeDeclaration.getAllProperties().forEach { embeddedFieldProperty ->
+            val columnAnnotation = embeddedFieldProperty.annotations.find {
+                it.shortName.asString() == "Column"
+            }
+
+            if (columnAnnotation != null) {
+                val fieldName = embeddedFieldProperty.simpleName.asString()
+                val fieldType = embeddedFieldProperty.type.toTypeName(typeParameterResolver)
+                val embeddedPropertyName = embeddedProperty.simpleName.asString()
+
+                // Extract column name from @Column annotation and convert to camelCase
+                val columnName = getColumnName(embeddedFieldProperty) ?: fieldName
+                val camelCaseName = snakeToCamelCase(columnName)
+
+                embeddedProperties.add(DTOProperty(
+                    name = camelCaseName,
+                    type = fieldType,
+                    accessor = "$embeddedPropertyName.$fieldName"
+                ))
+            }
+        }
+
+        return embeddedProperties
+    }
+
+    private fun getColumnName(property: KSPropertyDeclaration): String? {
+        val columnAnnotation = property.annotations.find { it.shortName.asString() == "Column" }
+        return columnAnnotation?.arguments?.find { it.name?.asString() == "name" }?.value?.toString()?.removeSurrounding("\"")
+    }
+
+    private fun snakeToCamelCase(snakeCase: String): String {
+        return snakeCase.split("_").mapIndexed { index, word ->
+            if (index == 0) {
+                word.lowercase()
+            } else {
+                word.lowercase().replaceFirstChar { it.uppercase() }
+            }
+        }.joinToString("")
     }
 }
 ```

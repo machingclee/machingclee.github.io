@@ -81,7 +81,7 @@ Due to `UseKeychain` and `AddKeysToAgent`, we only need to do it **_once_**.
 - To `git clone` using our specified SSH key (namely, identity). we can change the ssh-path by changing the hostname beforehand:
 
   <Example>
-  <span>git clone git@<b>github.com-machingclee</b>:machingclee/<repo-name>.git</span>
+  <span>git clone git@<b>github.com-machingclee</b>:machingclee/<b>repo-name</b>.git</span>
   </Example>
 
   Instead of using the default `github.com`
@@ -89,7 +89,7 @@ Due to `UseKeychain` and `AddKeysToAgent`, we only need to do it **_once_**.
 - If we **_did not_** change the ssh-hostname, we might need to authenticate our `PUSH` request using another account (namely, another hostname) via:
 
   <Example>
-  <span>git remote set-url origin git@<b>github.com-machingclee</b>:machingclee/<repo-name>.git</span>
+  <span>git remote set-url origin git@<b>github.com-machingclee</b>:machingclee/<b>repo-name</b>.git</span>
   </Example>
 
   This will change the config of **_that repository_** to using the new host configuration.

@@ -1,5 +1,5 @@
 ---
-title: PlantUML for EventSourcing (With Live-Preview)
+title: PlantUML for EventSourcing and an GUI-application for Editing)
 date: 2025-08-17
 id: blog0406
 tag: puml
@@ -23,61 +23,6 @@ Install the following plugin in VSCode
 
 [![](/assets/img/2025-08-17-22-33-30.png)](/assets/img/2025-08-17-22-33-30.png)
 
-#####  Clone Remote Repository for Special Definitions
-
-In my case I clone the following repository into `/Users/chingcheonglee/plantuml-lib`
-
-- https://github.com/tmorin/plantuml-libs
-
-##### Modify Filepath to Refer Local Definition (Just Cloned)
-
-Now create a file named `trial.puml`, we copy an example from [official repository](https://github.com/tmorin/plantuml-libs/tree/master/distribution/eventstorming) and change the highlighted line to the `distribution/` directory in your local file system:
-
-```yml{4}
-@startuml
-' configures the library
-!global $INCLUSION_MODE="local"
-!global $LIB_BASE_LOCATION="/Users/chingcheonglee/plantuml-libs/distribution"
-
-' Define necessary variables first (from main bootstrap)
-!global $FONT_SIZE_XS=10
-!global $FONT_SIZE_SM=12
-!global $FONT_SIZE_MD=16
-!global $FONT_SIZE_LG=20
-!global $FONT_COLOR="#212121"
-!global $FONT_COLOR_LIGHT="#757575"
-
-' loads the package bootstrap
-!include $LIB_BASE_LOCATION/eventstorming/bootstrap.puml
-
-!include $LIB_BASE_LOCATION/eventstorming/Element/Person.puml
-!include $LIB_BASE_LOCATION/eventstorming/Element/System.puml
-!include $LIB_BASE_LOCATION/eventstorming/Element/FacadeCommand.puml
-!include $LIB_BASE_LOCATION/eventstorming/Element/Command.puml
-!include $LIB_BASE_LOCATION/eventstorming/Element/Aggregate.puml
-!include $LIB_BASE_LOCATION/eventstorming/Element/DomainEvent.puml
-!include $LIB_BASE_LOCATION/eventstorming/Element/Process.puml
-
-Person("person")
-System("system")
-FacadeCommand("facade_command", "facade command")
-Command("command123")
-Aggregate("aggregate")
-DomainEvent("domain_event", "domain event")
-Process("process")
-Process("process2")
-
-person --> facade_command : invokes
-system --> facade_command : invokes
-facade_command --> command : invokes
-command --> domain_event : generates
-command . aggregate : invoked on
-domain_event -> process : starts
-
-@enduml
-```
-    
-Note that we have included many syntaxes specifically for domain driven design, therefore we ***need*** the new definitions from the repository we just cloned.
 
 ##### The Visualized Result
 
@@ -89,25 +34,10 @@ We get the live-preview visualized from the PlantUML definitions:
 
 [![](/assets/img/2025-08-17-22-43-02.png)](/assets/img/2025-08-17-22-43-02.png)
 
-#### Simplification without Cloning Remote Repository
-##### The most Important Import
-From the previous section for the `puml` file to be compiled successfully, the most important import is the following:
+#### Custom Definition of Objects in PlantUML
+##### `lib_eventstorming.puml`, a Modularized File
 
-```puml
-!include $LIB_BASE_LOCATION/eventstorming/Element/Person.puml
-!include $LIB_BASE_LOCATION/eventstorming/Element/System.puml
-!include $LIB_BASE_LOCATION/eventstorming/Element/FacadeCommand.puml
-!include $LIB_BASE_LOCATION/eventstorming/Element/Command.puml
-!include $LIB_BASE_LOCATION/eventstorming/Element/Aggregate.puml
-!include $LIB_BASE_LOCATION/eventstorming/Element/DomainEvent.puml
-!include $LIB_BASE_LOCATION/eventstorming/Element/Process.puml
-```
-
-Which means that as long as we have those code available, it is not necessary to clone the repository as in the previous section, let's take the most important part and put them into a single file:
-
-##### lib_eventstorming.puml
-
-In the following we have defined the following syntax:
+In this file we have defined the following syntax:
 
 The ones we use most of the time:
 - `Command`
@@ -161,14 +91,11 @@ skinparam defaultTextAlignment center
 skinparam wrapWidth 400
 skinparam maxMessageSize 150
 
-
-
 skinparam Arrow {
     Color $FONT_COLOR
     FontColor $FONT_COLOR
     FontSize $FONT_SIZE_SM
 }
-
 
 ' definition of the Item eventstorming/Element/FacadeCommand
 skinparam file<<FacadeCommand>> {
@@ -183,7 +110,6 @@ skinparam file<<FacadeCommand>> {
   EsEntity('file', 'FacadeCommand', $id, $label)
 !endprocedure
 ' definition of the Item eventstorming/Element/Command
-
 
 skinparam file<<Command>> {
     StereotypeFontSize $FONT_SIZE_SM
@@ -315,7 +241,6 @@ skinparam file<<Service>> {
   EsEntity('file', 'Service', $id, $label)
 !endprocedure
 ' definition of the Item eventstorming/Element/Policy
-
 
 skinparam file<<Policy>> {
     StereotypeFontSize $FONT_SIZE_SM
@@ -584,9 +509,9 @@ Scheduler --> CreateDeadlineComingNotificationCommand
 @enduml
 ```
 
-##### Some Useful Reposition Trick
+#### Some Useful Reposition Trick
 
-###### Group Together
+##### Group Together
 
 ```puml
 together {
@@ -594,7 +519,7 @@ together {
     <element2>
 }
 ```
-###### Align Vertically
+##### Align Vertically
 
 Note that it is not strictly vertically aligned, the horizontal position is still calculated by the native algorithm
 
@@ -602,6 +527,30 @@ Note that it is not strictly vertically aligned, the horizontal position is stil
 <element1>-[hidden]down-<element2>
 ```
 
+#### GUI Application
+
+##### Pladitor
+
+When our diagram becomes very huge, it would be better to reach our code via clicking the diagram. Luckily there is already a GUI-application to achieve this called ***Pladitor***:
+
+[![](/assets/img/2025-08-24-00-04-33.png)](/assets/img/2025-08-24-00-04-33.png)
+
+it costs HKD 88 but now we can click our "card" to reach our code easily:
+
+[![](/assets/img/2025-08-24-00-04-56.png)](/assets/img/2025-08-24-00-04-56.png)
+
+##### !include failed, now we use !includeurl
+
+Unforturnately the !incldue macro is not available in pladitor, however we can upload the `puml` definition to github and import it as follows:
+
+```puml
+@startuml
+!includeurl https://raw.githubusercontent.com/machingclee/2025-08-23-plantUML-config/refs/heads/main/lib_eventstorming.puml
+```
+
+
 #### References
 
 - [DDD秘籍11: 停车黑名单建模（plantuml 对象协作）](https://www.bilibili.com/video/BV1Nc411m7BZ?spm_id_from=333.788.videopod.sections&vd_source=ed60287fd90cfd8c9101587902f829e4)
+
+- https://github.com/tmorin/plantuml-libs
