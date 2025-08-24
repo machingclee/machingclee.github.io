@@ -34,7 +34,7 @@ We get the live-preview visualized from the PlantUML definitions:
 
 [![](/assets/img/2025-08-17-22-43-02.png)](/assets/img/2025-08-17-22-43-02.png)
 
-#### Custom Definition of Objects in PlantUML
+#### Custom Definition of Objects in PlantUML and Examples in DDD
 ##### `lib_eventstorming.puml`, a Modularized File
 
 In this file we have defined the following syntax:
@@ -525,6 +525,14 @@ Note that it is not strictly vertically aligned, the horizontal position is stil
 
 ```puml
 <element1>-[hidden]down-<element2>
+```
+
+#### Generate PDF File 
+
+I have built a docker image to produce a pdf file inside the container:
+
+```sh
+docker run --rm -v $(pwd):/data machingclee/plantuml-pdf -tpdf timetable.puml
 ```
 
 #### GUI Application
