@@ -1,5 +1,5 @@
 ---
-title: Record Results in Optimal Transport ::::WIP::::
+title: "Record Results in Optimal Transport ::::WIP::::"
 date: 2021-07-31
 edited: 2021-08-07
 id: blog0012
