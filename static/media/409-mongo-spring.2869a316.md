@@ -1,7 +1,7 @@
 ---
 title: Spring Data MongoDB
 date: 2025-08-28
-id: blog0408
+id: blog0409
 tag: spring, kotlin
 toc: true
 intro: Suppose that we need to handle mongoDB using kotlin due to whatever strange reason, let's define simple repository and caveats that we may encounter due to extra-ordinary flexibility in  schema of MongoDB. 
@@ -31,7 +31,6 @@ dependencies {
 ```kotlin-1
 import org.springframework.data.mongodb.core.index.CompoundIndex
 import org.springframework.data.mongodb.core.mapping.Document
-import org.springframework.data.mongodb.core.mapping.Field
 import org.springframework.data.mongodb.core.mapping.Field
 
 
