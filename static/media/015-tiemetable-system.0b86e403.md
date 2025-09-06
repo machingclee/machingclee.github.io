@@ -1,0 +1,310 @@
+---
+id: portfolio015
+title: "Commercial Timetable System for a Art School"
+intro: Manage timetable for teachers and automate the payment notification.
+thumbnail: /assets/img/2025-09-06-12-35-35.png
+tech: Vite; Express; PostgreSQL; Lambda Function,  Domain Driven Design, Leadership (with a junior)
+thumbWidth: 600
+thumbTransX: -200
+thumbTransY: -220
+hoverImageHeight: 160
+date: 2025-09-06
+
+---
+
+<style>
+    img{
+        margin-top: 10px;
+        margin-bottom: 10px;
+        max-width: 660px;
+    }
+
+    /* Alternative solid color version */
+    .download-btn-solid {
+      background: #3b82f6;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 6px 24px;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+      margin-bottom: 20px;
+    }
+
+    .download-btn-solid:hover {
+      background: #2563eb;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+    }
+    table{
+
+      width: 100%;
+      td, th {
+        padding: 5px 10px;
+      }
+      tr:nth-child(2n){
+        background-color: rgba(0,0,0,0.05);
+      }
+      td:nth-child(1) {
+        vertical-align: top;
+        width:170px;
+      }
+    }
+</style>
+
+<Center>
+
+<a href="/assets/img/2025-09-06-12-40-32.png">
+<img src="/assets/img/2025-09-06-12-40-32.png" />
+</a>
+
+
+</Center>
+
+#### Who is this System For?
+This is a timetable system developed for an art school  [木棉花水墨畫室](https://www.cottontreeinkart.com).
+
+#### System Design 
+
+
+
+##### Overview of Domain Objects Involved 
+
+###### The Class Diagram
+
+[![](/assets/img/2025-09-06-12-42-28.png)](/assets/img/2025-09-06-12-42-28.png)
+
+
+###### Entities Involved
+
+Simply put, the system has 
+
+- `User`
+
+  The name is generic, for now they are all ***teachers***, for the future ***there can be parents***, ***students***, etc, by creating the separate tables that refer to `User`
+
+- `Student` (Aggregate Root)
+
+  Not able to sign in the system, therefore no reference / Junction Table to our `User` table.
+
+- `Student Package`
+
+  A purchased product of a student. Which records the course, the number of classes, the due date, etc.
+
+  - `Class`
+
+    A unit of scheduled event, including data such as location, time to attend, the class attendence status, etc.
+
+    A class is said to be ***extended*** if it has a non-null reference from `extended_class` table where we place all the extension detail (like reason, extend from which class, etc). 
+
+
+These are the major entities involved in our system. 
+
+##### Diagram for Event Storming, the Detailed System Implementation Planning
+
+Event Storming is an indispensible part of ***D***omain ***D***riven ***D***esign (DDD). This project is also a practice of  abiding by the rules in the design methodology of DDD.
+
+You may ***click*** the following image or download button to get the **PDF**:
+
+[![](/assets/img/2025-09-06-13-07-10.png)](/assets/portfolios/pdfs/timetable.pdf)
+
+
+<a href="/assets/portfolios/pdfs/timetable.pdf">
+<button class="download-btn-solid" >Download</button>
+</a>
+
+
+
+##### Why DDD? What am I going to solve?
+
+###### Problems of architecture as simple as Controller-Service-Repository (CSR)
+
+I was lucky to have the experience of creating a mobile product from scratch, including the frontend and backend, when the company lacked of developers at a period of time. 
+
+In the course of development several backend problems pop up easily:
+
+<Example>
+
+***Problem 1 (No (and not possible to have) clear responsibility separation of services).***  From CSR point of view, service is just an interface to handle or break the request into serveral pieces, and ***nothing more***, that causes the problem.
+
+As time goes by, developer is easy to build ***multiple services*** serving a similar purpose. 
+
+Suppose I have a project system, now I want to design a service to let project owner add someone as a member. You can go either way:
+
+- `ProjectService.addMember`
+
+- `MemberService.joinProject`
+
+There is no true or false among the choices, but our domain logic now ***can go anywhere***, or even ***repeatedly defined*** (like modifying a column from `true` to `false`) since it may seem too trivial to create a service for that logic.
+
+</Example>
+
+<Example>
+
+***Problem 2.1 (Side Effects Become a Mess).*** When dealing with side effects, namely, 
+- some change in a table will cause another change in another table)
+
+the only way the CSR-architecture can handle it is to ***add the handling*** of extra logics at the end or even at the middle of ***ALL existing related services***.  Problems arise:
+
+- First, the Open-Closed principle is easy to break and maintaining this chain of side effects is exhausting. 
+
+- Second, this kind of side effect is ***not easy to documented***, the domain logic involved is hard to trace and hard to be understood by new team members trying to participate in adjusting that domain logic.
+
+</Example>
+
+
+Worse still, 
+
+<Example>
+
+***Problem 2.2 (Side Effect can be Transactional).*** There are two kinds of side effects:
+
+- Atomic
+
+- Non-atomic
+
+Do you want the whole successful transaction be ruined and rollbacked by the failure of sending an email notification? 
+
+It is not easy to implement "transactional" side effect (e.g., send the email only when a transaction has been commited), especially when that side effect is dispatched in the middle of a chain of transaction script.
+
+</Example>
+
+###### How does DDD help?
+
+Both problem can be easily solved by the methodology in DDD. 
+
+- **For problem 1**, we handle all the state change from the domain behaviour of aggregate root. We do all the data modification within the same ***consistency boundary***. 
+
+  If we want to kick a member out of a project, let's fetch the project, and execute 
+  ```kotlin
+  project.kickMember(member)
+  ```
+  it is ***impossible*** to do it in the reverse way: `member.leave(project)`, because `member` does not contain enough information to do ***domain logic validation*** (which we call ***invariance*** in DDD). 
+  
+  For example, assume a project cannot have fewer than 3 persons. A single member does not contain the information of other members, however, a project *does*, which is possible to keep the invariance within itself.
+
+- **For problem 2**, we simply use an event-driven architecture, and DDD is inherently based on ***events***.  DDD's `Command`'s and `Event`s are a good fit for side effects.
+
+  - To solve 2.1, the tight coupling of logic can now be decoupled by event and event-handler. 
+
+  
+  - To solve 2.2, using JPA from the ecosystem of SpringBoot,  atomic side effect can be handled by 
+    `@Eventlistener`, and side effect after succeeded transaction can now be handled by `@TransactionalEventListener`.
+
+  Event-Driven architecture can also be a mess ***without documentation*** because `eventHandler` handles the side effect silently. However, if we documentate it properly, then ***everything is explicit***. 
+
+
+  [![](/assets/img/2025-09-06-18-44-57.png)](/assets/img/2025-09-06-18-44-57.png)
+
+  Now we have a good place to documentate the complex domain requirement. 
+  
+  We will discuss how we operate with these `Command`, `Event` and `Policy` in depth in the next section.
+  
+
+#### Example of System Implementation Following Event Storming
+
+##### Basic user Request with Side Effect
+
+Let's take the following route as an example. The following `ClassesCreatedEvent` is triggered by 
+- `CreateClassesCommand` and 
+- `MoveClassCommand`
+
+[![](/assets/img/2025-09-06-22-22-35.png)](/assets/img/2025-09-06-22-22-35.png)
+
+Note that `ClassesCreatedEvent` can be a side effect of other commands as well, thus it does not come as a surprise there are 3 incoming routes to this `ClassesCreatedEvent`:
+
+[![](/assets/img/2025-09-06-22-23-51.png)](/assets/img/2025-09-06-22-23-51.png)
+
+This is the power of event driven system, we can trace the potential causes of how would some database changes happen (when documented correctly).
+
+
+###### Step 1. Invoke the command from controller
+
+Here `Command` and `CommandHandler` replace the ***application service*** layer in DDD. 
+
+`Command` collects all necessary information for the `CommandHandler`, and `Command` itself is a ***simple object for logging!*** (which we will be doing in `CommandInvoker`).
+
+- Command Definition: <br/>
+  [![](/assets/img/2025-09-06-22-00-57.png)](/assets/img/2025-09-06-22-00-57.png)
+
+- Invoke a command: <br/>
+  [![](/assets/img/2025-09-06-22-00-19.png)](/assets/img/2025-09-06-22-00-19.png)
+
+
+
+###### Step 2. Handle the command
+
+Command Handler Definition:
+[![](/assets/img/2025-09-06-22-02-16.png)](/assets/img/2025-09-06-22-02-16.png)
+
+Note that when a command is completed, we add the event into `eventQueue` and let the `commandInvoker` dispatch it once the command is finished.
+
+
+###### Step 3. Handle side effects via policies (if any)
+
+Once the `ClassesCreatedEvent` is dispatched, from our implementation diagram it needs to be handled by `ClassOnHolidayMustBeExtendedPolicy`. 
+
+If a class happens to be created on an holiday, we just extend this class (to a makeup lesson) 
+
+[![](/assets/img/2025-09-07-03-01-15.png)](/assets/img/2025-09-07-03-01-15.png)
+
+Note that we also need to handle side effects from other events, as shown in the event-storming diagram!
+
+##### Logging 
+
+###### Series of commands and events
+
+When we invoke a command, and when we dispatch an event, we also log down the data in our database:
+
+[![](/assets/img/2025-09-07-03-05-53.png)](/assets/img/2025-09-07-03-05-53.png)
+
+###### Failure of a command
+
+![](/assets/img/2025-09-07-03-08-02.png)
+
+
+
+
+
+#### Deployment
+
+
+##### Frontend
+
+- React application stored in S3, served by Cloudfront and routed by Route53 for custsom domain.
+
+
+##### Backend
+
+- Snap-Started Lambda function deploying the entire spring  boot  application.
+
+##### Database
+
+- PostgreSQL provided by Neon-tech free tier plan, unless we exceed the 5 hours computation limit per month (which we can pay for 5 USD to increase the computational time limit)
+
+- Schema design and migration via Prisma
+
+#### Side Story: The Project is developed from Nodejs Express, then to Kotlin Springboot, but WHY?
+
+##### Flooding of SQLs, a Blind Pursue of Performance
+
+WIP
+
+
+##### Avoid the Uncontrollable growth of "Unnecessary Services": Start to Model Domain Object with rich Behaviour
+
+WIP
+
+#### Book and Video References
+
+- Vaughn Vernon, *實戰領域驅動設計 (譯)*, 博碩文化股份有限公司
+
+- 彭晨陽, *複雜軟件設計之道 領域驅動設計 全面解柝與實戰*, 機械工業出版社
+- bitbone, [*实践者的 DDD 独家秘籍*](https://www.bilibili.com/video/BV1Nc411m7BZ/?spm_id_from=333.788.videopod.sections&vd_source=ed60287fd90cfd8c9101587902f829e4), BiliBili (需付費)
+- bitbone, [*领域驱动设计指南*](https://ddd-fans.github.io/ddd-guideline/), github.io
