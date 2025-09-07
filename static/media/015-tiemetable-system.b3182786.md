@@ -163,7 +163,7 @@ the only way the CSR-architecture can handle it is to *add the handling* of extr
 
 - First, the Open-Closed principle is easy to break and maintaining this chain of side effects is exhausting. 
 
-- Second, this kind of side effect is *not easy to be  documented*, the domain logic involved is hard t be traced and hard to be understood by new team members trying to participate in adjusting that domain logic.
+- Second, this kind of side effect is *not easy to be  documented*, the domain logic involved is hard to be traced and hard to be understood by new team members trying to participate in adjusting that domain logic.
 
 </Example>
 
@@ -247,12 +247,25 @@ Here `Command` and `CommandHandler` replace the ***application service*** layer 
 
 
 
-###### Step 2. Handle the command
+###### Step 2. Handle the command with invariance within aggregate
 
 Command Handler Definition:
 [![](/assets/img/2025-09-06-22-02-16.png)](/assets/img/2025-09-06-22-02-16.png)
 
-Note that when a command is completed, we add the event into `eventQueue` and let the `commandInvoker` dispatch it once the command is finished.
+Here we have come across a domain behaviour:  
+```kotlin
+targetPackage.addClasses()
+```
+domain invariances have been maintained by:
+
+[![](/assets/img/2025-09-08-03-55-47.png)](/assets/img/2025-09-08-03-55-47.png)
+
+When a command is completed, we add an event into `eventQueue` and let `commandInvoker` dispatch it once the command is finished.
+
+**Remark.** Here the validation rules are maintained in a separated class, that validation class is linked to the entity class via function literal ([detail](/blog/article/Code-Separation-of-Domain-Entity-Class-Domain-Behaviour-Actions-and-the-Corresponding-Validations#StduentPackageValidation-Class)). It is to avoid writing everything within the same class.
+
+
+
 
 
 ###### Step 3. Handle side effects via policies (if any)
