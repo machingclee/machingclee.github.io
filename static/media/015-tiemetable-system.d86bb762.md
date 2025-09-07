@@ -1,6 +1,6 @@
 ---
 id: portfolio015
-title: "Commercial Timetable System for a Art School"
+title: "Commercial Timetable System for an Art School"
 intro: Manage timetable for teachers and automate the payment notification.
 thumbnail: /assets/img/2025-09-06-12-35-35.png
 tech: Vite; Express; PGSQL, Lambda Function,  Domain Driven Design, Spring Boot
@@ -18,7 +18,6 @@ date: 2025-09-06
         margin-bottom: 10px;
         max-width: 660px;
     }
-
     /* Alternative solid color version */
     .download-btn-solid {
       background: #3b82f6;
@@ -276,7 +275,7 @@ When we invoke a command, and when we dispatch an event, we also log down the da
 
 ###### Failure of a command
 
-![](/assets/img/2025-09-07-03-08-02.png)
+[![](/assets/img/2025-09-07-03-08-02.png)](/assets/img/2025-09-07-03-08-02.png)
 
 
 
@@ -322,7 +321,7 @@ The application is composed of various SQLs when interacting with database:
 
 
 **Example 1 (Complexity Level 1).** The following implicitly executes domain logic via SQL operation
-![](/assets/img/2025-09-07-18-09-07.png)
+[![](/assets/img/2025-09-07-18-09-07.png)](/assets/img/2025-09-07-18-09-07.png)
 
 </Example>
 
