@@ -3,7 +3,7 @@ id: portfolio015
 title: "Commercial Timetable System for a Art School"
 intro: Manage timetable for teachers and automate the payment notification.
 thumbnail: /assets/img/2025-09-06-12-35-35.png
-tech: Vite; Express; PostgreSQL; Lambda Function,  Domain Driven Design, Leadership (with a junior)
+tech: Vite; Express; PGSQL, Lambda Function,  Domain Driven Design, Spring Boot
 thumbWidth: 600
 thumbTransX: -200
 thumbTransY: -220
@@ -70,6 +70,16 @@ date: 2025-09-06
 #### Who is this System For?
 This is a timetable system developed for an art school  [木棉花水墨畫室](https://www.cottontreeinkart.com).
 
+#### Something to Keep Confidential 
+
+This article is mainly a description on how DDD was applied to my recent project. The technical detail will be skipped. For example 
+
+- How to implement a `commandInvoker` with `eventQueue`
+- How to handle synchronous event and transactional event in custom `eventQueue`.
+- How to interact with existing database using JPA
+
+etc.
+
 #### System Design 
 
 
@@ -81,13 +91,13 @@ This is a timetable system developed for an art school  [木棉花水墨畫室](
 [![](/assets/img/2025-09-06-12-42-28.png)](/assets/img/2025-09-06-12-42-28.png)
 
 
-###### Entities Involved
+###### Entities
 
 Simply put, the system has 
 
 - `User`
 
-  The name is generic, for now they are all ***teachers***, for the future ***there can be parents***, ***students***, etc, by creating the separate tables that refer to `User`
+  The name is generic, for now they are all ***teachers***, for the future ***there can be parents***, ***students***, etc, by creating the separate tables that refer to `User` (and we need a data migration to migrate users to `teacher` table as well).
 
 - `Student` (Aggregate Root)
 
@@ -131,9 +141,9 @@ In the course of development several backend problems pop up easily:
 
 <Example>
 
-***Problem 1 (No (and not possible to have) clear responsibility separation of services).***  From CSR point of view, service is just an interface to handle or break the request into serveral pieces, and ***nothing more***, that causes the problem.
+**Problem 1 (No (and not possible to have) clear responsibility separation of services).**  From CSR point of view, service is just an interface to handle or break the request into serveral pieces, and *nothing more*, that causes the problem.
 
-As time goes by, developer is easy to build ***multiple services*** serving a similar purpose. 
+As time goes by, developer is easy to build *multiple services* serving a similar purpose. 
 
 Suppose I have a project system, now I want to design a service to let project owner add someone as a member. You can go either way:
 
@@ -141,20 +151,20 @@ Suppose I have a project system, now I want to design a service to let project o
 
 - `MemberService.joinProject`
 
-There is no true or false among the choices, but our domain logic now ***can go anywhere***, or even ***repeatedly defined*** (like modifying a column from `true` to `false`) since it may seem too trivial to create a service for that logic.
+There is no true or false among the choices, but our domain logic now *can go anywhere*, or even *repeatedly defined* (like modifying a column from `true` to `false`) since it may seem too trivial to create a service for that logic.
 
 </Example>
 
 <Example>
 
-***Problem 2.1 (Side Effects Become a Mess).*** When dealing with side effects, namely, 
+**Problem 2.1 (Side Effects Become a Mess).** When dealing with side effects, namely, 
 - some change in a table will cause another change in another table)
 
-the only way the CSR-architecture can handle it is to ***add the handling*** of extra logics at the end or even at the middle of ***ALL existing related services***.  Problems arise:
+the only way the CSR-architecture can handle it is to *add the handling* of extra logics at the end or even at the middle of *ALL existing related services*.  Problems arise:
 
 - First, the Open-Closed principle is easy to break and maintaining this chain of side effects is exhausting. 
 
-- Second, this kind of side effect is ***not easy to documented***, the domain logic involved is hard to trace and hard to be understood by new team members trying to participate in adjusting that domain logic.
+- Second, this kind of side effect is *not easy to be  documented*, the domain logic involved is hard t be traced and hard to be understood by new team members trying to participate in adjusting that domain logic.
 
 </Example>
 
@@ -163,7 +173,7 @@ Worse still,
 
 <Example>
 
-***Problem 2.2 (Side Effect can be Transactional).*** There are two kinds of side effects:
+**Problem 2.2 (Side Effect can be Transactional).** There are two kinds of side effects:
 
 - Atomic
 
@@ -171,7 +181,7 @@ Worse still,
 
 Do you want the whole successful transaction be ruined and rollbacked by the failure of sending an email notification? 
 
-It is not easy to implement "transactional" side effect (e.g., send the email only when a transaction has been commited), especially when that side effect is dispatched in the middle of a chain of transaction script.
+It is not trivial to implement a "transactional" side effect (e.g., send the email only when a transaction has been commited), especially when that side effect is dispatched in the middle of a chain of transaction script.
 
 </Example>
 
@@ -179,7 +189,7 @@ It is not easy to implement "transactional" side effect (e.g., send the email on
 
 Both problem can be easily solved by the methodology in DDD. 
 
-- **For problem 1**, we handle all the state change from the domain behaviour of aggregate root. We do all the data modification within the same ***consistency boundary***. 
+- **For problem 1**, we handle all the state change from the domain behaviour of an aggregate root. We do all the data modification within the same ***consistency boundary***. 
 
   If we want to kick a member out of a project, let's fetch the project, and execute 
   ```kotlin
@@ -290,16 +300,7 @@ When we invoke a command, and when we dispatch an event, we also log down the da
 
 - Schema design and migration via Prisma
 
-#### Side Story: The Project is developed from Nodejs Express, then to Kotlin Springboot, but WHY?
 
-##### Flooding of SQLs, a Blind Pursue of Performance
-
-WIP
-
-
-##### Avoid the Uncontrollable growth of "Unnecessary Services": Start to Model Domain Object with rich Behaviour
-
-WIP
 
 #### Book and Video References
 
@@ -308,3 +309,84 @@ WIP
 - 彭晨陽, *複雜軟件設計之道 領域驅動設計 全面解柝與實戰*, 機械工業出版社
 - bitbone, [*实践者的 DDD 独家秘籍*](https://www.bilibili.com/video/BV1Nc411m7BZ/?spm_id_from=333.788.videopod.sections&vd_source=ed60287fd90cfd8c9101587902f829e4), BiliBili (需付費)
 - bitbone, [*领域驱动设计指南*](https://ddd-fans.github.io/ddd-guideline/), github.io
+
+
+#### Side Story: The Project is developed from Nodejs Express, then Transitioned into Kotlin Springboot, but WHY?
+
+
+##### Examples (Flooding of SQLs)
+
+The application is composed of various SQLs when interacting with database:
+
+<Example>
+
+
+**Example 1 (Complexity Level 1).** The following implicitly executes domain logic via SQL operation
+![](/assets/img/2025-09-07-18-09-07.png)
+
+</Example>
+
+
+<Example>
+
+**Example 2 (Complexity Level 2).** The following tries to do two separate `LATERAL JOIN`'s and `Json Aggregate`'s:
+[![](/assets/img/2025-09-07-18-03-29.png)](/assets/img/2025-09-07-18-03-29.png)
+
+
+
+</Example>
+
+
+
+
+<Example>
+
+**Example 3 (Complexity Level $\infty$).**  The following is taken from a deprecated project:
+
+[![](/assets/img/2025-09-07-18-33-09.png)](/assets/img/2025-09-07-18-33-09.png)
+
+
+- You need to have the knowledge how `WITH some_table AS (SELECT ...)` works and how to achieve this in other query-builder framework. 
+
+- Plus we still have lateral joins and json aggregates there.
+
+</Example>
+
+<br/>
+
+
+##### Problems of the SQL-First Approach
+
+1. SQL statements itself is highly unreadable, even there are query builders. 
+
+2. Moreover, the project is now tightly coupled with knowledge from specific SQL. There are those kind of tricks that only appear in one specific kind of SQL like we have 
+    ```sql
+    SELECT DISTINCT ON + ORDER BY
+    ``` 
+    in PostgreSQL for data deduplication. But `DISTINCT ON` is Postgres-only. Other example like `ON CONFLICT DO NOTHING`, `JSONB` query, etc, useful queries are Postgres-specific.
+
+**Summary.**
+
+- In short, when maintainability is our concern, we should reduce SQL as much as possible. We should let framework generate them such as using ORM. 
+
+- For DDD we can choose `Nest.js` + TypeORM, or Spring Boot + JPA, etc.
+
+##### Introduce Event Systems to Handle side Effects
+
+As mentioned in previous sections, we wish to manage side effect in a clearn way. For that I implemented a set of annotations `@listener`, `@Order`, and also classes `Event` and a util function `applicationEventPublisher` that mimics the baviour in spring boot.
+
+[![](/assets/img/2025-09-07-19-01-22.png)](/assets/img/2025-09-07-19-01-22.png)
+
+At this point the problem is the lack of clear documentation on how events were created and handled.
+
+When creating this set of annotations I have no notion of `Command`, I was unable to create diagram for clear documentation. Thus the events become a black box in the system. 
+
+
+For a more detailed summary on how to implement annotation, the reader can refer to this article: 
+
+- [ApplicationEventPublisher with Decorators for Domain Driven Design](/blog/article/ApplicationEventPublisher-with-Decorators-for-Domain-Driven-Design)
+
+##### Finally
+
+But hey! If we wish so many good features from Spring Boot, why don't we jump into it ......?  The project is refactored completely afterwards.
+
