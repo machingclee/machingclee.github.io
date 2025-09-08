@@ -85,6 +85,103 @@ This article is mainly a description on how DDD was applied to the project. In o
 
 etc. -->
 
+
+#### Tech-Stack
+
+|  |  |
+|-------|--------------|
+| Frontend | • React (Vite) • Redux-RTK-query • Redux-Toolkit • Tailwind |
+| Backend |  • ~~Nodejs, Express.js, Prisma, Prisma-Kysely~~ (all deprecated) <br>• Kotlin • Spring Boot • JPA<br>• JOOQ (for entity generation from existing database)|
+|Database| • PostgreSQL provided by Neon-tech <br> •  Schema design and migration via Prisma|
+|Deployment| <table><tbody><tr><td style="width:150px">• Frontend</td><td>React-build is stored in S3, served by Cloudfront and routed by Route53 for custsom domain</td></tr><tr><td style="width:150px">• Backend</td><td>Snap-started lambda function</td></tr></tbody></table>| 
+
+#### Why DDD? What am I going to solve?
+
+##### Problems of architecture as simple as Controller-Service-Repository (CSR)
+
+Here is my experience working with traditional CSR-architecture (三層式架構). 
+
+In the course of development several backend problems in CSR-architecture pop up easily that I always feel painful:
+
+<Example>
+
+**Problem 1 (No (and not possible to have) clear responsibility separation of services).**  From CSR point of view, service is just an interface to handle or to break the request into serveral pieces, and *nothing more*, that causes the problem.
+
+As time goes by, developer is easy to build *multiple services* serving a similar purpose. 
+
+Suppose I have a project system, now I want to design a service to let project owner add someone as a member. You can go either way:
+
+- `ProjectService.addMember`
+
+- `MemberService.joinProject`
+
+There is no true or false among the choices, but our domain logic now *can go anywhere*, or even *repeatedly defined* like the `join-project` example above. 
+
+Another common example is to change a column from `true` to `false`, as it may seem too trivial to create a service for that. This is also a domain logic that can be spread everywhere.
+
+</Example>
+
+<Example>
+
+**Problem 2.1 (Side Effects Become a Mess).** When dealing with side effects, namely:
+- Some change in a table will cause other events to happen, such as some change in another table or sending notification, etc.
+
+The only way the CSR-architecture can handle it is to *add the handling* of extra logics at the end or even at the middle of *ALL existing related services*.  Problems arise:
+
+- First, the Open-Closed principle is easy to break and maintaining this chain of side effects is exhausting. 
+
+- Second, this kind of side effect is *not easy to be  documented*, the domain logic involved is hard to be traced and hard to be understood by new team members trying to participate in adjusting that domain logic.
+
+</Example>
+
+
+Worse still, 
+
+<Example>
+
+**Problem 2.2 (Side Effect can be Transactional).** There are two kinds of side effects:
+
+- Atomic
+
+- Non-atomic
+
+Do you want the whole successful transaction be ruined and rollbacked by the failure of sending an email notification? 
+
+It is not trivial to implement a "transactional" side effect (e.g., send the email only when a transaction has been commited), especially when that side effect is dispatched in the middle of a chain of transaction script.
+
+</Example>
+
+##### How does DDD help?
+
+Both problem can be easily solved by the methodology in DDD. 
+
+- **For problem 1**, we handle all the state change from the domain behaviour of an aggregate root. We do all the data modification within the same ***consistency boundary***. 
+
+  If we want to kick a member out of a project, let's fetch the project, and execute 
+  ```kotlin
+  project.kickMember(member)
+  ```
+  it is ***impossible*** to do it in the reverse way: `member.leave(project)`, because `member` does not contain enough information to do ***domain logic validation*** (which we call ***invariance*** in DDD). 
+  
+  For example, assume a project cannot have fewer than 3 persons. A single member does not contain the information of other members, however, a project *does*, which is possible to keep the invariance within itself.
+
+- **For problem 2**, we simply use an event-driven architecture, and DDD is inherently based on ***events***.  DDD's `Command`'s and `Event`s are a good fit for side effects.
+
+  - To solve problem 2.1, the tight coupling of logic can now be decoupled by event and event-handler. 
+
+  
+  - To solve problem 2.2, using JPA from the ecosystem of Spring Boot,  atomic side effect can be handled by 
+    `@Eventlistener`, and side effect after succeeded transaction can now be handled by `@TransactionalEventListener`.
+
+  Event-Driven architecture can also be a mess ***without documentation*** because `eventHandler` handles the side effect silently. However, if we documentate it properly, then ***everything is explicit***. 
+
+
+  [![](/assets/img/2025-09-06-18-44-57.png)](/assets/img/2025-09-06-18-44-57.png)
+
+  Now we have a good place to documentate the complex domain requirement. 
+  
+  We will discuss how we operate with these `Command`, `Event` and `Policy` in depth in the next section.
+
 #### System Design 
 
 
@@ -135,94 +232,9 @@ You may ***click*** the following image or download button to get the **PDF**:
 </a>
 
 
-
-##### Why DDD? What am I going to solve?
-
-###### Problems of architecture as simple as Controller-Service-Repository (CSR)
-
-I was lucky to have the experience of creating a mobile product from scratch, including the frontend and backend, when the company lacked of developers at a period of time. 
-
-In the course of development several backend problems pop up easily:
-
-<Example>
-
-**Problem 1 (No (and not possible to have) clear responsibility separation of services).**  From CSR point of view, service is just an interface to handle or break the request into serveral pieces, and *nothing more*, that causes the problem.
-
-As time goes by, developer is easy to build *multiple services* serving a similar purpose. 
-
-Suppose I have a project system, now I want to design a service to let project owner add someone as a member. You can go either way:
-
-- `ProjectService.addMember`
-
-- `MemberService.joinProject`
-
-There is no true or false among the choices, but our domain logic now *can go anywhere*, or even *repeatedly defined* (like modifying a column from `true` to `false`) since it may seem too trivial to create a service for that logic.
-
-</Example>
-
-<Example>
-
-**Problem 2.1 (Side Effects Become a Mess).** When dealing with side effects, namely, 
-- some change in a table will cause another change in another table)
-
-the only way the CSR-architecture can handle it is to *add the handling* of extra logics at the end or even at the middle of *ALL existing related services*.  Problems arise:
-
-- First, the Open-Closed principle is easy to break and maintaining this chain of side effects is exhausting. 
-
-- Second, this kind of side effect is *not easy to be  documented*, the domain logic involved is hard to be traced and hard to be understood by new team members trying to participate in adjusting that domain logic.
-
-</Example>
-
-
-Worse still, 
-
-<Example>
-
-**Problem 2.2 (Side Effect can be Transactional).** There are two kinds of side effects:
-
-- Atomic
-
-- Non-atomic
-
-Do you want the whole successful transaction be ruined and rollbacked by the failure of sending an email notification? 
-
-It is not trivial to implement a "transactional" side effect (e.g., send the email only when a transaction has been commited), especially when that side effect is dispatched in the middle of a chain of transaction script.
-
-</Example>
-
-###### How does DDD help?
-
-Both problem can be easily solved by the methodology in DDD. 
-
-- **For problem 1**, we handle all the state change from the domain behaviour of an aggregate root. We do all the data modification within the same ***consistency boundary***. 
-
-  If we want to kick a member out of a project, let's fetch the project, and execute 
-  ```kotlin
-  project.kickMember(member)
-  ```
-  it is ***impossible*** to do it in the reverse way: `member.leave(project)`, because `member` does not contain enough information to do ***domain logic validation*** (which we call ***invariance*** in DDD). 
-  
-  For example, assume a project cannot have fewer than 3 persons. A single member does not contain the information of other members, however, a project *does*, which is possible to keep the invariance within itself.
-
-- **For problem 2**, we simply use an event-driven architecture, and DDD is inherently based on ***events***.  DDD's `Command`'s and `Event`s are a good fit for side effects.
-
-  - To solve 2.1, the tight coupling of logic can now be decoupled by event and event-handler. 
-
-  
-  - To solve 2.2, using JPA from the ecosystem of SpringBoot,  atomic side effect can be handled by 
-    `@Eventlistener`, and side effect after succeeded transaction can now be handled by `@TransactionalEventListener`.
-
-  Event-Driven architecture can also be a mess ***without documentation*** because `eventHandler` handles the side effect silently. However, if we documentate it properly, then ***everything is explicit***. 
-
-
-  [![](/assets/img/2025-09-06-18-44-57.png)](/assets/img/2025-09-06-18-44-57.png)
-
-  Now we have a good place to documentate the complex domain requirement. 
-  
-  We will discuss how we operate with these `Command`, `Event` and `Policy` in depth in the next section.
   
 
-#### Example of System Implementation Following Event Storming
+#### Coding Example of System Implementation Following Event Storming
 
 ##### Basic user Request with Side Effect
 
@@ -266,9 +278,16 @@ domain invariances have been maintained by:
 
 [![](/assets/img/2025-09-08-03-55-47.png)](/assets/img/2025-09-08-03-55-47.png)
 
-When a command is completed, we add an event into `eventQueue` and let `commandInvoker` dispatch it once the command is finished.
+<Example>
 
-**Remark.** Here the validation rules are maintained in a separated class, that validation class is linked to the entity class via function literal ([detail](/blog/article/Code-Separation-of-Domain-Entity-Class-Domain-Behaviour-Actions-and-the-Corresponding-Validations#StduentPackageValidation-Class)). It is to avoid writing everything within the same class.
+**Remark.** Here the validation rules are maintained in a separated class, that validation class is linked to the entity class via a function literal ([detail](/blog/article/Code-Separation-of-Domain-Entity-Class-Domain-Behaviour-Actions-and-the-Corresponding-Validations#StduentPackageValidation-Class)). It is to avoid writing everything within the same class.
+
+
+</Example>
+
+
+
+Finally we add an event into `eventQueue` and let `commandInvoker` dispatch it once the command is finished.
 
 
 
@@ -301,42 +320,16 @@ When we invoke a command, and when we dispatch an event, we also log down the da
 
 ###### Failure of a command
 
-When a command ***fail***, for now we don't have `SomethingFailedEvent`. In the future we can add a try-catch logic in `CommandHandler` to dispatch a ***compensating command*** in the catch flow.
+
 
 [![](/assets/img/2025-09-07-03-08-02.png)](/assets/img/2025-09-07-03-08-02.png)
 
+When a command ***fail***, for now we don't have `SomethingFailedEvent`. In the future we can add a try-catch logic in `CommandHandler` to dispatch a ***compensating command*** in the catch flow.
+
+#### Side Story: The Project is Developed from Nodejs Express, then Transitioned into Kotlin Springboot, but WHY?
 
 
-
-
-
-
-#### Deployment
-
-
-##### Frontend
-
-- React application stored in S3, served by Cloudfront and routed by Route53 for custsom domain.
-
-
-##### Backend
-
-- Snap-Started Lambda function deploying the entire spring  boot  application.
-
-##### Database
-
-- PostgreSQL provided by Neon-tech free tier plan, unless we exceed the 5 hours computation limit per month (which we can pay for 5 USD to increase the computational time limit)
-
-- Schema design and migration via Prisma
-
-
-
-
-
-#### Side Story: The Project is developed from Nodejs Express, then Transitioned into Kotlin Springboot, but WHY?
-
-
-##### Examples (Flooding of SQLs)
+##### Examples (SQL-First Approach)
 
 The application is composed of various SQLs when interacting with database:
 
@@ -381,32 +374,41 @@ The application is composed of various SQLs when interacting with database:
 
 1. SQL statements itself is highly unreadable, even there are query builders. 
 
-2. Moreover, the project is now tightly coupled with knowledge from specific SQL. There are those kind of tricks that only appear in one specific kind of SQL like we have 
+2. Long SQL is hard to debug, we cannot add a breakpoint to investigate the data.
+
+3. Moreover, the project is now tightly coupled with knowledge from specific SQL. There are those kind of tricks that only appear in  PostgreSQL like we have 
     ```sql
     SELECT DISTINCT ON + ORDER BY
     ``` 
-    in PostgreSQL for data deduplication. But `DISTINCT ON` is Postgres-only. Other example like `ON CONFLICT DO NOTHING`, `JSONB` query, etc, useful queries are Postgres-specific.
+    for data deduplication. But `DISTINCT ON` is Postgre-only. Other example like `ON CONFLICT DO NOTHING`, `JSONB` query, etc, useful queries are Postgre-specific.
 
-**Summary.**
+##### Short Summary 
 
-- In short, when maintainability is our concern, we should reduce SQL as much as possible. We should let framework generate them such as using ORM. 
+In short, when maintainability is our concern, we should reduce SQL as much as possible. We should let framework generate them such as using ORM. 
 
-- For DDD we can choose `Nest.js` + TypeORM, or Spring Boot + JPA, etc.
 
-##### Introduce Event Systems to Handle side Effects
+##### Introduced Event System to Handle side Effects
 
-As mentioned in previous sections, we wish to manage side effect in a clearn way. For that I implemented a set of annotations `@listener`, `@Order`, and also classes `Event` and a util function `applicationEventPublisher` that mimics the baviour in spring boot.
+As mentioned in previous sections, we wish to manage side effect in a clean way. For that I implemented a set of annotations: `@listener`, `@order`, and also classes `Event` and a util function `applicationEventPublisher` that mimics the baviour in spring boot.
 
 [![](/assets/img/2025-09-07-19-01-22.png)](/assets/img/2025-09-07-19-01-22.png)
+
+<Example>
+
+**Remark.** For a more detailed summary on how to implement annotation in typescript, the reader can refer to this article: 
+
+- [ApplicationEventPublisher with Decorators for Domain Driven Design](/blog/article/ApplicationEventPublisher-with-Decorators-for-Domain-Driven-Design)
+
+  
+</Example>
+
+
 
 At this point the problem is the lack of clear documentation on how events were created and handled.
 
 When creating this set of annotations I have no notion of `Command`, I was unable to create diagram for clear documentation. Thus the events become a black box in the system. 
 
 
-For a more detailed summary on how to implement annotation, the reader can refer to this article: 
-
-- [ApplicationEventPublisher with Decorators for Domain Driven Design](/blog/article/ApplicationEventPublisher-with-Decorators-for-Domain-Driven-Design)
 
 ##### Finally
 
@@ -414,8 +416,14 @@ But hey! If we wish so many good features from Spring Boot, why don't we jump in
 
 #### Book and Video References
 
+- Code Opnion, *https://www.youtube.com/@CodeOpinion/videos*, Youtube
+
+- bitbone, [*实践者的 DDD 独家秘籍*](https://www.bilibili.com/video/BV1Nc411m7BZ/?spm_id_from=333.788.videopod.sections&vd_source=ed60287fd90cfd8c9101587902f829e4), BiliBili (需付費)
+- bitbone, [*领域驱动设计指南*](https://ddd-fans.github.io/ddd-guideline/)
+
+- 无知者云, [*产品代码都给你看了，可别再说不会 DDD*](https://www.cnblogs.com/davenkin/p/ddd-introduction.html)
+
 - Vaughn Vernon, *實戰領域驅動設計 (譯)*, 博碩文化股份有限公司
 
-- 彭晨陽, *複雜軟件設計之道 領域驅動設計 全面解柝與實戰*, 機械工業出版社
-- bitbone, [*实践者的 DDD 独家秘籍*](https://www.bilibili.com/video/BV1Nc411m7BZ/?spm_id_from=333.788.videopod.sections&vd_source=ed60287fd90cfd8c9101587902f829e4), BiliBili (需付費)
-- bitbone, [*领域驱动设计指南*](https://ddd-fans.github.io/ddd-guideline/), github.io
+- 彭晨阳, *复杂软件设计之道*, 机械工业出版社
+
