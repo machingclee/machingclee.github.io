@@ -238,9 +238,7 @@ You may ***click*** the following image or download button to get the **PDF**:
 
 ##### Basic user Request with Side Effect
 
-Let's take the following route as an example. The following `ClassesCreatedEvent` is triggered by 
-- `CreateClassesCommand` and 
-- `MoveClassCommand`
+Let's take the following route as an example. The  `ClassesCreatedEvent` is triggered by (at least)  a  `CreateClassesCommand`:
 
 [![](/assets/img/2025-09-06-22-22-35.png)](/assets/img/2025-09-06-22-22-35.png)
 
@@ -284,8 +282,6 @@ domain invariances have been maintained by:
 
 
 </Example>
-
-
 
 Finally we add an event into `eventQueue` and let `commandInvoker` dispatch it once the command is finished.
 
