@@ -66,18 +66,24 @@ date: 2025-09-06
 
 </Center>
 
-#### Who is this System For?
+#### Who is this System For? 
 This is a timetable system developed for an art school  [木棉花水墨畫室](https://www.cottontreeinkart.com).
 
-#### Something to Keep Confidential 
 
-This article is mainly a description on how DDD was applied to my recent project. The technical detail will be skipped. For example 
+
+<!-- 
+
+
+#### Something to be Skipped
+
+This article is mainly a description on how DDD was applied to the project. In order not to distract readers the implementation detail of the following will be skipped:
 
 - How to implement a `commandInvoker` with `eventQueue`
+
 - How to handle synchronous event and transactional event in custom `eventQueue`.
 - How to interact with existing database using JPA
 
-etc.
+etc. -->
 
 #### System Design 
 
@@ -96,7 +102,7 @@ Simply put, the system has
 
 - `User`
 
-  The name is generic, for now they are all ***teachers***, for the future ***there can be parents***, ***students***, etc, by creating the separate tables that refer to `User` (and we need a data migration to migrate users to `teacher` table as well).
+  The table name is generic, for now they are all ***teachers***, for the future ***there can be parents***, ***students***, etc, by creating the separate tables that refer to `User` (and we need a data migration to migrate users to `teacher` table as well).
 
 - `Student` (Aggregate Root)
 
@@ -266,8 +272,6 @@ When a command is completed, we add an event into `eventQueue` and let `commandI
 
 
 
-
-
 ###### Step 3. Handle side effects via policies (if any)
 
 Once the `ClassesCreatedEvent` is dispatched, from our implementation diagram it needs to be handled by `ClassOnHolidayMustBeExtendedPolicy`. 
@@ -284,11 +288,24 @@ Note that we also need to handle side effects from other events, as shown in the
 
 When we invoke a command, and when we dispatch an event, we also log down the data in our database:
 
-[![](/assets/img/2025-09-07-03-05-53.png)](/assets/img/2025-09-07-03-05-53.png)
+[![](/assets/img/2025-09-08-09-32-57.png)](/assets/img/2025-09-08-09-32-57.png)
+
+- Here we have `request_id` to group all commands and events coming from the same http request.
+
+- We have also logged the user who make this request
+
+- We have logged all failed commmands as well. 
+
+
+
 
 ###### Failure of a command
 
+When a command ***fail***, for now we don't have `SomethingFailedEvent`. In the future we can add a try-catch logic in `CommandHandler` to dispatch a ***compensating command*** in the catch flow.
+
 [![](/assets/img/2025-09-07-03-08-02.png)](/assets/img/2025-09-07-03-08-02.png)
+
+
 
 
 
@@ -314,13 +331,6 @@ When we invoke a command, and when we dispatch an event, we also log down the da
 
 
 
-#### Book and Video References
-
-- Vaughn Vernon, *實戰領域驅動設計 (譯)*, 博碩文化股份有限公司
-
-- 彭晨陽, *複雜軟件設計之道 領域驅動設計 全面解柝與實戰*, 機械工業出版社
-- bitbone, [*实践者的 DDD 独家秘籍*](https://www.bilibili.com/video/BV1Nc411m7BZ/?spm_id_from=333.788.videopod.sections&vd_source=ed60287fd90cfd8c9101587902f829e4), BiliBili (需付費)
-- bitbone, [*领域驱动设计指南*](https://ddd-fans.github.io/ddd-guideline/), github.io
 
 
 #### Side Story: The Project is developed from Nodejs Express, then Transitioned into Kotlin Springboot, but WHY?
@@ -402,3 +412,10 @@ For a more detailed summary on how to implement annotation, the reader can refer
 
 But hey! If we wish so many good features from Spring Boot, why don't we jump into it ......?  The project is refactored completely afterwards.
 
+#### Book and Video References
+
+- Vaughn Vernon, *實戰領域驅動設計 (譯)*, 博碩文化股份有限公司
+
+- 彭晨陽, *複雜軟件設計之道 領域驅動設計 全面解柝與實戰*, 機械工業出版社
+- bitbone, [*实践者的 DDD 独家秘籍*](https://www.bilibili.com/video/BV1Nc411m7BZ/?spm_id_from=333.788.videopod.sections&vd_source=ed60287fd90cfd8c9101587902f829e4), BiliBili (需付費)
+- bitbone, [*领域驱动设计指南*](https://ddd-fans.github.io/ddd-guideline/), github.io
