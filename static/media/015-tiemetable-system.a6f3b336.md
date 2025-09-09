@@ -99,13 +99,11 @@ etc. -->
 
 ##### Problems of architecture as simple as Controller-Service-Repository (CSR)
 
-Here is my experience working with traditional CSR-architecture (三層式架構). 
-
 In the course of development several backend problems in CSR-architecture pop up easily that I always feel painful:
 
 <Example>
 
-**Problem 1 (No (and not possible to have) clear responsibility separation of services).**  From CSR point of view, service is just an interface to handle or to break the request into serveral pieces, and *nothing more*, that causes the problem.
+**Problem 1 (No (and not possible to have) clear separation of responsibility among services).**  From CSR point of view, service is just an interface to handle or to break the request into serveral pieces, and *nothing more*, that causes the problem.
 
 As time goes by, developer is easy to build *multiple services* serving a similar purpose. 
 
@@ -218,7 +216,7 @@ Simply put, the system has
 
 These are the major entities involved in our system. 
 
-##### Diagram for Event Storming, the Detailed System Implementation Planning
+##### Diagram for Event Storming, the Detailed Planning of System Implementation 
 
 Event Storming is an indispensible part of ***D***omain ***D***riven ***D***esign (DDD). This project is also a practice of  abiding by the rules in the design methodology of DDD.
 
@@ -286,7 +284,6 @@ domain invariances have been maintained by:
 Finally we add an event into `eventQueue` and let `commandInvoker` dispatch it once the command is finished.
 
 
-
 ###### Step 3. Handle side effects via policies (if any)
 
 Once the `ClassesCreatedEvent` is dispatched, from our implementation diagram it needs to be handled by `ClassOnHolidayMustBeExtendedPolicy`. 
@@ -318,9 +315,150 @@ When we invoke a command, and when we dispatch an event, we also log down the da
 
 
 
+
+
+
 [![](/assets/img/2025-09-07-03-08-02.png)](/assets/img/2025-09-07-03-08-02.png)
 
 When a command ***fail***, for now we don't have `SomethingFailedEvent`. In the future we can add a try-catch logic in `CommandHandler` to dispatch a ***compensating command*** in the catch flow.
+
+
+#### Value Objects for Domain Invariance
+
+Value objects are the must-have ingradient of DDD as they are also in charge of maintaining invariance within a domain.
+
+##### @Embedded and @Embeddable
+
+
+Our `Student` aggregate is define dy
+
+```kt-1{14-15,18-29}
+class Student(
+    @Id
+    @Column(name = "id")
+    ...
+    @Suppress("INAPPLICABLE_JVM_NAME")
+    @set:JvmName("setIsActive")
+    var isActive: Boolean? = null,
+    @Column(name = "preferred_name")
+    var preferredName: String? = null,
+    @Column(name = "remark")
+    var remark: String? = null,
+    @Embedded
+    var birthdate: Birthdate,
+    @Embedded
+    var grade: Grade,
+) : AbstractAggregateRoot<Student>() {
+
+    @Embeddable
+    data class Grade(
+        @Column(name = "grade", nullable = false)
+        final val value: String,
+    ) {
+        init {
+            val isValidStringValue = AVAILABLE_GRADES.contains(value)
+            if (!isValidStringValue) {
+                throw TimetableException("Grades can only be any of ${AVAILABLE_GRADES.toString()}")
+            }
+        }
+    }
+
+
+    @OneToMany(cascade = [jakarta.persistence.CascadeType.ALL], orphanRemoval = true)
+    ...
+```
+
+where 
+
+```kt
+val AVAILABLE_GRADES = listOf(
+        "K1", "K2", "K3",
+        "P1", "P2", "P3", "P4", "P5", "P6",
+        "F1", "F2", "F3", "F4", "F5", "F6",
+        "G1", "G2", "G3", "G4", "G5", "G6", "G7", "G8", "G9", "G10", "G11", "G12"
+    )
+```
+
+Now invariance is maintained in a much cleaner way! We can think of meaningful application of value objects easily. Such as `Address`, `Email`, `PhoneNumber`, all need to be validated!
+
+<Example>
+
+**Remark.** Without value objects, we would have created a validation method in one of the `Service`'s. 
+
+Again, we eventually would have many validation rules spread to several ***seeminly related*** services. There is no rule to confine the responsibility of a service due to the chaoticity of CSR architecture.  
+
+Maybe we have `CommonValidationService`, we have `StudentValidationService`, or maybe we have a dedicated `EmailValidationService`, you name it.
+
+It sounds horrible, isn't it?
+
+
+
+
+</Example>
+
+##### KspKotlin, Create an Auto-Generated `.toDTO()` method that "flattens" or "unwinds" a value object
+
+We have also configured `KspKotlin` to auto-generate a  `toDTO()` function  that outputs a `DTO` class, which transform the ***snake-cased*** column name (defined in `@Column`) into a ***camel-cased*** name:
+
+
+<Example>
+
+**Remark.** For detail how to config `kspKotlin`, the reader can refer to my article 
+- [Auto-generated Mapper From Entity Classes into DTO Classes](/blog/article/Auto-generated-Mapper-From-Entity-Classes-into-DTO-Classes)
+
+</Example>
+
+```kotlin{9,32}
+public data class StudentDTO(
+  public val id: UUID?,
+  public val firstName: String,
+  public val lastName: String,
+  public val chineseFirstName: String?,
+  public val chineseLastName: String?,
+  public val schoolName: String,
+  public val studentCode: String?,
+  public val grade: String,
+  public val phoneNumber: String?,
+  public val wechatId: String?,
+  public val birthdate: Double,
+  public val parentEmail: String,
+  public val createdAt: Double?,
+  public val createdAtHk: String?,
+  public val parentId: UUID?,
+  public val gender: Gender,
+  public val shouldAutoRenewPackage: Boolean?,
+  public val isActive: Boolean?,
+  public val preferredName: String?,
+  public val remark: String?,
+)
+
+public fun Student.toDTO(): StudentDTO = StudentDTO(
+    id,
+    firstName,
+    lastName,
+    chineseFirstName,
+    chineseLastName,
+    schoolName,
+    studentCode,
+    grade.value,
+    phoneNumber,
+    wechatId,
+    birthdate.value,
+    parentEmail,
+    createdAt,
+    createdAtHk,
+    parentId,
+    gender,
+    shouldAutoRenewPackage,
+    isActive,
+    preferredName,
+    remark,
+)
+```
+
+When we return frontend a `DTO` object, no code is needed to extract the value from Value Objects.
+
+
 
 #### Side Story: The Project is Developed from Nodejs Express, then Transitioned into Kotlin Springboot, but WHY?
 
@@ -412,7 +550,7 @@ But hey! If we wish so many good features from Spring Boot, why don't we jump in
 
 #### Book and Video References
 
-- Code Opnion, *https://www.youtube.com/@CodeOpinion/videos*, Youtube
+- Code Opinion, *https://www.youtube.com/@CodeOpinion/videos*, Youtube
 
 - bitbone, [*实践者的 DDD 独家秘籍*](https://www.bilibili.com/video/BV1Nc411m7BZ/?spm_id_from=333.788.videopod.sections&vd_source=ed60287fd90cfd8c9101587902f829e4), BiliBili (需付費)
 - bitbone, [*领域驱动设计指南*](https://ddd-fans.github.io/ddd-guideline/)
