@@ -13,6 +13,10 @@ date: 2025-09-06
 ---
 
 <style>
+    video {
+      border-radius: 4px;
+      max-width: 660px;
+    }
     img{
         margin-top: 10px;
         margin-bottom: 10px;
@@ -84,6 +88,16 @@ This article is mainly a description on how DDD was applied to the project. In o
 - How to interact with existing database using JPA
 
 etc. -->
+
+#### Sample Video
+
+The following is a demostration of maintaining invariance via policies. We will revisit this video in the section:
+
+- <customanchor href="/portfolio/Commercial-Timetable-System-for-an-Art-School#New-Business-Logic-Comes%E2%80%BC-Domain-Invariance-via-Policies-for-Open-Closed-Principle-with-Video-Demonstration">New Business Logic Comes‼ Domain Invariance via Policies for Open-Closed Principle with Video Demonstration</customanchor>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/6IcJGRj1xos?si=dLFyghHzffYdts6g" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+
 
 
 #### Tech-Stack
@@ -232,7 +246,7 @@ You may ***click*** the following image or download button to get the **PDF**:
 
   
 
-#### Coding Example of System Implementation Following Event Storming
+#### Coding Example of Command-Event System
 
 ##### Basic user Request with Side Effect
 
@@ -258,7 +272,6 @@ Here `Command` and `CommandHandler` replace the ***application service*** layer 
 
 - Invoke a command: <br/>
   [![](/assets/img/2025-09-06-22-00-19.png)](/assets/img/2025-09-06-22-00-19.png)
-
 
 
 ###### Step 2. Handle the command with invariance within aggregate
@@ -294,13 +307,63 @@ If a class happens to be created on an holiday, we just extend this class (to a 
 
 Note that we also need to handle side effects from other events, as shown in the event-storming diagram!
 
+
+##### New Business Logic Comes‼ Domain Invariance via Policies for Open\-Closed Principle with Video Demonstration
+
+<Example>
+New requirements come:
+
+- Any package should have an expiry date. 
+- No class of this package can be created beyond this expiry date.
+
+</Example>
+
+
+There starts to be confusion. We can throw exception in a policy to force JPA to rollback all the relevant changes when handling an event, but the act of maintaining domain invariance should stay within the aggregate, that means we either 
+- break the open-closed principle, or 
+
+- break the DDD-spirit of maintaining its own invariance whenever possible (unless cross aggregates invariance happens).
+
+There are always tradeoff for which no option is absolutely correct, we need to strike the balance between code maintainability and methodology. 
+
+If we insist on DDD, then we need to adjust all domain behaviour and add the corresponding validation logic. Doesn't it sound quite simular to the CSR architecture? We lose the advantage of DDD being intrinsically an event-driven design. 
+
+
+
+For code maintainability, now we extend the usage of domain events, they are not just for side-effect, but also for invariances. Then we skim through the candidates of events that can possibly break the invariance, now we add a new policy and create the associative arrows:
+
+![](/assets/img/2025-09-10-04-55-02.png)
+
+
+From coding point of view we get:
+
+[![](/assets/img/2025-09-10-05-00-20.png)](/assets/img/2025-09-10-05-00-20.png)
+
+For a video demostration on the the workflow of UI application being blocked by invariance:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/6IcJGRj1xos?si=dLFyghHzffYdts6g" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+<p></p>
+
+1. We add a class on `2026-10-18` which is beyond the expiry date `2026-10-11`
+
+2. We witness an error from backend at the lower right corner correspoing to our backend exception:
+
+    ![](/assets/img/2025-09-10-05-26-15.png)
+
+3. We add a class on `2026-10-10` $\to$ succeeded
+4. We delete it (it takes some time, leading unsmooth workflow)
+5. We add a class on the expiry date `2026-10-11`, same error occurs from the backend
+
+
+
 ##### Logging 
 
 ###### Series of commands and events
 
 When we invoke a command, and when we dispatch an event, we also log down the data in our database:
 
-[![](/assets/img/2025-09-08-09-32-57.png)](/assets/img/2025-09-08-09-32-57.png)
+[![](/assets/img/2025-09-10-05-01-42.png)](/assets/img/2025-09-10-05-01-42.png)
 
 - Here we have `request_id` to group all commands and events coming from the same http request.
 
@@ -321,6 +384,8 @@ When we invoke a command, and when we dispatch an event, we also log down the da
 [![](/assets/img/2025-09-07-03-08-02.png)](/assets/img/2025-09-07-03-08-02.png)
 
 When a command ***fail***, for now we don't have `SomethingFailedEvent`. In the future we can add a try-catch logic in `CommandHandler` to dispatch a ***compensating command*** in the catch flow.
+
+
 
 
 #### Value Objects for Domain Invariance
