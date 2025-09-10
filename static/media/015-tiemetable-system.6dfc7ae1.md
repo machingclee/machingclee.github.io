@@ -91,9 +91,9 @@ etc. -->
 
 #### Sample Video
 
-The following is a demostration of maintaining invariance via policies. We will revisit this video in the section:
+The following is a demonstration of maintaining invariance via policies. We will revisit this video in the upcoming section:
 
-- <customanchor href="/portfolio/Commercial-Timetable-System-for-an-Art-School#New-Business-Logic-Comes%E2%80%BC-Domain-Invariance-via-Policies-for-Open-Closed-Principle-with-Video-Demonstration">New Business Logic Comes‼ Domain Invariance via Policies for Open-Closed Principle with Video Demonstration</customanchor>
+- <customanchor href="/portfolio/Commercial-Timetable-System-for-an-Art-School#New-Business-Logic-Comes!!-Domain-Invariance-via-Policies-for-Open-Closed-Principle-with-Video-Demonstration">New Business Logic Comes‼ Domain Invariance via Policies for Open-Closed Principle with Video Demonstration</customanchor>
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/6IcJGRj1xos?si=dLFyghHzffYdts6g" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
@@ -308,7 +308,7 @@ If a class happens to be created on an holiday, we just extend this class (to a 
 Note that we also need to handle side effects from other events, as shown in the event-storming diagram!
 
 
-##### New Business Logic Comes‼ Domain Invariance via Policies for Open\-Closed Principle with Video Demonstration
+##### New Business Logic Comes!! Domain Invariance via Policies for Open\-Closed Principle with Video Demonstration
 
 <Example>
 New requirements come:
