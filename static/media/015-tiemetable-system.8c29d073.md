@@ -363,7 +363,7 @@ For a video demostration on the the workflow of UI application being blocked by 
 
 When we invoke a command, and when we dispatch an event, we also log down the data in our database:
 
-[![](/assets/img/2025-09-10-05-01-42.png)](/assets/img/2025-09-10-05-01-42.png)
+[![](/assets/img/2025-09-08-09-32-57.png)](/assets/img/2025-09-08-09-32-57.png)
 
 - Here we have `request_id` to group all commands and events coming from the same http request.
 
@@ -375,9 +375,6 @@ When we invoke a command, and when we dispatch an event, we also log down the da
 
 
 ###### Failure of a command
-
-
-
 
 
 
