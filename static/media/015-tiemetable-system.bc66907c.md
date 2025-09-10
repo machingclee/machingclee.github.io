@@ -93,12 +93,10 @@ etc. -->
 
 The following is a demonstration of maintaining invariance via policies. We will revisit this video in the upcoming section:
 
-- <customanchor href="/portfolio/Commercial-Timetable-System-for-an-Art-School#New-Business-Logic-Comes!!-Domain-Invariance-via-Policies-for-Open-Closed-Principle-with-Video-Demonstration">New Business Logic Comes‼ Domain Invariance via Policies for Open-Closed Principle with Video Demonstration</customanchor>
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/6IcJGRj1xos?si=dLFyghHzffYdts6g" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+- <customanchor href="/portfolio/Commercial-Timetable-System-for-an-Art-School#New-Business-Logic-Comes!!-Domain-Invariance-via-Policies-for-Open-Closed-Principle-with-Video-Demonstration">New Business Logic Comes‼ Domain Invariance via Policies for Open-Closed Principle with Video Demonstration</customanchor> <p></p>
 
 
-
+<iframe width="560"  style="margin-top:10px"  height="315" src="https://www.youtube.com/embed/is70ChP4ubU?si=q2bjsVbAgZVruLwG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 #### Tech-Stack
 
@@ -341,21 +339,28 @@ From coding point of view we get:
 
 For a video demostration on the the workflow of UI application being blocked by invariance:
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/6IcJGRj1xos?si=dLFyghHzffYdts6g" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="560"  style="margin-top:10px"  height="315" src="https://www.youtube.com/embed/is70ChP4ubU?si=q2bjsVbAgZVruLwG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 <p></p>
 
-1. We add a class on `2026-10-18` which is beyond the expiry date `2026-10-11`
+1. We add a class on `2026-10-11` which an expiry date `2026-10-11` on which we cannot add any class any more
 
-2. We witness an error from backend at the lower right corner correspoing to our backend exception:
+ 
 
+    **Remark.** The class creation process is taking long for the following reason:
+    [![](/assets/img/2025-09-11-07-15-58.png)](/assets/img/2025-09-11-07-15-58.png)
+
+    We need to be rigorous enough to ensure no class conflict can actually happen:
+    [![](/assets/img/2025-09-11-07-16-50.png)](/assets/img/2025-09-11-07-16-50.png)
+
+
+
+2. We witness an error from backend at the lower right corner corresponding to our backend exception:
     ![](/assets/img/2025-09-10-05-26-15.png)
 
-3. We add a class on `2026-10-10` $\to$ succeeded
-4. We delete it (it takes some time, leading unsmooth workflow)
-5. We add a class on the expiry date `2026-10-11`, same error occurs from the backend
-
-
+3. We add a class on `2026-10-10`, it succeeded
+4. The class in step 3 is then moved to `2026-10-11`, the domain invariance for `ClassMovedEvent` again throw exception for expiry date:
+  ![](/assets/img/2025-09-11-07-09-11.png)
 
 ##### Logging 
 
