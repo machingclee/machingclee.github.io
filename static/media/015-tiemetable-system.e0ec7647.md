@@ -354,7 +354,6 @@ For a video demostration on the the workflow of UI application being blocked by 
     [![](/assets/img/2025-09-11-07-16-50.png)](/assets/img/2025-09-11-07-16-50.png)
 
 
-
 2. We witness an error from backend at the lower right corner corresponding to our backend exception:
     ![](/assets/img/2025-09-10-05-26-15.png)
 
@@ -368,7 +367,7 @@ For a video demostration on the the workflow of UI application being blocked by 
 
 When we invoke a command, and when we dispatch an event, we also log down the data in our database:
 
-[![](/assets/img/2025-09-08-09-32-57.png)](/assets/img/2025-09-08-09-32-57.png)
+[![](/assets/img/2025-09-12-00-38-19.png)](/assets/img/2025-09-12-00-38-19.png)
 
 - Here we have `request_id` to group all commands and events coming from the same http request.
 
