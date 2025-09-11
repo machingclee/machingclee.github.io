@@ -96,7 +96,7 @@ The following is a demonstration of maintaining invariance via policies. We will
 - <customanchor href="/portfolio/Commercial-Timetable-System-for-an-Art-School#New-Business-Logic-Comes!!-Domain-Invariance-via-Policies-for-Open-Closed-Principle-with-Video-Demonstration">New Business Logic Comes‼ Domain Invariance via Policies for Open-Closed Principle with Video Demonstration</customanchor> <p></p>
 
 
-<iframe width="560"  style="margin-top:10px"  height="315" src="https://www.youtube.com/embed/is70ChP4ubU?si=q2bjsVbAgZVruLwG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/zcjYaH0jTBo?si=X4rNS9qJKVSC_pey" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 #### Tech-Stack
 
@@ -339,7 +339,7 @@ From coding point of view we get:
 
 For a video demostration on the the workflow of UI application being blocked by invariance:
 
-<iframe width="560"  style="margin-top:10px"  height="315" src="https://www.youtube.com/embed/is70ChP4ubU?si=q2bjsVbAgZVruLwG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/zcjYaH0jTBo?si=X4rNS9qJKVSC_pey" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 <p></p>
 
@@ -361,7 +361,11 @@ For a video demostration on the the workflow of UI application being blocked by 
 4. The class in step 3 is then moved to `2026-10-11`, the domain invariance for `ClassMovedEvent` again throw exception for expiry date:
   ![](/assets/img/2025-09-11-07-09-11.png)
 
+
+
+
 ##### Logging 
+
 
 ###### Series of commands and events
 
