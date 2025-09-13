@@ -2,7 +2,7 @@
 title: Spring Data MongoDB
 date: 2025-08-28
 id: blog0409
-tag: spring, kotlin
+tag: springboot, kotlin
 toc: true
 intro: Suppose that we need to handle mongoDB using kotlin due to whatever strange reason, let's define simple repository and caveats that we may encounter due to extra-ordinary flexibility in  schema of MongoDB. 
 ---

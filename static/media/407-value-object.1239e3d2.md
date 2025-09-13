@@ -2,7 +2,7 @@
 title: Value Objects and Embedded Classes
 date: 2025-08-23
 id: blog0407
-tag: spring, kotlin
+tag: springboot, kotlin
 toc: true
 intro: We study how to embed value object into JPA entity class definition, and study how to auto-map our value object back to plain DTO object for the frontend
 ---

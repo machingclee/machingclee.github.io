@@ -96,7 +96,7 @@ The following is a demonstration of maintaining invariance via policies. We will
 - <customanchor href="/portfolio/Commercial-Timetable-System-for-an-Art-School#New-Business-Logic-Comes!!-Domain-Invariance-via-Policies-for-Open-Closed-Principle-with-Video-Demonstration">New Business Logic Comes‼ Domain Invariance via Policies for Open-Closed Principle with Video Demonstration</customanchor> <p></p>
 
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/zcjYaH0jTBo?si=X4rNS9qJKVSC_pey" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="560" height="315" style="margin-top:10px" src="https://www.youtube.com/embed/zcjYaH0jTBo?si=X4rNS9qJKVSC_pey" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 #### Tech-Stack
 
@@ -175,7 +175,7 @@ Both problem can be easily solved by the methodology in DDD.
   
   For example, assume a project cannot have fewer than 3 persons. A single member does not contain the information of other members, however, a project *does*, which is possible to keep the invariance within itself.
 
-- **For problem 2**, we simply use an event-driven architecture, and DDD is inherently based on ***events***.  DDD's `Command`'s and `Event`s are a good fit for side effects.
+- **For problem 2**, we simply use an event-driven architecture, and DDD is inherently based on ***events***.  DDD's `Command`s and `Event`s are a good fit for side effects.
 
   - To solve problem 2.1, the tight coupling of logic can now be decoupled by event and event-handler. 
 
@@ -339,7 +339,7 @@ From coding point of view we get:
 
 For a video demostration on the the workflow of UI application being blocked by invariance:
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/zcjYaH0jTBo?si=X4rNS9qJKVSC_pey" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="560" height="315" style="margin-top:10px" src="https://www.youtube.com/embed/zcjYaH0jTBo?si=X4rNS9qJKVSC_pey" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 <p></p>
 
@@ -383,7 +383,6 @@ When we invoke a command, and when we dispatch an event, we also log down the da
 
 
 ###### Failure of a command
-
 
 
 [![](/assets/img/2025-09-07-03-08-02.png)](/assets/img/2025-09-07-03-08-02.png)
@@ -540,7 +539,7 @@ The application is composed of various SQLs when interacting with database:
 <Example>
 
 
-**Example 1 (Complexity Level 1).** The following implicitly executes domain logic via SQL operation
+**Example 1 (Complexity Level 1).** In the most basic form we have maintainable queries via query-builder:
 [![](/assets/img/2025-09-07-18-09-07.png)](/assets/img/2025-09-07-18-09-07.png)
 
 </Example>
@@ -551,6 +550,7 @@ The application is composed of various SQLs when interacting with database:
 **Example 2 (Complexity Level 2).** The following tries to do two separate `LATERAL JOIN`'s and `Json Aggregate`'s:
 [![](/assets/img/2025-09-07-18-03-29.png)](/assets/img/2025-09-07-18-03-29.png)
 
+Complexity increases and it takes developers effort  to understand what's going on.
 
 
 </Example>
@@ -560,7 +560,7 @@ The application is composed of various SQLs when interacting with database:
 
 <Example>
 
-**Example 3 (Complexity Level $\infty$).**  The following is taken from a deprecated project:
+**Example 3 (Complexity Level $\to \infty$).**  The following is taken from a deprecated project, it starts to be unmaintable:
 
 [![](/assets/img/2025-09-07-18-33-09.png)](/assets/img/2025-09-07-18-33-09.png)
 
@@ -576,7 +576,7 @@ The application is composed of various SQLs when interacting with database:
 
 ##### Problems of the SQL-First Approach
 
-1. SQL statements itself is highly unreadable, even there are query builders. 
+1. SQL statements itself, by nature, is ***highly unreadable***, even there are query builders. You may have `subquery`, may have `case if then else end`, may have tricky use of `SQL function`, etc.
 
 2. Long SQL is hard to debug, we cannot add a breakpoint to investigate the data.
 
@@ -589,6 +589,8 @@ The application is composed of various SQLs when interacting with database:
 ##### Short Summary 
 
 In short, when maintainability is our concern, we should reduce SQL as much as possible. We should let framework generate them such as using ORM. 
+
+There are indeed cases where native query is necessary for performance such as batch-insertion, or special queries for dashboard. But we can avoid them as much as possible.
 
 
 ##### Introduced Event System to Handle side Effects

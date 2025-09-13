@@ -2,7 +2,7 @@
 title: Multithreading with Semaphore
 date: 2025-08-27
 id: blog0408
-tag: spring, kotlin
+tag: springboot, kotlin
 toc: false
 intro: In the past we have studied how to do limited number of concurrent tasks via buffered channels, an approach inspired from golang. This time we make use of native API of Semaphore to achieve the same goal.
 ---
