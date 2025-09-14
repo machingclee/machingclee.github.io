@@ -391,13 +391,18 @@ What we can observe from the logs:
 
 - Changes rollbacked, user (me) got stuck and complained.
 
+
+<<<<<<< Updated upstream
+[![](/assets/img/2025-09-07-03-08-02.png)](/assets/img/2025-09-07-03-08-02.png)
+=======
 <Example>
 
 **Remark.** 
+>>>>>>> Stashed changes
 
 1. Here we have ***grouped*** a sequence of commands and events by `request_id`, an identifier of an HTTP request. 
 
-2. We have also recorded ***who made this request*** to trace the affected users.
+2. We have also recorded ***who make this request*** to trace the affected users.
 
 </Example>
 
@@ -571,7 +576,7 @@ Complexity increases and it takes developers effort  to understand what's going 
 
 <Example>
 
-**Example 3 (Complexity Level $\to \infty$).**  The following is taken from a deprecated project, it starts to be unmaintable:
+**Example 3 (Complexity Level $\to \infty$).**  The following is taken from a deprecated project, it starts to be unmaintainable:
 
 [![](/assets/img/2025-09-07-18-33-09.png)](/assets/img/2025-09-07-18-33-09.png)
 
@@ -587,7 +592,7 @@ Complexity increases and it takes developers effort  to understand what's going 
 
 ##### Problems of the SQL-First Approach
 
-1. SQL statements itself, by nature, is ***highly unreadable***, even there are query builders. You may have `subquery`, may have `case if then else end`, may have tricky use of `SQL function`, etc.
+1. SQL statements itself, by nature, are ***highly unreadable***, even there are query builders. You may have `subquery`, may have `case if then else end`, may have tricky use of `SQL function`, etc.
 
 2. Long SQL is hard to debug, we cannot add a breakpoint to investigate the data.
 

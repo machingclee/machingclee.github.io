@@ -140,7 +140,7 @@ class SwaggerConfig(
     }
 ```
 
-###### Inject custom javascript to automation the process of setting authorization header after login
+###### Inject custom javascript to automate the process of setting authorization header after authentication
 
 Next we inject the logic for `requestInterceptor` and `responseInterceptor`, they are used to automate the following:
 
