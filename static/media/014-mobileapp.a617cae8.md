@@ -209,8 +209,6 @@ By enforcing the rule to display a hint (component name, indicative string, etc)
 <a href="/assets/img/2024-05-01-19-20-20.png"><img src="/assets/img/2024-05-01-19-20-20.png" width="340" style="margin-top: 20px"/></a>
 
 
-
-
 #### Deployment and App Distribution Experience
 ##### Different Stages with TestFlight for Internal and External Tests
 <a href="/assets/img/2024-05-01-19-06-19.png"><img src="/assets/img/2024-05-01-19-06-19.png" width="340"/></a>

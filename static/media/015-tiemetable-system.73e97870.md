@@ -392,13 +392,9 @@ What we can observe from the logs:
 - Changes rollbacked, user (me) got stuck and complained.
 
 
-<<<<<<< Updated upstream
-[![](/assets/img/2025-09-07-03-08-02.png)](/assets/img/2025-09-07-03-08-02.png)
-=======
 <Example>
 
 **Remark.** 
->>>>>>> Stashed changes
 
 1. Here we have ***grouped*** a sequence of commands and events by `request_id`, an identifier of an HTTP request. 
 
