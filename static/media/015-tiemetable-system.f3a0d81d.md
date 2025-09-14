@@ -107,9 +107,13 @@ The following is a demonstration of maintaining invariance via policies. We will
 |Database| • PostgreSQL provided by Neon-tech <br> •  Schema design and migration via Prisma|
 |Deployment| <table><tbody><tr><td style="width:150px">• Frontend</td><td>React-build is stored in S3, served by Cloudfront and routed by Route53 for custsom domain</td></tr><tr><td style="width:150px">• Backend</td><td>Snap-started lambda function</td></tr></tbody></table>| 
 
-#### Why DDD? What am I going to solve?
+#### Why DDD (Domain Driven Design)? What am I going to solve?
+
+
 
 ##### Problems of architecture as simple as Controller-Service-Repository (CSR)
+
+
 
 In the course of development several backend problems in CSR-architecture pop up easily that I always feel painful:
 
@@ -230,7 +234,7 @@ These are the major entities involved in our system.
 
 ##### Diagram for Event Storming, the Detailed Planning of System Implementation 
 
-Event Storming is an indispensible part of ***D***omain ***D***riven ***D***esign (DDD). This project is also a practice of  abiding by the rules in the design methodology of DDD.
+Event Storming is an indispensible part of DDD. This project is also a practice of  abiding by the rules in the design methodology of DDD.
 
 You may ***click*** the following image or download button to get the **PDF**:
 
@@ -245,6 +249,9 @@ You may ***click*** the following image or download button to get the **PDF**:
   
 
 #### Coding Example of Command-Event System
+
+
+
 
 ##### Basic user Request with Side Effect
 
@@ -363,32 +370,36 @@ For a video demostration on the the workflow of UI application being blocked by 
 
 
 
+#### Debug by Tracing of Commands and Events 
 
-##### Logging 
+Apart from the event-storming diagram, another possible way to understand and debug a system is to see appropriate logging.
 
+The following is an example of how we can debug a *delete package* request in the system:
 
-###### Series of commands and events
-
-When we invoke a command, and when we dispatch an event, we also log down the data in our database:
-
-[![](/assets/img/2025-09-12-00-38-19.png)](/assets/img/2025-09-12-00-38-19.png)
-
-- Here we have `request_id` to group all commands and events coming from the same http request.
-
-- We have also logged the user who make this request
-
-- We have logged all failed commmands as well. 
+[![](/assets/img/2025-09-14-12-40-41.png)](/assets/img/2025-09-14-12-40-41.png)
 
 
 
+What we can observe from the logs:
 
-###### Failure of a command
+- A package has been deleted successfully in a transaction
+- At the same time the system dispatched two events, `package deleted` and `classes removed`.
+- When a class get removed, a policy (side effect) has routed the `classes removed` event to `reset numbers command`, which is to reset the ordering of classes internally in our system.
 
+- We don't have that package any more:
+  [![](/assets/img/2025-09-14-12-47-37.png)](/assets/img/2025-09-14-12-47-37.png)
 
-[![](/assets/img/2025-09-07-03-08-02.png)](/assets/img/2025-09-07-03-08-02.png)
+- Changes rollbacked, user (me) got stuck and complained.
 
-When a command ***fail***, for now we don't have `SomethingFailedEvent`. In the future we can add a try-catch logic in `CommandHandler` to dispatch a ***compensating command*** in the catch flow.
+<Example>
 
+**Remark.** 
+
+1. Here we have ***grouped*** a sequence of commands and events by `request_id`, an identifier of an HTTP request. 
+
+2. We have also recorded ***who made this request*** to trace the affected users.
+
+</Example>
 
 
 
