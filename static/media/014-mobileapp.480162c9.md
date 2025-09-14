@@ -261,4 +261,3 @@ In this lesson my problem can be solved timely because
 - We have someone who has the native knowledge to ***change the native code***, this will be the field of knowledge to which I have to enrich.
 
 - We can manage our own npm package, solid knowledge in `npm` ecosystem is essential.
-
