@@ -70,7 +70,7 @@ In the annotation for `id`:
 the generation type cannot be replaced by `IDENTITY` because:
 
 - With `IDENTITY` JPA will fetch the id only after insertion is complete.
-- With `SEQUENCE` JPA can fetch multiple IDS before insertion, this makes the batch insertion possible.
+- With `SEQUENCE` JPA can fetch multiple `id`s before insertion, this makes the batch insertion possible.
 
 
 
@@ -410,8 +410,7 @@ class CreateClassesHandler(
     }
 }
 ```
-Now `savedClassesAdded` is a set of entities ***with id***, which is exactly the same as `repository.save()`.
-
+Now `savedClassesAdded` is a set of entities that have auto-generated values generated from our database (including `id`, `createdAt`, etc), thanks to the nature of PostgreSQL's `RETURNING *`, 
 
 
 
@@ -439,7 +438,7 @@ To explain what is `escapeFromDirtyCheck`, here we first explain what we are try
 
 We ***keep using domain behaviour*** to maintain all the domain invariance, and we return all the necessary results for persistence (for insert, delete, update, etc).
 
-In the past if we have modified our entities, the dirty check mechanism of JPA will calculate a set of SQLs and execute them for us, which ***is not desirable*** as it always produces repeated single insertion statements that harm the performance significantly.
+In the past if we have modified our entities, the dirty check mechanism of JPA will calculate a set of SQLs and execute them for us, which ***is not desirable*** as it potentially produces repeated single insertion statements that harm the performance significantly.
 
 For this, we introduce the following extension function for `EntitiyManager` in order to make a block of code ***invisible*** from dirty-check mechanism:
 
@@ -583,4 +582,4 @@ private fun addClassesBySQL(
 }
 ```
 
-As a summary when in doubt, just do the two-way binding manually to play safe.
+As a summary,  when in doubt, just do the two-way binding manually to play safe.

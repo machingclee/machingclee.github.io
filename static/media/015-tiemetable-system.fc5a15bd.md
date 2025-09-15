@@ -301,6 +301,7 @@ domain invariances have been maintained by:
     }
 ```
 
+
 <Example>
 
 **Remark 1.** Here the validation rules are maintained in a separated class, that validation class is linked to the entity class via a function literal ([detail](/blog/article/Code-Separation-of-Domain-Entity-Class-Domain-Behaviour-Actions-and-the-Corresponding-Validations#StduentPackageValidation-Class)). It is to avoid writing everything within the same class.
