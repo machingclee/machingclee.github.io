@@ -110,7 +110,7 @@ The following is a demonstration of maintaining invariance via policies. We will
 
 
 
-##### Problems of architecture as simple as Controller-Service-Repository (CSR)
+##### Problems of Controller-Service-Repository (CSR) Architecture
 
 
 
@@ -129,21 +129,18 @@ Suppose I have a project system, now I want to design a service to let project o
 - `MemberService.joinProject`
 
 There is no true or false among the choices, but our domain logic now *can go anywhere*, or even *repeatedly defined* like the `join-project` example above. 
-
-Another common example is to change a column from `true` to `false`, as it may seem too trivial to create a service for that. This is also a domain logic that can be spread everywhere.
-
 </Example>
 
 <Example>
 
 **Problem 2.1 (Side Effects Become a Mess).** When dealing with side effects, namely:
-- Some change in a table will cause other events to happen, such as some change in another table or sending notification, etc.
+- Some change in a table will cause other events to happen, such as another change in another table or sending notification, etc.
 
 The only way the CSR-architecture can handle it is to *add the handling* of extra logics at the end or even at the middle of *ALL existing related services*.  Problems arise:
 
 - First, the Open-Closed principle is easy to break and maintaining this chain of side effects is exhausting. 
 
-- Second, this kind of side effect is *not easy to be  documented*, the domain logic involved is hard to be traced and hard to be understood by new team members trying to participate in adjusting that domain logic.
+- Second, this kind of side effect is *not easy to be documented*, the domain logic involved is hard to be traced and hard to be understood by new team members trying to participate in adjusting that domain logic.
 
 </Example>
 
@@ -186,12 +183,12 @@ Both problem can be easily solved by the methodology in DDD.
   - To solve problem 2.2, using JPA from the ecosystem of Spring Boot,  atomic side effect can be handled by 
     `@Eventlistener`, and side effect after succeeded transaction can now be handled by `@TransactionalEventListener`.
 
-  Event-Driven architecture can also be a mess ***without documentation*** because `eventHandler` handles the side effect silently. However, if we documentate it properly, then ***everything is explicit***. 
+  Event-Driven architecture can also be a mess ***without documentation*** because `eventHandler` handles the side effect silently. However, if we do documentation properly, then ***everything is explicit***:
 
 
   [![](/assets/img/2025-09-06-18-44-57.png)](/assets/img/2025-09-06-18-44-57.png)
 
-  Now we have a good place to documentate the complex domain requirement. 
+  Now we have a good place to record the complex domain requirement. 
   
   We will discuss how we operate with these `Command`, `Event` and `Policy` in depth in the next section.
 
@@ -599,7 +596,7 @@ Complexity increases and it takes developers effort  to understand what's going 
 
 <Example>
 
-**Example 3 (Complexity Level $\to \infty$).**  The following is taken from a deprecated project, it starts to be unmaintable:
+**Example 3 (Complexity Level $\to \infty$).**  The following is taken from a deprecated project, it starts to be unmaintainable:
 
 [![](/assets/img/2025-09-07-18-33-09.png)](/assets/img/2025-09-07-18-33-09.png)
 
