@@ -129,6 +129,7 @@ Suppose I have a project system, now I want to design a service to let project o
 - `MemberService.joinProject`
 
 There is no true or false among the choices, but our domain logic now *can go anywhere*, or even *repeatedly defined* like the `join-project` example above. 
+
 </Example>
 
 <Example>
@@ -242,11 +243,8 @@ You may ***click*** the following image or download button to get the **PDF**:
 </a>
 
 
-  
 
 #### Coding Example of Command-Event System
-
-
 
 
 ##### Basic user Request with Side Effect
