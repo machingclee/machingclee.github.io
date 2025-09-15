@@ -69,7 +69,9 @@ date: 2025-09-06
 
 </Center>
 
-#### Who is this System For? 
+#### Briefly About this Project ...
+
+##### Who is this System For? 
 This is a timetable system developed for an art school  [木棉花水墨畫室](https://www.cottontreeinkart.com).
 
 
@@ -88,7 +90,39 @@ This article is mainly a description on how DDD was applied to the project. In o
 
 etc. -->
 
-#### Sample Video
+
+
+##### Tech-Stack
+
+|  |  |
+|-------|--------------|
+| Frontend | • React (Vite) • Redux-RTK-query • Redux-Toolkit • Tailwind |
+| Backend |  • ~~Nodejs, Express.js, Prisma, Prisma-Kysely~~ (all deprecated) <br>• Kotlin • Spring Boot • JPA<br>• JOOQ (for entity generation from existing database)|
+|Database| • PostgreSQL provided by Neon-tech <br> •  Schema design and migration via Prisma|
+|Deployment| <table><tbody><tr><td style="width:150px">• Frontend</td><td>React-build is stored in S3, served by Cloudfront and routed by Route53 for custsom domain</td></tr><tr><td style="width:150px">• Backend</td><td>Snap-started lambda function</td></tr></tbody></table>| 
+
+
+
+##### Project Structure
+
+<a href="/assets/img/2025-09-16-04-01-09.png" target="_blank">
+<img src="/assets/img/2025-09-16-04-01-09.png" width="380"/>
+</a>
+
+<p></p>
+
+- The only services we have are ***domain services***. Which comprises of orchestration of domain behaviours that cannot be carried out by a single aggregate.
+
+- Most of the responsibilities are spread to domain objects. Therefore we have very few "service" in the system.
+
+
+- The ***application services***, usually the first layer that a controller interacts with, are replaced by ***CommandHandlers***. 
+
+  It is not for CQRS, it is simply for  better alignment with event storming and better logging.
+
+
+
+##### Sample Video
 
 The following is a demonstration of maintaining invariance via policies. We will revisit this video in the upcoming section:
 
@@ -97,14 +131,6 @@ The following is a demonstration of maintaining invariance via policies. We will
 
 <iframe width="560" height="315" style="margin-top:10px" src="https://www.youtube.com/embed/zcjYaH0jTBo?si=X4rNS9qJKVSC_pey" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-#### Tech-Stack
-
-|  |  |
-|-------|--------------|
-| Frontend | • React (Vite) • Redux-RTK-query • Redux-Toolkit • Tailwind |
-| Backend |  • ~~Nodejs, Express.js, Prisma, Prisma-Kysely~~ (all deprecated) <br>• Kotlin • Spring Boot • JPA<br>• JOOQ (for entity generation from existing database)|
-|Database| • PostgreSQL provided by Neon-tech <br> •  Schema design and migration via Prisma|
-|Deployment| <table><tbody><tr><td style="width:150px">• Frontend</td><td>React-build is stored in S3, served by Cloudfront and routed by Route53 for custsom domain</td></tr><tr><td style="width:150px">• Backend</td><td>Snap-started lambda function</td></tr></tbody></table>| 
 
 #### Why DDD (Domain Driven Design)? What am I going to solve?
 
@@ -118,7 +144,7 @@ In the course of development several backend problems in CSR-architecture pop up
 
 <Example>
 
-**Problem 1 (No (and not possible to have) clear separation of responsibility among services).**  From CSR point of view, service is just an interface to handle or to break the request into serveral pieces, and *nothing more*, that causes the problem.
+**Problem 1 (Not easy to have clear separation of responsibility among services).**  From CSR point of view, a service is just an interface to handle a  request, and *nothing more*, that causes the problem.
 
 As time goes by, developer is easy to build *multiple services* serving a similar purpose. 
 
@@ -137,7 +163,7 @@ There is no true or false among the choices, but our domain logic now *can go an
 **Problem 2.1 (Side Effects Become a Mess).** When dealing with side effects, namely:
 - Some change in a table will cause other events to happen, such as another change in another table or sending notification, etc.
 
-The only way the CSR-architecture can handle it is to *add the handling* of extra logics at the end or even at the middle of *ALL existing related services*.  Problems arise:
+The only way the CSR-architecture can handle it is to add the handling of extra logics at the end or even at the middle of *ALL existing related services*.  Problems arise:
 
 - First, the Open-Closed principle is easy to break and maintaining this chain of side effects is exhausting. 
 
@@ -146,7 +172,7 @@ The only way the CSR-architecture can handle it is to *add the handling* of extr
 </Example>
 
 
-Worse still, 
+Worse still:
 
 <Example>
 
@@ -166,7 +192,7 @@ It is not trivial to implement a "transactional" side effect (e.g., send the ema
 
 Both problem can be easily solved by the methodology in DDD. 
 
-- **For problem 1**, we handle all the state change from the domain behaviour of an aggregate root. We do all the data modification within the same ***consistency boundary***. 
+- **For problem 1 (Spread of Domain Logic)**, we handle all the state change from the domain behaviour of an aggregate root. We do all the data modification within the same ***consistency boundary***. 
 
   If we want to kick a member out of a project, let's fetch the project, and execute 
   ```kotlin
@@ -176,7 +202,7 @@ Both problem can be easily solved by the methodology in DDD.
   
   For example, assume a project cannot have fewer than 3 persons. A single member does not contain the information of other members, however, a project *does*, which is possible to keep the invariance within itself.
 
-- **For problem 2**, we simply use an event-driven architecture, and DDD is inherently based on ***events***.  DDD's `Command`s and `Event`s are a good fit for side effects.
+- **For problem 2 (Messy Side Effect)**, we simply use an event-driven architecture, and DDD is inherently based on ***events***.  DDD's `Command` and `Event` are a good fit for handling side effects.
 
   - To solve problem 2.1, the tight coupling of logic can now be decoupled by event and event-handler. 
 
@@ -340,7 +366,9 @@ New requirements:
 ###### Should aggregate invariance be always maintained within aggregate itself only?
 
 
-There starts to be confusion. We can throw exception in a policy to force JPA to rollback all the relevant changes when handling an event (***outside*** of an aggregate), but the act of maintaining domain invariance should stay within the aggregate, that means we either 
+There starts to be confusion. We can throw exception in a policy to force JPA to rollback all the relevant changes when handling an event (***outside*** of an aggregate).
+
+But the act of maintaining domain invariance should stay within the aggregate, that means we either 
 
 - break the open-closed principle, or 
 
@@ -348,30 +376,39 @@ There starts to be confusion. We can throw exception in a policy to force JPA to
 
 There are always tradeoff for which no option is absolutely correct, we need to strike the balance between code maintainability and methodology. 
 
-If we insist on DDD, then we need to adjust all domain behaviour and add the corresponding validation logic. Doesn't it sound quite simular to the CSR architecture? We lose the advantage of DDD being intrinsically an event-driven design. 
 
 
 ###### Policies for Domain Invariance, but isn't rollback also a side effect?
 
+Instead of adding additional logic in domain behaviours to avoid breaking the invariance (making a class start later than the expiry date), let's extend the usage of policies beyond side-effect, they are also now for invariances.
 
-For code maintainability, now we extend the usage of domain events, they are not just for side-effect, but also for invariances.
-
-But wait, isn't rollbacking also a side effect? This justifies our choice of maintaining invariances within policies!
+But wait, isn't rollbacking to previous state also a side effect? This justifies our choice of maintaining invariances within policies!
 
 
-Now we skim through the candidates of ***events*** that can possibly break the invariance (changing the time of a class), then we add a new policy and arrows:
+Now we skim through the candidates of ***events*** that can possibly break the invariance (changing the time of a class), they are respectively:
+
+- `ClassCreatedEvent`
+
+- `ClassMovedEvent`
+- `ClassDuplicatedEvent`
+- `ClassExtendedEvent`
+- `StudentPackageUpdatedEvent`
+
+
+Then we add a new policy and arrows for record:
 
 ![](/assets/img/2025-09-10-04-55-02.png)
 
-
-From coding point of view we get:
+After the strategic design, we are already to start coding:
 
 [![](/assets/img/2025-09-10-05-00-20.png)](/assets/img/2025-09-10-05-00-20.png)
 
-For a video demostration on the the workflow of UI application being blocked by invariance:
 
 
 ###### Video Demonstration
+
+
+Here is a video demostration on the the workflow of UI application being blocked by invariance:
 
 <iframe width="560" height="315" style="margin-top:10px" src="https://www.youtube.com/embed/zcjYaH0jTBo?si=X4rNS9qJKVSC_pey" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
@@ -389,15 +426,14 @@ For a video demostration on the the workflow of UI application being blocked by 
 
 
 
-#### Debug by Tracing of Commands and Events 
+#### Logging: Debug by Tracing Commands and Events 
 
-Apart from the event-storming diagram, another possible way to understand and debug a system is to see the appropriate logging.
 
-The following is an example of how we can debug a *delete package* request in the system (from top to bottom):
+The following is an example of how we can debug a `delete package` request in the system:
 
 [![](/assets/img/2025-09-14-19-16-19.png)](/assets/img/2025-09-14-19-16-19.png)
 
-We also log down the exception detail:
+We also record the exception detail:
 
 [![](/assets/img/2025-09-14-12-40-41.png)](/assets/img/2025-09-14-12-40-41.png)
 
@@ -405,30 +441,20 @@ We also log down the exception detail:
 
 What we can observe from the logs:
 
-- A package has been deleted successfully in a transaction
-- At the same time the system dispatched two events, `package deleted` and `classes removed`.
-- When a class get removed, a policy (side effect) has routed the `classes removed` event to `reset numbers command`, which is to reset the ordering of classes internally in our system.
+1. A package has been deleted successfully in a transaction
+2. At the same time the system dispatched two events, `package deleted` and `classes removed`.
+3. When a class get removed, a policy (side effect) has routed the `classes removed` event to `reset numbers command`, which is to reset the ordering of classes internally in our system.
 
-- We don't have that package any more:
+4. Since we have deleted a package, we don't have that package any more:
   [![](/assets/img/2025-09-14-12-47-37.png)](/assets/img/2025-09-14-12-47-37.png)
 
-- Changes rollbacked, user (me) got stuck and complained.
+5. Changes rollbacked, user was presented an error message from backend.
 
-<Example>
-
-**Remark.** 
-
-1. Here we have ***grouped*** a sequence of commands and events by `request_id`, an identifier of an HTTP request. 
-
-2. We have also recorded ***who made this request*** to trace the affected users.
-
-</Example>
 
 
 
 #### Value Objects for Domain Invariance
 
-Value objects are the must-have ingradient of DDD as they are also in charge of maintaining invariance within a domain.
 
 ##### @Embedded and @Embeddable
 
@@ -482,34 +508,24 @@ val AVAILABLE_GRADES = listOf(
     )
 ```
 
-Now invariance is maintained in a much cleaner way! We can think of meaningful application of value objects easily. Such as `Address`, `Email`, `PhoneNumber`, all need to be validated!
+Now invariance is maintained in a much cleaner way! 
 
-<Example>
+We can think of meaningful application of value objects easily. Such as 
 
-**Remark.** Without value objects, we would have created a validation method in one of the `Service`'s. 
+```kotlin 
+data class Address (val value: String)
+data class Email (val value: String)
+data class PhoneNumber (val region: String, val value: String)
+```
 
-Again, we eventually would have many validation rules spread to several ***seeminly related*** services. There is no rule to confine the responsibility of a service due to the chaoticity of CSR architecture.  
+They all require validation!
 
-Maybe we have `CommonValidationService`, we have `StudentValidationService`, or maybe we have a dedicated `EmailValidationService`, you name it.
-
-It sounds horrible, isn't it?
-
-
-
-
-</Example>
 
 ##### KspKotlin, Create an Auto-Generated `.toDTO()` method that "flattens" or "unwinds" a value object
 
-We have also configured `KspKotlin` to auto-generate a  `toDTO()` function  that outputs a `DTO` class, which transform the ***snake-cased*** column name (defined in `@Column`) into a ***camel-cased*** name:
+We have also configured `KspKotlin` to auto-generate a  `toDTO()` function  that outputs a `DTO` class:
 
 
-<Example>
-
-**Remark.** For detail how to config `kspKotlin`, the reader can refer to my article 
-- [Auto-generated Mapper From Entity Classes into DTO Classes](/blog/article/Auto-generated-Mapper-From-Entity-Classes-into-DTO-Classes)
-
-</Example>
 
 ```kotlin{9,32}
 public data class StudentDTO(
@@ -543,7 +559,7 @@ public fun Student.toDTO(): StudentDTO = StudentDTO(
     chineseLastName,
     schoolName,
     studentCode,
-    grade.value,
+    grade.value,   // <-- kspKotlin does it for us when configured correctly
     phoneNumber,
     wechatId,
     birthdate.value,
@@ -562,11 +578,19 @@ public fun Student.toDTO(): StudentDTO = StudentDTO(
 When we return frontend a `DTO` object, no code is needed to extract the value from Value Objects.
 
 
+<Example>
 
-#### Side Story: The Project is Developed from Nodejs Express, then Transitioned into Kotlin Springboot, but WHY?
+**Remark.** For detail how to config `kspKotlin`, the reader can refer to my article 
+- [Auto-generated Mapper From Entity Classes into DTO Classes](/blog/article/Auto-generated-Mapper-From-Entity-Classes-into-DTO-Classes)
+
+</Example>
 
 
-##### Examples (SQL-First Approach)
+
+#### Side Story: Why is the Project Transitioned from Nodejs Express into Kotlin Spring Boot?
+
+##### Original SQL First Approach 
+###### Examples (SQL-First Approach)
 
 The application is composed of various SQLs when interacting with database:
 
@@ -608,28 +632,33 @@ Complexity increases and it takes developers effort  to understand what's going 
 <br/>
 
 
-##### Problems of the SQL-First Approach
+###### Problems of the SQL-First Approach
 
-1. SQL statements itself, by nature, is ***highly unreadable***, even there are query builders. You may have `subquery`, may have `case if then else end`, may have tricky use of `SQL function`, etc.
+1. SQL statements itself, by nature, are ***highly unreadable***, even there are query builders. You may have `subquery`, may have `case if then else end`, may have tricky use of `SQL function`, etc.
 
 2. Long SQL is hard to debug, we cannot add a breakpoint to investigate the data.
 
-3. Moreover, the project is now tightly coupled with knowledge from specific SQL. There are those kind of tricks that only appear in  PostgreSQL like we have 
+<!-- 3. Moreover, the project is now tightly coupled with knowledge from specific SQL. There are those kind of tricks that only appear in  PostgreSQL like we have 
     ```sql
     SELECT DISTINCT ON + ORDER BY
     ``` 
-    for data deduplication. But `DISTINCT ON` is Postgre-only. Other example like `ON CONFLICT DO NOTHING`, `JSONB` query, etc, useful queries are Postgre-specific.
+    for data deduplication. But `DISTINCT ON` is Postgre-only. Other example like `ON CONFLICT DO NOTHING`, `JSONB` query, etc, useful queries are Postgre-specific. -->
 
-##### Short Summary 
+###### Short Take From Native SQLs
 
 In short, when maintainability is our concern, we should reduce SQL as much as possible. We should let framework generate them such as using ORM. 
 
-There are indeed cases where native query is necessary for performance such as batch-insertion, or special queries for dashboard. But we can avoid them as much as possible.
+There are indeed cases where native query is necessary for performance such as batch-insertion, or special queries for dashboard. But we can avoid them when they are not necessary.
 
 
-##### Introduced Event System to Handle side Effects
+##### Invented an Event System
 
-As mentioned in previous sections, we wish to manage side effect in a clean way. For that I implemented a set of annotations: `@listener`, `@order`, and also classes `Event` and a util function `applicationEventPublisher` that mimics the baviour in spring boot.
+As mentioned in previous sections, we wish to manage side effect in a clean way. For that I implemented a set of annotations: 
+- `@listener` 
+
+- `@order`
+
+with also a class `Event` and a function `applicationEventPublisher` that mimics the behaviour in spring boot.
 
 [![](/assets/img/2025-09-07-19-01-22.png)](/assets/img/2025-09-07-19-01-22.png)
 
@@ -643,16 +672,13 @@ As mentioned in previous sections, we wish to manage side effect in a clean way.
 </Example>
 
 
-
-At this point the problem is the lack of clear documentation on how events were created and handled.
-
-When creating this set of annotations I have no notion of `Command`, I was unable to create diagram for clear documentation. Thus the events become a black box in the system. 
+When creating this set of annotations I have no notion of `Command`, I was unable to create  a complete diagram for clear documentation and  events become a black box in the system. 
 
 
 
 ##### Finally
 
-But hey! If we wish so many good features from Spring Boot, why don't we jump into it ......?  The project is refactored completely afterwards.
+But hey! If we wish so many good features from Spring Boot, why don't we jump into it ......?  The project is refactored completely afterwards. 
 
 #### Book and Video References
 
@@ -668,4 +694,8 @@ But hey! If we wish so many good features from Spring Boot, why don't we jump in
 - 彭晨阳, *复杂软件设计之道*, 机械工业出版社
 
 
+<center>
+
 [![](/assets/img/2025-09-14-19-14-03.png)](/assets/img/2025-09-14-19-14-03.png)
+
+</center>

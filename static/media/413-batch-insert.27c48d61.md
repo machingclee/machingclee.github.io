@@ -50,7 +50,9 @@ spring:
     var id: Int? = null,
 ```
 
-Here `generator` in `GeneratedValue` $=$ `name` in `SequenceGenerator` are arbitrary, but the `sequenceName` must match that in our database.
+Here the `generator` in `GeneratedValue` is equal to the `name` in `SequenceGenerator`, and they are arbitrary. 
+
+But the `sequenceName` must match the one in our database.
 
 To get a list of sequence names, run the following:
 
@@ -467,6 +469,7 @@ fun <T> EntityManager.escapeFromDirtyCheck(block: () -> T): T {
 
 ##### Caveat
 
+###### When `flush()` is needed ...
 
 Assume a transaction goes as follows:
 
@@ -494,7 +497,7 @@ fun someHandler () {
 }
 ```
 
-A detailed example:
+###### A detailed example
 
 ```kotlin-1{31,33}
 override fun handle(eventQueue: EventQueue, command: CreateStudentPackageCommand): StudentPackage {
@@ -536,7 +539,10 @@ Again in the past we may simply write
 student.addPackage(savedPackage)
 studentRepository.save(student)
 ```
-then a bidirectional relation will be figured out by dirty check mechanism. However, as we will be turning the managed entity `student`  to a detached state using `entityManager.clear()`, the record for bidirectional binding is lost (so a `savedPackage.student = student` is necessary before `flush()`-ing it):
+then a bidirectional relation will be figured out by dirty check mechanism. However, as we will be turning the managed entity `student`  to a ***detached state*** via `entityManager.clear()` implicitly in `escapeFromDirtyCheck`. The record for bidirectional binding will be lost and thus `savedPackage.student = student` is necessary before  we `flush()` it.
+
+
+Next we still rely on domain behaviour for domain invariance, but the behaviour will output entities for persistence. We batch insert/delete the entities via generated SQL:
 
 
 ```kotlin-34{53-62}
