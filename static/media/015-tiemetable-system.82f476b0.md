@@ -144,9 +144,9 @@ In the course of development several backend problems in CSR-architecture pop up
 
 <Example>
 
-**Problem 1 (Not easy to have clear separation of responsibility among services).**  From CSR point of view, a service is just an interface to handle a  request, and *nothing more*, that causes the problem.
+**Problem 1 (Not easy to have clear separation of responsibility among services).**  From CSR point of view, a service is just an interface, and *nothing more*, that causes the problem.
 
-As time goes by, developer is easy to build *multiple services* serving a similar purpose. 
+As time goes by, developer is easy to build *multiple services* (i.e., classes) serving a similar purpose. 
 
 Suppose I have a project system, now I want to design a service to let project owner add someone as a member. You can go either way:
 
