@@ -1,7 +1,7 @@
 ---
 title: "Performance Boost: Batch Insert in Spring Boot with Relations"
 date: 2025-09-14
-id: blog0412
+id: blog0413
 tag: kotlin, springboot
 toc: true 
 ---
@@ -16,7 +16,7 @@ toc: true
 </style>
 
 
-#### In simplest form 
+#### In Simples Form 
 
 
 ##### application.yml for Auto Batch-Insert
