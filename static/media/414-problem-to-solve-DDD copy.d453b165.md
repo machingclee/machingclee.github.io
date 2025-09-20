@@ -3,7 +3,8 @@ title: "Problems in Controller-Service-Repostory That is Solvable by Strategic D
 date: 2025-09-16
 id: blog0414
 tag: DDD, kotlin
-toc: true 
+toc: true
+intro: Traditional controller-service-repository is known as the most easiest architecture in backend development, however,  it comes with a cost.
 ---
 
 <style>

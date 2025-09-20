@@ -417,7 +417,7 @@ What we can observe from the logs:
 #### Appendix (From my Blog Posts)
 
 
-- [Problems in Controller-Service-Repostory That is Solvable by Strategic Design in DDD (Domain Driven Design)](/blog/article/Problems-in-Controller-Service-Repostory-That-is-Solvable-by-Strategic-Design-in-DDD-Domain-Driven-Design-)
+- [Problem of SQL Based Nodejs Backend, Should we use Query Builder?](/blog/article/Problem-of-SQL-Based-Nodejs-Backend-Should-we-use-Query-Builder-)
 
 
 - [A Project was Transitioned from SQL Based Nodejs to Spring Boot with Reasons](/blog/article/A-Project-was-Transitioned-from-SQL-Based-Nodejs-to-Spring-Boot-with-Reasons#Examples-(SQL-First-Approach))

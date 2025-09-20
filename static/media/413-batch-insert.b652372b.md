@@ -3,7 +3,8 @@ title: "Performance Boost: Batch Insert in Spring Boot with Relations"
 date: 2025-09-14
 id: blog0413
 tag: kotlin, springboot
-toc: true 
+toc: true
+intro: "We introduce a utility class that generate batch insertion SQL in the signature of `batchInsert(entities: List<Entity>): List<Entity>`."
 ---
 
 <style>

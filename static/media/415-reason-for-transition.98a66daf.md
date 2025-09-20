@@ -1,5 +1,5 @@
 ---
-title: "A Project was Transitioned from SQL Based Nodejs to Spring Boot with Reasons"
+title: "Problem of SQL Based Nodejs Backend, Should we use Query Builder?"
 date: 2025-09-17
 id: blog0415
 tag: nodejs, kotlin, springboot
@@ -18,12 +18,13 @@ toc: true
 
 #### Examples (SQL-First Approach)
 
-The application is composed of various SQLs when interacting with database:
+If an application is composed of various SQLs when interacting with the database, it may grow to have several scenarios such as the following:
 
 <Example>
 
 
 **Example 1 (Complexity Level 1).** In the most basic form we have maintainable queries via query-builder:
+
 [![](/assets/img/2025-09-07-18-09-07.png)](/assets/img/2025-09-07-18-09-07.png)
 
 </Example>
@@ -32,6 +33,7 @@ The application is composed of various SQLs when interacting with database:
 <Example>
 
 **Example 2 (Complexity Level 2).** The following tries to do two separate `LATERAL JOIN`'s and `Json Aggregate`'s:
+
 [![](/assets/img/2025-09-07-18-03-29.png)](/assets/img/2025-09-07-18-03-29.png)
 
 Complexity increases and it takes developers effort  to understand what's going on.
@@ -49,7 +51,11 @@ Complexity increases and it takes developers effort  to understand what's going 
 [![](/assets/img/2025-09-07-18-33-09.png)](/assets/img/2025-09-07-18-33-09.png)
 
 
-- You need to have the knowledge how `WITH some_table AS (SELECT ...)` works and how to achieve this in other query-builder framework. 
+- You need to have the knowledge how 
+  ```sql
+  WITH some_table AS (SELECT ...)
+  ```
+  works and how to achieve this in other query-builder framework. 
 
 - Plus we still have lateral joins and json aggregates there.
 
@@ -60,7 +66,9 @@ Complexity increases and it takes developers effort  to understand what's going 
 
 #### Problems of the SQL-First Approach
 
-1. SQL statements itself, by nature, are ***highly unreadable***, even there are query builders. You may have `subquery`, may have `case if then else end`, may have tricky use of `SQL function`, etc.
+1. SQL statements itself, by nature, are ***not easily readable*** compared to traditional programming language, even there are query builders. 
+
+    You may have subqueries, may have `case if then else end`, may have tricky use of `SQL` functions, that nest into the `SQL` statement several times.
 
 2. Long SQL is hard to debug, we cannot add a breakpoint to investigate the data.
 

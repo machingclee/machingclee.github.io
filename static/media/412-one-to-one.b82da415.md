@@ -3,7 +3,8 @@ title: Use Bytecode Enhancement to Solve the Problem that @JoinColumn and @OneTo
 date: 2025-09-11
 id: blog0412
 tag: kotlin
-toc: true 
+toc: true
+intro: An `application.yml` config to turn on bytecode enhancement in order to prevent @JoinColumn or @OneToOne annotated column from being always eagerly loading.
 ---
 
 <style>
