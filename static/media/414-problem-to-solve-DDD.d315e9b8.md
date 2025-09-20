@@ -98,4 +98,5 @@ Both problem can be easily solved by the methodology in DDD.
 
   Now we have a good place to record the complex domain requirement. 
   
-  We will discuss how we operate with these `Command`, `Event` and `Policy` in depth in the next section.
+  We discuss how we operate with these `Command`, `Event` and `Policy` in my portfolio article: 
+  - [Commercial Timetable System for an Art School](/portfolio/Commercial-Timetable-System-for-an-Art-School)
