@@ -60,14 +60,14 @@ date: 2025-09-06
     }
 </style>
 
-<Center>
+<center>
 
 <a href="/assets/img/2025-09-06-12-40-32.png">
 <img src="/assets/img/2025-09-06-12-40-32.png" />
 </a>
 
 
-</Center>
+</center>
 
 
 
@@ -83,60 +83,60 @@ date: 2025-09-06
 
 #### Briefly About this Project ...
 
-##### Who are the Users and Why This Project? 
+##### Who is the User?
 
-This timetable system is developed for an art school  [木棉花水墨畫室](https://www.cottontreeinkart.com).
+This timetable system is developed and tailor-made for an art school  [木棉花水墨畫室](https://www.cottontreeinkart.com). 
 
-The system aims at ***automating*** the following:
 
-<Example>
 
-**Task 1.** Schedule classes of a student to avoid time conflict, classes can be moved by ***Drag and Drop*** 
+
+##### Tailor-Made Features
+
+###### Create student package (of classes), rules to avoid time conflict and drag-drop
+<center>
 
 [![](/assets/img/2025-09-20-03-27-39.png)](/assets/img/2025-09-20-03-27-39.png)
 
-</Example>
+</center>
 
-<Example>
 
-**Task 2.** Schedule checking for coming payment ***deadline*** for the next season of classes
+###### Check coming payment deadline for the next season of classes
+
+<center>
 
 [![](/assets/img/2025-09-20-03-28-18.png)](/assets/img/2025-09-20-03-28-18.png)
 
-</Example>
+</center>
 
+###### Send whatsapp message to parents for the deadline
 
-<Example>
-
-
-**Task 3.** Send ***whatsapp message*** to parents for the related deadline or important events
+<center>
 
 [![](/assets/img/2025-09-20-03-38-01.png)](/assets/img/2025-09-20-03-38-01.png)
 
-</Example>
+</center>
 
-<Example>
+######  Preview the ***timetable*** of all students of a ***single day***
 
 
-**Task 4.**  Preview the ***timetable*** of all students of a ***whole single day*** for scheduling teachers to fill the time slot
+<center>
 
 [![](/assets/img/2025-09-20-04-36-20.png)](/assets/img/2025-09-20-04-36-20.png)
 
-</Example>
+</center>
 
 
+###### Create Makeup classes automatically due to Custom Holiday
 
-<Example>
+A custom holiday may include public holiday or unexpected adverse weather like typhoon:
 
-**Task 5.** Create Makeup classes  automatically due to ***Custom Holiday*** such as public holiday or unexpected adverse weather
+<center>
 
 ![](/assets/img/2025-09-20-04-54-26.png)
 
-</Example>
-
+</center>
 
 <!-- 
-
 
 #### Something to be Skipped
 
@@ -152,7 +152,7 @@ etc. -->
 
 
 
-##### Backend Project Structure
+#### Backend Project Structure
 
 <a href="/assets/img/2025-09-16-04-01-09.png" target="_blank">
 <img src="/assets/img/2025-09-16-04-01-09.png" width="380"/>
@@ -417,10 +417,9 @@ What we can observe from the logs:
 #### Appendix (From my Blog Posts)
 
 
+- [Problems in Controller-Service-Repostory That is Solvable by Strategic Design in DDD (Domain Driven Design)](/blog/article/Problems-in-Controller-Service-Repostory-That-is-Solvable-by-Strategic-Design-in-DDD-Domain-Driven-Design-)
+
 - [Problem of SQL Based Nodejs Backend, Should we use Query Builder?](/blog/article/Problem-of-SQL-Based-Nodejs-Backend-Should-we-use-Query-Builder-)
-
-
-- [A Project was Transitioned from SQL Based Nodejs to Spring Boot with Reasons](/blog/article/A-Project-was-Transitioned-from-SQL-Based-Nodejs-to-Spring-Boot-with-Reasons#Examples-(SQL-First-Approach))
 
 
 - [Value Objects and Embedded Classes for Domain Invariances](/blog/article/Value-Objects-and-Embedded-Classes)
