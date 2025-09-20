@@ -1,5 +1,5 @@
 ---
-title: "Problems in Controller-Service-Repostory That is Solvable by Strategic Design in DDD (Domain Driven Design)"
+title: "Problems in Controller-Service-Repository That is Solvable by Strategic Design in DDD (Domain Driven Design)"
 date: 2025-09-16
 id: blog0414
 tag: DDD, kotlin
