@@ -87,7 +87,6 @@ Both problem can be easily solved by the methodology in DDD.
 
   - To solve problem 2.1, the tight coupling of logic can now be decoupled by event and event-handler. 
 
-  
   - To solve problem 2.2, using JPA from the ecosystem of Spring Boot,  atomic side effect can be handled by 
     `@Eventlistener`, and side effect after succeeded transaction can now be handled by `@TransactionalEventListener`.
 

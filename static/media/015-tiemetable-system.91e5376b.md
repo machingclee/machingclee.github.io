@@ -94,7 +94,9 @@ This timetable system is developed and tailor-made for an art school  [木棉花
 ##### Tailor-Made Features and Videos Demonstration
 
 
-- **Create Makeup classes automatically due to Custom Holiday.**  A custom holiday may include ***public holiday*** or unexpected ***adverse weather*** like typhoon:
+- Create Makeup classes automatically due to Custom Holiday
+
+
 
   <center>
 
@@ -102,7 +104,8 @@ This timetable system is developed and tailor-made for an art school  [木棉花
 
   </center>
 
-  Organized **event-driven design** for backend to adjust the status of the classes (corresponding to `ClassMovedEvent`) rather than binding the side effect to the `MoveClassCommand`:
+  A custom holiday may include ***public holiday*** or ***adverse weather*** like typhoon.
+
 
   <center>
 
@@ -110,16 +113,26 @@ This timetable system is developed and tailor-made for an art school  [木棉花
 
   </center>
 
+  <Example>
 
 
-- **Create student package (of classes).**
+  **Remark.** We adopt **event-driven design** in our backend. 
+  
+  Since there are ***too many reasons*** a class could be created on an holiday, adjusting the status of a class (corresponding to `ClassMovedEvent`)  is among one of our event handlings, instead of binding the side effect logic at the end of *function that moves the class* in the backend.
+
+
+  </Example>
+
+
+
+- Create student package (of classes)
   <center>
 
   [![](/assets/img/2025-09-20-03-27-39.png)](/assets/img/2025-09-20-03-27-39.png)
 
   </center>
 
-- **Check coming payment deadline for the next season of classes.**
+- Check coming payment deadline for the next season of classes
 
   <center>
 
@@ -127,7 +140,7 @@ This timetable system is developed and tailor-made for an art school  [木棉花
 
   </center>
 
-- **Send whatsapp message to parents for the deadline.**
+- Send whatsapp message to parents for the deadline
 
   <center>
 
@@ -135,7 +148,7 @@ This timetable system is developed and tailor-made for an art school  [木棉花
 
   </center>
 
-- **Preview the ***timetable*** of all students of a ***single day***.**
+- Preview the timetable of all students of a single day
 
   <center>
 
@@ -164,9 +177,15 @@ etc. -->
 
 #### Backend Project Structure
 
+<center>
+
 <a href="/assets/img/2025-09-16-04-01-09.png" target="_blank">
 <img src="/assets/img/2025-09-16-04-01-09.png" width="380"/>
 </a>
+
+
+</center>
+
 
 <p></p>
 
@@ -349,7 +368,12 @@ There are always tradeoff for which no option is absolutely correct, we need to 
 
 Instead of adding additional logic in domain behaviours to avoid breaking the invariance (making a class start later than the expiry date), let's extend the usage of policies beyond side-effect, they are also now for invariances.
 
-But wait, isn't rollbacking to previous state also a side effect? This justifies our choice of maintaining invariances within policies!
+
+<Example>
+
+**Remark.** But wait, isn't rollbacking to previous state also a side effect? This justifies our choice of maintaining invariances within policies!
+
+</Example>
 
 
 Now we skim through the candidates of ***events*** that can possibly break the invariance (changing the time of a class), they are respectively:
