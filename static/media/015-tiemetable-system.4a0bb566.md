@@ -91,60 +91,57 @@ This timetable system is developed and tailor-made for an art school  [木棉花
 
 
 
-##### Tailor-Made Features
+##### Tailor-Made Features and Videos Demonstration
 
 
-###### Create Makeup classes automatically due to Custom Holiday (and a video demonstration)
+- **Create Makeup classes automatically due to Custom Holiday.**  A custom holiday may include ***public holiday*** or unexpected ***adverse weather*** like typhoon:
 
-A custom holiday may include public holiday or unexpected adverse weather like typhoon:
+  <center>
 
-<center>
+  [![](/assets/img/2025-09-20-04-54-26.png)](/assets/img/2025-09-20-04-54-26.png)
 
-[![](/assets/img/2025-09-20-04-54-26.png)](/assets/img/2025-09-20-04-54-26.png)
+  </center>
 
-</center>
+  Organized **event-driven design** for backend to adjust the status of the classes (corresponding to `ClassMovedEvent`) rather than binding the side effect to the `MoveClassCommand`:
 
+  <center>
 
+  <customvideo src="/assets/videos/005.mp4" />
 
-<center>
-
-<customvideo src="/assets/videos/005.mp4" />
-
-</center>
+  </center>
 
 
 
-###### Create student package (of classes)
-<center>
+- **Create student package (of classes).**
+  <center>
 
-[![](/assets/img/2025-09-20-03-27-39.png)](/assets/img/2025-09-20-03-27-39.png)
+  [![](/assets/img/2025-09-20-03-27-39.png)](/assets/img/2025-09-20-03-27-39.png)
 
-</center>
+  </center>
 
+- **Check coming payment deadline for the next season of classes.**
 
-###### Check coming payment deadline for the next season of classes
+  <center>
 
-<center>
+  [![](/assets/img/2025-09-20-03-28-18.png)](/assets/img/2025-09-20-03-28-18.png)
 
-[![](/assets/img/2025-09-20-03-28-18.png)](/assets/img/2025-09-20-03-28-18.png)
+  </center>
 
-</center>
+- **Send whatsapp message to parents for the deadline.**
 
-###### Send whatsapp message to parents for the deadline
+  <center>
 
-<center>
+  [![](/assets/img/2025-09-20-03-38-01.png)](/assets/img/2025-09-20-03-38-01.png)
 
-[![](/assets/img/2025-09-20-03-38-01.png)](/assets/img/2025-09-20-03-38-01.png)
+  </center>
 
-</center>
+- **Preview the ***timetable*** of all students of a ***single day***.**
 
-######  Preview the ***timetable*** of all students of a ***single day***
+  <center>
 
-<center>
+  [![](/assets/img/2025-09-20-04-36-20.png)](/assets/img/2025-09-20-04-36-20.png)
 
-[![](/assets/img/2025-09-20-04-36-20.png)](/assets/img/2025-09-20-04-36-20.png)
-
-</center>
+  </center>
 
 
 
