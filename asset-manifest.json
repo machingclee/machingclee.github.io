@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.2ff695c1.chunk.css",
-    "main.js": "/static/js/main.cb2ac178.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.4bd7c677.js",
+    "main.js": "/static/js/main.965a26cc.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.5bb358f6.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.f2a81ba0.chunk.js": "/static/js/2.f2a81ba0.chunk.js",
-    "static/js/3.f3b87263.chunk.js": "/static/js/3.f3b87263.chunk.js",
-    "static/js/4.9f5be202.chunk.js": "/static/js/4.9f5be202.chunk.js",
-    "static/js/5.e724d788.chunk.js": "/static/js/5.e724d788.chunk.js",
+    "static/js/2.cdc80deb.chunk.js": "/static/js/2.cdc80deb.chunk.js",
+    "static/js/3.9f061036.chunk.js": "/static/js/3.9f061036.chunk.js",
+    "static/js/4.cbbb998e.chunk.js": "/static/js/4.cbbb998e.chunk.js",
+    "static/js/5.6a07c331.chunk.js": "/static/js/5.6a07c331.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.f2a81ba0.chunk.js.LICENSE.txt": "/static/js/2.f2a81ba0.chunk.js.LICENSE.txt",
-    "static/js/3.f3b87263.chunk.js.LICENSE.txt": "/static/js/3.f3b87263.chunk.js.LICENSE.txt",
-    "static/js/4.9f5be202.chunk.js.LICENSE.txt": "/static/js/4.9f5be202.chunk.js.LICENSE.txt",
+    "static/js/2.cdc80deb.chunk.js.LICENSE.txt": "/static/js/2.cdc80deb.chunk.js.LICENSE.txt",
+    "static/js/3.9f061036.chunk.js.LICENSE.txt": "/static/js/3.9f061036.chunk.js.LICENSE.txt",
+    "static/js/4.cbbb998e.chunk.js.LICENSE.txt": "/static/js/4.cbbb998e.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-housing.md": "/static/media/001-housing.37e59f9e.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.52b1ef07.md",
@@ -405,6 +405,7 @@
     "static/media/413-batch-insert.md": "/static/media/413-batch-insert.b652372b.md",
     "static/media/414-problem-to-solve-DDD.md": "/static/media/414-problem-to-solve-DDD.5bb89cc0.md",
     "static/media/415-reason-for-transition.md": "/static/media/415-reason-for-transition.98a66daf.md",
+    "static/media/416-fractal.md": "/static/media/416-fractal.f7597220.md",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
     "static/media/Midterm_Review_limsupinf.1e2193c7.pdf": "/static/media/Midterm_Review_limsupinf.1e2193c7.pdf",
@@ -453,10 +454,10 @@
     "static/media/transformer-date-fomatter.18a2d3fc.pdf": "/static/media/transformer-date-fomatter.18a2d3fc.pdf"
   },
   "entrypoints": [
-    "static/js/runtime-main.4bd7c677.js",
+    "static/js/runtime-main.5bb358f6.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.f2a81ba0.chunk.js",
+    "static/js/2.cdc80deb.chunk.js",
     "static/css/main.2ff695c1.chunk.css",
-    "static/js/main.cb2ac178.chunk.js"
+    "static/js/main.965a26cc.chunk.js"
   ]
 }
