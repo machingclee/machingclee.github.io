@@ -74,12 +74,10 @@ date: 2025-09-06
 
 #### Tech-Stack
 
-|  |  |
-|-------|--------------|
-| Frontend | • React (Vite) • Redux-RTK-query • Redux-Toolkit • Tailwind |
-| Backend |  • ~~Nodejs, Express.js, Prisma, Prisma-Kysely~~ (all deprecated) <br>• Kotlin • Spring Boot • JPA<br>• JOOQ (for entity generation from existing database)|
-|Database| • PostgreSQL provided by Neon-tech <br> •  Schema design and migration via Prisma|
-|Deployment| <table><tbody><tr><td style="width:150px">• Frontend</td><td>React-build is stored in S3, served by Cloudfront and routed by Route53 for custsom domain</td></tr><tr><td style="width:150px">• Backend</td><td>Snap-started lambda function</td></tr></tbody></table>| 
+
+<timetabletechstack></timetabletechstack>
+
+
 
 #### Briefly About this Project ...
 

@@ -34,7 +34,6 @@ $$
 is bounded, which is the same as saying the seqeunce of complex numbers defined by $z_{n+1} = f_c(z_n)$ is bounded with $z_0 := f_c(0)$. 
 
 
-
 #### Coding
 
 Since we have a sequential definition, in coding which is the same as saying
