@@ -154,8 +154,11 @@ This timetable system is developed and tailor-made for an art school  [木棉花
 
   </center>
 
+- System Logging, this is to understand what has been executed in the system:
 
+  [![](/assets/img/2025-09-24-01-55-43.png)](/assets/img/2025-09-24-01-55-43.png)
 
+  Testing users can report to the developer of what's wrong with their operations easily.
 
 <!-- 
 
