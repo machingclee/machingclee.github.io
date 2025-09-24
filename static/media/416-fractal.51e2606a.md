@@ -29,7 +29,7 @@ intro: Practice the syntax of rust by drawing fractal derived from simple mathem
 
 For each $c\in \mathbb C$, define $f_c(z)=z^2+c$, we say that $c$ is in a  ***Mandelbrot set*** if the sequence 
 $$
-\{(\underbrace{f_c\circ\cdots\circ f_c}_\text{$n$ times})(0))\}
+\{(\underbrace{f_c\circ\cdots\circ f_c}_\text{$n$ times})(0)\}
 $$
 is bounded, which is the same as saying the seqeunce of complex numbers defined by $z_{n+1} = f_c(z_n)$ is bounded with $z_0 := f_c(0)$. 
 
@@ -49,6 +49,16 @@ is bounded for however large $n$.
 
 
 ##### Preliminary Functions
+
+###### Crates
+
+```rust
+use image::codecs::png::PngEncoder;
+use image::{ExtendedColorType, ImageEncoder, ImageError};
+use num::Complex;
+use std::fs::File;
+use std::time::Instant;
+```
 
 ###### ecape_time
 
@@ -102,7 +112,6 @@ fn pixel_plane_to_complex_plane(
 ###### render 
 
 ```rust
-
 fn render(
     pixels: &mut [u8],
     image_dim: (usize, usize),

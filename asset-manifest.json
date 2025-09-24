@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.2ff695c1.chunk.css",
-    "main.js": "/static/js/main.a5eabbc3.chunk.js",
+    "main.js": "/static/js/main.586f230f.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.056de301.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.7378825f.chunk.js": "/static/js/2.7378825f.chunk.js",
@@ -405,7 +405,7 @@
     "static/media/413-batch-insert.md": "/static/media/413-batch-insert.b652372b.md",
     "static/media/414-problem-to-solve-DDD.md": "/static/media/414-problem-to-solve-DDD.5bb89cc0.md",
     "static/media/415-reason-for-transition.md": "/static/media/415-reason-for-transition.98a66daf.md",
-    "static/media/416-fractal.md": "/static/media/416-fractal.69570069.md",
+    "static/media/416-fractal.md": "/static/media/416-fractal.51e2606a.md",
     "static/media/417-paging.md": "/static/media/417-paging.82188e67.md",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -459,6 +459,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.7378825f.chunk.js",
     "static/css/main.2ff695c1.chunk.css",
-    "static/js/main.a5eabbc3.chunk.js"
+    "static/js/main.586f230f.chunk.js"
   ]
 }
