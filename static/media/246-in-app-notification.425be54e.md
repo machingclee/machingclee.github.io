@@ -66,7 +66,7 @@ model IndividualUserNotification {
 
 - This one contains data that is viewable ***whenever a user has certain right***, it is like a real-time status.
 
-- For example, when a `Live` is held currently but not ended inside a channel, we notify all people there is a `ONGOING_LIVE` status.
+- For example, when a `Live` is held currently but not ended inside a channel, we notify all people there is an  `ONGOING_LIVE` status.
 
 - We don't treat this as `IndividualUserNotification` because it needs a `userEmail`, but the status `ONGOING_LIVE` can be viewed even if a user join the channel much later than the `Live` is held.
 

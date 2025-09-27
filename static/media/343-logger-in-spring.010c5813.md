@@ -13,7 +13,7 @@ intro: "We record a simple logger for our spring application"
   }
 </style>
 
-To define a logger it is as simple as defining a `OncePerRequestFilter`. Springboot will pick it up to process each request in servlet level:
+To define a logger it is as simple as defining an  `OncePerRequestFilter`. Springboot will pick it up to process each request in servlet level:
 
 ```kt
 @Component

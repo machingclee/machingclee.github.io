@@ -310,11 +310,11 @@ pip install SQLAlchemy
 
 ##### Session Object (`get_db` generator)
 
-`Session` object plays the same role as `EntityManager` in Spring Boot. We will do all the data retrival and persistence while this `db: Session` object.
+`Session` object plays the same role as `EntityManager` in Spring Boot. We will do all the data retrival and persistence via this `db: Session` object.
 
 Note that by default `SqlAlchemy` does not provide repository, we will need to build our own queries using `db.query()` method.
 
-We have introduced dependency-injecting a db `Sesssion` object in the previous session, its exact definition is as follows:
+We have introduced how to dependency-inject a db `Sesssion` object in the <customanchor href="/blog/article/FastAPI-and-SqlAlchemy-ORM-in-Python#Dependency-Injection">previous session</customanchor>, its exact definition is as follows:
 
 ```py
 from sqlalchemy import create_engine
@@ -695,12 +695,12 @@ if __name__ == "__main__":
 
 ###### On relationship defined in this section
 
-Our <customanchor href="/blog/article/FastAPI-and-ORM-in-Python#Script-to-Reverse-Engineer-Existing-Database-into-SqlAlchemy-Entity-Classes">scription section</customanchor> 
+Our <customanchor href="/blog/article/FastAPI-and-ORM-in-Python#Script-to-Reverse-Engineer-Existing-Database-into-SqlAlchemy-Entity-Classes">script section</customanchor> 
 has reverse-engineered all the relations for us. This session is simply for better understanding and recording.
 
 
 ###### One to one/many via direct foreign key
-Suppose that a `on_duty_doctor` has one and only one `center_discount` in a table:
+Suppose that an `on_duty_doctor` has one and only one `center_discount` in a table:
 
 [![](/assets/img/2025-09-27-19-03-53.png)](/assets/img/2025-09-27-19-03-53.png)
 
@@ -737,7 +737,7 @@ class CenterDiscount(Base):
 
 ###### One/Many to many via association table
 
-Suppose that an `on_duty_tody` has many `center_workday`s via an association table:
+Suppose that an `on_duty_doctor` has many `center_workday`'s via an association table:
 
 <a href="/assets/img/2025-09-27-19-15-18.png">
 <img src="/assets/img/2025-09-27-19-15-18.png" width="360" />
@@ -755,9 +755,9 @@ class RelOndutydoctorCenterworkday(Base):
 ```
 
 
-The entities can be defined by:
+The associated entities can be defined by:
 
-```py
+```py-1{19}
 class OnDutyDoctor(Base):
     __tablename__ = 'on_duty_doctor'
 
@@ -775,13 +775,19 @@ class CenterWorkday(Base):
     id = Column(Integer, primary_key=True, server_default=text("nextval('center_workday_id_seq'::regclass)"))
 
     on_duty_doctor = relationship(
-        "OnDutyDoctor", 
+        "OnDutyDoctor",
         secondary="rel_ondutydoctor_centerworkday",
         back_populates="center_workdays",
         uselist=True
     )
 ```
-Here we use `uselist` to indicate whether we want a `one` (single object) or `many` (list object) relation.
+- Here we use `uselist` to indicate whether we want an  `one` (single object) or `many` (list object) relation.
+
+- Note that on line-18 we ask `sqlalchemy` to associate entities using `OnDutyDoctor` class, which in turns associate to `OnDutyDoctor` using the column 
+  ```py
+  f"{OnDutyDoctor.__tablename__}_id"
+  ``` 
+  in the association table. Note that we have very strict naming convention to follow.
 
 ##### Various Query Methods
 
@@ -791,18 +797,26 @@ Here we use `uselist` to indicate whether we want a `one` (single object) or `ma
 The query 
 
 ```sql
-SELECT * From doctor WHERE doctor_id = '123';
+SELECT * From doctor WHERE doctor_id = 'some_doctor_id'
 ```
 is equivalent to 
 
 ```py
-db.query(Doctor).filter(Doctor.id == doctor_id).{one, one_or_none, all}()
+db.query(Doctor).filter(Doctor.id == "some_doctor_id").{one, one_or_none, all}()
 ```
 
+To see how to return data from left-joined column in a controller response, see the section <customanchor href="/blog/article/FastAPI-and-SqlAlchemy-ORM-in-Python#Conversion-from-Entity-Class-to-BaseModel-DTO">Conversion from Entity Class to BaseModel DTO</customanchor> below.
 
-###### `LEFT JOIN ...`
 
-Unforturnately we don't have `left join` etc quries as in `JPQL`, we need to do the left join explicitly via the association table when we need to do conditional select clause via attributes of specific left-joined table:
+###### `LEFT JOIN and where clause on joined table`
+Unlike `JPQL` we can simply write
+```sql
+select d from Doctor d
+left join fetch d.on_duty_doctors odd
+left join fetch odd.clinic_centers center
+where center.address ilike concat('%', :address, '%')
+```
+in sqlalchemy we need to do the left join explicitly via the association table when we need to do conditional select clause via attributes of specific left-joined table:
 
 ```py
 query = db.query(
@@ -916,7 +930,7 @@ class OnDutyDoctor(Base):
 ```
 Then to completely return an object with all associated entities we need to map every attribute one by one into `BaseModel` class:
 
-```py{7,14,17,19}
+```py-1{19-23}
 from typing import cast
 
 doctor_responses: List[OnDutyDoctorResponse] = []
@@ -946,6 +960,13 @@ for on_duty in cast(List[OnDutyDoctor], on_duty_doctors):
 
 return doctor_responses
 ```
+Consider line 19-23, we access associated entities via `on_duty.center_workdays`,  and we map it into a list of `pydantic` entities using list comprehension.
 
+<Example>
 
- 
+`sqlalchemy` will generate a sql to retrieve `on_duty.center_workdays`. With the help of `joinedload` (we have discussed it in <customanchor href="/blog/article/FastAPI-and-SqlAlchemy-ORM-in-Python#Avoid-$N+1$-Problem">Avoid $N+1$ Problem</customanchor> section) we can prevent this additional query to improve performance. 
+
+The is the same situation as if we are using `left join fetch` in `JPQL`.
+
+</Example>
+

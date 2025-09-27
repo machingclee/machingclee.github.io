@@ -479,6 +479,7 @@ What we can observe from the logs:
 
 - 彭晨阳, *复杂软件设计之道*, 机械工业出版社
 
+- fx777, [*Think in Domain-Driven Design*](https://ithelp.ithome.com.tw/users/20111997/ironman/2730?sc=hot&fbclid=IwY2xjawNFBhpleHRuA2FlbQIxMABicmlkETF6czZ4cFBIUlRyMG1iaUw3AR6VLcEW0TAOkblS0myPcuRn9oOVqDymBlFuPQGuPXG5ODKR_z8Rwe1dJ8aryw_aem_lV-t7KZ8_9CuP-0g0gma4A), 第 11 屆 iThome 鐵人賽
 
 <center>
 
