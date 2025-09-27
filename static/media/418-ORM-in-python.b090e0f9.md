@@ -699,7 +699,7 @@ Our <customanchor href="/blog/article/FastAPI-and-ORM-in-Python#Script-to-Revers
 has reverse-engineered all the relations for us. This session is simply for better understanding and recording.
 
 
-###### One to one/\many via direct foreign key
+###### One to one/many via direct foreign key
 Suppose that a `on_duty_doctor` has one and only one `center_discount` in a table:
 
 [![](/assets/img/2025-09-27-19-03-53.png)](/assets/img/2025-09-27-19-03-53.png)
@@ -837,7 +837,7 @@ query = db.query(OnDutyDoctor).options(
 This will make sure the `center_discount` table is eager-loaded and the subsequent access to `center_discount` will not cause an extra query for data-retrival.
 
 
-##### Data Persistence Dirty Checks
+##### Data Persistence via Dirty Checks
 ###### Persist New Entity
 For new entity we can persist by 
 

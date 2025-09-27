@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.2ff695c1.chunk.css",
-    "main.js": "/static/js/main.aae3e28d.chunk.js",
+    "main.js": "/static/js/main.e42c8456.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.f9af4eb7.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.f0198858.chunk.js": "/static/js/2.f0198858.chunk.js",
@@ -407,7 +407,7 @@
     "static/media/415-reason-for-transition.md": "/static/media/415-reason-for-transition.98a66daf.md",
     "static/media/416-fractal.md": "/static/media/416-fractal.51e2606a.md",
     "static/media/417-paging.md": "/static/media/417-paging.82188e67.md",
-    "static/media/418-ORM-in-python.md": "/static/media/418-ORM-in-python.4344a488.md",
+    "static/media/418-ORM-in-python.md": "/static/media/418-ORM-in-python.b090e0f9.md",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
     "static/media/Midterm_Review_limsupinf.1e2193c7.pdf": "/static/media/Midterm_Review_limsupinf.1e2193c7.pdf",
@@ -460,6 +460,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.f0198858.chunk.js",
     "static/css/main.2ff695c1.chunk.css",
-    "static/js/main.aae3e28d.chunk.js"
+    "static/js/main.e42c8456.chunk.js"
   ]
 }
