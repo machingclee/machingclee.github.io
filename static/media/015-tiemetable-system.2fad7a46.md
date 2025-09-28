@@ -247,7 +247,7 @@ Event Storming is an indispensible part of DDD. This project is also a practice 
 
 You may ***click*** the following image or download button to get the **PDF**:
 
-[![](/assets/img/2025-09-06-13-07-10.png)](/assets/portfolios/pdfs/timetable.pdf)
+[![](/assets/img/2025-09-28-21-58-33.png)](/assets/portfolios/pdfs/timetable.pdf)
 
 
 <a href="/assets/portfolios/pdfs/timetable.pdf">
