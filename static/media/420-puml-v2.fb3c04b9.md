@@ -111,7 +111,7 @@ We have provided serveral definitions here:
 
 The function `$flow{n}` will connect the  first $n$ elements, and $(n+1)$-th, $(n+2)$-th, $(n+3)$-th elements will diverge from the $n$-th element. 
 
-This used when some command may in turn produce multiple events from an aggregate.
+This is used when some command may in turn produce multiple events from an aggregate.
 
 
 ##### Shell Script to Compile `.puml` into `.pdf`
