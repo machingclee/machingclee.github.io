@@ -89,7 +89,7 @@ This timetable system is developed and tailor-made for an art school  [木棉花
 
 
 
-##### Tailor-Made Features and Videos Demonstration
+##### Tailor-Made Features and Video Demo
 
 
 - Create Makeup classes automatically due to Custom Holiday
@@ -241,13 +241,13 @@ Simply put, the system has
 
 These are the major entities involved in our system. 
 
-##### Diagram for Event Storming, the Detailed Planning of System Implementation 
+##### Event Storming
 
 Event Storming is an indispensible part of DDD. This project is also a practice of  abiding by the rules in the design methodology of DDD.
 
 You may ***click*** the following image or download button to get the **PDF**:
 
-[![](/assets/img/2025-09-28-21-58-33.png)](/assets/portfolios/pdfs/timetable.pdf)
+[![](/assets/img/2025-09-29-09-17-15.png)](/assets/portfolios/pdfs/timetable.pdf)
 
 
 <a href="/assets/portfolios/pdfs/timetable.pdf">

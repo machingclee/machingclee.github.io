@@ -18,6 +18,7 @@ intro: Record the detail for how to create a paging API easily by using spring's
 
 #### Returning Page<Entity> From CrudRepository<Entity>
 
+
 In `EventRepository` I created the following signature:
 
 ```kotlin

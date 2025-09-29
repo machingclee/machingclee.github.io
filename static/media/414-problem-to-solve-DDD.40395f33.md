@@ -71,6 +71,8 @@ It is not trivial to implement a "transactional" side effect (e.g., send the ema
 
 #### How does DDD help?
 
+##### Define Aggregates to avoid Spreading of Domain Logic
+
 Both problem can be easily solved by the methodology in DDD. 
 
 - **For problem 1 (Spread of Domain Logic)**, we handle all the state change from the domain behaviour of an aggregate root. We do all the data modification within the same ***consistency boundary***. 
@@ -82,6 +84,11 @@ Both problem can be easily solved by the methodology in DDD.
   it is ***impossible*** to do it in the reverse way: `member.leave(project)`, because `member` does not contain enough information to do ***domain logic validation*** (which we call ***invariance*** in DDD). 
   
   For example, assume a project cannot have fewer than 3 persons. A single member does not contain the information of other members, however, a project *does*, which is possible to keep the invariance within itself.
+
+
+##### Define Policies for Side Effects Using Even Driven Architecture
+###### Overview
+
 
 - **For problem 2 (Messy Side Effect)**, we simply use an event-driven architecture, and DDD is inherently based on ***events***.  DDD's `Command` and `Event` are a good fit for handling side effects.
 
@@ -99,3 +106,63 @@ Both problem can be easily solved by the methodology in DDD.
   
   We discuss how we operate with these `Command`, `Event` and `Policy` in my portfolio article: 
   - [Commercial Timetable System for an Art School](/portfolio/Commercial-Timetable-System-for-an-Art-School)
+
+  via section *Coding Example of Command-Event System*.
+
+
+###### Coding Exmaple
+
+```kotlin
+@Component
+class NoClassCanExceedPackageExpiryDatePolicy(
+    private val studpackageRepository: StudentPackageRepository,
+    private val entityManager: EntityManager,
+) {
+
+    @EventListener
+    fun validatgePackageExpiryDateOn(event: TimetableDomainEvent.ClassesCreatedEvent) {
+        entityManager.flush()
+        validatePackageExpiryDate(event.packageId)
+    }
+
+    @EventListener
+    fun validatgePackageExpiryDateOn(event: TimetableDomainEvent.ClassMovedEvent) {
+        entityManager.flush()
+        validatePackageExpiryDate(event.packageId)
+    }
+
+    @EventListener
+    fun validatgePackageExpiryDateOn(event: TimetableDomainEvent.ClassDuplicatedEvent) {
+        entityManager.flush()
+        validatePackageExpiryDate(event.packageId)
+    }
+
+    @EventListener
+    fun validatgePackageExpiryDateOn(event: TimetableDomainEvent.ClassesExtendedEvent) {
+        entityManager.flush()
+        validatePackageExpiryDate(event.packageId)
+
+    }
+
+    @EventListener
+    fun validatgePackageExpiryDateOn(event: TimetableDomainEvent.StudentPackageUpdatedEvent) {
+        entityManager.flush()
+        val packageId = event.originalPackage.id!!
+        validatePackageExpiryDate(packageId)
+    }
+
+    private fun validatePackageExpiryDate(packageId: Int) {
+        entityManager.flush()
+        val pkg = studpackageRepository.findByIdFetchingClasses(packageId)
+        if (pkg?.expiryDate != null) {
+            // Use a direct query to get the maximum hour timestamp without loading all class entities
+            val latestClasses = pkg.classes.sortedByDescending { it.hourUnixTimestamp }.first()
+            val latestTimestamp = latestClasses.hourUnixTimestamp.toLong()
+
+            if (latestTimestamp > (pkg.toDTO()?.expiryDate ?: 0).toLong()!!) {
+                throw TimetableException("Class cannot exceed package expiry date, this class exceeded expiry date: ${latestClasses.toDTO()}}")
+            }
+        }
+    }
+}
+```

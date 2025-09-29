@@ -52,21 +52,20 @@ intro: We improved the flow of using `puml` by defining custom functions and pro
 
 </center>
 
-[![](/assets/img/2025-09-28-21-58-33.png)](/assets/portfolios/pdfs/timetable.pdf)
+
+[![](/assets/img/2025-09-29-09-17-15.png)](/assets/portfolios/pdfs/timetable.pdf)
 
 
 
 #### `.puml`
 
-##### The Component Definition for Import
+##### Import Custom Component Definitions
 
 As the definition becomes very long, interested reader can refer to:
 
 
 - https://raw.githubusercontent.com/machingclee/2025-08-23-plantUML-config/refs/heads/main/lib_eventstorming-v7.puml
 
-
-###### The Components
 
 This custom definition defines the following components:
 
@@ -76,7 +75,8 @@ This custom definition defines the following components:
 - `Handler`
 - `Event`
 
-###### Custom Functions
+
+##### Simplify the code of path of arrows
 
 In the past if we have 
 ```puml
@@ -121,7 +121,7 @@ docker run --rm -v $(pwd):/data machingclee/plantuml-pdf -tpdf timetable.puml
 ```
 
 
-##### The `timetable.puml`
+##### Coding example, the `timetable.puml`
 
 
 We import our custom definition in line 6 below:
