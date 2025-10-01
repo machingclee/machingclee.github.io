@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.2ff695c1.chunk.css",
-    "main.js": "/static/js/main.1ebc72e4.chunk.js",
+    "main.js": "/static/js/main.d4c57da6.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.b3c6964f.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.dc767203.chunk.js": "/static/js/2.dc767203.chunk.js",
@@ -409,7 +409,7 @@
     "static/media/417-paging.md": "/static/media/417-paging.0d164589.md",
     "static/media/418-ORM-in-python.md": "/static/media/418-ORM-in-python.10874abb.md",
     "static/media/420-puml-v2.md": "/static/media/420-puml-v2.470b0d31.md",
-    "static/media/421-rust-practice.md": "/static/media/421-rust-practice.4255b1a7.md",
+    "static/media/421-rust-practice.md": "/static/media/421-rust-practice.c480e66d.md",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
     "static/media/Midterm_Review_limsupinf.1e2193c7.pdf": "/static/media/Midterm_Review_limsupinf.1e2193c7.pdf",
@@ -462,6 +462,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.dc767203.chunk.js",
     "static/css/main.2ff695c1.chunk.css",
-    "static/js/main.1ebc72e4.chunk.js"
+    "static/js/main.d4c57da6.chunk.js"
   ]
 }
