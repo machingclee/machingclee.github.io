@@ -964,7 +964,7 @@ Consider line 19-23, we access associated entities via `on_duty.center_workdays`
 
 <Example>
 
-`sqlalchemy` will generate a sql to retrieve `on_duty.center_workdays`. With the help of `joinedload` (we have discussed it in <customanchor href="/blog/article/FastAPI-and-SqlAlchemy-ORM-in-Python#Avoid-$N+1$-Problem">Avoid $N+1$ Problem</customanchor> section) we can prevent this additional query to improve performance. 
+**Remark.** By default `sqlalchemy` will generate a sql to retrieve the associated entities `on_duty.center_workdays`. With the help of `joinedload` (we have discussed it in <customanchor href="/blog/article/FastAPI-and-SqlAlchemy-ORM-in-Python#Avoid-$N+1$-Problem">Avoid $N+1$ Problem</customanchor> section) we can prevent this additional query to improve performance. 
 
 The is the same situation as if we are using `left join fetch` in `JPQL`.
 
