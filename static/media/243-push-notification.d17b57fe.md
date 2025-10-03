@@ -82,9 +82,36 @@ toc: true
 
 
 
-##### iOS (Nothong)
-- Nothing to add as we are using EAS-build. 
+##### iOS
+- There is `expo` cli command to automatically config everything for us
 
+- When everything suddenly fails, we need to know how to fix it, so we study how to do it manually.
+
+- First go to [apple devleoper console](https://developer.apple.com/).
+
+- Scroll to the bottom and click *Certificates, IDs, & Profiles*:
+
+  [![](/assets/img/2025-10-03-03-19-14.png)](/assets/img/2025-10-03-03-19-14.png)
+
+
+- Choose *Keys* and Click the *Plus* sign:
+
+  [![](/assets/img/2025-10-03-03-21-08.png)](/assets/img/2025-10-03-03-21-08.png)
+
+
+- Choose APNs, fill the key name and continue
+
+  [![](/assets/img/2025-10-03-03-22-55.png)](/assets/img/2025-10-03-03-22-55.png)
+
+- Choose to use *Sandbox & Production* so that the same key can be used in both testflight and production environment
+
+  [![](/assets/img/2025-10-03-03-24-01.png)](/assets/img/2025-10-03-03-24-01.png)
+
+- In expo console choose the target identifier, upload the `.p8` key file and fill in the information from apple developer console:
+
+  [![](/assets/img/2025-10-03-03-27-22.png)](/assets/img/2025-10-03-03-27-22.png)
+
+  **Important.** `KeyID` must be the same.
 
 #### Page to Create Access Token
 
