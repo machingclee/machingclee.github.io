@@ -45,7 +45,6 @@ toc: true
 
   - `com.XXX.XXXX_dev`
   - `com.XXX.XXXX_uat`
-  - `com.XXX.XXXX_poc`
   - `com.XXX.XXXX_prod`
 
 - Project Setting
@@ -82,7 +81,7 @@ toc: true
 
 
 
-##### iOS
+##### iOS (APN Keys via Apple Developer Console)
 - There is `expo` cli command to automatically config everything for us
 
 - When everything suddenly fails, we need to know how to fix it, so we study how to do it manually.
@@ -332,6 +331,22 @@ const providePushNotificationToken = async (req: Request, res: Response) => {
 [![](/assets/img/2024-02-28-07-57-43.png)](/assets/img/2024-02-28-07-57-43.png)
 
 #### Send Notification via Backend
+##### Simple POST Request
+
+- Our backend is the only one who knows the expo push notification token of the device (we let frontend provide it when logging into our system).
+
+- Therefore EXPO also provides an endpoint for sending push notification ***with no credential needed***:
+
+- `https://exp.host/--/api/v2/push/send` with `Content-Type: application/json`:
+
+
+  [![](/assets/img/2025-10-03-18-45-00.png)](/assets/img/2025-10-03-18-45-00.png)
+
+
+- Which means that we need to manage a table to store the data of EXPO push notification token for each user account. Note that a single user may use multiple devices, so this table would be `1-user` to `many-token`.
+
+
+
 ##### Nodejs Library to Send Notification 
 - Resource: [send-push-notifications-using-a-server](https://docs.expo.dev/push-notifications/sending-notifications/#send-push-notifications-using-a-server)
 
