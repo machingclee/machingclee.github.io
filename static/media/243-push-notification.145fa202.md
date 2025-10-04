@@ -84,7 +84,7 @@ toc: true
 ##### iOS (APN Keys via Apple Developer Console)
 - There is `expo` cli command to automatically config everything for us
 
-- When everything suddenly fails, we need to know how to fix it, so we study how to do it manually.
+- When something suddenly fails, we need to know how to fix it, so we need to study how to do it manually.
 
 - First go to [apple devleoper console](https://developer.apple.com/).
 
@@ -114,12 +114,17 @@ toc: true
 
 #### Page to Create Access Token
 
-By default everyone who owns the device's `expo-push-notification-token`  can send push-notification to that device. Expo provides one additional layer to prevent malacious use of a notification token (just in case someone gets the token for some reason)
+By default everyone who owns the device's `expo-notification-token` (usally this ***one*** is our backend, we obtain it when user login) can send a  push-notification to that device.
+
+
+For security, Expo provides one additional layer to prevent malacious use of an expo-notification token (just in case someone gets the token for some reason):
 
 
 - [Get Access Token Here](https://expo.dev/accounts/machingclee/settings/access-tokens)
 
 You can use this token in <a href="#pushNotificationUtil.ts" target="_self">pushNotificationUtil.ts</a> section.
+
+For simplicty we simply save that expo-notification-token in our backend and send messages to that token directly.
 
 
 ##### Personal Access Tokens
