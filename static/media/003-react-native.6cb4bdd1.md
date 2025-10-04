@@ -5,8 +5,8 @@ intro: Mobile app developed using React-Native.
 thumbnail: /assets/portfolios/thumbnails/react-native-screenshot.png
 tech: React-Native, Spring-Boot, Docker
 thumbWidth: 180 
-thumbTransX: 25
-thumbTransY: -820
+thumbTransX: 0
+thumbTransY: 0
 hoverImageHeight: 340
 date: 2020-08-30
 ---

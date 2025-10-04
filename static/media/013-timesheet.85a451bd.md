@@ -5,8 +5,8 @@ intro: This project attempts to confirm times available to all members of an eve
 thumbnail: /assets/portfolios/thumbnails/time-confirmation.png
 tech: Next.js, Express, PostgreSQL, Lambda Function
 thumbWidth: 600
-thumbTransX: -200
-thumbTransY: -220
+thumbTransX: 15
+thumbTransY: 12
 hoverImageHeight: 160
 date: 2024-03-11
 ---

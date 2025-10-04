@@ -5,8 +5,8 @@ intro: We implement a defect classifier by means of object detection.
 thumbnail: /assets/portfolios/thumbnails/rust_detections.png
 tech: Python, Pytorch
 thumbWidth: 400 
-thumbTransX: -10
-thumbTransY: -100
+thumbTransX: 0
+thumbTransY: 0
 hoverImageHeight: 137
 date: 2022-06-29
 ---

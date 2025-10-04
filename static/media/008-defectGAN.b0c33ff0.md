@@ -5,8 +5,8 @@ intro: A GAN model that generates defect data for object detection model.
 thumbnail: /assets/portfolios/thumbnails/defectGANthumb.png
 tech: Python, Pytorch, Tensorflow
 thumbWidth: 650
-thumbTransX: -320
-thumbTransY: -25
+thumbTransX: 0
+thumbTransY: 0
 hoverImageHeight: 78
 date: 2022-04-23
 ---

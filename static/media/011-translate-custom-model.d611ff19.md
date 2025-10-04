@@ -5,8 +5,8 @@ intro: This project attempts to deploy custom trained model in pytorch into brow
 thumbnail: /assets/portfolios/thumbnails/retinaface.png
 tech: Python, Pytorch
 thumbWidth: 400
-thumbTransX: -100
-thumbTransY: -180
+thumbTransX: 0
+thumbTransY: 0
 hoverImageHeight: 175
 date: 2022-11-10
 ---

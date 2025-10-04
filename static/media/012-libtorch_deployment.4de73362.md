@@ -5,8 +5,8 @@ intro: This project attempts to apply weights trained from pytorch (Python) mode
 thumbnail: /assets/portfolios/thumbnails/libtorch_deployment.png
 tech: Pytorch (python), Libtorch (C++)
 thumbWidth: 300
-thumbTransX: -22
-thumbTransY: -350
+thumbTransX: 0
+thumbTransY: 0
 hoverImageHeight: 185
 date: 2023-04-02
 ---

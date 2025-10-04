@@ -3,9 +3,9 @@ id: portfolio015
 title: "Commercial Timetable System for an Art School"
 intro: Manage timetable for teachers and automate the payment notification.
 thumbnail: /assets/img/2025-09-06-12-35-35.png
-tech: React; Vite,  Spring Boot, Prisma; PostgreSQL, Lambda Function,  Domain Driven Design
-thumbTransX: -200
-thumbTransY: -220
+tech: React, Vite,  Spring Boot, Prisma, PostgreSQL, Lambda Function,  Domain Driven Design
+thumbTransX: 0
+thumbTransY: 0
 hoverImageHeight: 160
 date: 2025-09-06
 

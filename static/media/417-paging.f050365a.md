@@ -5,7 +5,9 @@ id: blog0417
 tag: springboot
 toc: true 
 intro: Record the detail for how to create a paging API easily by using spring's default repository.
-img: spring
+img: /assets/img/2025-10-05-04-35-31.png
+offsety: 0
+scale: 1.2
 ---
 
 <style>
@@ -18,7 +20,6 @@ img: spring
 </style>
 
 #### Returning Page<Entity> From CrudRepository<Entity>
-
 
 
 In `EventRepository` I created the following signature:

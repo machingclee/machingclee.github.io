@@ -5,8 +5,8 @@ intro: Second trial of building dictionary desktop app using electron and next.j
 thumbnail: /assets/portfolios/thumbnails/electron_and_next.png
 tech: Typescript, Next.js, Electron.js
 thumbWidth: 380 
-thumbTransX: 0
-thumbTransY: 0
+thumbTransX: 16
+thumbTransY: 25
 hoverImageHeight: 120
 date: 2021-12-04
 ---

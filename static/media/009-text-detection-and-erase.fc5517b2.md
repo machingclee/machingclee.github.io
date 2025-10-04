@@ -5,8 +5,8 @@ intro: Implemented a text detection as well as an inpainting module to erase the
 thumbnail: /assets/portfolios/thumbnails/text-erase.png
 tech: Python, Pytorch
 thumbWidth: 440 
-thumbTransX: -100
-thumbTransY: -10
+thumbTransX: 0
+thumbTransY: 0
 hoverImageHeight: 108
 date: 2022-05-10
 ---

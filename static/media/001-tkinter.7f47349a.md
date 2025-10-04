@@ -5,8 +5,8 @@ intro: A desktop app by python using google's vision api.
 thumbnail: /assets/portfolios/thumbnails/tkinter.jpg
 tech: Python, tkinter
 thumbWidth: 350
-thumbTransX: -20
-thumbTransY: -300
+thumbTransX: 0
+thumbTransY: 0
 hoverImageHeight: 160
 date: 2019-12-29
 ---

@@ -1,5 +1,5 @@
 ---
-title: PlantUML for EventSourcing and an GUI-application for Editing)
+title: PlantUML for EventSourcing and an GUI-application (for Editing)
 date: 2025-08-17
 id: blog0406
 tag: puml

@@ -5,8 +5,8 @@ intro: This project spins up all projects in vscode and start the backend server
 thumbnail: /assets/portfolios/thumbnails/qt_proj_starter.png
 tech: C++, Qt
 thumbWidth: 500 
-thumbTransX: 0
-thumbTransY: -100
+thumbTransX: -20
+thumbTransY: 11
 hoverImageHeight: 115
 date: 2021-06-23
 ---

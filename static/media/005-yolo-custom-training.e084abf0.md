@@ -5,8 +5,8 @@ intro: First trial to train yolo v3 on custom data set.
 thumbnail: /assets/portfolios/thumbnails/yolov3custom.png
 tech: Python, Tensorflow
 thumbWidth: 400
-thumbTransX: 0
-thumbTransY: -60
+thumbTransX: 15
+thumbTransY: -9
 hoverImageHeight: 110
 date: 2021-03-08
 ---
