@@ -2,7 +2,7 @@
 title: Migrate from ThunkActions to RTK-Query
 date: 2025-06-21
 id: blog0400
-tag: vscode
+tag: react
 toc: true
 intro: "A simple introduction to rtk-query"
 ---
@@ -15,7 +15,6 @@ intro: "A simple introduction to rtk-query"
     max-width: 660px
   }
 </style>
-
 
 #### `createApi` with an Query Endpoint
 

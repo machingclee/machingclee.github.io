@@ -17,7 +17,6 @@ intro: "We discuss how to remove a VPC completely when dangling ENIs remain ther
   }
 </style>
 
-![](/assets/img/2025-10-05-00-07-56.png)
 
 #### Root Cause of Dangling ENIs
 
