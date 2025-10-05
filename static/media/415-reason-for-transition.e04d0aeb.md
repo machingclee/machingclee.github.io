@@ -5,9 +5,9 @@ id: blog0415
 tag: nodejs, sql
 toc: true 
 img: /assets/img/2025-10-04-21-01-28.png
-scale: 1.3
-offsetx: 32
-offsety: 46
+scale: 1.4
+offsetx: 25
+offsety: 25
 ---
 
 <style>

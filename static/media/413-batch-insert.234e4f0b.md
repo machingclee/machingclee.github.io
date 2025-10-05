@@ -8,7 +8,7 @@ intro: "We introduce a utility class that generate batch insertion SQL in the si
 img: /assets/img/2025-10-05-17-07-24.png
 scale: 1.1
 offsetx: -6
-offsety: 4
+offsety: -5
 ---
 
 

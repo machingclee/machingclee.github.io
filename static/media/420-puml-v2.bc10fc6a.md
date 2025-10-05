@@ -7,8 +7,8 @@ toc: true
 intro: We improved the flow of using `puml` by defining custom functions and procedures.
 img: /assets/img/2025-09-29-09-17-15.png
 scale: 3.5
-offsetx: 55
-offsety: 99
+offsetx: 42
+offsety: 84
 ---
 
 <style>

@@ -128,7 +128,6 @@ You can use this token in <a href="#pushNotificationUtil.ts" target="_self">push
 For simplicty we simply save that expo-notification-token in our backend and send messages to that token directly.
 
 
-
 ##### Personal Access Tokens
 ```text
 vWXyXXXXXXXXXXXXXXXXXXXXXXXXXXXX

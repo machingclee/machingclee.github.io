@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.972ddf6c.chunk.css",
-    "main.js": "/static/js/main.13b467ee.chunk.js",
+    "main.css": "/static/css/main.648f59b5.chunk.css",
+    "main.js": "/static/js/main.aee25dd0.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.10ef5804.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.25e8f02c.chunk.js": "/static/js/2.25e8f02c.chunk.js",
@@ -255,7 +255,7 @@
     "static/media/240-ULID-in-pgsql.md": "/static/media/240-ULID-in-pgsql.2f92ac49.md",
     "static/media/241-timestamp-in-pgsql.md": "/static/media/241-timestamp-in-pgsql.10220442.md",
     "static/media/242-as-with-clause.md": "/static/media/242-as-with-clause.8bf53071.md",
-    "static/media/243-push-notification.md": "/static/media/243-push-notification.6850a1ac.md",
+    "static/media/243-push-notification.md": "/static/media/243-push-notification.bc0cc976.md",
     "static/media/244-sql-function-to-generate-date.md": "/static/media/244-sql-function-to-generate-date.924f677f.md",
     "static/media/245-custom-node-script copy.md": "/static/media/245-custom-node-script copy.98accf48.md",
     "static/media/246-in-app-notification.md": "/static/media/246-in-app-notification.425be54e.md",
@@ -368,7 +368,7 @@
     "static/media/375-generate-typescript-types-from-swagger-ui.md": "/static/media/375-generate-typescript-types-from-swagger-ui.9cd5343b.md",
     "static/media/376-useQuery-and-thunkactions.md": "/static/media/376-useQuery-and-thunkactions.d2ec2b04.md",
     "static/media/377-Websocket-API-without-socketio.md": "/static/media/377-Websocket-API-without-socketio.8a9d2213.md",
-    "static/media/378-Websocket-API-without-socket.md": "/static/media/378-Websocket-API-without-socket.2e85e43a.md",
+    "static/media/378-Websocket-API-without-socket.md": "/static/media/378-Websocket-API-without-socket.ee54580d.md",
     "static/media/379-modals.md": "/static/media/379-modals.6fd1d026.md",
     "static/media/380-lambda-client.md": "/static/media/380-lambda-client.88b98756.md",
     "static/media/381-import-resources.md": "/static/media/381-import-resources.7b51b0e7.md",
@@ -401,13 +401,13 @@
     "static/media/410-lucid-resources.md": "/static/media/410-lucid-resources.f0f2f44b.md",
     "static/media/411-new-portfolio.md": "/static/media/411-new-portfolio.7ee8a9bf.md",
     "static/media/412-one-to-one.md": "/static/media/412-one-to-one.30d4a697.md",
-    "static/media/413-batch-insert.md": "/static/media/413-batch-insert.1d516f67.md",
-    "static/media/414-problem-to-solve-DDD.md": "/static/media/414-problem-to-solve-DDD.5f6daa8c.md",
-    "static/media/415-reason-for-transition.md": "/static/media/415-reason-for-transition.42fd1931.md",
+    "static/media/413-batch-insert.md": "/static/media/413-batch-insert.234e4f0b.md",
+    "static/media/414-problem-to-solve-DDD.md": "/static/media/414-problem-to-solve-DDD.fadb414d.md",
+    "static/media/415-reason-for-transition.md": "/static/media/415-reason-for-transition.e04d0aeb.md",
     "static/media/416-fractal.md": "/static/media/416-fractal.447c4c87.md",
     "static/media/417-paging.md": "/static/media/417-paging.f050365a.md",
     "static/media/418-ORM-in-python.md": "/static/media/418-ORM-in-python.20c7f805.md",
-    "static/media/420-puml-v2.md": "/static/media/420-puml-v2.b07cc451.md",
+    "static/media/420-puml-v2.md": "/static/media/420-puml-v2.bc10fc6a.md",
     "static/media/421-rust-practice.md": "/static/media/421-rust-practice.4e8d3494.md",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -460,7 +460,7 @@
     "static/js/runtime-main.10ef5804.js",
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.25e8f02c.chunk.js",
-    "static/css/main.972ddf6c.chunk.css",
-    "static/js/main.13b467ee.chunk.js"
+    "static/css/main.648f59b5.chunk.css",
+    "static/js/main.aee25dd0.chunk.js"
   ]
 }

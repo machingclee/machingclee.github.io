@@ -5,10 +5,7 @@ id: blog0378
 tag: DDD, kotlin
 toc: true
 intro: "When business grows, a domain object becomes very bulky if all behaviour and the corresponding validation are added to the same entity file. We study code separation by the language feature of Kotlin using function literal with receiver."
-img: /assets/img/2025-10-04-23-58-07.png
-scale: 1.2
-offsety: 70
-offsetx: -7
+img: kotlin
 ---
 
 
