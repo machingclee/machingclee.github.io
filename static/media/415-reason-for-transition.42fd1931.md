@@ -2,7 +2,7 @@
 title: "Problem of SQL Based Nodejs Backend, Should we use Query Builder?"
 date: 2025-09-17
 id: blog0415
-tag: nodejs, kotlin, springboot
+tag: nodejs, sql
 toc: true 
 img: /assets/img/2025-10-04-21-01-28.png
 scale: 1.3

@@ -7,7 +7,7 @@ toc: true
 intro: We introduce ORM and basic web framework for python backend.
 img: /assets/img/2025-10-04-20-03-51.png
 scale: 0.9
-offsetx: 8
+offsetx: -5
 offsety: 11
 ---
 

@@ -5,9 +5,11 @@ id: blog0413
 tag: kotlin, springboot
 toc: true
 intro: "We introduce a utility class that generate batch insertion SQL in the signature of `batchInsert(entities: List<Entity>): List<Entity>`."
-img: /assets/img/2025-10-05-04-43-06.png
+img: /assets/img/2025-10-05-17-07-24.png
+scale: 1.1
+offsetx: -6
+offsety: 4
 ---
-
 
 
 <style>
