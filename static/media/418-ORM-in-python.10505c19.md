@@ -8,7 +8,7 @@ intro: We introduce ORM and basic web framework for python backend.
 img: /assets/img/2025-10-04-20-03-51.png
 scale: 0.9
 offsetx: -5
-offsety: 11
+offsety: 0
 ---
 
 <style>
@@ -30,7 +30,6 @@ To use `dotenv`, we need to install it via:
 ```sh
 pip install python-dotenv
 ```
-
 
 ```py
 # src/config.py
