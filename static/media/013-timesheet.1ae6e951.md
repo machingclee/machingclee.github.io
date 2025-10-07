@@ -31,6 +31,20 @@ date: 2024-03-11
     }
 </style>
 
+
+#### Tech Stack
+
+|Tech|Reason|
+|---|---|
+|Next.js |Love the file-based router, deployed as a vercel.app|
+|Express.js|Simple backend|
+|Lambda Functions|It's cheap, rather than spending 3x USD/month for low number of requests using ec2 or fargate|
+|Prisma|For schema migration only, removed in deployment as it's huge|
+|PostgreSQL|With prisma we have flexible schema-migration. I have been using MongoDB for a long while and get used to PGSQL recently, even use it in personal project|
+|PGSQL Service Provider| Neon-Tech, it doesn't charge you until you exceed its limit of time for resource computation, love it for POC project|
+|Kysely|For query builder|
+
+
 #### Frontend Deployment with Demonstration Links
 
 - [Specific Example of Timesheets](https://ffxiv-timesheet.vercel.app/timesheet/detail?weeklyId=018e2741-6b5d-550f-85aa-fd4bd28fc891)
@@ -43,6 +57,7 @@ date: 2024-03-11
   [![](/assets/img/2024-02-18-17-58-57.png)](/assets/img/2024-02-18-17-58-57.png)
 
 
+#### Why this Project?
 
 #### Repository
 
@@ -63,19 +78,7 @@ date: 2024-03-11
 
   
 
-#### Tech Stack
 
-|Tech|Reason|
-|---|---|
-|Next.js |Love the file-based router, deployed as a vercel.app|
-|Express.js|Simple backend|
-|Lambda Functions|It's cheap, rather than spending 3x USD/month for low number of requests using ec2 or fargate|
-|Prisma|For schema migration only, removed in deployment as it's huge|
-|PostgreSQL|With prisma we have flexible schema-migration. I have been using MongoDB for a long while and get used to PGSQL recently, even use it in personal project|
-|PGSQL Service Provider| Neon-Tech, it doesn't charge you until you exceed its limit of time for resource computation, love it for POC project|
-|Kysely|For query builder|
-
-#### Why this Project?
 
 ##### Background
 

@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/static/css/main.761b09d3.chunk.css",
-    "main.js": "/static/js/main.a9fd3e89.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.23405dd6.js",
+    "main.css": "/static/css/main.8f01793d.chunk.css",
+    "main.js": "/static/js/main.4357efc8.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.2b9e44c7.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.5465b756.chunk.js": "/static/js/2.5465b756.chunk.js",
-    "static/js/3.e7c6a240.chunk.js": "/static/js/3.e7c6a240.chunk.js",
+    "static/js/2.e6fc6323.chunk.js": "/static/js/2.e6fc6323.chunk.js",
+    "static/js/3.9e406016.chunk.js": "/static/js/3.9e406016.chunk.js",
     "static/js/4.60ca4869.chunk.js": "/static/js/4.60ca4869.chunk.js",
     "static/js/5.5f89a553.chunk.js": "/static/js/5.5f89a553.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.5465b756.chunk.js.LICENSE.txt": "/static/js/2.5465b756.chunk.js.LICENSE.txt",
-    "static/js/3.e7c6a240.chunk.js.LICENSE.txt": "/static/js/3.e7c6a240.chunk.js.LICENSE.txt",
+    "static/js/2.e6fc6323.chunk.js.LICENSE.txt": "/static/js/2.e6fc6323.chunk.js.LICENSE.txt",
+    "static/js/3.9e406016.chunk.js.LICENSE.txt": "/static/js/3.9e406016.chunk.js.LICENSE.txt",
     "static/js/4.60ca4869.chunk.js.LICENSE.txt": "/static/js/4.60ca4869.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-housing.md": "/static/media/001-housing.37e59f9e.md",
@@ -37,7 +37,7 @@
     "static/media/011-translate-custom-model.md": "/static/media/011-translate-custom-model.d611ff19.md",
     "static/media/011-typescript-typetrick.md": "/static/media/011-typescript-typetrick.0e546903.md",
     "static/media/012-libtorch_deployment.md": "/static/media/012-libtorch_deployment.4de73362.md",
-    "static/media/013-timesheet.md": "/static/media/013-timesheet.85a451bd.md",
+    "static/media/013-timesheet.md": "/static/media/013-timesheet.1ae6e951.md",
     "static/media/014-mobileapp.md": "/static/media/014-mobileapp.6247f557.md",
     "static/media/015-disquz.md": "/static/media/015-disquz.8b4defa2.md",
     "static/media/015-tiemetable-system.md": "/static/media/015-tiemetable-system.8b63d817.md",
@@ -449,7 +449,7 @@
     "static/media/TutorialNote10.2941efe7.pdf": "/static/media/TutorialNote10.2941efe7.pdf",
     "static/media/WorkshopinAnalysis.402ecd08.pdf": "/static/media/WorkshopinAnalysis.402ecd08.pdf",
     "static/media/agent-classification.17931009.pdf": "/static/media/agent-classification.17931009.pdf",
-    "static/media/cartoonme_2.478cb9a7.png": "/static/media/cartoonme_2.478cb9a7.png",
+    "static/media/cartoonme_2.94a16228.png": "/static/media/cartoonme_2.94a16228.png",
     "static/media/convex-analysis.md": "/static/media/convex-analysis.101e3849.md",
     "static/media/modulus-of-continuity.md": "/static/media/modulus-of-continuity.b21e9a7b.md",
     "static/media/review.c9c071ab.pdf": "/static/media/review.c9c071ab.pdf",
@@ -457,10 +457,10 @@
     "static/media/transformer-date-fomatter.18a2d3fc.pdf": "/static/media/transformer-date-fomatter.18a2d3fc.pdf"
   },
   "entrypoints": [
-    "static/js/runtime-main.23405dd6.js",
+    "static/js/runtime-main.2b9e44c7.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.5465b756.chunk.js",
-    "static/css/main.761b09d3.chunk.css",
-    "static/js/main.a9fd3e89.chunk.js"
+    "static/js/2.e6fc6323.chunk.js",
+    "static/css/main.8f01793d.chunk.css",
+    "static/js/main.4357efc8.chunk.js"
   ]
 }
