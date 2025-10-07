@@ -24,6 +24,7 @@ offsety: 0
 #### Setting from Environment Variables
 
 
+
 We convert all environment variables into public static fields of a class for type-safty.
 
 To use `dotenv`, we need to install it via:
