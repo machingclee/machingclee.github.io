@@ -384,6 +384,6 @@ fn main() {
 
 And we get the output:
 
-[![](/assets/img/2025-10-10-05-40-19.png)](/assets/img/2025-10-10-05-40-19.png)
+[![](/assets/img/2025-10-10-06-47-18.png)](/assets/img/2025-10-10-06-47-18.pn)
 
 #### Footnotes
