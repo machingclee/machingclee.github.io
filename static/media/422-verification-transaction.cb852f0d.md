@@ -1,8 +1,8 @@
 ---
-title: "Verify a Transaction in a Blockchain"
+title: "Implement ECDSA for Transaction Verification in a Blockchain"
 date: 2025-10-08
 id: blog0422
-tag: rust, blockchain
+tag: rust, blockchain, elliptic-curve
 toc: true
 intro: Study verificaiton mechanism in a blockchain system.
 img: blockchain

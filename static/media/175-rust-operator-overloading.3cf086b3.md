@@ -2,9 +2,10 @@
 title: "Elliptic Curve and Operator Overloading"
 date: 2023-09-09
 id: blog0175
-tag: rust
+tag: rust, elliptic-curve, math
 intro: "Let's define operator overloading on finite field Z/pZ for prime p."
 toc: true
+img: blockchain
 ---
 
 <style>
@@ -14,7 +15,6 @@ toc: true
 </style>
 
 #### Repository
-
 - https://github.com/machingclee/2023-09-10-Elliptic-Curve-in-Rust/tree/main/ECC/src/modules
 
 #### Prefered Headers to Ignore Annoying Warnings:
