@@ -359,4 +359,31 @@ in line 85 below:
 }
 ```
 
+
+#### main.rs
+
+
+Finally we test the wallet and print the outcome for demonstration.
+
+```rust 
+mod wallet;
+
+use wallet::Wallet;
+
+fn main() {
+    let mut wallet = Wallet::new();
+    println!("private key: {}", wallet.private_key_str());
+    println!("public key: {}", wallet.public_key_str());
+    println!("The address {}", wallet.get_address());
+    let mut transaction = wallet.sign_transaction(&"0x1234567890".to_string(), 100);
+    println!("Transaction: {:?}", transaction);
+    transaction.amount += 0;
+    println!("verify: {}", Wallet::verify_transaction(&transaction));
+}
+```
+
+And we get the output:
+
+[![](/assets/img/2025-10-10-05-40-19.png)](/assets/img/2025-10-10-05-40-19.png)
+
 #### Footnotes
