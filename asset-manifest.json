@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/static/css/main.7cb56763.chunk.css",
-    "main.js": "/static/js/main.2696fae9.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.e06bc502.js",
+    "main.css": "/static/css/main.a0aa6981.chunk.css",
+    "main.js": "/static/js/main.68944b9b.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.941a6caa.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.dd348d99.chunk.js": "/static/js/2.dd348d99.chunk.js",
-    "static/js/3.7ca9fc78.chunk.js": "/static/js/3.7ca9fc78.chunk.js",
-    "static/js/4.f1b08b6b.chunk.js": "/static/js/4.f1b08b6b.chunk.js",
+    "static/js/2.92b74e2e.chunk.js": "/static/js/2.92b74e2e.chunk.js",
+    "static/js/3.fd839517.chunk.js": "/static/js/3.fd839517.chunk.js",
+    "static/js/4.63ddb62d.chunk.js": "/static/js/4.63ddb62d.chunk.js",
     "static/js/5.b9040a1b.chunk.js": "/static/js/5.b9040a1b.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.dd348d99.chunk.js.LICENSE.txt": "/static/js/2.dd348d99.chunk.js.LICENSE.txt",
-    "static/js/3.7ca9fc78.chunk.js.LICENSE.txt": "/static/js/3.7ca9fc78.chunk.js.LICENSE.txt",
-    "static/js/4.f1b08b6b.chunk.js.LICENSE.txt": "/static/js/4.f1b08b6b.chunk.js.LICENSE.txt",
+    "static/js/2.92b74e2e.chunk.js.LICENSE.txt": "/static/js/2.92b74e2e.chunk.js.LICENSE.txt",
+    "static/js/3.fd839517.chunk.js.LICENSE.txt": "/static/js/3.fd839517.chunk.js.LICENSE.txt",
+    "static/js/4.63ddb62d.chunk.js.LICENSE.txt": "/static/js/4.63ddb62d.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-housing.md": "/static/media/001-housing.37e59f9e.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.7f47349a.md",
@@ -408,7 +408,7 @@
     "static/media/415-reason-for-transition.md": "/static/media/415-reason-for-transition.e04d0aeb.md",
     "static/media/416-fractal.md": "/static/media/416-fractal.447c4c87.md",
     "static/media/417-paging.md": "/static/media/417-paging.f050365a.md",
-    "static/media/418-ORM-in-python.md": "/static/media/418-ORM-in-python.33d8bfbd.md",
+    "static/media/418-ORM-in-python.md": "/static/media/418-ORM-in-python.0680ae4f.md",
     "static/media/420-puml-v2.md": "/static/media/420-puml-v2.bc10fc6a.md",
     "static/media/421-rust-practice.md": "/static/media/421-rust-practice.4e8d3494.md",
     "static/media/422-verification-transaction.md": "/static/media/422-verification-transaction.638f74d1.md",
@@ -461,10 +461,10 @@
     "static/media/transformer-date-fomatter.18a2d3fc.pdf": "/static/media/transformer-date-fomatter.18a2d3fc.pdf"
   },
   "entrypoints": [
-    "static/js/runtime-main.e06bc502.js",
+    "static/js/runtime-main.941a6caa.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.dd348d99.chunk.js",
-    "static/css/main.7cb56763.chunk.css",
-    "static/js/main.2696fae9.chunk.js"
+    "static/js/2.92b74e2e.chunk.js",
+    "static/css/main.a0aa6981.chunk.css",
+    "static/js/main.68944b9b.chunk.js"
   ]
 }
