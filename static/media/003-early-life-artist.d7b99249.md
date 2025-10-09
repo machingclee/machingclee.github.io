@@ -11,7 +11,7 @@ toc: true
     border-radius: 4px;
   }
   img {
-    max-width: 660px !important;
+    max-width: 660px;
   }
 </style>
 
