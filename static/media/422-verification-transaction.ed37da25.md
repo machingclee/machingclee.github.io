@@ -207,9 +207,8 @@ Next we print out private and public key in hexadecimal representation as string
 Note that the direct concatenation of the hex strings of x,y-coordinate of the public key in line 41 is known as ***uncompressed key***. We need to know this detail when we try to verify the transaction by the public key.
 
 
-##### Verify a Transaction
 
-###### Create Signature
+##### Create a Signature for a Transaction
 
 ```rust-51{56,62}
     pub fn sign_transaction(&mut self, receiver: &String, amount: u64) -> Transaction {
@@ -231,22 +230,45 @@ Note that the direct concatenation of the hex strings of x,y-coordinate of the p
 Note that when we try to verify the signature with the message (transaction), we need to return the `transaction.signature` to an empty string.
 
 
-###### Verify the Signature
+##### Verify the Signature to Justify the Transaction is Valid
 
 ```rust-65
     pub fn verify_transaction(transaction: &Transaction) -> bool {
-        let signature = transaction.signature.clone();
-        let signature_bytes = hex::decode(signature).unwrap();
         let mut transaction_clone = transaction.clone();
         transaction_clone.signature = String::new();
 
         let message = serde_json::to_string(&transaction_clone).unwrap();
         let msg_bytes = message.as_bytes();
+```
+This finish the part to create a message to verify.
 
+Recall that from [study notes on elliptic curve](/blog/article/Elliptic-Curve-and-Operator-Overloading#The-Elliptic-Curve-Digital-Signature-Algorithm-(ECDSA)), a `signature` is a pair `[R | S]` composed of two 32 bytes string $R$ and $S$ defined by 
+
+$$
+\begin{cases}
+R :=  \pi_x(k\times g),\\
+S := k^{-1}(\texttt{H(m)} + r\times k_\text{pri}).
+\end{cases}
+$$
+
+Here $\pi_x(P)$ denotes the x-coordinate of point $P$ in $\mathbb R^2$, where $P=k\times g$ (with $k$ being a ***nounce***, a randomly selected integer for each transaction). 
+
+From our code we have calculated `H(m)` via 
+```rust 
+H(m) = serde_json::to_string(&transaction_clone).unwrap();
+```
+Note that `H(m).as_bytes(): [u8, 32]` represents a big integer of type `BigInt`, which is used in the mathematical computation for $S$ on an elliptic curve.
+
+Now line 71 to 73 becomes very clear to us:
+
+
+```rust-71{73}
+        let signature = transaction.signature.clone();
+        let signature_bytes = hex::decode(signature).unwrap();
         let signature_array: [u8; 64] = signature_bytes.try_into().unwrap();
 ```
 `try_into` is a special trick/methodology in rust for type casting when we have a type declared on the left hand side. We do an `unwrap()` since it returns a `Result` enum.
-```rust-75
+```rust-74
         let signature = match Signature::from_bytes(&signature_array.into()) {
             Ok(signature) => signature,
             Err(e) => {
@@ -269,7 +291,16 @@ In the code, when we encode the public key, we start with the raw X and Y coordi
 
 Therefore we add `0x04` at the start to tell the decoder this is an uncompressed key, the resulting format is: `[0x04 | X coordinate | Y coordinate]`.
 
-```rust-85
+
+Recall that a verification of a message and a signature $(R,S)$ comprises of the following computation:
+
+$$
+\pi_x\bigg(\big[S^{-1}\texttt{H(m)}\big]g + \big[S^{-1}R\big]K_\text{pub}\bigg)\equiv R \pmod{\mathrm{ord}(g)}.
+$$
+
+where the public key $K_\text{pub}$ is directly taken from the payload of the transaction (line 81-83). Programmatically this is rephased as $K_\text{pub}(\texttt{H(m)}, (R,S))$ in  line 85 below:
+
+```rust-84{85}
         let public_key = VerifyingKey::from_sec1_bytes(&public_key_bytes).unwrap();
         public_key.verify(&msg_bytes, &signature).is_ok()
     }
