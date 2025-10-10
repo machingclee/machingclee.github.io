@@ -23,6 +23,7 @@ scale: 1.2
 
 
 
+
 In `EventRepository` I created the following signature:
 
 ```kotlin
