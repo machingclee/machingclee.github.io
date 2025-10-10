@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.a0aa6981.chunk.css",
-    "main.js": "/static/js/main.60a86450.chunk.js",
+    "main.css": "/static/css/main.240924a4.chunk.css",
+    "main.js": "/static/js/main.56ea734b.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.941a6caa.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.92b74e2e.chunk.js": "/static/js/2.92b74e2e.chunk.js",
@@ -405,10 +405,10 @@
     "static/media/412-one-to-one.md": "/static/media/412-one-to-one.30d4a697.md",
     "static/media/413-batch-insert.md": "/static/media/413-batch-insert.234e4f0b.md",
     "static/media/414-problem-to-solve-DDD.md": "/static/media/414-problem-to-solve-DDD.fadb414d.md",
-    "static/media/415-reason-for-transition.md": "/static/media/415-reason-for-transition.e04d0aeb.md",
+    "static/media/415-reason-for-transition.md": "/static/media/415-reason-for-transition.34392cc7.md",
     "static/media/416-fractal.md": "/static/media/416-fractal.447c4c87.md",
     "static/media/417-paging.md": "/static/media/417-paging.f050365a.md",
-    "static/media/418-ORM-in-python.md": "/static/media/418-ORM-in-python.33d8bfbd.md",
+    "static/media/418-ORM-in-python.md": "/static/media/418-ORM-in-python.0680ae4f.md",
     "static/media/420-puml-v2.md": "/static/media/420-puml-v2.bc10fc6a.md",
     "static/media/421-rust-practice.md": "/static/media/421-rust-practice.4e8d3494.md",
     "static/media/422-verification-transaction.md": "/static/media/422-verification-transaction.ce235c7f.md",
@@ -464,7 +464,7 @@
     "static/js/runtime-main.941a6caa.js",
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.92b74e2e.chunk.js",
-    "static/css/main.a0aa6981.chunk.css",
-    "static/js/main.60a86450.chunk.js"
+    "static/css/main.240924a4.chunk.css",
+    "static/js/main.56ea734b.chunk.js"
   ]
 }

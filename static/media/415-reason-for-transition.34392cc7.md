@@ -7,7 +7,7 @@ toc: true
 img: /assets/img/2025-10-04-21-01-28.png
 scale: 1.4
 offsetx: 25
-offsety: 25
+offsety: 15
 ---
 
 <style>
