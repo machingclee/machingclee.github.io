@@ -19,6 +19,15 @@ img: blockchain
   }
 </style>
 
+#### Repository 
+
+Executable testing code is placed at:
+
+- [2025-10-02-blockchain-study-in-rust](https://github.com/machingclee/2025-10-02-blockchain-study-in-rust)
+
+This project is a ***study of Rust*** under the block-chain context, and this is not a full block-chain project.
+
+
 #### Cargo.toml
 ```toml
 hex = "0.4.3"
@@ -97,10 +106,10 @@ p (prime field) = 2^256 - 2^224 + 2^192 + 2^96 - 1
 What `OsRng` provides is just the random number generation for creating private keys. The process works like this:
 
 1. The curve parameters below are fixed in `p256` (that's why we import `SigningKey` from it) 
-    - $a\in \mathbb Z /p\mathbb Z$,
+    - $a\in \mathbb Z /p\mathbb Z$
     - $b\in \mathbb Z /p\mathbb Z$
-    - $p \in \mathbb N$ prime,
-    - a generator $g$ on the elliptic curve, 
+    - $p \in \mathbb N$ prime
+    - a generator $g$ on the elliptic curve
     - an order $n = |\langle g\rangle |$
 2. `OsRng` generates a random number $k_\text{pri}$ between $1$ and $n-1$ as a private key
 3. The public key  (i.e., `verifying_key`) is calculated as 
@@ -385,5 +394,13 @@ fn main() {
 And we get the output:
 
 [![](/assets/img/2025-10-10-06-47-18.png)](/assets/img/2025-10-10-06-47-18.pn)
+
+
+
+#### References
+
+- Taylor Chen, [*Rust and Blockchain programming bootcamp:from zero to expert*](https://www.udemy.com/course/rust-and-blockchain-programming-bootcampfrom-zero-to-expert/?couponCode=PLOYALTY0923), Udemy
+
+- Ching-Cheong Lee, [*Elliptic Curve and Operator Overloading*](/blog/article/Elliptic-Curve-and-Operator-Overloading)
 
 #### Footnotes
