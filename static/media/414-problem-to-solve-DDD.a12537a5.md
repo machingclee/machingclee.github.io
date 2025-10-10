@@ -1,12 +1,13 @@
 ---
-title: "Problems in Controller-Service-Repository That are Solvable by Strategic Design in DDD (Domain Driven Design)"
+title: "Problems in Controller-Service-Repository That are Solvable by Tactical Design in DDD (Domain Driven Design)"
 date: 2025-09-16
 id: blog0414
 tag: DDD, kotlin
 toc: true
 intro: Traditional controller-service-repository is known as the most easiest architecture in backend development, however,  it comes with a cost.
 img: /assets/img/2025-10-04-21-29-15.png
-scale: 1.2
+scale: 1.3
+offsety: 0
 ---
 
 <style>

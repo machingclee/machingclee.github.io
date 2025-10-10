@@ -5,10 +5,6 @@ id: blog0410
 tag: react
 toc: true
 intro: A replacement of react-icons as the styles of icons are much more consistent
-img: /assets/img/2025-10-04-22-49-28.png
-offsetx: -2
-scale: 0.7
-offsety: 0
 ---
 
 <style>

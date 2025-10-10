@@ -459,7 +459,7 @@ What we can observe from the logs:
 #### Appendix (From my Blog Posts)
 
 
-- [Problems in Controller-Service-Repository That are Solvable by Strategic Design in DDD (Domain Driven Design)](/blog/article/Problems-in-Controller-Service-Repository-That-are-Solvable-by-Strategic-Design-in-DDD-Domain-Driven-Design-)
+- [Problems in Controller-Service-Repository That are Solvable by Tactical Design in DDD (Domain Driven Design)](/blog/article/Problems-in-Controller-Service-Repository-That-are-Solvable-by-Tactical-Design-in-DDD-Domain-Driven-Design-)
 
 - [Problem of SQL Based Nodejs Backend, Should we use Query Builder?](/blog/article/Problem-of-SQL-Based-Nodejs-Backend-Should-we-use-Query-Builder-)
 

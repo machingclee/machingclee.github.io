@@ -5,7 +5,6 @@ id: blog0385
 tag: aws
 toc: true
 intro: "Simple scheduling to our springboot lambda function's endpoint"
-img: /assets/img/2025-10-04-23-38-16.png
 ---
 
 
