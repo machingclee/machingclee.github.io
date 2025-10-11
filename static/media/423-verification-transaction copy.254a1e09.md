@@ -71,7 +71,6 @@ Rust's borrow checker follows simple, strict rules:
 ##### Which rule have we broken?
 
 
-No intermediate reference variable is created.
 
 Let's start with the line of borrowing:
 
@@ -89,14 +88,13 @@ Let's start with the line of borrowing:
 
 1. `api_server` is returned and its data ownership is ***potentially moved*** to another variable that receives the return
 
-2. `unlocked_cache` references to `api_server.cache`
-3. As `api_server` is moved, the access `api_server.cache` crashed
-4. No matter `unlocked_cache` dies immediately outisde of the scope of `new()`, we are referencing and moving a data ***at the same time***.
+2. `unlocked_cache` references to `api_server.cache`, however, as `api_server` is moved, the access `api_server.cache` crashed
+3. No matter `unlocked_cache` dies immediately outisde of the scope of `new()` or not, we are referencing and moving a data ***at the same time***.
 
 
 #### Solution 1
 
-We don't create intermediate reference, we simply make mutate the data of a temporary variable
+We don't create intermediate reference, we simply mutate the data that the `MutexGuard` referencing to:
 
 ```rust{9-12}
 impl ApiServer {
@@ -119,7 +117,7 @@ impl ApiServer {
 
 #### Solution 2 
 
-We avoid ***moving*** and ***referencing to*** the same variable  at the same scope:
+We avoid ***moving*** and ***referencing to*** the same variable in the same scope:
 
 ```rust{9-15}
 impl ApiServer {

@@ -19,7 +19,7 @@ img: rust
 
 #### The Problem
 
-Consider the following function where `self.cache: HashMap<String, BlockChain>`:
+Consider the following function where `self.cache` is of type `HashMap<String, BlockChain>`:
 
 ```rust{2}
     async fn get_index(&self) -> HttpResponse {
@@ -44,14 +44,16 @@ The reason is that:
         pub fn get<'a, Q>(&'a self, k: &Q) -> Option<&'a V>
     ```
 3. `self.cache.lock().get("key").unwrap()` is a `&BlockChain` object, i.e., a pointer
-4. pointer can never be moved, now 
-    ```rust
-    blockchain = self.cache.lock().get("key").unwrap()
-    ````
-    at the end is a copied pointer
-5. `self.cache.lock()` is a temporary value, now it gets dropped at the end of the statement 
+4. Pointer can never be moved, it will be copied whenever we assign it to another variable. Now `blockchain = self.cache.lock().get("key").unwrap()` is a copy of a pointer
+5. `self.cache.lock()` is a temporary value, now it gets dropped at the end of the statement after `;`
 6. `self.cache.lock().get` is now borrowing a dropped value, hence crashed
 
+
+<Example>
+
+**Remark.** By ***dropped*** we mean that the value has executed its `drop` method implemented for the `Drop` trait. Most of the time it is a cleanup process for freeing the memory, but it is not always true.
+
+</Example>
 
 #### Solution
 
@@ -67,3 +69,4 @@ We simply move the temporary data to a local variable which has longer life span
         HttpResponse::Ok().json(block_json)
     }
 ```
+
