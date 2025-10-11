@@ -116,7 +116,7 @@ What `OsRng` provides is just the random number generation for creating private 
     $$
     Q = k_\text{pri} \underset{\text{elliptic}}{\times }g \in \frac{\mathbb Z}{p\mathbb Z} \times \frac{\mathbb Z}{p\mathbb Z}\tag{$*$} 
     $$
-4. From coding persective the actual `verifying_key` that we use is the concated string of the coordinates `[Q_x, Q_y]`.
+4. From coding perspective the actual `verifying_key` that we use is the concated string of the coordinates `[Q_x, Q_y]`.
 
 ###### Isn't a private key just an integer? Why need `SigningKey`
 

@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/static/css/main.240924a4.chunk.css",
-    "main.js": "/static/js/main.c5d504c1.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.941a6caa.js",
+    "main.css": "/static/css/main.3ab7222f.chunk.css",
+    "main.js": "/static/js/main.e7e89bab.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.492d2606.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.92b74e2e.chunk.js": "/static/js/2.92b74e2e.chunk.js",
-    "static/js/3.fd839517.chunk.js": "/static/js/3.fd839517.chunk.js",
-    "static/js/4.63ddb62d.chunk.js": "/static/js/4.63ddb62d.chunk.js",
-    "static/js/5.b9040a1b.chunk.js": "/static/js/5.b9040a1b.chunk.js",
+    "static/js/2.d218c53f.chunk.js": "/static/js/2.d218c53f.chunk.js",
+    "static/js/3.cb81c8ec.chunk.js": "/static/js/3.cb81c8ec.chunk.js",
+    "static/js/4.4c3c5796.chunk.js": "/static/js/4.4c3c5796.chunk.js",
+    "static/js/5.992a7a42.chunk.js": "/static/js/5.992a7a42.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.92b74e2e.chunk.js.LICENSE.txt": "/static/js/2.92b74e2e.chunk.js.LICENSE.txt",
-    "static/js/3.fd839517.chunk.js.LICENSE.txt": "/static/js/3.fd839517.chunk.js.LICENSE.txt",
-    "static/js/4.63ddb62d.chunk.js.LICENSE.txt": "/static/js/4.63ddb62d.chunk.js.LICENSE.txt",
+    "static/js/2.d218c53f.chunk.js.LICENSE.txt": "/static/js/2.d218c53f.chunk.js.LICENSE.txt",
+    "static/js/3.cb81c8ec.chunk.js.LICENSE.txt": "/static/js/3.cb81c8ec.chunk.js.LICENSE.txt",
+    "static/js/4.4c3c5796.chunk.js.LICENSE.txt": "/static/js/4.4c3c5796.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-housing.md": "/static/media/001-housing.37e59f9e.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.7f47349a.md",
@@ -407,11 +407,11 @@
     "static/media/414-problem-to-solve-DDD.md": "/static/media/414-problem-to-solve-DDD.a12537a5.md",
     "static/media/415-reason-for-transition.md": "/static/media/415-reason-for-transition.34392cc7.md",
     "static/media/416-fractal.md": "/static/media/416-fractal.447c4c87.md",
-    "static/media/417-paging.md": "/static/media/417-paging.d4980b82.md",
+    "static/media/417-paging.md": "/static/media/417-paging.2cbb945a.md",
     "static/media/418-ORM-in-python.md": "/static/media/418-ORM-in-python.94618551.md",
     "static/media/420-puml-v2.md": "/static/media/420-puml-v2.bc10fc6a.md",
     "static/media/421-rust-practice.md": "/static/media/421-rust-practice.4e8d3494.md",
-    "static/media/422-verification-transaction.md": "/static/media/422-verification-transaction.b438f762.md",
+    "static/media/422-verification-transaction.md": "/static/media/422-verification-transaction.b5e1b8d6.md",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
     "static/media/Midterm_Review_limsupinf.1e2193c7.pdf": "/static/media/Midterm_Review_limsupinf.1e2193c7.pdf",
@@ -461,10 +461,10 @@
     "static/media/transformer-date-fomatter.18a2d3fc.pdf": "/static/media/transformer-date-fomatter.18a2d3fc.pdf"
   },
   "entrypoints": [
-    "static/js/runtime-main.941a6caa.js",
+    "static/js/runtime-main.492d2606.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.92b74e2e.chunk.js",
-    "static/css/main.240924a4.chunk.css",
-    "static/js/main.c5d504c1.chunk.js"
+    "static/js/2.d218c53f.chunk.js",
+    "static/css/main.3ab7222f.chunk.css",
+    "static/js/main.e7e89bab.chunk.js"
   ]
 }
