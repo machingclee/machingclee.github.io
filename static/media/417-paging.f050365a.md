@@ -22,7 +22,6 @@ scale: 1.2
 #### Returning Page<Entity> From CrudRepository<Entity>
 
 
-
 In `EventRepository` I created the following signature:
 
 ```kotlin
