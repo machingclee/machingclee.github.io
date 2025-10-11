@@ -332,11 +332,12 @@ See **Remark 3**[^remark3] for the purpose of `0x04`.
     Other prefix values include:
     - `0x02` or `0x03` Used for compressed public key format
     - `0x02` Y coordinate is even
-    - `0x03` Y coordinate is odd
+    - `0x03` Y coordinate is odd\
+        When $(x_0, y_0)$ is a solution, so is $(x_0, -y_0)\equiv (x_0, p-y_0) \pmod{p}$, thus we need `0x02` and `0x03` to identify the value. 
 
     In the code, when we encode the public key, we start with the raw X and Y coordinates ***directly concatenated*** (line 41).
 
-    Therefore we add `0x04` at the start to tell the decoder this is an uncompressed key, the resulting format is: `[0x04 | X coordinate | Y coordinate]`.
+    Therefore we add `0x04` at the head to tell the decoder this is an uncompressed key, the resulting format is: `[0x04 | X coordinate | Y coordinate]`.
 
 ###### Step 3. Undergo the mathematical validation
 

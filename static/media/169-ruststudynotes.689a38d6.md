@@ -23,7 +23,7 @@ Note that
 To sum up, we always expect:
 
 $$
-\text{output lifetime}=\min_\alpha\big\{\text{input_lifeime}_{\!\!\!\!\alpha}\big\}.
+\text{output lifetime}=\min_\alpha\big\{\text{input_lifeime}_{\alpha}\big\}.
 $$
 
 #### Result Type

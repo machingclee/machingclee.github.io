@@ -24,6 +24,7 @@ scale: 1.2
 
 In `EventRepository` I created the following signature:
 
+
 ```kotlin
 import dev.james.alicetimetable.commons.database.entities.Event
 import org.springframework.data.domain.Page
