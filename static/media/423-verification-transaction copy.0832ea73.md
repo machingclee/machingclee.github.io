@@ -89,7 +89,7 @@ Let's start with the line of borrowing:
 1. `api_server` is returned and its data ownership is ***potentially moved*** to another variable that receives the return
 
 2. `unlocked_cache` references to `api_server.cache`, however, as `api_server` is moved, the access `api_server.cache` crashed
-3. No matter `unlocked_cache` dies immediately outisde of the scope of `new()` or not, we are referencing and moving a data ***at the same time***.
+3. No matter `unlocked_cache` dies immediately outside of the scope of `new()` or not, we are referencing and moving a data ***at the same time***.
 
 
 #### Solution 1
