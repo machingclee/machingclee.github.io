@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.3e0a12cc.chunk.css",
-    "main.js": "/static/js/main.d98c13f2.chunk.js",
+    "main.css": "/static/css/main.c18757d4.chunk.css",
+    "main.js": "/static/js/main.198429a5.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.3aa2fa0d.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.cc5d4d62.chunk.js": "/static/js/2.cc5d4d62.chunk.js",
@@ -32,7 +32,7 @@
     "static/media/007-redux-saga.md": "/static/media/007-redux-saga.f840908f.md",
     "static/media/008-defectGAN.md": "/static/media/008-defectGAN.b0c33ff0.md",
     "static/media/009-algorithms.md": "/static/media/009-algorithms.28c44e56.md",
-    "static/media/009-text-detection-and-erase.md": "/static/media/009-text-detection-and-erase.fc5517b2.md",
+    "static/media/009-text-detection-and-erase.md": "/static/media/009-text-detection-and-erase.91ea977f.md",
     "static/media/010-algo-exercises.md": "/static/media/010-algo-exercises.b301a47b.md",
     "static/media/010-classifier-by-means-of-detection.md": "/static/media/010-classifier-by-means-of-detection.ab8c9cca.md",
     "static/media/011-translate-custom-model.md": "/static/media/011-translate-custom-model.d611ff19.md",
@@ -405,7 +405,7 @@
     "static/media/412-one-to-one.md": "/static/media/412-one-to-one.30d4a697.md",
     "static/media/413-batch-insert.md": "/static/media/413-batch-insert.9a429139.md",
     "static/media/414-problem-to-solve-DDD.md": "/static/media/414-problem-to-solve-DDD.a12537a5.md",
-    "static/media/415-reason-for-transition.md": "/static/media/415-reason-for-transition.34392cc7.md",
+    "static/media/415-reason-for-transition.md": "/static/media/415-reason-for-transition.23b423fb.md",
     "static/media/416-fractal.md": "/static/media/416-fractal.447c4c87.md",
     "static/media/417-paging.md": "/static/media/417-paging.04d95903.md",
     "static/media/418-ORM-in-python.md": "/static/media/418-ORM-in-python.94618551.md",
@@ -466,7 +466,7 @@
     "static/js/runtime-main.3aa2fa0d.js",
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.cc5d4d62.chunk.js",
-    "static/css/main.3e0a12cc.chunk.css",
-    "static/js/main.d98c13f2.chunk.js"
+    "static/css/main.c18757d4.chunk.css",
+    "static/js/main.198429a5.chunk.js"
   ]
 }

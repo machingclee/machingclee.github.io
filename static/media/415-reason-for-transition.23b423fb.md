@@ -26,33 +26,29 @@ offsety: 15
 
 If an application is composed of various SQLs when interacting with the database, it may grow to have several scenarios such as the following:
 
-<Example>
 
 
-**Example 1 (Complexity Level 1).** In the most basic form we have maintainable queries via query-builder:
+
+#####  Complexity Level 1
+
+In the most basic form we have maintainable queries via query-builder:
 
 [![](/assets/img/2025-09-07-18-09-07.png)](/assets/img/2025-09-07-18-09-07.png)
 
-</Example>
 
+##### Complexity Level 2
 
-<Example>
-
-**Example 2 (Complexity Level 2).** The following tries to do two separate `LATERAL JOIN`'s and `Json Aggregate`'s:
+The following tries to do two separate `LATERAL JOIN`'s and `Json Aggregate`'s:
 
 [![](/assets/img/2025-09-07-18-03-29.png)](/assets/img/2025-09-07-18-03-29.png)
 
 Complexity increases and it takes developers effort  to understand what's going on.
 
 
-</Example>
 
+##### Complexity Level $\to \infty$
 
-
-
-<Example>
-
-**Example 3 (Complexity Level $\to \infty$).**  The following is taken from a deprecated project, it starts to be ***unmaintainable***:
+The following is taken from a deprecated project, it starts to be ***unmaintainable*** even with comments that's trying to explain what's happening:
 
 [![](/assets/img/2025-09-07-18-33-09.png)](/assets/img/2025-09-07-18-33-09.png)
 
@@ -65,7 +61,6 @@ Complexity increases and it takes developers effort  to understand what's going 
 
 - Plus we still have lateral joins and json aggregates there.
 
-</Example>
 
 <br/>
 
@@ -84,6 +79,11 @@ Complexity increases and it takes developers effort  to understand what's going 
     ``` 
     for data deduplication. But `DISTINCT ON` is Postgre-only. Other example like `ON CONFLICT DO NOTHING`, `JSONB` query, etc, useful queries are Postgre-specific. -->
 
+3. Complex and tricky SQL can bring huge complexity to the project, which also increases ***mental cost*** for other developers to understand and modify it[^wtever]. 
+
+[^wtever]:
+      If you are simply a one-man band, do whatever you want!
+
 #### Short Takes From Native SQLs
 
 
@@ -92,8 +92,18 @@ There are indeed cases where native query is necessary for performance such as b
 
 We need to be careful in the decision of whether or not to use query builder in a project. For node.js those are:
 
-- `Kysely.js` or `Prisma-Kysely.js`
-- `Knex.js`
+-  In Nodejs world there are 
+
+    - `Kysely.js` or `Prisma-Kysely.js`
+    - `Knex.js`
+
+- In Java/Kotlin world there is
+    - `JOOQ`
+
+      [Example article](/blog/article/Useful-Query-in-JOOQ)
+
+- In Golang world there is 
+    - `Go-Jet`
 
 
-Complex and tricky SQL can bring huge complexity to the project, which also increases mental cost for other developers to understand and modify it.
+#### Footnotes
