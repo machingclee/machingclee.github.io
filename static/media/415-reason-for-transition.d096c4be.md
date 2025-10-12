@@ -90,7 +90,7 @@ The following is taken from a deprecated project, it starts to be ***unmaintaina
 There are indeed cases where native query is necessary for performance such as batch-insertion, or special queries for dashboard. But we can avoid them when they are not necessary.
 
 
-We need to be careful in the decision of whether or not to use query builder in a project. For node.js those are:
+We need to be careful in the decision of whether or not to use query builder in a project.
 
 -  In Nodejs world there are 
 
