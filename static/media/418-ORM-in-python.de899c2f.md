@@ -2,7 +2,7 @@
 title: "FastAPI and SqlAlchemy ORM in Python"
 date: 2025-09-26
 id: blog0418
-tag: python, fastapi, sqlalchemy, orm
+tag: python, fastapi, sqlalchemy, orm, sql
 toc: true 
 intro: We introduce ORM and basic web framework for python backend.
 img: /assets/img/2025-10-04-20-03-51.png

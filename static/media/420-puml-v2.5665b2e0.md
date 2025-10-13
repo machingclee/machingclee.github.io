@@ -2,7 +2,7 @@
 title: "Event Storming via PUML (Improved)"
 date: 2025-09-28
 id: blog0420
-tag: DDD, puml
+tag: DDD, puml, system-design
 toc: true
 intro: We improved the flow of using `puml` by defining custom functions and procedures.
 img: /assets/img/2025-09-29-09-17-15.png

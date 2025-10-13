@@ -2,7 +2,7 @@
 title: "Drawing Fractal (Mandelbrot Set) in Rust"
 date: 2025-09-23
 id: blog0416
-tag: rust
+tag: rust, math
 toc: true 
 intro: Practice the syntax of rust by drawing fractal derived from simple mathematics.
 img: /assets/img/2025-09-23-18-47-14.png

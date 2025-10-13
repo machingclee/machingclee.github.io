@@ -2,7 +2,7 @@
 title: New Side Project using DDD was Added to Portfolio!
 date: 2025-09-08
 id: blog0411
-tag: kotlin, DDD, springboot
+tag: kotlin, DDD, springboot, system-design
 toc: false 
 img: ddd
 ---
