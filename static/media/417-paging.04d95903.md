@@ -54,7 +54,6 @@ data class EventsWithTotal(
 ```
 now we combine everything to get:
 
-
 ```kotlin-1{8,9}
 @Service
 class EventQueryApplicationService(

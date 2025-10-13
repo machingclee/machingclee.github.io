@@ -105,7 +105,13 @@ impl FolderState {
 ```
 
 
-#### Everything side effect must come from `Message`, it might be too complicated
+#### Limitation
+
+##### Standard UI element is not supported
+
+Iced's layout system doesn't natively support absolute positioning, so standard stuff as simple as a context menu cannot be positioned at the point I make a right-click.
+
+##### Every side effect must come from `Message`, it might be too complicated
 
 Though everything is handled by messages, I would love to have local state that don't need to update by messages at all. But by default every button must dispatch events, that forces us to do everything via messages:
 
@@ -114,4 +120,9 @@ Though everything is handled by messages, I would love to have local state that 
 button(text("Delete").size(14)).on_press(on_delete)
 ```
 
-It might be good or bad, as a react developer I would love to separate states that is ***simply local*** (no messages needed) and some that is via redux-toolkit (***global***, by message so that everyone who subscribe the changes can notice).
+It might be good or bad, as a react developer I would love to have:
+
+- Separated states that are ***simply local*** (no messages needed) and 
+- Some states are ***global*** via redux-toolkit, updated by message so that everyone who subscribe the changes can notice.
+
+
