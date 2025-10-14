@@ -24,16 +24,18 @@ yarn add @prisma/client@4.8.0
 
 This is for building `rust` entites code based on our `schema.prisma`.
 
-```bash
-# Install with SQLite support (add other databases as needed)
-cargo install --git https://github.com/Brendonovich/prisma-client-rust \
---tag 0.6.11 \
-prisma-cli \
---features sqlite \˛
---force
-# Create symlink for cargo subcommand
-ln -s ~/.cargo/bin/prisma ~/.cargo/bin/cargo-prisma
-```
+1. Install with SQLite support (add other databases as needed)
+    ```bash
+    cargo install --git https://github.com/Brendonovich/prisma-client-rust \
+    --tag 0.6.11 \
+    prisma-cli \
+    --features sqlite \˛
+    --force
+    ```
+2. Create symlink for cargo subcommand
+    ```bash
+    ln -s ~/.cargo/bin/prisma ~/.cargo/bin/cargo-prisma
+    ```
 
 Available database features:
 - `sqlite` - SQLite
@@ -47,12 +49,11 @@ Available database features:
 
 ```toml
 [dependencies]
-prisma-client-rust = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.11" }
-prisma-client-rust-cli = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.11" }
+prisma-client-rust = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.11", default-features = false, features = ["sqlite", "migrations"] }
 serde = { version = "1.0", features = ["derive"] }
 tokio = { version = "1.0", features = ["full"] }
 [build-dependencies]
-prisma-client-rust-cli = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.11", features = ["sqlite"] }
+prisma-client-rust-cli = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.11" }
 ```
 
 ##### Create `build.rs` in project root
@@ -256,9 +257,10 @@ use prisma::PrismaClient;
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Create client (reads connection string from schema.prisma)
     let client = prisma::new_client().await?;
+    
     // Or specify custom URL at runtime
-    // let client = prisma::new_client_with_url("file:./my-
-    database.db").await?;
+    // let client = prisma::new_client_with_url("file:./my-database.db").await?;
+    
     // Now use the client for queries
     Ok(())
 }

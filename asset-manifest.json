@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.c0e12272.chunk.css",
-    "main.js": "/static/js/main.625278af.chunk.js",
+    "main.js": "/static/js/main.2c62d6fa.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.3ce13a85.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.01427e8e.chunk.js": "/static/js/2.01427e8e.chunk.js",
@@ -416,7 +416,7 @@
     "static/media/424-verification-transaction copy 2.md": "/static/media/424-verification-transaction copy 2.58bcf4b9.md",
     "static/media/425-open-html.md": "/static/media/425-open-html.1c3e4b11.md",
     "static/media/426-Iced.md": "/static/media/426-Iced.555da771.md",
-    "static/media/427-prisma-in-gui.md": "/static/media/427-prisma-in-gui.849608c0.md",
+    "static/media/427-prisma-in-gui.md": "/static/media/427-prisma-in-gui.5d012a03.md",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
     "static/media/Midterm_Review_limsupinf.1e2193c7.pdf": "/static/media/Midterm_Review_limsupinf.1e2193c7.pdf",
@@ -470,6 +470,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.01427e8e.chunk.js",
     "static/css/main.c0e12272.chunk.css",
-    "static/js/main.625278af.chunk.js"
+    "static/js/main.2c62d6fa.chunk.js"
   ]
 }
