@@ -29,7 +29,7 @@ This is for building `rust` entites code based on our `schema.prisma`.
 cargo install --git https://github.com/Brendonovich/prisma-client-rust \
 --tag 0.6.11 \
 prisma-cli \
---features sqlite \
+--features sqlite \˛
 --force
 # Create symlink for cargo subcommand
 ln -s ~/.cargo/bin/prisma ~/.cargo/bin/cargo-prisma
@@ -82,7 +82,7 @@ npx prisma init --datasource-provider sqlite
 ```prisma
 generator client {
   provider = "cargo prisma"
-  output   = "../src/dev-database.rs"
+  output   = "../src/prisma.rs"
 }
 
 datasource db {

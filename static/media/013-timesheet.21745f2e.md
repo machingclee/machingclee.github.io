@@ -57,7 +57,7 @@ date: 2024-03-11
   [![](/assets/img/2024-02-18-17-58-57.png)](/assets/img/2024-02-18-17-58-57.png)
 
 
-#### Why this Project?
+
 
 #### Repository
 
@@ -77,6 +77,10 @@ date: 2024-03-11
   [![](/assets/img/2024-02-18-18-43-28.png)](/assets/img/2024-02-18-18-43-28.png)
 
   
+
+
+#### Why this Project?
+
 
 
 
@@ -116,4 +120,3 @@ For example, 8 people raiding for an ***ultimate dungeon*** in FF14 have to comm
 
 
   
-
