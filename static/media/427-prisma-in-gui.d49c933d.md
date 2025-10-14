@@ -480,6 +480,9 @@ let counters = client
     .await?;
 ```
 
+
+
+
 ##### String Filters
 
 ```rust
@@ -538,7 +541,7 @@ let count = client
 println!("Total active counters: {}", count);
 ```
 
-#### Transactions
+##### Transactions
 
 
 ```rust
@@ -567,7 +570,7 @@ let result = client
 println!("Created user {} and counter {}", result.0.id, result.1.id);
 ```
 
-#### Raw SQL Queries
+##### Raw SQL Queries
 
 ```rust
 use prisma_client_rust::raw;
@@ -592,6 +595,47 @@ let affected = client
 
 println!("Updated {} rows", affected);
 ```
+
+##### Left Joins over Association Table
+Suppose that we have the following tables:
+
+![](/assets/img/2025-10-14-09-21-36.png)
+
+Then to get all scripts belonging to a folder:
+
+```rust
+pub fn get_all_scripts_of_folder(&self, folder_id: i32) -> Vec<prisma::shell_script::Data> {
+    let runtime = tokio::runtime::Runtime::new().unwrap();
+
+    let scripts = runtime
+        .block_on(async move {
+            // Query the folder with all related scripts through the junction table
+            self.db
+                .scripts_folder()
+                .find_unique(prisma::scripts_folder::id::equals(folder_id))
+                .with(
+                    prisma::scripts_folder::rel_scriptsfolder_shellscript::fetch(vec![])
+                        .with(prisma::rel_scriptsfolder_shellscript::shell_script::fetch()),
+                )
+                .exec()
+                .await
+        })
+        .unwrap();
+
+    // Extract the shell scripts from the joined data
+    if let Some(folder) = scripts {
+        folder
+            .rel_scriptsfolder_shellscript
+            .unwrap_or_default()
+            .into_iter()
+            .filter_map(|rel| rel.shell_script.map(|s| *s))
+            .collect()
+    } else {
+        vec![]
+    }
+}
+```
+
 
 #### Complete Example: Iced App with Prisma
 
