@@ -88,7 +88,6 @@ Here we have returned two results to frontend to accomplish pagination:
 ##### Component for Pagination
 ###### Implementation
 In the following we use some of the elements from `shadcn`:
-
 ```tsx
 import {
     Pagination,
