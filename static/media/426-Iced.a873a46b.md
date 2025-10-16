@@ -3,7 +3,7 @@ title: "Iced: First Trial to GUI Application in Rust"
 date: 2025-10-13
 id: blog0426
 tag: rust, iced
-toc: toc
+toc: true
 intro: We introduce the message system in iced.
 img: /assets/img/2025-10-14-02-25-45.png
 offsety: 4

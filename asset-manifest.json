@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.c0e12272.chunk.css",
-    "main.js": "/static/js/main.f4b85f7d.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.27c66ca8.js",
+    "main.js": "/static/js/main.8e08c619.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.d012d15d.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.63a4213f.chunk.js": "/static/js/2.63a4213f.chunk.js",
-    "static/js/3.a7723725.chunk.js": "/static/js/3.a7723725.chunk.js",
-    "static/js/4.6e47cf48.chunk.js": "/static/js/4.6e47cf48.chunk.js",
-    "static/js/5.b87bfb76.chunk.js": "/static/js/5.b87bfb76.chunk.js",
+    "static/js/2.eb6985ab.chunk.js": "/static/js/2.eb6985ab.chunk.js",
+    "static/js/3.1f6f80e6.chunk.js": "/static/js/3.1f6f80e6.chunk.js",
+    "static/js/4.5ee6800d.chunk.js": "/static/js/4.5ee6800d.chunk.js",
+    "static/js/5.7b9f3ba8.chunk.js": "/static/js/5.7b9f3ba8.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.63a4213f.chunk.js.LICENSE.txt": "/static/js/2.63a4213f.chunk.js.LICENSE.txt",
-    "static/js/3.a7723725.chunk.js.LICENSE.txt": "/static/js/3.a7723725.chunk.js.LICENSE.txt",
-    "static/js/4.6e47cf48.chunk.js.LICENSE.txt": "/static/js/4.6e47cf48.chunk.js.LICENSE.txt",
+    "static/js/2.eb6985ab.chunk.js.LICENSE.txt": "/static/js/2.eb6985ab.chunk.js.LICENSE.txt",
+    "static/js/3.1f6f80e6.chunk.js.LICENSE.txt": "/static/js/3.1f6f80e6.chunk.js.LICENSE.txt",
+    "static/js/4.5ee6800d.chunk.js.LICENSE.txt": "/static/js/4.5ee6800d.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-housing.md": "/static/media/001-housing.37e59f9e.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.7f47349a.md",
@@ -25,6 +25,8 @@
     "static/media/003-react-native.md": "/static/media/003-react-native.6cb4bdd1.md",
     "static/media/004-countability-discontinuity.md": "/static/media/004-countability-discontinuity.82a19b79.md",
     "static/media/004-emotion_vgg.md": "/static/media/004-emotion_vgg.9904f7ca.md",
+    "static/media/004-macbook.md": "/static/media/004-macbook.f7ab41c9.md",
+    "static/media/005-cangjie-punctuation.md": "/static/media/005-cangjie-punctuation.f30aad81.md",
     "static/media/005-conda-useful-commands.md": "/static/media/005-conda-useful-commands.58923fe0.md",
     "static/media/005-yolo-custom-training.md": "/static/media/005-yolo-custom-training.e084abf0.md",
     "static/media/006-qt-project-starter.md": "/static/media/006-qt-project-starter.c77b24e9.md",
@@ -415,9 +417,8 @@
     "static/media/423-verification-transaction copy.md": "/static/media/423-verification-transaction copy.0832ea73.md",
     "static/media/424-verification-transaction copy 2.md": "/static/media/424-verification-transaction copy 2.58bcf4b9.md",
     "static/media/425-open-html.md": "/static/media/425-open-html.1c3e4b11.md",
-    "static/media/426-Iced.md": "/static/media/426-Iced.555da771.md",
+    "static/media/426-Iced.md": "/static/media/426-Iced.a873a46b.md",
     "static/media/427-prisma-in-gui.md": "/static/media/427-prisma-in-gui.5d012a03.md",
-    "static/media/428-macbook.md": "/static/media/428-macbook.c7ca77e4.md",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
     "static/media/Midterm_Review_limsupinf.1e2193c7.pdf": "/static/media/Midterm_Review_limsupinf.1e2193c7.pdf",
@@ -467,10 +468,10 @@
     "static/media/transformer-date-fomatter.18a2d3fc.pdf": "/static/media/transformer-date-fomatter.18a2d3fc.pdf"
   },
   "entrypoints": [
-    "static/js/runtime-main.27c66ca8.js",
+    "static/js/runtime-main.d012d15d.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.63a4213f.chunk.js",
+    "static/js/2.eb6985ab.chunk.js",
     "static/css/main.c0e12272.chunk.css",
-    "static/js/main.f4b85f7d.chunk.js"
+    "static/js/main.8e08c619.chunk.js"
   ]
 }
