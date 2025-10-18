@@ -75,98 +75,59 @@ In [this article](/blog/article/Custom-Modal-Simplification) I have built a cust
   <Button type="primary">Add Staff</Button>
 </CustsomModalTrigger>
 ```
+Let's vibe-code one for react-native, the final result is  poseponed  to section [#implement].
 
-This component has done the following:
+##### Minimal Example
 
-1. We have a button defined as the `children`, ***on clicking*** it will pop-up a modal.
+Let's define a simple bottom sheet content:
 
-2. We have a trigger wrapping it, which defined the ***content*** of the modal.
-
-3. If you browse my source code, `AddUserModal` 
-    - can customize the text for submit/cancel button;
-
-    - can close the `Modal`;
-    
-    Because we have injected those functions  from `CustsomModalTrigger` (as you can see, `modalContent={(props) => ...` from the code block above).
-
-***Everything can be inline***, meaning that we can do code separation only when it is complex enough to be necessary.
-
-
-##### Let's Build one for React-Native
-
-Let's posepone the code implementation to section [#implement].
+```tsx
+const MyContent = ({ close, title }: BillieBottomSheetProps & { title: string }) => (
+    <View>
+        <Text>{title}</Text>
+        <Button onPress={close}>Close</Button>
+    </View>
+)
+```
 
 The final interface we have:
 
 ```tsx
-<CustomBottomSheetTrigger<OutputState, InputState>
-                                    //   ^^^^^ state you want to pass into bottomsheet, sometimes no state is needed
-    renderProps={{ title: "Delete Item", message: "Are you sure?" }}
-    renderComponent={ConfirmationDialog}
-    onClose={(confirmed) => console.log('Confirmed:', confirmed)}
-    enableBackdropDismiss={false} // Prevent closing when clicking backdrop
+<CustomBottomSheetTrigger 
+    renderComponent={(props) => <MyContent {...props} title="Hello" />}
 >
-    {(openSheet) => <Button onPress={openSheet}>Delete</Button>}
+    {(openSheet) => <Button onPress={openSheet}>Open</Button>}
 </CustomBottomSheetTrigger>
 ```
 
 
 
-##### Some Inline Example
+##### Example which helps set values
+
+Sometimes we want a bottom sheet to let users make selection, we want to set the state after the selection is done. 
+
+Now we simply pass a setter into the bottom sheet content:
 
 
-When everything is inline, `InputState` can be skipped as we don't need code separation:
-
-```tsx
-const function SomeComponent (props: ...) {
-    ...
-    const someList: Item[] = ...
-
-    // to be displayed in bottom sheet:                     
-    const optionList = ({
-            closeWithState     // vvvvv type for setState from bottom sheet
-        }: CustomBottomSheetProps<Item>) => {
+```tsx{8}
+<CustomBottomSheetTrigger
+    renderComponent={(props) => {
         return (
-            <View>
-                <FlatList
-                    data={someList}
-                    ...
-                    renderItem={({ item }) => {
-                        return (
-                            <Pressable
-                                style={styles.optionItem}
-                                onPress={() => {
-                                    closeWithState(item)
-                                }}
-                            >
-                                {item...}
-                            </Pressable>
-                        )
-                    }}
-                />
-            </View>
+            <ValueOptionsList
+                {...props}
+                customField={customField}
+                initialValueIds={selectedValueIds}
+                setValueIds={updateValues}
+            />
         )
-    }
-    return (
-        <View style={styles.inputContainer}>
-            <CustomBottomSheetTrigger<Item>
-                renderComponent={optionList}
-
-                // closeWithState we call this:
-                onClose={(item) => { setItem(item) }}
-            >
-                {(openSheet) => (
-                    <Pressable
-                        onPress={openSheet}
-                    >
-                       {... some content}
-                    </Pressable>
-                )}
-            </CustomBottomSheetTrigger>
-        </View>
-    )
-}
-
+    }}
+>
+    {(openSheet) => (
+        <Pressable onPress={openSheet}>
+            {selectedValueIds ...}
+        </Pressable>
+    )}
+<CustomeBottomSheetTrigger>
 ```
 
 
@@ -190,43 +151,19 @@ import {
 } from "react"
 import { TouchableOpacity, ViewStyle } from "react-native"
 
-export type CustomBottomSheetProps<TInternalState = void, TExternalState = void> = {
-    closeWithState: (data: TInternalState) => void
+export type BillieBottomSheetProps = {
     close: () => void
-    renderProps: TExternalState
 }
 
-export const CustomBottomSheetTrigger = <
-    TInternalState = void,
-    TExternalState = void /* this types optional because the renderProps is optional*/,
->(props: {
+export const CustomBottomSheetTrigger = (props: {
     style?: ViewStyle
-    renderProps?: TExternalState
-    renderComponent: ComponentType<CustomBottomSheetProps<TInternalState, TExternalState | void>>
-    onClose?: (internalState?: TInternalState) => void
+    renderComponent: ComponentType<BillieBottomSheetProps>
     children: ReactNode | ((openBottomSheet: () => void) => ReactNode)
     enableBackdropDismiss?: boolean
 }) => {
-    const {
-        style,
-        renderProps,
-        renderComponent: RenderComponent,
-        onClose: onClosed,
-        children,
-        enableBackdropDismiss = true,
-    } = props
+    const { style, renderComponent: RenderComponent, children, enableBackdropDismiss = true } = props
     const [open, setOpen] = useState(false)
     const modalRef = useRef<BottomSheetModal>(null)
-
-    const closeWithSetState = useCallback(
-        (data?: TInternalState) => {
-            modalRef.current?.dismiss()
-            if (onClosed) {
-                onClosed(data)
-            }
-        },
-        [onClosed],
-    )
 
     const closeOnly = useCallback(() => {
         modalRef.current?.dismiss()
@@ -287,9 +224,7 @@ export const CustomBottomSheetTrigger = <
                 onDismiss={handleDismiss}
                 ref={modalRef}
             >
-                <BottomSheetView>
-                    {open && <RenderComponent closeWithState={closeWithSetState} close={closeOnly} renderProps={renderProps} />}
-                </BottomSheetView>
+                <BottomSheetView>{open && <RenderComponent close={closeOnly} />}</BottomSheetView>
             </BottomSheetModal>
         </>
     )
