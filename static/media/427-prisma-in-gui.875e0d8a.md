@@ -3,7 +3,7 @@ title: Prisma with SQLite for GUI Application in Rust
 date: 2025-10-14
 id: blog0427
 tag: rust, prisma
-toc: toc
+toc: true
 intro: Record prisma setup for GUI application.
 ---
 

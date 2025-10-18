@@ -264,7 +264,7 @@ By ***creating a signature*** in line 61 we mean that
 1. We hash the message  (arbitrary length) into a 32 bytes value by `sha256`
 2. This hashed value is treated as an integer in 32 bytes, we do subsequent computation in ***256-bit prime field*** to create a pair of two 32 bytes value $(R,S)$ (interchangeably in `bytes` or `String`). 
 
-We will discuss more on the values $R,S$ in the next section.
+We will discuss more on the values $R,S$ in the section [#R-and-S].
 
 Note that when we try to verify the signature with the message (in our case, the transaction), we need to return the `transaction.signature` to an empty string. We will see that in line 67 below.
 
@@ -282,7 +282,8 @@ Note that when we try to verify the signature with the message (in our case, the
 This finishes the part to create a message to verify.
 
 
-###### Step 2. Reconstruct `Signature<NistP256>` from the signature
+###### Step 2. Reconstruct `Signature<NistP256>` from the signature {#R-and-S}
+
 
 Recall that from [study notes on elliptic curve](/blog/article/Elliptic-Curve-and-Operator-Overloading#The-Elliptic-Curve-Digital-Signature-Algorithm-(ECDSA)), a `signature` is a pair of two 32 bytes value (`String` or `[u8; 32]`) `[R | S]` computed from (backend) client side:
 

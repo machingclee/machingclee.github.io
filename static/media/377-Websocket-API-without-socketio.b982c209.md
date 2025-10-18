@@ -2,7 +2,7 @@
 title: "AWS Websocket-API 2: Complete Integration of React and Spring Boot using Websocket-API from API-Gateway"
 date: 2025-03-22
 id: blog0377
-tag: web-socket
+tag: web-socket, aws
 toc: true
 intro: "We discuss a reliable approach to connect websocket api from api-gateway."
 ---
@@ -106,7 +106,7 @@ const url = `${webSocketURL}?userId=${userId}&platform=${platform}`;
 new ReconnectingWebSocket(url);
 ```
 
-Here `ReconnectingWebSocket` is an enhanced version of `Websocket` that will be introduced soon in the upcoming section.
+Here `ReconnectingWebSocket` is an enhanced version of `Websocket` that will be imported in section [#ReconnectingWebSocket].
 
 ###### $disconnect
 
@@ -147,7 +147,7 @@ const deleteConnection = async (connectionId) => {
 
 #### Receive Data from Frontend (React)
 
-##### Define a custom hook to initiate websocket connection
+##### Define a custom hook to initiate websocket connection {#ReconnectingWebSocket}
 
 ```tsx-1{54}
 import ReconnectingWebSocket from "reconnecting-websocket"

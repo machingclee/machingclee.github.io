@@ -99,7 +99,7 @@ then we can spin up a web server locally by
 uvicorn main:app --host 0.0.0.0 --port 8080 --reload
 ```
 ##### Routing
-###### Router / Controller
+###### Router / Controller {#router-controller}
 
 In `fastapi` we don't have the concept of controllers (as in `nodejs express`). But we can mimic the idea by wrapping them into a class as follows:
 
@@ -205,7 +205,11 @@ apart from the route `/doctors/{doctor_id}` we have also defined the following a
 
 ##### Register the Router
 
-In the previous section we have defined `doctor_router = DoctorController.router` in `src/controller/doctor_controller.py`, now import it into `main.py` as follows:
+At the end of section [#router-controller] we have defined 
+```python
+doctor_router = DoctorController.router
+```
+in `src/controller/doctor_controller.py`, now import it into `main.py` as follows:
 
 ```py{10}
 from src.controller.doctor_controller import doctor_router
@@ -346,7 +350,7 @@ def get_db():
 
 
 
-##### Script to Reverse Engineer Existing Database into SqlAlchemy Entity Classes
+##### Script to Reverse Engineer Existing Database into SqlAlchemy Entity Classes {#script-section}
 
 - This python script is vibe-coded and has been experimented successfully for complicated usecases.
 
@@ -699,8 +703,7 @@ if __name__ == "__main__":
 
 ###### On relationship defined in this section
 
-Our <customanchor href="/blog/article/FastAPI-and-ORM-in-Python#Script-to-Reverse-Engineer-Existing-Database-into-SqlAlchemy-Entity-Classes">script section</customanchor> 
-has reverse-engineered all the relations for us. This session is simply for better understanding and recording.
+In section [#script-section] we have constructed a python script to  reverse-engineered all the relations for us. This session is simply for better understanding of the `sqlalchemy` library.
 
 
 ###### One to one/many via direct foreign key
@@ -809,7 +812,7 @@ is equivalent to
 db.query(Doctor).filter(Doctor.id == "some_doctor_id").{one, one_or_none, all}()
 ```
 
-To see how to return data from left-joined column in a controller response, see the section <customanchor href="/blog/article/FastAPI-and-SqlAlchemy-ORM-in-Python#Conversion-from-Entity-Class-to-BaseModel-DTO">Conversion from Entity Class to BaseModel DTO</customanchor> below.
+To see how to return data from left-joined column in a controller response, see the section [#to-base-dto] below.
 
 
 ###### `LEFT JOIN and where clause on joined table`
@@ -888,7 +891,7 @@ doctor_on_duty.center_discount = center_discount
 db.flush()
 ```
 
-##### Conversion from Entity Class to BaseModel DTO
+##### Conversion from Entity Class to BaseModel DTO {#to-base-dto}
 
 As in `JPA` we cannot return the entity classes directly in the return of a controller. We need to transform all related attributes into `pydantic.BaseModel` classes.
 

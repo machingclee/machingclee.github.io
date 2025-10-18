@@ -40,7 +40,7 @@ I was responsible to implement an algorithm to classify the defect type, if any,
   $$
   where the rusty-score threshold 0.6 is based on the evaluation of the model performance. It will change over time and is not fixed.
 
-#### Results 
+#### Results
 Interpretations of the Images:
 - Green boxes are ground truths
 - Blue boxes are predictions with the cls score attached right above

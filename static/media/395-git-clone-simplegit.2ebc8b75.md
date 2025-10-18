@@ -34,7 +34,7 @@ intro: "We discuss programmatic way to git push changes and git commit empty com
 
 #### Custom Nodejs Script
 
-We defer the messy detail of `GitUtil` to the last section.
+We defer the messy detail of `GitUtil` to the last section [#git-util].
 
 ##### new-functions.ts
 
@@ -92,7 +92,7 @@ Promise.all(promises).then((repoUrls) => {
 });
 ```
 
-##### GitUtil
+##### GitUtil {#git-util}
 
 This is merely a messy detail:
 
