@@ -75,9 +75,12 @@ In [this article](/blog/article/Custom-Modal-Simplification) I have built a cust
   <Button type="primary">Add Staff</Button>
 </CustsomModalTrigger>
 ```
-Let's vibe-code one for react-native, the final result is  poseponed  to section [#implement].
+Let's vibe-code a counterpart for react-native in section [#implement].
 
-##### Minimal Example
+
+##### Usage of `CustomBottomSheetTrigger`
+
+###### Minimal Example 
 
 Let's define a simple bottom sheet content:
 
@@ -102,7 +105,7 @@ The final interface we have:
 
 
 
-##### Example which helps set values
+###### Example which helps set values
 
 Sometimes we want a bottom sheet to let users make selection, we want to set the state after the selection is done. 
 
