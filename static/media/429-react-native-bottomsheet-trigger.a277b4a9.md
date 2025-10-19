@@ -64,7 +64,7 @@ Sometimes we even need to pass existing states into these `BottomSheet` componen
 
 
 #### The Solution
-##### What do we have in web?
+##### Motivation
 In [this article](/blog/article/Custom-Modal-Simplification) I have built a custom modal trigger with the help of `Modal` element from [ant-design's modal](https://ant.design/components/modal). The trigger has the following interface:
 
 
@@ -75,8 +75,9 @@ In [this article](/blog/article/Custom-Modal-Simplification) I have built a cust
   <Button type="primary">Add Staff</Button>
 </CustsomModalTrigger>
 ```
-Let's vibe-code a counterpart for react-native in section [#implement].
+We will be vibe-coding a counterpart for react-native in section [#implement].
 
+Let's first go through some examples on how to use it:
 
 ##### Usage of `CustomBottomSheetTrigger`
 
@@ -127,7 +128,7 @@ Now we simply pass a setter into the bottom sheet content:
 >
     {(openSheet) => (
         <Pressable onPress={openSheet}>
-            {selectedValueIds ...}
+            {display for selectedValueIds ...}
         </Pressable>
     )}
 <CustomeBottomSheetTrigger>
