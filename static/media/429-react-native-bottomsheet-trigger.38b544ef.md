@@ -83,16 +83,8 @@ Let's first go through some examples on how to use it:
 
 ###### Minimal Example 
 
-Let's define a simple bottom sheet content:
 
-```tsx
-const MyContent = ({ close, title }: BillieBottomSheetProps & { title: string }) => (
-    <View>
-        <Text>{title}</Text>
-        <Button onPress={close}>Close</Button>
-    </View>
-)
-```
+
 
 The final interface we have:
 
@@ -102,6 +94,15 @@ The final interface we have:
 >
     {(openSheet) => <Button onPress={openSheet}>Open</Button>}
 </CustomBottomSheetTrigger>
+```
+where 
+```tsx
+const MyContent = ({ close, title }: BillieBottomSheetProps & { title: string }) => (
+    <View>
+        <Text>{title}</Text>
+        <Button onPress={close}>Close</Button>
+    </View>
+)
 ```
 
 

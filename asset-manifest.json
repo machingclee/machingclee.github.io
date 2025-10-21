@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.c0e12272.chunk.css",
-    "main.js": "/static/js/main.dc817461.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.5ce6e6de.js",
+    "main.js": "/static/js/main.3e5e3fa1.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.6b0bdb02.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.320aaa51.chunk.js": "/static/js/2.320aaa51.chunk.js",
-    "static/js/3.34a981a5.chunk.js": "/static/js/3.34a981a5.chunk.js",
-    "static/js/4.f634f641.chunk.js": "/static/js/4.f634f641.chunk.js",
-    "static/js/5.976873c1.chunk.js": "/static/js/5.976873c1.chunk.js",
+    "static/js/2.8ef712ac.chunk.js": "/static/js/2.8ef712ac.chunk.js",
+    "static/js/3.06987c2a.chunk.js": "/static/js/3.06987c2a.chunk.js",
+    "static/js/4.1043b774.chunk.js": "/static/js/4.1043b774.chunk.js",
+    "static/js/5.d1eaac06.chunk.js": "/static/js/5.d1eaac06.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.320aaa51.chunk.js.LICENSE.txt": "/static/js/2.320aaa51.chunk.js.LICENSE.txt",
-    "static/js/3.34a981a5.chunk.js.LICENSE.txt": "/static/js/3.34a981a5.chunk.js.LICENSE.txt",
-    "static/js/4.f634f641.chunk.js.LICENSE.txt": "/static/js/4.f634f641.chunk.js.LICENSE.txt",
+    "static/js/2.8ef712ac.chunk.js.LICENSE.txt": "/static/js/2.8ef712ac.chunk.js.LICENSE.txt",
+    "static/js/3.06987c2a.chunk.js.LICENSE.txt": "/static/js/3.06987c2a.chunk.js.LICENSE.txt",
+    "static/js/4.1043b774.chunk.js.LICENSE.txt": "/static/js/4.1043b774.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-housing.md": "/static/media/001-housing.37e59f9e.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.7f47349a.md",
@@ -419,8 +419,9 @@
     "static/media/425-open-html.md": "/static/media/425-open-html.1c3e4b11.md",
     "static/media/426-Iced.md": "/static/media/426-Iced.a873a46b.md",
     "static/media/427-prisma-in-gui.md": "/static/media/427-prisma-in-gui.875e0d8a.md",
-    "static/media/428-egui-notes.md": "/static/media/428-egui-notes.0f3b9dad.md",
-    "static/media/429-react-native-bottomsheet-trigger.md": "/static/media/429-react-native-bottomsheet-trigger.a277b4a9.md",
+    "static/media/428-egui-notes-I.md": "/static/media/428-egui-notes-I.a0d4ddf9.md",
+    "static/media/429-react-native-bottomsheet-trigger.md": "/static/media/429-react-native-bottomsheet-trigger.38b544ef.md",
+    "static/media/430-egui-notes-II.md": "/static/media/430-egui-notes-II.0d484ad3.md",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
     "static/media/Midterm_Review_limsupinf.1e2193c7.pdf": "/static/media/Midterm_Review_limsupinf.1e2193c7.pdf",
@@ -470,10 +471,10 @@
     "static/media/transformer-date-fomatter.18a2d3fc.pdf": "/static/media/transformer-date-fomatter.18a2d3fc.pdf"
   },
   "entrypoints": [
-    "static/js/runtime-main.5ce6e6de.js",
+    "static/js/runtime-main.6b0bdb02.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.320aaa51.chunk.js",
+    "static/js/2.8ef712ac.chunk.js",
     "static/css/main.c0e12272.chunk.css",
-    "static/js/main.dc817461.chunk.js"
+    "static/js/main.3e5e3fa1.chunk.js"
   ]
 }
