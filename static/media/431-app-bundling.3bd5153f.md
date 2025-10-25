@@ -1,12 +1,12 @@
 ---
-title: "Stuy Notes of `egui` Part III: App Bundling"
+title: "Study Notes of `egui` Part III: App Bundling"
 date: 2025-10-25
 id: blog0431
 tag: rust, egui
 toc: true
 intro: Study how to bundle an application.
 ---
-#### Release Build and App Bundling
+#### The Release Build and its Problem
 
 In an `egui` application we can build it via
 
@@ -16,7 +16,7 @@ cargo build --release
 <customimage src="/assets/img/2025-10-25-22-38-59.png" width="320"></customimage>
 
 
-The result will be an exectuable that will be ***first*** executed in shell script and ***then*** our GUI application.
+The result will be an executable that will be ***first*** executed in shell script and ***then*** display our GUI.
 
 
 [![](/assets/img/2025-10-25-22-40-46.png)](/assets/img/2025-10-25-22-40-46.png)
@@ -25,10 +25,10 @@ But of course we don't want our logging be exposed to the users. And any standar
 
 To remove this terminal, we need to bundle our application into a native macOS application (known as `.app`-bundle).
 
-#### .app-bundling
+#### App-bundling
 
 
-Create a `bundle_macos.sh` and write (change the highlighted for your own application:):
+Create a `bundle_macos.sh` and write (change the highlighted for your own application):
 
 
 ```bash{6-9}
@@ -153,15 +153,15 @@ echo ""
 ```
 
 
-#### The Warning: Apple could not verify "your-application" is free of malware
+#### The Warning: Apple could not verify "your-application" is free of malware ...
 
 <customimage src="/assets/img/2025-10-25-23-09-33.png" width="400"></customimage>
 
 Since we have not signed the application with an Apple Developer account, we are not able to share this application without the apple default warning. 
 
-For this, we need to execute:
+For this, any user that download our app-bundle will need to execute:
 
 ```bash
 xattr -rd com.apple.quarantine "Shell Script Manager.app"
 ```
-to remove the warning.
+in order to remove the warning (worse still, we ***cannot*** even run the application without doing so). 
