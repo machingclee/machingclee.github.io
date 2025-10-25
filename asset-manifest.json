@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.c0e12272.chunk.css",
-    "main.js": "/static/js/main.3e5e3fa1.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.6b0bdb02.js",
+    "main.js": "/static/js/main.1218794e.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.5fd92b13.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.8ef712ac.chunk.js": "/static/js/2.8ef712ac.chunk.js",
-    "static/js/3.06987c2a.chunk.js": "/static/js/3.06987c2a.chunk.js",
-    "static/js/4.1043b774.chunk.js": "/static/js/4.1043b774.chunk.js",
-    "static/js/5.d1eaac06.chunk.js": "/static/js/5.d1eaac06.chunk.js",
+    "static/js/2.8c0f0386.chunk.js": "/static/js/2.8c0f0386.chunk.js",
+    "static/js/3.588294d0.chunk.js": "/static/js/3.588294d0.chunk.js",
+    "static/js/4.9ce2fc30.chunk.js": "/static/js/4.9ce2fc30.chunk.js",
+    "static/js/5.22fd6e61.chunk.js": "/static/js/5.22fd6e61.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.8ef712ac.chunk.js.LICENSE.txt": "/static/js/2.8ef712ac.chunk.js.LICENSE.txt",
-    "static/js/3.06987c2a.chunk.js.LICENSE.txt": "/static/js/3.06987c2a.chunk.js.LICENSE.txt",
-    "static/js/4.1043b774.chunk.js.LICENSE.txt": "/static/js/4.1043b774.chunk.js.LICENSE.txt",
+    "static/js/2.8c0f0386.chunk.js.LICENSE.txt": "/static/js/2.8c0f0386.chunk.js.LICENSE.txt",
+    "static/js/3.588294d0.chunk.js.LICENSE.txt": "/static/js/3.588294d0.chunk.js.LICENSE.txt",
+    "static/js/4.9ce2fc30.chunk.js.LICENSE.txt": "/static/js/4.9ce2fc30.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-housing.md": "/static/media/001-housing.37e59f9e.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.7f47349a.md",
@@ -362,7 +362,7 @@
     "static/media/366-lambda-functions.md": "/static/media/366-lambda-functions.9539961e.md",
     "static/media/367-prune-lambdas.md": "/static/media/367-prune-lambdas.a7ef2609.md",
     "static/media/368-cli-bubble-tea.md": "/static/media/368-cli-bubble-tea.3000f69f.md",
-    "static/media/369-jpa-toolkit.md": "/static/media/369-jpa-toolkit.67639de1.md",
+    "static/media/369-jpa-toolkit.md": "/static/media/369-jpa-toolkit.7d57a84c.md",
     "static/media/370-deduplication.md": "/static/media/370-deduplication.14d5dedd.md",
     "static/media/371-speed-up-data-migration.md": "/static/media/371-speed-up-data-migration.49633ea2.md",
     "static/media/372-multiple-sshes.md": "/static/media/372-multiple-sshes.d1fa1973.md",
@@ -421,7 +421,8 @@
     "static/media/427-prisma-in-gui.md": "/static/media/427-prisma-in-gui.875e0d8a.md",
     "static/media/428-egui-notes-I.md": "/static/media/428-egui-notes-I.a0d4ddf9.md",
     "static/media/429-react-native-bottomsheet-trigger.md": "/static/media/429-react-native-bottomsheet-trigger.38b544ef.md",
-    "static/media/430-egui-notes-II.md": "/static/media/430-egui-notes-II.0d484ad3.md",
+    "static/media/430-egui-notes-II.md": "/static/media/430-egui-notes-II.b801e699.md",
+    "static/media/431-app-bundling.md": "/static/media/431-app-bundling.f93c0669.md",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
     "static/media/Midterm_Review_limsupinf.1e2193c7.pdf": "/static/media/Midterm_Review_limsupinf.1e2193c7.pdf",
@@ -471,10 +472,10 @@
     "static/media/transformer-date-fomatter.18a2d3fc.pdf": "/static/media/transformer-date-fomatter.18a2d3fc.pdf"
   },
   "entrypoints": [
-    "static/js/runtime-main.6b0bdb02.js",
+    "static/js/runtime-main.5fd92b13.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.8ef712ac.chunk.js",
+    "static/js/2.8c0f0386.chunk.js",
     "static/css/main.c0e12272.chunk.css",
-    "static/js/main.3e5e3fa1.chunk.js"
+    "static/js/main.1218794e.chunk.js"
   ]
 }

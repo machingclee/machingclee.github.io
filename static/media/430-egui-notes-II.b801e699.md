@@ -1,6 +1,6 @@
 ---
 title: "Study Notes of `egui` Part II: UI Components"
-date: 2025-10-19
+date: 2025-10-20
 id: blog0430
 tag: rust, egui
 toc: true

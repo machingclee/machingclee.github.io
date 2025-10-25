@@ -47,6 +47,9 @@ Then the following can make a post request:
 When we start from parent we don't need to specify the id used for the linkage.
 
 ```kotlin
+import org.hibernate.annotations.Cascade
+import org.hibernate.annotations.CascadeType
+
 class Team {
 	@OneToMany(
 		fetch = FetchType.LAZY,
@@ -54,6 +57,7 @@ class Team {
 		cascade = [CascadeType.ALL],
 		orphanRemoval = true
 	)
+	@Cascade(CascadeType.ALL)
 	var tags: MutableList<Tag> = mutableListOf()
 }
 ```
