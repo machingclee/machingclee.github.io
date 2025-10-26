@@ -6,6 +6,24 @@ tag: rust, egui
 toc: true
 intro: Record egui study from the point of view of react.
 ---
+
+<style>
+  video {
+    border-radius: 4px;
+  }
+  img {
+    max-width: 660px !important;
+  }
+</style>
+
+<Center>
+
+[![](/assets/img/2025-10-26-17-29-12.png)](/assets/img/2025-10-26-17-29-12.png)
+
+</Center>
+
+
+
 #### Project Repository
 
 - https://github.com/machingclee/2025-10-15-egui-experiment
@@ -111,9 +129,7 @@ fn folders(ui: &mut Ui) {
 ```
 
 
-The practice  is to instantiate the struct and render the `view` method immediately.
-
-We explain more detail of folder item in section [#folder-item].
+The highlighted is the `egui`-way modularize part of the code into a component. We explain more detail of folder item in section [#folder-item].
 
 ##### Component with Local State {#folder-item}
 

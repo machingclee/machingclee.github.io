@@ -6,6 +6,24 @@ tag: rust, egui
 toc: true
 intro: Study how to bundle an application.
 ---
+
+<style>
+  video {
+    border-radius: 4px;
+  }
+  img {
+    max-width: 660px !important;
+  }
+</style>
+
+<Center>
+
+[![](/assets/img/2025-10-26-17-29-12.png)](/assets/img/2025-10-26-17-29-12.png)
+
+</Center>
+
+
+
 #### The Release Build and its Problem
 
 In an `egui` application we can build it via

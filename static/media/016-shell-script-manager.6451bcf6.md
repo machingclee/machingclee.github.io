@@ -1,6 +1,6 @@
 ---
 id: portfolio016
-title: "Shell Script Manager"
+title: "GUI Desktop Application: Shell Script Manager"
 intro: Manage all shell scripts by a single application
 thumbnail: /assets/img/2025-10-26-13-26-23.png
 tech: Rust, Egui
@@ -60,50 +60,48 @@ date: 2025-10-25
         width:170px;
       }
     }
+
+
 </style>
 
 
 
-#### Result 
+
+<Center>
+
+[![](/assets/img/2025-10-26-17-29-12.png)](/assets/img/2025-10-26-17-29-12.png)
+
+</Center>
 
 
-<customvideo src="/assets/videos/demo-video-ssm.mp4"></customvideo>
-
-
-#### Tech Stack
-
-- `Rust` 
-- `egui`
 
 #### Project Repository
 
 - [2025-10-15-shell-script-manager](https://github.com/machingclee/2025-10-15-shell-script-manager)
 
 
-#### Purpose of this Program
-##### Switching between projects
+
+#### Result Video
 
 
-It is annoying to navigate between multiple projects (also different IDEs) especially when I need to manage both the frontend and backend, and  when:
 
-- There are ***multiple*** frontend projects (mobile and web) in the same project scope and
-- There are ***multiple*** backend projects (as micro-services).
-
-***Worse still***, I also need to navigate to their sourcetree (yes, I am much more used to GUI then the pure cmd-line interface). 
-
-Each context switch of moving to a different project always takes me about 10 seoncds.
+<customvideo src="/assets/videos/demo-video-ssm.mp4"></customvideo>
 
 
-##### Rewrite of old Qt application
 
-This project is initially my side project written in `Qt` 5.0:
+#### Tech Stack
 
-- [Portfolio: Multiple Projects Starter](/portfolio/Multiple-Projects-Starter). 
-
-That `Qt` application has a frontend layer (i.e., `QML`) as well as a core-backend layer in C++. But I have no knowledge in `Qt` any more so I decided to launch a new project.
+<rustssmtechstack></rustssmtechstack>
 
 
-#### Why `Egui`? Why not Other Choices such as `Tauri` and `Iced`?
+#### Why this Project?
+
+
+When there are many projects opened at the same time, finding and switching between them is a nightmare. Especially when I need to switch to different IDE and different project by SourceTree.
+
+
+
+#### Decision between `Egui`, `Tauri` and `Iced`
 
 
 ##### `Iced` 
@@ -127,12 +125,12 @@ To me `Iced` has the following disadvantages:
 ##### `Tauri`
 
 
-As a full-stack developer in web I am very used to `React`. 
+As a full-stack developer in web I am already very used to `React`. 
 
 However, when there are two languages involved (such as `Qt` we use `js` for `QML` and `C++` in backend) there is hardly the possibility of sharing type interfaces to both sides of the project.
 
 
-Unlike `Electron` we can use typescript on both sides, when it comes to data from backend, unsharable type-interfaces also lead to maintenance cost of syncing the interfaces in typescript and rust for data deserialization.
+Unlike `Electron` we can use typescript on both sides, when it comes to fetching data from the backend, unsharable type-interfaces also lead to maintenance cost of syncing the interfaces in typescript and rust for data deserialization.
 
 `Tauri` would complexify the application when there is ***no need*** for sophisticated UI that we benefits from webviews.
 
@@ -141,10 +139,10 @@ Unlike `Electron` we can use typescript on both sides, when it comes to data fro
 
 
 
-##### What `egui` stands out
+##### Why `egui` stands out
 
 
-
+I personally prefer `egui` for the following reasons when I make the study:
 
 - [Rich UI components and Rich Documentation (click me)](https://www.egui.rs/)
 
@@ -152,17 +150,16 @@ Unlike `Electron` we can use typescript on both sides, when it comes to data fro
 
 
 
-- It is ***immediate mode*** GUI application. Meaning that it draws the GUI on every rerender and any change of the variable would be reflected in the UI immediately. It is very convenient for simple change in the UI-state.
-
-  [***Here***](https://caseymuratori.com/blog_0001?fbclid=IwY2xjawNqnRRleHRuA2FlbQIxMABicmlkETFkMDNjM1FtVWlTSHhYSDk0AR6r52idJjc_z-1l57wyKPeh6X5eE8asIrYjF4IMaz93qC-wjil5Y6uqWdGJlQ_aem_Uz_6PQRZJBrIOuuVqd5W3g) is an article  which explains what is ***immediate*** and ***retained*** GUI code design. 
-
-- Easy to learn, we copy the code from [official website](https://www.egui.rs/) and starts implementing our own logic.
+- Easy to learn, we copy the code from [official website](https://www.egui.rs/) ***for whatever component*** we want and start implementing our own logic.
 
 - ***Same language*** in frontend and backend, enjoyable experience for the communication between frontend and backend.
 
 
+- Rust has built-in channel-and-message mechanism, making the ***Domain Driven Design***  easy to implement. Therefore we have clear separation of concerns by defining:
 
-Plus rust has built-in channel-and-message mechanism, making the ***domain driven design***  easy to implement.
+  - **Commands.** Only command can trigger backend/system state change.
+  - **Event.** Only event can trigger UI state change
+  - And each completion of a command will dispatch one or more events.
 
 
 #### References

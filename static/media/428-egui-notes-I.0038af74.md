@@ -7,6 +7,24 @@ toc: true
 intro: Record egui study from the point of view of react.
 ---
 
+<style>
+  video {
+    border-radius: 4px;
+  }
+  img {
+    max-width: 660px !important;
+  }
+</style>
+
+
+<Center>
+
+[![](/assets/img/2025-10-26-17-29-12.png)](/assets/img/2025-10-26-17-29-12.png)
+
+</Center>
+
+
+
 #### Project Repository
 
 - https://github.com/machingclee/2025-10-15-egui-experiment
