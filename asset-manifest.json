@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.c0e12272.chunk.css",
-    "main.js": "/static/js/main.0fc8c36f.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.5fd92b13.js",
+    "main.js": "/static/js/main.8e81285b.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.08865065.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.8c0f0386.chunk.js": "/static/js/2.8c0f0386.chunk.js",
-    "static/js/3.588294d0.chunk.js": "/static/js/3.588294d0.chunk.js",
-    "static/js/4.9ce2fc30.chunk.js": "/static/js/4.9ce2fc30.chunk.js",
-    "static/js/5.22fd6e61.chunk.js": "/static/js/5.22fd6e61.chunk.js",
+    "static/js/2.bc1851d9.chunk.js": "/static/js/2.bc1851d9.chunk.js",
+    "static/js/3.07bbf7e9.chunk.js": "/static/js/3.07bbf7e9.chunk.js",
+    "static/js/4.c8acd527.chunk.js": "/static/js/4.c8acd527.chunk.js",
+    "static/js/5.d8914a05.chunk.js": "/static/js/5.d8914a05.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.8c0f0386.chunk.js.LICENSE.txt": "/static/js/2.8c0f0386.chunk.js.LICENSE.txt",
-    "static/js/3.588294d0.chunk.js.LICENSE.txt": "/static/js/3.588294d0.chunk.js.LICENSE.txt",
-    "static/js/4.9ce2fc30.chunk.js.LICENSE.txt": "/static/js/4.9ce2fc30.chunk.js.LICENSE.txt",
+    "static/js/2.bc1851d9.chunk.js.LICENSE.txt": "/static/js/2.bc1851d9.chunk.js.LICENSE.txt",
+    "static/js/3.07bbf7e9.chunk.js.LICENSE.txt": "/static/js/3.07bbf7e9.chunk.js.LICENSE.txt",
+    "static/js/4.c8acd527.chunk.js.LICENSE.txt": "/static/js/4.c8acd527.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-housing.md": "/static/media/001-housing.37e59f9e.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.7f47349a.md",
@@ -44,6 +44,7 @@
     "static/media/014-mobileapp.md": "/static/media/014-mobileapp.6247f557.md",
     "static/media/015-disquz.md": "/static/media/015-disquz.8b4defa2.md",
     "static/media/015-tiemetable-system.md": "/static/media/015-tiemetable-system.4a967cd0.md",
+    "static/media/016-shell-script-manager.md": "/static/media/016-shell-script-manager.59697281.md",
     "static/media/016-spa-seo.md": "/static/media/016-spa-seo.4895dc0f.md",
     "static/media/017-pytorch-study-notes.md": "/static/media/017-pytorch-study-notes.c40bf7d6.md",
     "static/media/018-tensorflow-revisit.md": "/static/media/018-tensorflow-revisit.dbb44eac.md",
@@ -472,10 +473,10 @@
     "static/media/transformer-date-fomatter.18a2d3fc.pdf": "/static/media/transformer-date-fomatter.18a2d3fc.pdf"
   },
   "entrypoints": [
-    "static/js/runtime-main.5fd92b13.js",
+    "static/js/runtime-main.08865065.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.8c0f0386.chunk.js",
+    "static/js/2.bc1851d9.chunk.js",
     "static/css/main.c0e12272.chunk.css",
-    "static/js/main.0fc8c36f.chunk.js"
+    "static/js/main.8e81285b.chunk.js"
   ]
 }
