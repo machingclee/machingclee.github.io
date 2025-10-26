@@ -97,7 +97,10 @@ date: 2025-10-25
 #### Why this Project?
 
 
-When there are many projects opened at the same time, finding and switching between them is a nightmare. Especially when I need to switch to different IDE and different project by SourceTree.
+- When there are many projects opened at the same time, finding and switching between them are a nightmare. 
+- Especially when I need to switch to different IDEs and different sourcetree pages for pulling or creating merge requests.
+
+- Plus I want a project to ***get me more used*** to Rust programming.
 
 
 
@@ -108,11 +111,11 @@ When there are many projects opened at the same time, finding and switching betw
 
 The official website of iced is linked [***here***](https://iced.rs/).
 
-My first attemp to GUI application in rust starts with Iced:
+My first attemp to GUI application in rust starts with `Iced`:
 
 - [2025-10-13-Iced-gui-experiment](https://github.com/machingclee/2025-10-13-Iced-gui-experiment)
 
-To me `Iced` has the following disadvantages:
+To me `Iced` has the following ***disadvantages***:
 
 1. `Iced` is ***nice*** for the philosophy of mutating any application state by messages. But it is also ***bad*** in the sense that every tiny little UI state change must be processed by a message.
 
@@ -127,22 +130,28 @@ To me `Iced` has the following disadvantages:
 
 As a full-stack developer in web I am already very used to `React`. 
 
-However, when there are two languages involved (such as `Qt` we use `js` for `QML` and `C++` in backend) there is hardly the possibility of sharing type interfaces to both sides of the project.
-
-
-Unlike `Electron` we can use typescript on both sides, when it comes to fetching data from the backend, unsharable type-interfaces also lead to maintenance cost of syncing the interfaces in typescript and rust for data deserialization.
-
-`Tauri` would complexify the application when there is ***no need*** for sophisticated UI that we benefits from webviews.
+###### The bad :(
 
 
 
+- When it comes to fetching data from the backend, unlike `Electron` in which we can use typescript on both sides, ***unsharable type-interfaces*** will definitely lead to maintenance cost of syncing the type interfaces in typescript and struct interface in rust for data deserialization.
+
+- `Tauri` would complexify the application when there is ***no need*** for sophisticated UI that we benefit from webviews. 
+
+
+###### The good :)
+
+- But with `Tauri` the separation of concerns among the UI and backend will be much more clear.
+
+- When there is very complex customized UI logic, I would definitely go `Tauri` which brings the power of web technology!
 
 
 
-##### Why `egui` stands out
 
 
-I personally prefer `egui` for the following reasons when I make the study:
+##### Why `egui` stands out for Rust beginner
+
+From the point of view of learning a language, I personally prefer `egui` for the following reasons when I make the study:
 
 - [Rich UI components and Rich Documentation (click me)](https://www.egui.rs/)
 
@@ -160,6 +169,19 @@ I personally prefer `egui` for the following reasons when I make the study:
   - **Commands.** Only command can trigger backend/system state change.
   - **Event.** Only event can trigger UI state change
   - And each completion of a command will dispatch one or more events.
+
+
+
+
+
+#### Future Plan: Rewrite in `Tauri`
+
+- This project has already satisfied my learning purpose of getting familiar with Rust programming language.
+
+
+- I will rewrite this project in `Tauri` as I am not going to write graphics-intensive applications  (game tools, 3D viewers, data visualization), which are what `egui` good at. 
+
+- With my react skill I can get a more ***polished*** UI with $\frac{1}{10}$ the effort, and I can focus on features instead of fighting with UI implementation (in `egui` making an `egui::Frame` to have a "hover-and-highlight" effect is horribly difficult).
 
 
 #### References
