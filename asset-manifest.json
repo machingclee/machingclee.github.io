@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.38565740.chunk.css",
-    "main.js": "/static/js/main.e51b3c29.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.08865065.js",
+    "main.js": "/static/js/main.718520da.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.d3eff8d9.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.bc1851d9.chunk.js": "/static/js/2.bc1851d9.chunk.js",
-    "static/js/3.07bbf7e9.chunk.js": "/static/js/3.07bbf7e9.chunk.js",
-    "static/js/4.c8acd527.chunk.js": "/static/js/4.c8acd527.chunk.js",
-    "static/js/5.d8914a05.chunk.js": "/static/js/5.d8914a05.chunk.js",
+    "static/js/2.e1782521.chunk.js": "/static/js/2.e1782521.chunk.js",
+    "static/js/3.d820bb03.chunk.js": "/static/js/3.d820bb03.chunk.js",
+    "static/js/4.d16f2310.chunk.js": "/static/js/4.d16f2310.chunk.js",
+    "static/js/5.3f5ca895.chunk.js": "/static/js/5.3f5ca895.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.bc1851d9.chunk.js.LICENSE.txt": "/static/js/2.bc1851d9.chunk.js.LICENSE.txt",
-    "static/js/3.07bbf7e9.chunk.js.LICENSE.txt": "/static/js/3.07bbf7e9.chunk.js.LICENSE.txt",
-    "static/js/4.c8acd527.chunk.js.LICENSE.txt": "/static/js/4.c8acd527.chunk.js.LICENSE.txt",
+    "static/js/2.e1782521.chunk.js.LICENSE.txt": "/static/js/2.e1782521.chunk.js.LICENSE.txt",
+    "static/js/3.d820bb03.chunk.js.LICENSE.txt": "/static/js/3.d820bb03.chunk.js.LICENSE.txt",
+    "static/js/4.d16f2310.chunk.js.LICENSE.txt": "/static/js/4.d16f2310.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-housing.md": "/static/media/001-housing.37e59f9e.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.7f47349a.md",
@@ -44,9 +44,10 @@
     "static/media/014-mobileapp.md": "/static/media/014-mobileapp.6247f557.md",
     "static/media/015-disquz.md": "/static/media/015-disquz.8b4defa2.md",
     "static/media/015-tiemetable-system.md": "/static/media/015-tiemetable-system.4a967cd0.md",
-    "static/media/016-shell-script-manager.md": "/static/media/016-shell-script-manager.e4e74c34.md",
+    "static/media/016-shell-script-manager.md": "/static/media/016-shell-script-manager.610adc61.md",
     "static/media/016-spa-seo.md": "/static/media/016-spa-seo.4895dc0f.md",
     "static/media/017-pytorch-study-notes.md": "/static/media/017-pytorch-study-notes.c40bf7d6.md",
+    "static/media/017-shell-script-manager-II.md": "/static/media/017-shell-script-manager-II.83f9f02a.md",
     "static/media/018-tensorflow-revisit.md": "/static/media/018-tensorflow-revisit.dbb44eac.md",
     "static/media/019-colab.md": "/static/media/019-colab.87b0566b.md",
     "static/media/020-react-icons.md": "/static/media/020-react-icons.f21e3549.md",
@@ -422,7 +423,7 @@
     "static/media/427-prisma-in-gui.md": "/static/media/427-prisma-in-gui.875e0d8a.md",
     "static/media/428-egui-notes-I.md": "/static/media/428-egui-notes-I.0038af74.md",
     "static/media/429-react-native-bottomsheet-trigger.md": "/static/media/429-react-native-bottomsheet-trigger.38b544ef.md",
-    "static/media/430-egui-notes-II.md": "/static/media/430-egui-notes-II.f9d34446.md",
+    "static/media/430-egui-notes-II.md": "/static/media/430-egui-notes-II.ab8e4ab2.md",
     "static/media/431-app-bundling.md": "/static/media/431-app-bundling.8aba051e.md",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -473,10 +474,10 @@
     "static/media/transformer-date-fomatter.18a2d3fc.pdf": "/static/media/transformer-date-fomatter.18a2d3fc.pdf"
   },
   "entrypoints": [
-    "static/js/runtime-main.08865065.js",
+    "static/js/runtime-main.d3eff8d9.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.bc1851d9.chunk.js",
+    "static/js/2.e1782521.chunk.js",
     "static/css/main.38565740.chunk.css",
-    "static/js/main.e51b3c29.chunk.js"
+    "static/js/main.718520da.chunk.js"
   ]
 }
