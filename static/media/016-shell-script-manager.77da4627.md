@@ -3,7 +3,7 @@ id: portfolio016
 title: "Desktop App  in _Iced_ → _Egui_ → _Tauri_ → _Spring Boot Integration_"
 intro: Manage all shell scripts by a single application. This project also aims at learning gui application in rust, from Iced, then egui, and finally in tauri.
 thumbnail: /assets/img/2025-10-31-02-17-10.png
-tech: Rust, Egui, Tauri
+tech: Rust, Egui, Tauri, Spring Boot
 thumbTransX: 0
 thumbTransY: 0
 hoverImageHeight: 160
@@ -293,7 +293,9 @@ Database (SQLite)
 
 With Rust I have encountered difficulty in writing SQLs (although with the help of query builder via `Prisma`). I still found the pain that:
 
-1. Rust has no ***mature*** `ORM` in its ecosystem that is ***comparable*** to `JPA` in `Spring` world.
+1. Rust has no ***mature*** `ORM` in its ecosystem that is ***comparable*** to `JPA` in `Spring` world. I am fed up with ***manually*** adding and deleting records in association table between two or more tables:
+    
+    [folder_repository.rs](https://github.com/machingclee/2025-10-15-shell-script-manager/blob/main/src/db/repository/folder_repository.rs)
 
 2. When an application is not graphics-intensive, performance should not be placed at higher priority than the rigour of backend domain logic.
 
@@ -304,11 +306,92 @@ With Rust I have encountered difficulty in writing SQLs (although with the help 
 
 #### With Spring Boot Replacing the CRUD in Rust
 
+
+##### Launch Spring Boot Backend on Startup Process
+
 Since spring boot provides all the nice features to maintain the state of an application (system), I have moved all the backend state mangement from Tauri's rust backend to spring boot.
 
-On the launch of the Tauri app, it will also execute an ***executable*** that spins up the spring boot backend server. Detail can be found in [this article](/blog/article/Offline-Tauri-Application-with-Local-Spring-Boot-Backend-via-GraalVM).
+###### Result demonstration
+
+On the launch of our `Tauri` app, it will also execute an ***executable*** that spins up the spring boot backend server at a random port:
+
+<customimage src="/assets/img/2025-11-05-06-18-17.png" width="330"></customimage>
+
+[![](/assets/img/2025-11-05-06-20-46.png)](/assets/img/2025-11-05-06-20-46.png)
+
+###### Code implementation
+
+We do it by executing our `init_spring_boot` function in the entry point of our `Tauri` backend:
+
+```rust{19}
+fn init_spring_boot(app_handle: tauri::AppHandle) -> Result<(), String> {
+    SPRING_BOOT_PROCESS
+        .set(Arc::new(Mutex::new(None)))
+        .map_err(|_| "Failed to initialize Spring Boot process storage".to_string())?;
+
+    #[cfg(debug_assertions)]
+    let port = 7070;
+
+    #[cfg(not(debug_assertions))]
+    let port = find_available_port()?;
+
+    BACKEND_PORT
+        .set(port)
+        .map_err(|_| "Failed to set backend port".to_string())?;
+
+    #[cfg(not(debug_assertions))]
+    {
+        std::thread::spawn(move || {
+            if let Err(e) = start_spring_boot_backend(app_handle, port) {
+                eprintln!("Failed to start Spring Boot backend: {}", e);
+            }
+        });
+    }
+
+    Ok(())
+}
+``` 
+where
+```rust
+#[cfg(not(debug_assertions))]
+fn start_spring_boot_backend(app_handle: tauri::AppHandle, port: u16) -> Result<(), String> {
+    println!("Starting Spring Boot backend on port {}...", port);
+
+    let db_path = get_database_path(&app_handle)?;
+
+    let resource_path = app_handle
+        .path()
+        .resource_dir()
+        .map_err(|e| format!("Failed to get resource directory: {}", e))?;
+
+    let backend_dir = resource_path.join("resources").join("backend-spring");
+    let native_binary = backend_dir.join("backend-native");
+
+    if !native_binary.exists() {
+        return Err(format!("Native binary not found at {:?}", native_binary));
+    }
+
+    // Use GraalVM native image (no Java required!)
+    let child = Command::new(&native_binary)
+        .arg(format!("--server.port={}", port))
+        .arg(format!("--spring.datasource.url=jdbc:sqlite:{}", db_path))
+        .spawn()
+        .map_err(|e| format!("Failed to start Spring Boot backend: {}", e))?;
+
+    if let Some(process_mutex) = SPRING_BOOT_PROCESS.get() {
+        *process_mutex.lock().unwrap() = Some(child);
+    }
+
+    Ok(())
+}
+```
 
 The backend launches in 0.3s, it is fast enough as a desktop application:
 
 
 <customvideo src="/assets/videos/demo-graalvm.mp4"></customvideo>
+
+
+##### Full Detail of the Spring Boot Backed Version
+
+More detail can be found in [this article](/blog/article/Offline-Tauri-Application-with-Local-Spring-Boot-Backend-via-GraalVM).

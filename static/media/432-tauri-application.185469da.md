@@ -20,7 +20,7 @@ intro: Study how to bundle an application.
 ### Video Results
 
 
-#### Launch Application via `OpenJDK` and `java -jar` 
+#### Version 1: Launch Application via `OpenJDK` and `java -jar` 
 
 This video also demonstrate a spring boot backend being launched at a random port via `java -jar` command when the application get started.
 
@@ -31,7 +31,7 @@ This also requires user to have `openJDK` (or any other JDK) pre-installed, whic
 <customvideo src="/assets/videos/demo-jar.mp4"></customvideo>
 
 
-#### Launch Application via Executable by `GraalVM`
+#### Version 2: Improvement, Launch Application via Executable by `GraalVM`
 
 We go to the next step to build an executable to launch the backend, resulting in much faster launch speed (0.3s). 
 
@@ -85,13 +85,13 @@ shell-script-manager-tauri/
 │ │ └── slices/               # Redux state slices
 │ └── hooks/                  # Custom React hooks
 ```
-- We  use  `rtk-query` to manage our server (backend) state and `redux-toolkit` to manage our app state (like the *selected folder*, *boolean* to trigger UI animation, etc). 
+- We  use  `redux-toolkit/rtk-query` to manage our server (backend) state and use ***slices*** in  `redux-toolkit` to manage our app state (like the *selected folder*, *boolean* to trigger UI animation, etc). 
 
 - We also bring `shadcn` into the application as it provides us with customizable fancy components.
 
-Now in this application we have two backends:
+Now in this application we have two backends, we introduce them in [#tauri_backend] and [#spring_backend] respectively.
 
-##### The Tauri backend structure
+##### The Tauri backend structure {#tauri_backend}
 
 ```bash
 ├── src-tauri/                # Rust native layer
@@ -106,7 +106,7 @@ Now in this application we have two backends:
 - It also handles commands sent from the frontend when there is system-level request from the frontend (e.g., I need to execute shell script displayed in the frontend).
 
 
-##### The spring boot backend structure
+##### The spring boot backend structure {#spring_backend}
 ```bash
 ├── backend-spring/           # Spring Boot backend
 │ ├── src/main/kotlin/
@@ -120,18 +120,18 @@ Now in this application we have two backends:
 ```
 
 
-###### Difficult SQL in rust
+###### Tedious association table manipulation in Rust
 
-This spring boot layer is originally one of the layer in Tauri backend. However, doing CRUD in rust is not easy, even with query builder it eventually looks:
+This spring boot layer is previously a basic CRUD repository layer in Tauri backend. However, doing CRUD without good ORM in rust is ***very tedious***, even with query builder it eventually looks:
 
 - [folder_repository.rs](https://github.com/machingclee/2025-10-15-shell-script-manager/blob/main/src/db/repository/folder_repository.rs)
 
 
-Handling domain models ***is not*** the strength of rust, instead our good old friend `Spring Boot` shines in this area. 
+Handling domain models ***is not the strength*** of rust, instead our good old friend `JPA` in `Spring Boot` shines in this area. 
 
-###### Ease of CRUD in spring boot with DDD
+###### No more assocation manipulation in JPA with DDD
 
-Therefore we add a new layer to handle app-related domain logic. We ***don't even need to write query*** when our `@OneToMany` and `@ManyToOne` are properly written:
+Therefore we add a new layer to handle state-related domain logic. We ***don't even need to write query*** when our `@OneToMany` and `@ManyToOne` are properly written:
 
 - [FolderController.kt](https://github.com/machingclee/2025-10-27-shell-script-manager-tauri/blob/main/backend-spring/src/main/kotlin/com/scriptmanager/controller/FolderController.kt)
 
@@ -143,7 +143,7 @@ Because of Spring Boot, now we can bring `Domain Model` and `Value Object` into 
 
 #### Communication between React Frontend and Tauri Backend
 
-##### Dispatch command to Tauri backend
+##### Dispatch command from React frontend
 
 Suppose that I want to execute a command displayed in the frontend, we execute:
 
@@ -168,7 +168,7 @@ const handleRun = async () => {
 Next we handle this command in the Tauri backend:
 
 
-##### Receive command from React frontend
+##### Receive command in Tauri backend
 
 In Tauri backend we define a command handler
 
@@ -197,7 +197,7 @@ pub fn run() {
 }
 ```
 
-##### Tricky naming convention when parameter name has an "_"
+##### Tricky naming convention when backend's parameter name has an "_"
 
 When we have the following command handler:
 
@@ -214,31 +214,33 @@ async fn reorder_folders(
     Ok(())
 }
 ```
-we need to write:
+In frontend we need to write:
 ```ts{3}
 await invoke(
   'reorder_folders', 
   { fromIndex, toIndex }
 );
 ```
-this is because the popular serialization and deserialization crate in Rust `serde` expects the ***inputs to be in camal case***, and it will automatically translate the variables into snake_case.
+This is because the popular serialization and deserialization crate in Rust `serde` expects ***the inputs to be in camal case***, and it will automatically translate the variables into snake_case.
 
 
 ### Schema Managment and LLM Tooling
 
-#### Schema Definition {#schemadef}
-
+#### Schema Definition
+##### What LLM can do
 For existing schema migration tools in spring boot ecosystem we mainly have 
 - Flyway
 - Liquibase
 
 Both require ***manual scripting*** for any changes in the database schema and make corresponding code changes in the entity model. 
 
-But with `prisma` we can focus on schema design, we befinit from this approach by now being able to:
+But with `prisma` we can focus on schema design, we benefit from this approach by now being able to:
 
 1. Feed LLM model our clear schema definition;
-2. Let LLM generate/modify our entity model and;
-3. Let `prisma` generates the sql database migration script for the incremental update of the schema
+2. Let LLM generate/modify our entity model in spring boot and;
+3. Let `prisma` generate the script of database migration for the incremental update of the schema
+
+##### Define schema and embed it into Rust script  {#schemadef}
 
 Now our `schema.prisma` serves as a good documentation ***for LLM model*** of all of our tables:
 
@@ -248,10 +250,10 @@ generator client {
   output   = "../src/prisma.rs"
 }
 ```
-As long as we understand what is the generated sql migration script doing, it is no harm to let the framework generate it. We can even ***refine*** the sql to match what we need.
+As long as we understand what is the auto-generated sql migration script doing, it is no harm to let the framework generate it. We can even ***refine*** the sql to match what we need.
 
 
-Now let's translate the diagram drawn in section [#schema_diagram] into a schema definition:
+Let's translate the diagram drawn in section [#schema_diagram] into a schema definition:
 
 
 ```prisma-5
@@ -307,11 +309,11 @@ model shell_script {
 
 
 
-#### Embedded Schema Migration via `prisma.rs`
+#### Embed Schema Migration via `prisma.rs`
 
 Also note that we require `cargo prisma` in line 2-3 of section [#schemadef] to generate the schema related definition in `"../src/prisma.rs"`. 
 
-This will create an embedded SQL migration method in the `prisma.rs` file, and we can execute it to instantiate/update the database (see `init_db` below) in the startup script of our `tauri` application:
+This will create an embedded SQL migration method in the `prisma.rs` file, and we can execute it to instantiate/update the database (see `init_db` below) in the startup script of our `Tauri` backend:
 
 ```rust{16-20}
 mod prisma;
@@ -337,9 +339,7 @@ pub fn init_db(app_handle: &tauri::AppHandle) -> Result<(), String> {
     ...
 ```
 
-#### The Build Script
 
-- https://github.com/machingclee/2025-10-27-shell-script-manager-tauri/blob/main/build-production.sh
 
 
 #### Let LLM Generate Entity Classes from `schema.prisma`
@@ -386,7 +386,7 @@ Here we manually add the `@ManyToOne` annotations as well as the aggregate relat
 ### Bundling of the Application with Spring Boot Integration
 
 
-#### Summary of Build Steps
+#### Overview of Build Steps
 
 
 ```text
@@ -428,7 +428,9 @@ Here we manually add the `@ManyToOne` annotations as well as the aggregate relat
 └──────────────────────────────────────────────────┘
 ```
 
+#### The Build (Bundling) Script
 
+- https://github.com/machingclee/2025-10-27-shell-script-manager-tauri/blob/main/build-production.sh
 
 #### GraalVM for Building Spring Boot as an Executable
 
@@ -467,12 +469,12 @@ graalvmNative {
     }   
 }
 ```
-The inclusion of the plugin will create a gradle task for us:
+The inclusion of the gradle plugin will create a gradle task for us:
 ```bash
 export JAVA_HOME="/Library/Java/JavaVirtualMachines/graalvm-jdk-17/Contents/Home" && \\
       ./gradlew clean nativeCompile
 ```
-Note that we must have `graalvm` installed, for mac, we `brew install --cask graalvm-jdk`, as stated [here](https://formulae.brew.sh/cask/graalvm-jdk).
+Note that we must have `graalvm` installed, for mac, we `brew install --cask graalvm-jdk`, as stated in [brew page](https://formulae.brew.sh/cask/graalvm-jdk).
 
 ##### Registration for Class Reflection
 
@@ -622,3 +624,52 @@ Let's
 ```bash
 yarn bundle
 ```
+
+### Appendix
+
+#### On Various Sizes of the Application
+
+
+
+##### File Size
+
+- **Without Spring Boot.**  The applicatin is roughly 20MB.
+
+
+- **With Spring Boot.** The application now grows to 200MB:
+
+  [![](/assets/img/2025-11-05-06-59-02.png)](/assets/img/2025-11-05-06-59-02.png)
+
+
+##### Memory Consumption
+
+[![](/assets/img/2025-11-05-07-00-31.png)](/assets/img/2025-11-05-07-00-31.png)
+
+#### On Getting App Icon
+
+##### My suggestion
+
+I got my icon from https://icons8.com/
+
+
+##### Trick to get the icon of various sizes
+
+
+Once you have spotted your favourite icon, click on `Download`:
+
+[![](/assets/img/2025-11-05-07-12-41.png)](/assets/img/2025-11-05-07-12-41.png)
+
+You will find many download restrictions, but of which you can choose `Link (CDN)`:
+
+[![](/assets/img/2025-11-05-07-11-21.png)](/assets/img/2025-11-05-07-11-21.png)
+
+You can find the link `https://img.icons8.com/keek/100/documents-folder.png`
+
+![](/assets/img/2025-11-05-07-16-19.png)
+
+
+Now you can adjust the value from `100` $\to$ `1000` 😂:
+
+`https://img.icons8.com/keek/1000/documents-folder.png`
+
+![](/assets/img/2025-11-05-07-16-42.png)
