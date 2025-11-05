@@ -398,34 +398,34 @@ Here we manually add the `@ManyToOne` annotations as well as the aggregate relat
 │  2. Gradle Plugin: org.graalvm.buildtools.native│
 └────────────────┬────────────────────────────────┘
                  │
-┌────────────────▼────────────────────────────────┐
+┌────────────────▼─────────────────────────────────┐
 │  3. Run: ./gradlew nativeCompile                 │
-│     - Analyzes all reachable code               │
-│     - Resolves reflection/resources             │
-│     - Compiles to native machine code           │
-└────────────────┬────────────────────────────────┘
+│     - Analyzes all reachable code                │
+│     - Resolves reflection/resources              │
+│     - Compiles to native machine code            │
+└────────────────┬─────────────────────────────────┘
                  │
-┌────────────────▼────────────────────────────────┐
+┌────────────────▼─────────────────────────────────┐
 │  4. Output: backend-native (executable)          │
 │     Size: ~100MB                                 │
 │     Location: build/native/nativeCompile/        │
-└────────────────┬────────────────────────────────┘
+└────────────────┬─────────────────────────────────┘
                  │
-┌────────────────▼────────────────────────────────┐
+┌────────────────▼─────────────────────────────────┐
 │  5. Copy to Tauri Resources                      │
 │     → src-tauri/resources/backend-spring/        │
-└────────────────┬────────────────────────────────┘
+└────────────────┬─────────────────────────────────┘
                  │
-┌────────────────▼────────────────────────────────┐
+┌────────────────▼─────────────────────────────────┐
 │  6. Bundle with Tauri App                        │
 │     → Final .app includes native binary          │
-└────────────────┬────────────────────────────────┘
+└────────────────┬─────────────────────────────────┘
                  │
-┌────────────────▼────────────────────────────────┐
-│  7. Run in Production                            │
+┌────────────────▼────────────────────────────────────┐
+│  7. Run in Production                               │
 │     Rust executes: ./backend-native --server.port=X │
-│     No Java required!                            │
-└──────────────────────────────────────────────────┘
+│     No Java required!                               │
+└─────────────────────────────────────────────────────┘
 ```
 
 #### The Build (Bundling) Script
