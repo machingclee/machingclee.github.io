@@ -5,6 +5,7 @@ id: blog0431
 tag: react
 toc: true
 intro: We study the latest drag-drop library.
+img: /assets/img/2025-11-13-04-39-17.png
 ---
 
 <style>
@@ -16,6 +17,7 @@ intro: We study the latest drag-drop library.
     max-width: 660px !important;
   }
 </style>
+
 
 
 <Center>
@@ -30,9 +32,136 @@ intro: We study the latest drag-drop library.
 yarn add @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities
 ```
 
-### Skeleton
+### Skeleton with `DndContext` and `SortableContext`
 
-#### DndContext 
+
+#### Basic Strcuture 
+
+##### Variant 1: One Sortable Region
+
+###### Orchestration of components
+
+- In this form we orchestrate the components as follows:
+  ```ts
+  <DndContext {...props}>
+      <SortableContext items={[
+          "meaningful_prefix_item1Id", 
+          "meaningful_prefix_item2Id"
+      ]}>
+          <SortableItem item={item1} />
+          <SortableItem item={item2} />
+      </SortableContext>
+  </DndContext>
+  ```
+
+###### Standard props for `DndContext`
+
+Usually `props` is of the form 
+```ts
+{ sensors, collisionDetection, onDragStart, onDragEnd }
+```
+We defer the introduction of sensors to [#sensors]
+
+###### Data for dragging logic
+The `id`s provided in `items` props will be used to calculate the dragging logic/animation, the `itemId` will be bound with the dragging component as follows:
+
+```ts{3}
+const SortableItem () => {
+    const { ..., setNodeRef } = useSortable({
+        id: "meaningful_prefix_item1Id"
+        data: {
+            type: "script",
+            script: script,
+        },
+    })
+    return (
+        <div ref={setNodeRef}>
+        ...
+        </div>
+    )
+}
+```
+where we can provide metadata for the dragging/dropping collision item in `data` props.
+
+
+By experience the `id` provided in `useSortable` hook will be much more accessible to `data` when we handle our custom `collisionDetection` logic. Make sure to prepend a ***meaningful prefix*** whenever possible.
+
+###### What is `collisionDection` any way?
+Detailed definition will be dicussed in [#collisionDetection].
+
+By `collisionDetection` we mean the logic to determine ***which item*** to ***interact*** with ***when dragging*** another item. 
+
+  For example, when we drag an item to a region, which one should be considered as a collision? The folder? Or the item nested inside of the folder? Do we have priority? 
+
+The `collisionDetection` logic will directly affect the outcome (the `over` part) in 
+```ts
+const { active, over } = useDndContext();
+```
+or in `onDragEnd` callback:
+```ts
+// to be passed into DndContext
+const handleDragEnd = async (event: DragEndEvent) => {
+    const { active, over } = event;
+    ...  
+}
+```
+Now we can access our data by `{active, over}.data.current`.
+
+###### Recap before we dive deeper
+
+In general, two tasks are needed to be defined on our own:
+- `collisionDetection`: This relies heavily on our `id`'s in `items` prop, so provide meaningful prefix for the `id` in `useSortable` hook.
+
+- `onDragEnd`: What `API` to call and what state to change, so provide `data` in `useSortable` hook.
+
+##### Variant 2: Multiple Sortable Regions
+###### Orchestation {#simple_orchiestratgion_multi_regions}
+
+
+Standard usecase is like we have a list of items and we want to drag one item into a folder of another list of folders.
+
+The orchestration will be like
+
+```ts-1
+<DndContext
+    sensors={sensors}
+    collisionDetection={customCollisionDetection}
+    onDragStart={handleDragStart}
+    onDragEnd={handleDragEnd}
+>
+    {/* this is wrapped by a SortableContext */}
+    <SortableSubfolders 
+        folders={folders} 
+    />
+    {/*  this is wrapped by another SortableContext */}
+    <SortableScripts
+        items={items}
+        selectedFolderId={selectedFolderId}
+    />
+    {/* DragOverlay for smooth animations */}
+    <DragOverlay>
+        {activeId && activeType === "script" && (
+            <ScriptItem script={script} folderId={folderId} />
+        )}
+        {activeId && activeType === "folder" && (
+            <CollapsableFolder folder={folder} />
+        )}
+    </DragOverlay>
+</DndContext>
+```
+
+###### Dragging logic and animation across two regions
+
+Again the dragging collision logic and the drag-end logic need to be provided in `DndContext`. 
+
+Now to ensure smooth dragging animation, we need to disable the default animation in ***all*** `SortableContext`s
+
+- [See the file for detail](https://github.com/machingclee/2025-10-27-shell-script-manager-tauri/blob/main/src/app-component/FolderColumn/SortableFolderItem.tsx#L88)
+
+We then define what we to be dragged ***visually*** using `DragOveraly` component (line-17 to 24 in [#simple_orchiestratgion_multi_regions]). Our `collisionDetection` logic now is also a key to the real-time sorting logic.
+
+
+#### `DndContext` 
 
 The root component that manages the drag-and-drop state.
 
@@ -297,7 +426,7 @@ const handleDragEnd = async (event: DragEndEvent) => {
 ```
 
 
-#### SortableContext
+#### `SortableContext`
 
 This enables items within a list to be reordered.
 
