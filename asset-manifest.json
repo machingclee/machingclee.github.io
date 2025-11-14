@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.65111b73.chunk.css",
-    "main.js": "/static/js/main.3cbb6808.chunk.js",
+    "main.js": "/static/js/main.9684454b.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.e12022fe.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.d3869998.chunk.js": "/static/js/2.d3869998.chunk.js",
@@ -15,7 +15,7 @@
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-housing.md": "/static/media/001-housing.37e59f9e.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.e4db2167.md",
-    "static/media/002-Lazy-React-Router.md": "/static/media/002-Lazy-React-Router.0f5234e9.md",
+    "static/media/002-Lazy-React-Router.md": "/static/media/002-Lazy-React-Router.5092ddfe.md",
     "static/media/002-closure-of-interior.md": "/static/media/002-closure-of-interior.d61226c6.md",
     "static/media/002-secondary-school.md": "/static/media/002-secondary-school.ce6d1437.md",
     "static/media/002-wpf.md": "/static/media/002-wpf.5d8123a2.md",
@@ -424,7 +424,7 @@
     "static/media/429-react-native-bottomsheet-trigger.md": "/static/media/429-react-native-bottomsheet-trigger.73831062.md",
     "static/media/430-egui-notes-II.md": "/static/media/430-egui-notes-II.ee8b6f60.md",
     "static/media/431-app-bundling.md": "/static/media/431-app-bundling.75b2bfd5.md",
-    "static/media/432-tauri-application.md": "/static/media/432-tauri-application.5d0311e8.md",
+    "static/media/432-tauri-application.md": "/static/media/432-tauri-application.6ff9a08e.md",
     "static/media/433-drag-drop.md": "/static/media/433-drag-drop.c5e374fe.md",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -479,6 +479,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.d3869998.chunk.js",
     "static/css/main.65111b73.chunk.css",
-    "static/js/main.3cbb6808.chunk.js"
+    "static/js/main.9684454b.chunk.js"
   ]
 }

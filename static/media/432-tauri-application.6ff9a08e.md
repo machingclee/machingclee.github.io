@@ -2,7 +2,7 @@
 title: "Offline Tauri Application with Local Spring Boot Backend via GraalVM"
 date: 2025-11-02
 id: blog0431
-tag: rust, egui, springboot
+tag: tauri, springboot
 toc: true
 intro: Study how to bundle an application.
 ---
@@ -19,8 +19,7 @@ intro: Study how to bundle an application.
 
 ### Video Results
 
-
-#### Version 1: Launch Application via `OpenJDK` and `java -jar` 
+#### Version 1: Launch Application via `OpenJDK` and `java -jar`
 
 This video also demonstrate a spring boot backend being launched at a random port via `java -jar` command when the application get started.
 
@@ -30,13 +29,11 @@ This also requires user to have `openJDK` (or any other JDK) pre-installed, whic
 
 <customvideo src="/assets/videos/demo-jar.mp4"></customvideo>
 
-
 #### Version 2: Improvement, Launch Application via Executable by `GraalVM`
 
-We go to the next step to build an executable to launch the backend, resulting in much faster launch speed (0.3s). 
+We go to the next step to build an executable to launch the backend, resulting in much faster launch speed (0.3s).
 
 <customvideo src="/assets/videos/demo-graalvm.mp4"></customvideo>
-
 
 ### Project Repository
 
@@ -46,12 +43,12 @@ We go to the next step to build an executable to launch the backend, resulting i
 
 Detail documentation can be found in:
 
-
 - [Official website](https://v2.tauri.app/start/)
 
 But for us it is enough to know:
-- how to ***instantiate*** the project and 
-- how to ***communicate*** with the Tauri backend. 
+
+- how to **_instantiate_** the project and
+- how to **_communicate_** with the Tauri backend.
 
 Most of the documentation is more about how `tauri` is working under the hood, which is not of our interest if we just want to quickly build an app using this framework.
 
@@ -59,20 +56,20 @@ We start by executing
 
 ```bash
 yarn create tauri-app
-``` 
+```
 
 then we can follow the CLI to create a project using `React` in `Typescript`.
 
 ### About the Tauri Application
 
-
 #### Class and Entity Relational Diagram (Combined) {#schema_diagram}
 
 [![](/assets/img/2025-11-04-05-44-29.png)](/assets/img/2025-11-04-05-44-29.png)
 
-
 #### Project Structure
+
 ##### The frontend structure
+
 ```bash
 shell-script-manager-tauri/
 ├── src/                      # React frontend
@@ -85,7 +82,8 @@ shell-script-manager-tauri/
 │ │ └── slices/               # Redux state slices
 │ └── hooks/                  # Custom React hooks
 ```
-- We  use  `redux-toolkit/rtk-query` to manage our server (backend) state and use ***slices*** in  `redux-toolkit` to manage our app state (like the *selected folder*, *boolean* to trigger UI animation, etc). 
+
+- We use `redux-toolkit/rtk-query` to manage our server (backend) state and use **_slices_** in `redux-toolkit` to manage our app state (like the _selected folder_, _boolean_ to trigger UI animation, etc).
 
 - We also bring `shadcn` into the application as it provides us with customizable fancy components.
 
@@ -99,14 +97,15 @@ Now in this application we have two backends, we introduce them in [#tauri_backe
 │ ├── prisma/schema.prisma    # Database schema definition
 │ └── Cargo.toml              # Rust dependencies
 ```
-- This backend is in charge of OS-level interaction bewteen our desktop application and the system. 
+
+- This backend is in charge of OS-level interaction bewteen our desktop application and the system.
 
 - For example, the menu bar, the tray icons, and even the permission to drag our custom title bar, etc, are configed in our Tauri backend.
 
 - It also handles commands sent from the frontend when there is system-level request from the frontend (e.g., I need to execute shell script displayed in the frontend).
 
-
 ##### The spring boot backend structure {#spring_backend}
+
 ```bash
 ├── backend-spring/           # Spring Boot backend
 │ ├── src/main/kotlin/
@@ -119,27 +118,23 @@ Now in this application we have two backends, we introduce them in [#tauri_backe
 │ └── build.gradle.kts        # Gradle build configuration
 ```
 
-
 ###### Tedious association table manipulation in Rust
 
-This spring boot layer is previously a basic CRUD repository layer in Tauri backend. However, doing CRUD without good ORM in rust is ***very tedious***, even with query builder it eventually looks:
+This spring boot layer is previously a basic CRUD repository layer in Tauri backend. However, doing CRUD without good ORM in rust is **_very tedious_**, even with query builder it eventually looks:
 
 - [folder_repository.rs](https://github.com/machingclee/2025-10-15-shell-script-manager/blob/main/src/db/repository/folder_repository.rs)
 
-
-Handling domain models ***is not the strength*** of rust, instead our good old friend `JPA` in `Spring Boot` shines in this area. 
+Handling domain models **_is not the strength_** of rust, instead our good old friend `JPA` in `Spring Boot` shines in this area.
 
 ###### No more assocation manipulation in JPA with DDD
 
-Therefore we add a new layer to handle state-related domain logic. We ***don't even need to write query*** when our `@OneToMany` and `@ManyToOne` are properly written:
+Therefore we add a new layer to handle state-related domain logic. We **_don't even need to write query_** when our `@OneToMany` and `@ManyToOne` are properly written:
 
 - [FolderController.kt](https://github.com/machingclee/2025-10-27-shell-script-manager-tauri/blob/main/backend-spring/src/main/kotlin/com/scriptmanager/controller/FolderController.kt)
 
-Each request to a controller ***should have*** been handled by an application service layer (some may call it `usecase` in the `dotnet` community). For now since our application is in POC stage, the ugly pattern here will be refactored when our application grows.
+Each request to a controller **_should have_** been handled by an application service layer (some may call it `usecase` in the `dotnet` community). For now since our application is in POC stage, the ugly pattern here will be refactored when our application grows.
 
 Because of Spring Boot, now we can bring `Domain Model` and `Value Object` into the application, which is beneficial in maintaining the code base in the long run.
-
-
 
 #### Communication between React Frontend and Tauri Backend
 
@@ -160,13 +155,7 @@ const handleRun = async () => {
 };
 ```
 
-
-
-
-
-
 Next we handle this command in the Tauri backend:
-
 
 ##### Receive command in Tauri backend
 
@@ -179,6 +168,7 @@ async fn run_script(command: String) {
     open_terminal_with_command(command);
 }
 ```
+
 and register it globally:
 
 ```rust{4}
@@ -197,14 +187,14 @@ pub fn run() {
 }
 ```
 
-##### Tricky naming convention when backend's parameter name has an "_"
+##### Tricky naming convention when backend's parameter name has an "\_"
 
 When we have the following command handler:
 
 ```rust{3,4}
 #[tauri::command]
 async fn reorder_folders(
-    from_index: usize, 
+    from_index: usize,
     to_index: usize
 ) -> Result<(), String> {
     let repo = FolderRepository::new();
@@ -214,25 +204,30 @@ async fn reorder_folders(
     Ok(())
 }
 ```
+
 In frontend we need to write:
+
 ```ts{3}
 await invoke(
-  'reorder_folders', 
+  'reorder_folders',
   { fromIndex, toIndex }
 );
 ```
-This is because the popular serialization and deserialization crate in Rust `serde` expects ***the inputs to be in camal case***, and it will automatically translate the variables into snake_case.
 
+This is because the popular serialization and deserialization crate in Rust `serde` expects **_the inputs to be in camal case_**, and it will automatically translate the variables into snake_case.
 
 ### Schema Managment and LLM Tooling
 
 #### Schema Definition
+
 ##### What LLM can do
-For existing schema migration tools in spring boot ecosystem we mainly have 
+
+For existing schema migration tools in spring boot ecosystem we mainly have
+
 - Flyway
 - Liquibase
 
-Both require ***manual scripting*** for any changes in the database schema and make corresponding code changes in the entity model. 
+Both require **_manual scripting_** for any changes in the database schema and make corresponding code changes in the entity model.
 
 But with `prisma` we can focus on schema design, we benefit from this approach by now being able to:
 
@@ -240,9 +235,9 @@ But with `prisma` we can focus on schema design, we benefit from this approach b
 2. Let LLM generate/modify our entity model in spring boot and;
 3. Let `prisma` generate the script of database migration for the incremental update of the schema
 
-##### Define schema and embed it into Rust script  {#schemadef}
+##### Define schema and embed it into Rust script {#schemadef}
 
-Now our `schema.prisma` serves as a good documentation ***for LLM model*** of all of our tables:
+Now our `schema.prisma` serves as a good documentation **_for LLM model_** of all of our tables:
 
 ```prisma-1{2,3}
 generator client {
@@ -250,11 +245,10 @@ generator client {
   output   = "../src/prisma.rs"
 }
 ```
-As long as we understand what is the auto-generated sql migration script doing, it is no harm to let the framework generate it. We can even ***refine*** the sql to match what we need.
 
+As long as we understand what is the auto-generated sql migration script doing, it is no harm to let the framework generate it. We can even **_refine_** the sql to match what we need.
 
 Let's translate the diagram drawn in section [#schema_diagram] into a schema definition:
-
 
 ```prisma-5
 datasource db {
@@ -307,11 +301,9 @@ model shell_script {
 }
 ```
 
-
-
 #### Embed Schema Migration via `prisma.rs`
 
-Also note that we require `cargo prisma` in line 2-3 of section [#schemadef] to generate the schema related definition in `"../src/prisma.rs"`. 
+Also note that we require `cargo prisma` in line 2-3 of section [#schemadef] to generate the schema related definition in `"../src/prisma.rs"`.
 
 This will create an embedded SQL migration method in the `prisma.rs` file, and we can execute it to instantiate/update the database (see `init_db` below) in the startup script of our `Tauri` backend:
 
@@ -338,9 +330,6 @@ pub fn init_db(app_handle: &tauri::AppHandle) -> Result<(), String> {
             .expect("Failed to sync database schema");
     ...
 ```
-
-
-
 
 #### Let LLM Generate Entity Classes from `schema.prisma`
 
@@ -380,14 +369,12 @@ data class ShellScript(
     var scriptsFolder: ScriptsFolder? = null
 }
 ```
-Here we manually add the `@ManyToOne` annotations as well as the aggregate relations as LLM cannot easily understand it without knowing the class diagram (which we draw in section [#schema_diagram]).
 
+Here we manually add the `@ManyToOne` annotations as well as the aggregate relations as LLM cannot easily understand it without knowing the class diagram (which we draw in section [#schema_diagram]).
 
 ### Bundling of the Application with Spring Boot Integration
 
-
 #### Overview of Build Steps
-
 
 ```text
 ┌─────────────────────────────────────────────────┐
@@ -434,7 +421,6 @@ Here we manually add the `@ManyToOne` annotations as well as the aggregate relat
 
 #### GraalVM for Building Spring Boot as an Executable
 
-
 ##### The gradle task
 
 ```kotlin
@@ -458,7 +444,7 @@ graalvmNative {
         named("main") {
             imageName.set("backend-native")
             mainClass.set("com.scriptmanager.ApplicationKt")
-            
+
             buildArgs.add("--verbose")
             buildArgs.add("-H:+ReportExceptionStackTraces")
             buildArgs.add("--initialize-at-build-time=org.slf4j")
@@ -466,20 +452,20 @@ graalvmNative {
             buildArgs.add("-H:+AddAllCharsets")
             buildArgs.add("-H:EnableURLProtocols=http,https")
         }
-    }   
+    }
 }
 ```
+
 The inclusion of the gradle plugin will create a gradle task for us:
+
 ```bash
 export JAVA_HOME="/Library/Java/JavaVirtualMachines/graalvm-jdk-17/Contents/Home" && \\
       ./gradlew clean nativeCompile
 ```
+
 Note that we must have `graalvm` installed, for mac, we `brew install --cask graalvm-jdk`, as stated in [brew page](https://formulae.brew.sh/cask/graalvm-jdk).
 
 ##### Registration for Class Reflection
-
-
-
 
 ###### What to include manually
 
@@ -513,6 +499,7 @@ These are the external library that spring's (Ahead-of-Time) processing cannot s
 > "Please include the actual compiled machine code for this class AND keep all the metadata needed for reflection"
 
 ###### What is already included in the native version of `reflect-config.json`?
+
 Spring Boot's AOT (Ahead-of-Time) processing sees the annotations and generates reflection configuration automatically:
 
 ```bash
@@ -529,10 +516,10 @@ class ScriptController(  // <--- Spring sees this class name directly!
     }
 }
 ```
+
 `GraalVM` can see the spring-managed `reflect-config.json` at compile time:
 
 [![](/assets/img/2025-11-04-07-51-03.png)](/assets/img/2025-11-04-07-51-03.png)
-
 
 When combining two `reflect-config.json`'s, we have registered:
 
@@ -553,12 +540,6 @@ backend-native (native image)
     ├── Field information (metadata) ✅
     └── Reflection registry entry ✅
 ```
-
-
-
-
-
-
 
 #### Dynamic Port and Path for `DataSource` in Spring Boot
 
@@ -583,12 +564,13 @@ export const httpBaseQuery = (): BaseQueryFn<
       ...
 ```
 
-where ***in release mode*** the `backendPort` will be obtained from Tauri backend's `lib.rs`, which is responsible to:
+where **_in release mode_** the `backendPort` will be obtained from Tauri backend's `lib.rs`, which is responsible to:
+
 1. Search for available port for our spring boot backend
 2. Emit the available port to the frontend via IPC event system and let frontend update the redux store, where frontend listens via the API
-    ```ts
-    import { listen } from "@tauri-apps/api/event"
-    ```
+   ```ts
+   import { listen } from "@tauri-apps/api/event";
+   ```
 
 Moreover in our frontend redux store:
 
@@ -598,11 +580,10 @@ const initialState: ConfigState = {
 };
 ```
 
-
 Therefore:
 
 1. In `DEBUG` mode we always have a fixed port `7070`
-2. In `RELEASE` mode our port will be ***varying***.
+2. In `RELEASE` mode our port will be **_varying_**.
 
 Also, in Tauri backend we start our spring boot application via:
 
@@ -616,7 +597,6 @@ Also, in Tauri backend we start our spring boot application via:
 
 and eventually our spring boot application get this `server.port` and `db_path` at its launching process.
 
-
 #### Start Bundling
 
 Let's
@@ -629,17 +609,13 @@ yarn bundle
 
 #### On Various Sizes of the Application
 
-
-
 ##### File Size
 
-- **Without Spring Boot.**  The applicatin is roughly 20MB.
-
+- **Without Spring Boot.** The applicatin is roughly 20MB.
 
 - **With Spring Boot.** The application now grows to 200MB:
 
   [![](/assets/img/2025-11-05-06-59-02.png)](/assets/img/2025-11-05-06-59-02.png)
-
 
 ##### Memory Consumption
 
@@ -651,9 +627,7 @@ yarn bundle
 
 I got my icon from https://icons8.com/
 
-
 ##### Trick to get the icon of various sizes
-
 
 Once you have spotted your favourite icon, click on `Download`:
 
@@ -666,7 +640,6 @@ You will find many download restrictions, but of which you can choose `Link (CDN
 You can find the link `https://img.icons8.com/keek/100/documents-folder.png`
 
 ![](/assets/img/2025-11-05-07-16-19.png)
-
 
 Now you can adjust the value from `100` $\to$ `1000` 😂:
 
