@@ -1,7 +1,7 @@
 ---
 title: "Offline Tauri Application with Local Spring Boot Backend via GraalVM"
 date: 2025-11-02
-id: blog0431
+id: blog0432
 tag: tauri, springboot
 toc: true
 intro: Study how to bundle an application.

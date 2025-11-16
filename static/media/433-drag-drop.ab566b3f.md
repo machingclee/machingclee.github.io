@@ -1,7 +1,7 @@
 ---
 title: Dnd-Kit
 date: 2025-11-08
-id: blog0431
+id: blog0433
 tag: react
 toc: true
 intro: We study the latest drag-drop library.
@@ -39,10 +39,12 @@ yarn add @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities
 
 ##### Variant 1: One Sortable Region
 
-###### Orchestration of components
+<customimage src="/assets/img/2025-11-15-19-37-50.png" width="300"></customimage>
+
+###### Orchestration of components {#one_region_orchestration}
 
 - In this form we orchestrate the components as follows:
-  ```ts
+  ```ts-1
   <DndContext {...props}>
       <SortableContext items={[
           "meaningful_prefix_item1Id", 
@@ -63,7 +65,7 @@ Usually `props` is of the form
 We defer the introduction of sensors to [#sensors]
 
 ###### Data for dragging logic
-The `id`s provided in `items` props will be used to calculate the dragging logic/animation, the `itemId` will be bound with the dragging component as follows:
+Refer to line-3 to 4 of [#one_region_orchestration], the ids provided in `items` props will be used to calculate the dragging logic/animation, those ids will be connected to the dragging component as follows:
 
 ```ts{3}
 const SortableItem () => {
@@ -84,7 +86,7 @@ const SortableItem () => {
 where we can provide metadata for the dragging/dropping collision item in `data` props.
 
 
-By experience the `id` provided in `useSortable` hook will be much more accessible to `data` when we handle our custom `collisionDetection` logic. Make sure to prepend a ***meaningful prefix*** whenever possible.
+By experience the `id` provided in `useSortable` hook will be much more accessible than `data` when we handle our custom `collisionDetection` logic. Make sure to prepend a ***meaningful prefix*** whenever possible.
 
 ###### What is `collisionDection` any way?
 Detailed definition will be dicussed in [#collisionDetection].
@@ -115,6 +117,9 @@ In general, two tasks are needed to be defined on our own:
 - `onDragEnd`: What `API` to call and what state to change, so provide `data` in `useSortable` hook.
 
 ##### Variant 2: Multiple Sortable Regions
+
+[![](/assets/img/2025-11-15-19-48-00.png)](/assets/img/2025-11-15-19-48-00.png)
+
 ###### Orchestation {#simple_orchiestratgion_multi_regions}
 
 
