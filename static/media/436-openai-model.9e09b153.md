@@ -1,5 +1,5 @@
 ---
-title: OpenAI Model via Azure, Agents and Tools
+title: OpenAI Model via Azure, Clients and Tools
 date: 2025-11-16
 id: blog0436
 tag: python, llm, ai
