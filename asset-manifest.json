@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.2718d631.chunk.css",
-    "main.js": "/static/js/main.1c064e19.chunk.js",
+    "main.css": "/static/css/main.57540641.chunk.css",
+    "main.js": "/static/js/main.2d5ad50c.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.393c6103.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.6ba7b6ac.chunk.js": "/static/js/2.6ba7b6ac.chunk.js",
@@ -19,7 +19,7 @@
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-housing.md": "/static/media/001-housing.37e59f9e.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.e4db2167.md",
-    "static/media/002-Lazy-React-Router.md": "/static/media/002-Lazy-React-Router.5092ddfe.md",
+    "static/media/002-Lazy-React-Router.md": "/static/media/002-Lazy-React-Router.5c827363.md",
     "static/media/002-closure-of-interior.md": "/static/media/002-closure-of-interior.d61226c6.md",
     "static/media/002-secondary-school.md": "/static/media/002-secondary-school.ce6d1437.md",
     "static/media/002-wpf.md": "/static/media/002-wpf.5d8123a2.md",
@@ -499,7 +499,7 @@
     "static/js/runtime-main.393c6103.js",
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.6ba7b6ac.chunk.js",
-    "static/css/main.2718d631.chunk.css",
-    "static/js/main.1c064e19.chunk.js"
+    "static/css/main.57540641.chunk.css",
+    "static/js/main.2d5ad50c.chunk.js"
   ]
 }
