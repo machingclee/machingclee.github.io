@@ -1,10 +1,10 @@
 {
   "files": {
     "main.css": "/static/css/main.275b9572.chunk.css",
-    "main.js": "/static/js/main.cc9b47b8.chunk.js",
+    "main.js": "/static/js/main.884f874d.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.39961072.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.6f35c5e4.chunk.js": "/static/js/2.6f35c5e4.chunk.js",
+    "static/js/2.a08bd2e1.chunk.js": "/static/js/2.a08bd2e1.chunk.js",
     "static/js/3.02ced382.chunk.js": "/static/js/3.02ced382.chunk.js",
     "static/js/4.d936e4b2.chunk.js": "/static/js/4.d936e4b2.chunk.js",
     "static/js/5.446a5928.chunk.js": "/static/js/5.446a5928.chunk.js",
@@ -12,7 +12,7 @@
     "static/js/7.5f2c8c22.chunk.js": "/static/js/7.5f2c8c22.chunk.js",
     "static/js/8.788d43cd.chunk.js": "/static/js/8.788d43cd.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.6f35c5e4.chunk.js.LICENSE.txt": "/static/js/2.6f35c5e4.chunk.js.LICENSE.txt",
+    "static/js/2.a08bd2e1.chunk.js.LICENSE.txt": "/static/js/2.a08bd2e1.chunk.js.LICENSE.txt",
     "static/js/3.02ced382.chunk.js.LICENSE.txt": "/static/js/3.02ced382.chunk.js.LICENSE.txt",
     "static/js/4.d936e4b2.chunk.js.LICENSE.txt": "/static/js/4.d936e4b2.chunk.js.LICENSE.txt",
     "static/js/7.5f2c8c22.chunk.js.LICENSE.txt": "/static/js/7.5f2c8c22.chunk.js.LICENSE.txt",
@@ -434,7 +434,7 @@
     "static/media/436-openai-model.md": "/static/media/436-openai-model.cde27f60.md",
     "static/media/437-week2.md": "/static/media/437-week2.6e888e91.md",
     "static/media/438-expomodules.md": "/static/media/438-expomodules.ebd1dcbd.md",
-    "static/media/439-week4.md": "/static/media/439-week4.458fb21c.md",
+    "static/media/439-week4.md": "/static/media/439-week4.48a08993.md",
     "static/media/440-mermaid.md": "/static/media/440-mermaid.71ca5cc0.md",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -498,8 +498,8 @@
   "entrypoints": [
     "static/js/runtime-main.39961072.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.6f35c5e4.chunk.js",
+    "static/js/2.a08bd2e1.chunk.js",
     "static/css/main.275b9572.chunk.css",
-    "static/js/main.cc9b47b8.chunk.js"
+    "static/js/main.884f874d.chunk.js"
   ]
 }
