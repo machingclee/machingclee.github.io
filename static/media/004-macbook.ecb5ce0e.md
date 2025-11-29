@@ -75,7 +75,7 @@ defaults write com.apple.loginwindow DisableScreenLockImmediate -bool yes
 
 - 這會停用 "回到 lock screen" 這個功能，***包括 power button*** 以及 `ctrl + cmd + q`。
 
-- 這顥然需要被解決的，我們沒有了任何回到 lock screen 的手段。
+- 這顯然需要被解決的，我們沒有了任何回到 lock screen 的手段。
 
 #### Combo 3: `BettertouchTool` 跟 `Apple Script` {#combo3}
 
