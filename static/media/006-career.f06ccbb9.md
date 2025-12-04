@@ -8,7 +8,7 @@ intro: What I have done in these two years
 
 ![](/assets/img/2025-12-04-04-31-03.png)
 
-### 談談公司
+### 談談工作了兩年半的初創公司
 
 #### 剛加入公司的時候 
 
@@ -193,9 +193,9 @@ AI 工具令 project manager 更輕鬆，同時令 developer 更忙更難受。
 
 尋尋覓覓，最後得到兩個 offer。
 
-1. 一個是 I-Charge Solutions International (ICS) 的 Analyst Progammer；
+1. 一個是 I-Charge Solutions International (ICS) 的 Analyst Progammer
 
-2. 另一個是中國銀行的 System Analyst。
+2. 另一個是中國銀行的 System Analyst
 
 I-Charge 如其說是一個 offer，他更像是一個 rejection。其實我薪金加幅寫了 5000，是留一個空間讓對方壓價，你但凡加個 3000 到 4000 我都會立刻接受，畢竟我真的很想轉環境。I-Charge 出 offer 的時候直接把加幅壓到只剩 1000。這就像跟我開一個玩笑，我花時間請個假去面試，但對 對方 來說原來我就像一個小丑一樣，用來打發他的時間，用來浪費我的 annual leave。
 
