@@ -37,14 +37,16 @@ intro: What I have done in these two years
 
 5. 抱有過份的階級觀念。他技術不行，但又死愛面子。在我這些認真好學，經常鑽研技術的 developer 眼中，根本沒辦法跟這種不好好做學問的人相處。我記得我進公司第 4 個月吧，我差點要鬧辭職了。
 
-    後來如我所料，它在自己的 Linkedin 加上跟他完全沒關係的工作經驗，甚麼 React Native，甚麼 Lambda function，其實沒有一項跟他有關的。我早已看清這個人沒甚麼學術誠信，我從直覺上就覺得跟這種人合不來。
+    後來如我所料，它在自己的 Linkedin 加上跟他完全沒關係的工作經驗。我早已看清這個人沒甚麼學術誠信，我從直覺上就覺得跟這種人合不來。
 
 
 #### Tech Lead 的離去 
 
-這位 teah lead 既然覺得用 mysql 太複雜，而且更愛 mongodb，所以理所當然沒甚麼阻力之下我們都用上 express 加 mongodb 作後端 (這個 nodejs 後來被 spring boot 所取代，這又是這位 tech lead 離開後的一個故事了)。
+這位 Teah Lead 既然覺得用 mysql 太複雜，而且更愛 mongodb，所以理所當然沒甚麼阻力之下我們都用上 express 加 mongodb 作後端 (這個 nodejs 後來被 spring boot 所取代，這又是這位 tech lead 離開後的一個故事了)。
 
-這位 tech lead 愛加 table，加一些奇怪的 design，我又沒甚麼經驗去否定就隨他，以致寫着寫着整個 backend 愈來愈亂。他覺得自己可以做的貢獻太少，所以離職了。而我作為新人，沒甚麼從零自己弄後端的經驗，也只好邊學邊做。
+這位 Tech Lead 愛加 table，加一些奇怪的 design，我又沒甚麼經驗去否定就隨他，以致寫着寫着整個 backend 愈來愈亂。他覺得自己可以做的貢獻太少，所以離職了。而我作為新人，沒甚麼從零自己弄後端的經驗，也只好邊學邊做。
+
+後來我們使用 Mongodb 的方式根本與 relational db 方式沒差別，所以從 Mongodb 遷移到 PostgreSQL 去了。這遷移工作自然也是由我來做的。
 
 
 

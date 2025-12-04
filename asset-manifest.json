@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.97e4fa00.chunk.css",
-    "main.js": "/static/js/main.77fe96ed.chunk.js",
+    "main.js": "/static/js/main.2ddc8f30.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.4532e6af.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.1e645b04.chunk.js": "/static/js/2.1e645b04.chunk.js",
@@ -33,7 +33,7 @@
     "static/media/005-cangjie-punctuation.md": "/static/media/005-cangjie-punctuation.6ae8c071.md",
     "static/media/005-conda-useful-commands.md": "/static/media/005-conda-useful-commands.5760325f.md",
     "static/media/005-yolo-custom-training.md": "/static/media/005-yolo-custom-training.7c21d3e1.md",
-    "static/media/006-career.md": "/static/media/006-career.349f193c.md",
+    "static/media/006-career.md": "/static/media/006-career.cdfd164f.md",
     "static/media/006-qt-project-starter.md": "/static/media/006-qt-project-starter.b95660d8.md",
     "static/media/007-electron-next.md": "/static/media/007-electron-next.551c9013.md",
     "static/media/007-redux-saga.md": "/static/media/007-redux-saga.cb509a48.md",
@@ -501,6 +501,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.1e645b04.chunk.js",
     "static/css/main.97e4fa00.chunk.css",
-    "static/js/main.77fe96ed.chunk.js"
+    "static/js/main.2ddc8f30.chunk.js"
   ]
 }
