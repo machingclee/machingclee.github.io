@@ -21,7 +21,7 @@ intro: What I have done in these two years
 
 因為我有參與舊 project 的一些短期維護，所以看到這位 Lead 帶領下 project 的一些慘況以及令我對他抱有負面看法。
 
-1. 後端用的 Spring Boot，原本是使用 MySQL，然後有一半已經改為 MongoDB。查問轉換原因，Tech Lead 認為 business 經常改變，所以 MongoDB 這種沒有 schema 的 persistence solution 更適合，因為 schema 更具彈性，沒有 schema !（蛤？）。
+1. 後端用的 Spring Boot，原本是使用 MySQL，然後有一半已經改為 MongoDB。查問轉換原因，Tech Lead 認為 business 經常改變，所以 MongoDB 這種沒有 schema 的 persistence solution 更適合，因為 schema 更具彈性（蛤？）。
 
     我新 project 直接 Prisma 加 PostgreSQL 來給他一個打臉，這個新 project 跑了兩年，還是走得好好的，business 還一直改，用的是 Spring Boot。
 
