@@ -66,7 +66,7 @@ intro: What I have done in these two years
 
 1. 所有 backend (python, spring boot, nestjs, express) 的  CI/CD，其 pipeline (workflow) 的 `yml` file，以及提倡 github action 作為 CI/CD 工具 (後來 Gitlab 才宣佈不再支援香港)。
 
-2. 建立了兩竹㮔 Deployment 模式，一種是 Lambda Function，一種是 ECS。
+2. 建立了兩㮔 Deployment 模式，一種是 Lambda Function，一種是 ECS。
 
     Lambda Function 也有很多種類，有 python 的；有 nodejs 的；有 spring boot (snap-started) 的；有 unzipped size 超過 250 mb，經 docker image 跑的。每一種都經過很多時間研究。
 
@@ -140,7 +140,7 @@ intro: What I have done in these two years
 
 原型建立好後，老闆便開始持續招聘，把整個團隊擴展到 5 個 developer + 1 個 ai developer（有在香港本地的，有在大陸 fully remote 的）。而在這之中，我是全公司唯一一個香港人。
 
-在這些 developer 中，有些人是幾乎在前端幫不上忙的，就被派去做後端。而我這種甚六邊形戰士，甚麼都可以做得好的，就被迫做更多前端的工作。久而久之，我變成主力做 cloud 加前端，都不是我想要做的工作。
+在這些 developer 中，有些人是幾乎在前端幫不上忙的，就被派去做後端。而我這種六邊形戰士，甚麼都可以做得好的，就被迫做更多前端的工作。久而久之，我變成主力做 cloud 加前端，都不是我想要做的工作。
 
 
 ##### LovableUI 之亂，No Code Manager 變本加厲
