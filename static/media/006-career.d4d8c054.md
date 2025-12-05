@@ -7,6 +7,18 @@ intro: What I have done in these two years
 ---
 
 
+<style>
+  video {
+    border-radius: 4px;
+    max-width: 660px;
+  }
+  img {
+    max-width: 660px !important;
+  }
+</style>
+
+
+
 ### Office 環境的改變
 
 
@@ -155,9 +167,58 @@ Tech Lead 的離開令我不得不從後端，Schema Design，上 Cloud，走 La
 
 
 
-#### Developer 的擴充 (2024 年 8 月 ~ 2024 年 12 月)
+#### Developer 的擴充 (2024 年 6 月 ~ 2024 年 12 月)
 
-原型建立好後，老闆便開始持續招聘，把整個團隊擴展到 5 個 developer + 1 個 AI developer（有在香港本地的大陸人，有在大陸 fully remote 的。
+##### 第一次擔當 Interviewer 這角色
+
+因為缺人，同時我是公司唯二的 developer，所以就由我來尋找未來的伙伴了。因為我沒自信能帶領一個項目走向成功，所以要老闆盡可能也找一些資深的人來帶領我們。
+
+不想踩雷，所以要求比較嚴僅。有前端需要的話，***必須***有 Portfolio。有後端需要的話，會由我旁邊的 AI engineer 補充我沒問到的問題。有的 candidate 讀書成績好但沒甚麼經驗的，也會被老闆抓來讓我們看看。
+
+面試問題大概是從 CV 的工作內容中選幾項我感興趣的追問下去，看是不是我們需要的和有沒有在撒謊（學術誠信也是能力一部分）。除了 CV 外，我會問問自己遇到的痛點（討教嘛），
+
+總結而言，一個好的 interview 不單是快樂的，面試雙方可以互相指導大家不熟悉的地方，互相學習。我面試了兩類人，這兩類人我們要求的能力都不同︰
+
+1. **跟我一樣做 feature 為主的 Contributor.**
+
+
+
+    在我面試過的 candidate 之中，確實有很多地雷被我成功 filter 走。具體例子︰
+    
+    - **地雷 1.** 說自己手機 FYP project 在校拿了個 A grade，但沒辦法 demo (那你當時怎樣拿評分的？CV 上有就有機會問啊 ...，我們也在找做手機應用的人啊 ...)。
+
+    - **地雷 2.** CV 說會 Tensorflow。問他項目裏 model 是幹甚麼，他說是 image classification。問他這個 model 用過甚麼 layer，答不出來。我黑人問號？？？
+
+    - **地雷 3.** 我的 interview 有 live-coding 環節，跟我一起修改一個 hack.md 的檔案來達成某個 UI。
+    
+        我們要找有 react 經驗的，candidate CV 上也寫有 react 經驗，但怎麼組件寫好了，會出現好幾個
+
+        ```ts
+          const { state1, state2 } = useState()
+          const { state3, state4 } = useState()
+          ...
+        ```
+
+        之類的怪東西，花括號是甚麼鬼 ...。在 `<input />` box 利用 `onChange` 或 `useRef` 來 紀錄/拿取 輸入內容也做不到。
+
+    - **地雷 4.** 問後台有甚麼方法確認 requester 身份，竟然完全沒經驗，答不出任何方案（例如可以經 header / cookie 傳訊息 ...），更不用問要傳甚麼訊息了。
+
+    說來真的很神奇，十個 applicant 裏面，真的只有 1, 2 個會有 Portfolio。這明明是引導 interviewer 問你熟悉的問題的好機會。
+
+    
+
+
+
+2. **Tech Lead，了解老闆需要，做決策，分派任務的.**
+
+    這類 candidate 就跟老闆一起 interview，到了這程度我們就不看 Portfolio 了。我問我遇到的問題，老闆問管理團隊的問題。最後老闆跟 candidate 閉門討論比較私密的問題。
+
+    感覺到這階段我只是頭緝毒犬？？？
+    
+
+##### 正式成員的編成 
+
+原型建立好後，老闆便開始持續招聘，最後把整個團隊擴展到 5 個 developer + 1 個 AI developer。有在香港本地的大陸人，有在大陸 fully remote 的。
 
 而在這公司中，我是唯一一個香港人 ...。
 
