@@ -15,6 +15,13 @@ intro: What I have done in these two years
   img {
     max-width: 660px !important;
   }
+
+  .label-container{
+    background-color: transparent !important;
+    border: none;
+    stroke: none !important;
+    fill : transparent !important;
+  }
 </style>
 
 
@@ -25,6 +32,7 @@ intro: What I have done in these two years
 #### 2023 ~ 2024 年末
 
 這是環境最舒適的兩年（有地墊會加分）。
+
 ![](/assets/img/2025-12-05-02-43-13.png)
 
 
@@ -37,13 +45,30 @@ intro: What I have done in these two years
 
 ![](/assets/img/2025-12-04-04-31-03.png)
 
+
+
 ### 談談工作了兩年半的初創公司
 
+#### 時間線
 
+```mermaid
+graph TD;
+  A["2023年05月中 加入公司"]
+  --> B["2023年05月~08月 扭螺絲"] 
+  --> C["2023年09月~11月 開始移動端 Project"]
+  --> D["2023年12月末 ''Tech Lead (?)'' 離開"]
+  --> E["2024年01月~06月 我獨撐"]
+  --> F["2024年07月~09月 開始擴充人手，新 Tech Lead 加入"]
+  --> G["2025年08月 同事開始被裁/離開"]
+  --> H["2025年12月中 我離開"]
+  --> I["2026年01月中 新 Tech Lead 離開"]
+```
 
 #### 剛加入公司的時候 (2023 年 5 月 ~ 2023 年 12 月)
 
 ![](/assets/img/2025-12-07-11-50-43.png)
+
+<spacer></spacer>
 
 大概二年半前我剛加入現在的公司的時候，剛好是當時公司主力項目的最終階段。我主要都在修他們已有的 feature，加加功能，扭扭螺絲。那個時段正好是人力交替周期，辭職的辭職，各有不同的出路。IT 相關的職員只剩下一個 senior 的 "Tech Lead" 跟一個 AI engineer。
 
@@ -94,7 +119,7 @@ intro: What I have done in these two years
 
 
 
-#### 得來不易的機會 (2024 年 1 月 ~ 2024 年 7 月)
+#### 得來不易的機會 (2024 年 1 月 ~ 2024 年 6 月)
 
 ![](/assets/img/2025-12-07-11-56-39.png)
 
@@ -124,11 +149,10 @@ Tech Lead 的離開令我不得不從後端，Schema Design，上 Cloud，走 La
     - 有 unzipped size 超過 250 mb，經 docker image 跑的。
     
     每一種都經過很多時間研究。
+    
 
 
 3. 所有的 cloud infrastructure (rds, rds-proxy, load-balancer, cloudfront, ... 應有的都有)。以及後來使用 infrastructure as code via Terraform 來達成 infrastructure 的可重覆性。
-
-以上都是比較成功，至今一直沿用。同時也有一些比較失敗的，到了產品一年多就被迫重寫︰
 
 ##### 失敗的 Nodejs Backend
 
@@ -194,7 +218,7 @@ Tech Lead 的離開令我不得不從後端，Schema Design，上 Cloud，走 La
 更多的參考可到文章的 Reference section 找到。
 
 
-#### Developer 的擴充 (2024 年 6 月 ~ 2024 年 12 月)
+#### Developer 的擴充 (2024 年 7 月 ~ 2024 年 9 月)
 
 ![](/assets/img/2025-12-07-12-00-06.png)
 
@@ -202,7 +226,7 @@ Tech Lead 的離開令我不得不從後端，Schema Design，上 Cloud，走 La
 
 因為缺人，同時我是公司唯二的 developer，所以就由我來尋找未來的伙伴了。因為我沒自信能帶領一個項目走向成功，所以要老闆盡可能也找一些資深的人來帶領我們。
 
-不想踩雷，所以要求比較嚴僅。有前端需要的話，***必須***有 Portfolio。有後端需要的話，會由我旁邊的 AI engineer 補充我沒問到的問題。有的 candidate 讀書成績好但沒甚麼經驗的，也會被老闆抓來讓我們看看。
+不想踩雷，所以要求比較嚴謹。有前端需要的話，***必須***有 Portfolio。有後端需要的話，會由我旁邊的 AI engineer 補充我沒問到的問題。有的 candidate 讀書成績好但沒甚麼經驗的，也會被老闆抓來讓我們看看。
 
 面試問題大概是從 CV 的工作內容中選幾項我感興趣的追問下去，看是不是我們需要的和有沒有在撒謊（學術誠信也是能力一部分）。除了 CV 外，我會問問自己遇到的痛點（討教嘛）。
 
@@ -254,8 +278,8 @@ Tech Lead 的離開令我不得不從後端，Schema Design，上 Cloud，走 La
 這其中
 
 
-- 有 full-stack 的
-- 有專們做 frontend 的
+- 有 Full-Stack 的
+- 有專門做 Frontend 的
 - 有從業快 20 年的新 Tech Lead
 - 有資深的 Android Developer（這比 iOS developer 更有優勢，因為可以寫 Kotlin Spring Boot）
 
@@ -287,10 +311,26 @@ AI 工具令 project manager 更輕鬆，同時令 developer 更忙更難受。
 後來他乾脆 ui 都不弄了，要我們通靈，我們做好後他再想怎麼改。所以我們要以 "會被改掉" 前提下去做新的 UI。這算是這公司的一大特色，大開眼界了。
 
 
+
 ##### 被裁的大陸同事，以及同事的離職
 
 2025 年 7 月底大陸同事被辭退， 8 月底一位前端同事有其他機會而離職；此外，現在公司一年多沒有薪金調整。種種的原因也促使我嘗試找更好的機會。
 
+#### 公司最大的問題
+
+其實公司最大的問題是由沒有編程經驗的人來做 project manager。他們一天沒有意識到這個問題，基本上公司都不會走得遠。
+
+沒有編程經驗的 pm ，或者是說，沒有在 IT 公司***受聘過***的 no code pm，真的應該每天下班拿個一小時出來學習怎樣寫程式，不然這種 pm 只會把一個又一個 developer 趕走。
+
+要不要看看對岸台灣的 no code PM 都在幹甚麼的？
+- https://www.threads.com/@paullwc/post/DRomZ-zk4pf
+
+再看看我們現在公司那位？
+
+
+我們耐性蠻高的新 Tech Lead 也跟他對不上嘴（也提出離職了），更何況是我這種性格剛烈的 developer？我不在乎錢，你有種可以跟我對着幹，我是隨時就能離職那種。
+
+基於責任感，我也待了兩年半，基本上到這階段都把所有 tasks 分散出去了。其實我幹了一年就想跑路了，累得跟狗一樣，不對狗根本沒有我累...。
 
 
 
@@ -300,6 +340,9 @@ AI 工具令 project manager 更輕鬆，同時令 developer 更忙更難受。
 
 ![](/assets/img/2025-12-07-12-09-27.png)
 
+
+<spacer></spacer>
+
 最後工作找了一個多月，因為我一路以來（無論是上班時，或者是下班後）都在不斷思考和不斷作出新的嘗試，我把這些嘗試總結成 [Portfolio](/portfolio)，或者是 [Blog](/blog) 中的文章，方便以後重塑同一塊知識點。
 
 展示這些 "作品" 後面試機會還挺多的。我的方向是 全端/純後端，技術棧方面，後端找的是 Spring Boot, Nodejs 或者是 Rust，前端找的是 React / React-Native，且***拒絕所有***純前端的工作，因為這與我的職涯規劃相沖。
@@ -307,21 +350,21 @@ AI 工具令 project manager 更輕鬆，同時令 developer 更忙更難受。
 
 我個人認為一個合格的 application 需要有
 
-- 能展示你能力的個人網站，其中包括 Portfolio，前後端 Design Principle，***能用***的 Deployment，相關的 Github project。
+- **能展示你能力的個人網站.** 其中包括 Portfolio，前後端 Design Principle，***能用***的 Deployment，相關的 Github project。
 
-- 一份令人容易閱讀的 CV，這吃一點點美術。你不需要有視覺誘導，但你要有能力突出重點。這包括︰
+- **一份令人容易閱讀的 CV.** 這吃一點點美術。你不需要有視覺誘導，但你要有能力***突出重點***。這包括︰
   - 用心的排版，資訊量控制（美術的虛實，在排版中就是留白，字的疏密度）
 
     ![](/assets/img/2025-12-04-11-35-49.png?width=300px)
     
 
-  - 講重點，不要加上 
-    - "我令到系統少了 85% error"；
-    - "前端提昇了 30% 速度"。
+  - ***講重點***，不要加上 
+    - "我令到系統少了 85% error"
+    - "前端提昇了 30% 速度"
     
-    這些 "沒辦法證明"，"面試問不到" 的東西遠比想像中虛。如實說出你幹過甚麼就好。
+    等等。這些 "沒辦法證明"，"面試問不到" 的東西遠比想像中虛。如實說出你幹過甚麼就好。
 
-  - 不要說謊，你沒有做過就誠實面對，面試官很愛從你的工作內容把細節問到底。
+  - ***不要說謊***，你沒有做過就誠實面對，面試官很愛從你的工作內容把細節問到底。
   
     這次求職過程有面試過 Axa 香港（保險業的），被 4 個 Team Lead 連番轟炸 ...，真的把 CV 連同平常 工作/合作 方式問得很徹底。
 
@@ -334,7 +377,9 @@ AI 工具令 project manager 更輕鬆，同時令 developer 更忙更難受。
 
 ![](/assets/img/2025-12-07-12-12-28.png)
 
-尋尋覓覓，最後得到兩個 offer︰
+<spacer></spacer>
+
+尋尋覓覓，有些公司還在做那種我不想碰的 AI wrapper 所以沒有談下去，最後得到兩個 offer︰
 
 1. I-Charge Solutions International (ICS) 的 Analyst Progammer
 
@@ -346,7 +391,7 @@ I-Charge 如其說是一個 offer，他更像是一個 rejection。其實我薪�
 
 收到電話通知後從有 offer 到 reject offer 整個過程不到 1 分鐘，心裏只道：「好傢伙。」
 
-另一邊廂，面試中國銀行後，過了兩個禮拜我才收到中國銀行對我有興趣的消息，並從獵頭那邊知道他們想給我 offer。再 3 個禮拜後才正式通知我可以去簽約 ...（太多不確定性了，我完全不知道中國銀行對我的 case 進行到哪一個地步）。
+另一邊面試中國銀行後，過了兩個禮拜我才收到中國銀行對我有興趣的消息，並從獵頭那邊知道他們想給我 offer。再 3 個禮拜後才正式通知我可以去簽約 ...（太多不確定性了，我完全不知道中國銀行對我的 case 進行到哪一個地步）。
 
 整個等待的過程非常的煎熬，因為我很期待這份工作。
 
