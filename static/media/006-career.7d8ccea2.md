@@ -57,14 +57,14 @@ graph TD;
   --> B["2023年05月~08月 扭螺絲"] 
   --> C["2023年09月~11月 開始移動端 Project"]
   --> D["2023年12月末 ''Tech Lead (?)'' 離開"]
-  --> E["2024年01月~06月 我獨撐"]
+  --> E["2024年01月~06月 我 + 1 Intern + 小插曲"]
   --> F["2024年07月~09月 開始擴充人手，新 Tech Lead 加入"]
   --> G["2025年08月 同事開始被裁/離開"]
   --> H["2025年12月中 我離開"]
   --> I["2026年01月中 新 Tech Lead 離開"]
 ```
 
-#### 剛加入公司的時候 (2023 年 5 月 ~ 2023 年 12 月)
+#### 2023 年 5 月 ~ 2023 年 12 月
 
 ![](/assets/img/2025-12-07-11-50-43.png)
 
@@ -118,14 +118,46 @@ graph TD;
 後來我們使用 MongoDB 的方式根本與 relational db 方式沒差別，所以在 2023 年年底從 MongoDB 遷移到 PostgreSQL 去了。這遷移工作自然也是由我來做的。
 
 
+#### 2023 年 11 月 ~ 2024 年 6 月
 
-#### 得來不易的機會 (2024 年 1 月 ~ 2024 年 6 月)
+##### 幾乎獨撐的半年，一位實習生，一位一個月的本地 Developer
+
+![](/assets/img/2025-12-07-19-51-09.png)
+
+###### 實習生
+為了減輕我的工作量，公司試驗性地增聘人手。在 2023 年 11 月公司請了一位 Intern，很會用 AI（我當時還不怎麼用），交付給實習生的任務大都能處理好。儘管我們後端用的是直接用 SQL 跟 database 交互的方式，都可以很快上手然後處理後台的 business logic。
+
+偶爾指導一下 AI 不會提到，但實作時才會發現的問題。最後這半年的成果也成功幫他後來在恒生銀行取得另一份實習工作。
+
+
+###### 待了一個月的本地 Developer
+
+這半年間我們也面試了一位本地的 Developer，跟我一樣是念數學系的。Domain Driven Design (DDD) 這種概念都是從他那邊學的，研究過 DDD 更加能發現現在 Nodejs Backend 的問題 (我們在 [#backend_failed] 再討論)。
+
+只可惜 DDD 是很吃 framework 的一種設計模式。現存的 nodejs + express 是不可能做到的。
+
+就算使用 NestJS + TypeORM 還是會有一定的困難，例如︰
+1. 沒有一個對標 Spring Boot 的 `ApplicationEventPublisher`；
+
+2. 也沒有機制能對標 Spring Boot 的 Proxy 來處理 `@OneToMany`，`@ManyToMany` 等 annotation (你沒有明確寫 left-join，他會變成 `undefined`) ；
+3. 更加沒有 `@Transactional` 等通用的 annotation (如何模仿 Spring Boot 的 `@Transactional`，詳見 [For Transactions](/blog/article/Fundamentals-of-Nestjs#9.1.1.-decorator-to-set-metadata)) 。
+
+4. 更沒有 `@Embedded` 跟 `@Embeddable` 來自然地把 Entity class 跟 Value Object 綁定 (強行使用這個 Pattern 是徒增 Project Complexity) 。
+
+由於這位 Developer 的知識對這公司來說有點超前，而他又花太多時間在這方面，以致新 feature 做得很緩慢甚至比實習生更差。所以被老闆一個月後勸退了。
+
+這對我來說是一個示例，如果想帶來創新及改變，必須先在 Personal Project 做，再對團隊來的人提出 (也不要自己偷偷做，其他人不認同只會空辛苦一場) 。
+
+現在我很習慣用 Spring Boot 跑 DDD 這套 Methodology 了，也希望有機會可以再跟他合作。因為有認知要使用 DDD 人真的不多，實在是太多把第一年經驗重覆 10 年的人，也很難找到對 DDD 有同樣研究程度的人。
+
+
+##### 得來不易的決策機會
 
 ![](/assets/img/2025-12-07-11-56-39.png)
 
-##### 我獨自升級 (2023, 2024 年還沒有 Vibe Coding) 
+###### 我獨自升級 (2023, 2024 年還沒有 Vibe Coding) 
 
-Tech Lead 的離開令我不得不從後端，Schema Design，上 Cloud，走 Lambda，CI/CD，一手包辦。
+Tech Lead 的離開令我不得不從後端，Schema Design，上 Cloud，走 Lambda Function，CI/CD，一手包辦。
 
 這是一個很好的機會，在 "有一位比你更 senior 的人存在" 下，以下
 - Deployment
@@ -154,13 +186,12 @@ Tech Lead 的離開令我不得不從後端，Schema Design，上 Cloud，走 La
 
 3. 所有的 cloud infrastructure (rds, rds-proxy, load-balancer, cloudfront, ... 應有的都有)。以及後來使用 infrastructure as code via Terraform 來達成 infrastructure 的可重覆性。
 
-##### 失敗的 Nodejs Backend
 
 
-###### 寶貴的失敗經驗
+###### 寶貴的失敗經驗 {#backend_failed}
 
 
-雖然我花了很多很多時間去研究，力求做到最好。可是我也是第一次***從零***去建立後端，包括 table design 和後端架構完全憑直覺，加上我沒有參與過好 project 的經驗，歷時一年的 nodejs backend 在新 lead 帶領下用 Spring Boot 重寫。
+雖然我花了很多很多時間去研究，力求做到最好。可是我也是第一次***從零***去建立後端，包括 table design 和後端架構完全憑直覺，加上我沒有參與過好 project 的經驗，歷時一年的 nodejs backend 在新 Tech Lead 的帶領下用 Spring Boot 重寫。
 
 這個 nodejs 發生甚麼事呢？
 
@@ -218,13 +249,13 @@ Tech Lead 的離開令我不得不從後端，Schema Design，上 Cloud，走 La
 更多的參考可到文章的 Reference section 找到。
 
 
-#### Developer 的擴充 (2024 年 7 月 ~ 2024 年 9 月)
+#### 2024 年 7 月 ~ 2024 年 9 月
 
 ![](/assets/img/2025-12-07-12-00-06.png)
 
 ##### 第一次擔當 Interviewer 這角色
 
-因為缺人，同時我是公司唯二的 developer，所以就由我來尋找未來的伙伴了。因為我沒自信能帶領一個項目走向成功，所以要老闆盡可能也找一些資深的人來帶領我們。
+因為缺人，公司終於認真擴充人手。同時我是公司唯二的 developer，所以就由我來尋找未來的伙伴了。因為當時我只有五年的經驗，我沒自信能帶領一個項目走向成功，所以要老闆盡可能也找一些資深的人來帶領我們。
 
 不想踩雷，所以要求比較嚴謹。有前端需要的話，***必須***有 Portfolio。有後端需要的話，會由我旁邊的 AI engineer 補充我沒問到的問題。有的 candidate 讀書成績好但沒甚麼經驗的，也會被老闆抓來讓我們看看。
 
@@ -286,7 +317,7 @@ Tech Lead 的離開令我不得不從後端，Schema Design，上 Cloud，走 La
 陣容在當時來說非常全面了。只可惜這位 Android Developer 學不動 expo 生態，最終也用不上他的 android 知識來為 expo project 添加功能。而且他的前端能力完全沒辦法在 react 生態下表現出來 ...。
 
 
-#### 離職念頭的萌芽 (2025 年)
+#### 2025 年 1 月 ~ 2025 年 8 月 (離職念頭的萌芽)
 
 ![](/assets/img/2025-12-07-12-05-59.png)
 
