@@ -64,20 +64,18 @@ graph TD;
 ``` 
 
 
-#### 2023 年 5 月 ~ 2023 年 12 月
+#### 2023 年 5 月 ~ 2023 年 11 月 ( 對 "Tech Lead" 的不信任)
 
 大概二年半前我剛加入現在的公司的時候，剛好是當時公司主力項目的最終階段。我主要都在修他們已有的 feature，加加功能，扭扭螺絲。那個時段正好是人力交替周期，辭職的辭職，各有不同的出路。IT 相關的職員只剩下一個 senior 的 "Tech Lead" 跟一個 AI engineer。
 
 不到三個月，公司開展一個新的手機項目。這領域對這位 "Tech Lead" 來說非常陌生。其一，在他帶領同事幹活的這二年，他都只專注後端的工作，二年來從不讓雙手沾染任何 nodejs。其二，他也沒有幹過 native mobile application 的項目，以致他沒有任何基礎在新項目上作出任何技術上的決策。而作為 react developer 的我，理所當然決定使用 react-native 來開發新項目了。
 
 
-##### 對 Tech Lead 的不信任
-
 因為我有參與舊 project 的一些短期維護，所以看到這位 Lead 帶領下 project 的一些慘況以及令我對他抱有負面看法。
 
 1. **❌ 不合理地從 MySQL 遷移到 MongoDB.** 
 
-    後端用的 Spring Boot，原本是使用 MySQL，然後有一半已經改為 MongoDB。詢問轉換原因，Tech Lead 認為 business 經常改變，所以 MongoDB 這種沒有 schema 的 persistence solution 更適合，因為 schema 更具彈性（蛤？）。
+    後端用的 Spring Boot，原本是使用 MySQL，然後有一半已經改為 MongoDB。詢問轉換原因，"Tech Lead" 認為 business 經常改變，所以 MongoDB 這種沒有 schema 的 persistence solution 更適合，因為 schema 更具彈性（蛤？）。
 
     這絕對是一個***嚴重的 Skill Issue***。2023 年年底新 React Native Project 我直接從 MongoDB 變成 Prisma 加 PostgreSQL。這個新 project 至今跑了兩年，還是走得好好的，business 還一直改，用的是 (從 Nodejs Express 變成) Spring Boot。
 
@@ -85,11 +83,11 @@ graph TD;
 
     簡單的一個 React Application，原來是在 EC2 上跟 Spring Boot Backend 綁在一起，順便在 EC2 上 host 的。Deployment 方法是使用純手工的精美 shell script，連到 EC2 上作一輪精彩的操作 (打斷 spring，上傳 zip，unzip，啟動，...)。這是我第一家公司沒在用 CI/CD 的，也是太精彩了。
 
-    作為 Tech Lead 竟然允許公司做的是手動 deploy？無論是前端還是後端，`DEV` 應該是 merge 了就立刻 deploy，所有爆炸性問題應盡早在 `DEV` 找到。UAT 同理。
+    作為 "Tech Lead" 竟然允許公司做的是手動 deploy？無論是前端還是後端，`DEV` 應該是 merge 了就立刻 deploy，所有爆炸性問題應盡早在 `DEV` 找到。UAT 同理。
 
 3. **❌ 對常用的 Technical Term 提出無意議的質疑.**
 
-    這位 Tech Lead 沒有使用 ***middleware*** 的經驗，所以不理解這個字是甚麼。
+    這位 "Tech Lead" 沒有使用 ***middleware*** 的經驗，所以不理解這個字是甚麼。
 
     在***寫後端***這個 context 下，跟我爭論 middleware 這個字可以有***很多***意思。可是有後端知識的人，但凡寫過 C#，寫過 nodejs，寫過 golang，都不會覺得 middleware 這個字有任何歧義。不就跟 Spring Boot 的 Filter 或者 AOP 一樣嗎？欄截 request，做一些處理而已。
 
@@ -116,11 +114,14 @@ graph TD;
     我早已看清這個人沒甚麼學術誠信，我從直覺上就覺得跟這種人合不來。
 
 
-##### Tech Lead 的離去 
+#### 2023 年 11 月 ~  2024 年 6 月
 
-這位 Teah Lead 既然覺得用 MySQL 太複雜，而且更愛 MongoDB，所以理所當然沒甚麼阻力下我們都用上 Express 加 MongoDB 作後端 (這個 Nodejs 後來被 Spring Boot 所取代，這又是這位 Tech Lead 離開後的一個故事了)。
 
-這位 Tech Lead 愛加 table，加一些奇怪的 design，我又沒甚麼經驗去否定就隨他︰
+##### "Tech Lead" 的離去 
+
+這位 "Teah Lead" 既然覺得用 MySQL 太複雜，而且更愛 MongoDB，所以理所當然沒甚麼阻力下我們都用上 Express 加 MongoDB 作後端 (這個 Nodejs 後來被 Spring Boot 所取代，這又是這位 "Tech Lead" 離開後的一個故事了)。
+
+這位 "Tech Lead" 愛加 table，加一些奇怪的 design，我又沒甚麼經驗去否定就隨他︰
 
 <Example>
 
@@ -135,7 +136,6 @@ graph TD;
 後來我們使用 MongoDB 的方式根本與 relational db 方式沒差別，所以在 2023 年年底從 MongoDB 遷移到 PostgreSQL 去了。這遷移工作自然也是由我來做的。
 
 
-#### 2023 年 11 月 ~ 2024 年 6 月
 
 ##### 幾乎獨撐的半年
 
@@ -182,7 +182,7 @@ graph TD;
 
 ###### 我獨自升級 (2023, 2024 年還沒有 Vibe Coding) 
 
-Tech Lead 的離開令我不得不從後端，Schema Design，上 Cloud，走 Lambda Function，CI/CD，一手包辦。
+"Tech Lead" 的離開令我不得不從後端，Schema Design，上 Cloud，走 Lambda Function，CI/CD，一手包辦。
 
 這是一個很好的機會，在 "有一位比你更 senior 的人存在" 下，以下
 - Deployment Strategy
@@ -191,7 +191,7 @@ Tech Lead 的離開令我不得不從後端，Schema Design，上 Cloud，走 La
 
 根本不可能讓 "更 junior" 的人隨便做決策的。Senior 很大機會把最有價值的工作搶來做的 (更何況有些人單純只會邀功的？) 。
 
-正好這位 Tech Lead 的離開令我有隨意發揮的機會。同時我的發揮令到公司的原型產品能如期推出。我敢肯定這位 Tech Lead 繼續留下來的話，原型開發進度不可能有那麼快。
+正好這位 "Tech Lead" 的離開令我有隨意發揮的機會。同時我的發揮令到公司的原型產品能如期推出。我敢肯定這位 "Tech Lead" 繼續留下來的話，原型開發進度不可能有那麼快。
 
 在小公司，當公司***缺人***的時候，你就可以得到這種中等或以上規模的公司得不到的機會。託賴公司對我的信任，加上我自己私人時間的研究，我在公司建立了
 
