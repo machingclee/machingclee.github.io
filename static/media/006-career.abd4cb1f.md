@@ -17,7 +17,6 @@ intro: What I have done in these two years
   }
 
   .label-container{
-    background-color: transparent !important;
     border: none;
     stroke: none !important;
     fill : transparent !important;
@@ -54,14 +53,14 @@ intro: What I have done in these two years
 
 ```mermaid
 graph TD;
-  A["<span style='border-radius: 4px; border: 1px solid rgba(0,0,0,0.4); padding: 0px 4px'>22023年05月中</span>  加入公司"]
-  --> B["<span style='border-radius: 4px; border: 1px solid rgba(0,0,0,0.4); padding: 0px 4px'>2023年05月~08月</span>  扭螺絲，加 backend endpoint，加 ui"] 
-  --> C["<span style='border-radius: 4px; border: 1px solid rgba(0,0,0,0.4); padding: 0px 4px'>2023年09月~11月</span>  開始移動端 Project"]
-  --> D["<div style='padding-bottom: 4px'><div><span style='border-radius: 4px; border: 1px solid rgba(0,0,0,0.4); padding: 0px 4px'>2023年11月</span>  Intern 入職</div><div><span style='border-radius: 4px; border: 1px solid rgba(0,0,0,0.4); padding: 0px 4px'>2023年12月末</span>  ''Tech Lead (?)'' 離職</div></div>"]
-  --> E["<span style='border-radius: 4px; border: 1px solid rgba(0,0,0,0.4); padding: 0px 4px'>2024年01月~06月</span>  我 + 半年實習 + 1 個月本地 Developer"]
-  --> F["<span style='border-radius: 4px; border: 1px solid rgba(0,0,0,0.4); padding: 0px 4px'>2024年07月~09月</span>  開始擴充人手至 5 Dev Developer + 1 AI developer，新 Tech Lead 加入"]
-  --> G["<span style='border-radius: 4px; border: 1px solid rgba(0,0,0,0.4); padding: 0px 4px'>2025年08月</span>  同事有的被裁，有的離職"]
-  --> H["<span style='border-radius: 4px; border: 1px solid rgba(0,0,0,0.4); padding: 0px 4px'>2025年12月中</span>  我離職"]
+      A["<div style='padding-bottom: 10px'><span style='border-radius: 4px; border: 1px solid rgba(0,0,0,0.4); padding: 0px 4px'>2023年05月中</span>  加入公司</div>"]
+  --> B["<div style='padding-bottom: 10px'><span style='border-radius: 4px; border: 1px solid rgba(0,0,0,0.4); padding: 0px 4px'>2023年05月~08月</span>  扭螺絲，加 backend endpoint，加 ui</div>"] 
+  --> C["<div style='padding-bottom: 10px'><span style='border-radius: 4px; border: 1px solid rgba(0,0,0,0.4); padding: 0px 4px'>2023年09月~11月</span>  開始移動端 Project</div>"]
+  --> D["<div style='padding-bottom: 10px'><div style='padding-bottom: 4px'><div><span style='border-radius: 4px; border: 1px solid rgba(0,0,0,0.4); padding: 0px 4px'>2023年11月</span>  Intern 入職</div><div><span style='border-radius: 4px; border: 1px solid rgba(0,0,0,0.4); padding: 0px 4px'>2023年12月末</span>  ''Tech Lead (?)'' 離職</div></div>"]
+  --> E["<div style='padding-bottom: 10px'><span style='border-radius: 4px; border: 1px solid rgba(0,0,0,0.4); padding: 0px 4px'>2024年01月~06月</span>  我 + 半年實習 + 1 個月本地 Developer</div>"]
+  --> F["<div style='padding-bottom: 10px'><div><span style='border-radius: 4px; border: 1px solid rgba(0,0,0,0.4); padding: 0px 4px'>2024年07月~09月</span> 開始擴充人手至 5 Dev Developer + 1 AI developer，</div><div>新 Tech Lead 加入</div></div>"]
+  --> G["<div style='padding-bottom: 10px'><span style='border-radius: 4px; border: 1px solid rgba(0,0,0,0.4); padding: 0px 4px'>2025年08月</span>  同事有的被裁，有的離職</div>"]
+  --> H["<div style='padding-bottom: 10px'><span style='border-radius: 4px; border: 1px solid rgba(0,0,0,0.4); padding: 0px 4px'>2025年12月中</span>  我離職</div>"]
 ``` 
 
 
