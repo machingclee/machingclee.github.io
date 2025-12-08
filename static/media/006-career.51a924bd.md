@@ -105,7 +105,7 @@ graph TD;
 
 這位 Teah Lead 既然覺得用 MySQL 太複雜，而且更愛 MongoDB，所以理所當然沒甚麼阻力下我們都用上 Express 加 MongoDB 作後端 (這個 Nodejs 後來被 Spring Boot 所取代，這又是這位 Tech Lead 離開後的一個故事了)。
 
-這位 Tech Lead 愛加 table，加一些奇怪的 design︰
+這位 Tech Lead 愛加 table，加一些奇怪的 design，我又沒甚麼經驗去否定就隨他︰
 
 <Example>
 
@@ -113,7 +113,9 @@ graph TD;
 
 </Example>
 
-我又沒甚麼經驗去否定就隨他，以致寫着寫着整個 backend 愈來愈亂。他覺得自己可以做的貢獻太少，所以離職了。而我作為新人，沒甚麼從零自己弄後端的經驗，也只好邊學邊做。
+寫着寫着整個 backend 愈來愈亂。十月份左右，他覺得自己可以做的貢獻太少，所以離職了。
+
+我作為新人，沒甚麼從零自己弄後端的經驗，也只好邊學邊做。
 
 後來我們使用 MongoDB 的方式根本與 relational db 方式沒差別，所以在 2023 年年底從 MongoDB 遷移到 PostgreSQL 去了。這遷移工作自然也是由我來做的。
 
@@ -127,28 +129,30 @@ graph TD;
 ###### 一位半年的實習生
 為了減輕我的工作量，公司試驗性地增聘人手。在 2023 年 11 月公司請了一位實習生，很會用 AI（我當時還不怎麼用），交付給實習生的任務大都能處理好。儘管我們後端用的是直接用 SQL 跟 database 交互的方式，都可以很快上手然後處理後台的 business logic。
 
-偶爾指導一下 AI 不會提到，但實作時才會發現的問題。最後這半年的成果也成功幫他後來在恒生銀行取得另一份實習工作。
+日常工作我會偶爾指導一下 AI 不會提到，但實作時才會發現的問題。最後這半年的成果也成功幫他後來在恒生銀行取得另一份實習工作。
 
 
 ###### 一位待了一個月的本地 Developer
 
-這半年間我們也面試了一位本地的 Developer，跟我一樣是念數學系的。Domain Driven Design (DDD) 這種概念都是從他那邊學的，研究過 DDD 更加能發現現在 Nodejs Backend 的問題 (我們在 [#backend_failed] 再討論)。
+這半年間 (4月還是5月份) 我們也面試了一位本地的 Developer，跟我一樣是念數學系的。Domain Driven Design (DDD) 這種概念都是從他那邊學的，研究過 DDD 更加能發現現在 Nodejs Backend 的問題 (我們在 [#backend_failed] 再討論)。
 
 只可惜 DDD 是很吃 framework 的一種設計模式。現存的 nodejs + express 是不可能做到的。
 
 就算使用 NestJS + TypeORM 還是會有一定的困難，例如︰
 1. 沒有一個對標 Spring Boot 的 `ApplicationEventPublisher`；
 
-2. 也沒有機制能對標 Spring Boot 的 Proxy 來處理 `@OneToMany`，`@ManyToMany` 等 annotation (你沒有明確寫 left-join，他會變成 `undefined`) ；
+2. 也沒有機制能對標 Spring Boot 的 Proxy 來處理 `@OneToMany`，`@ManyToMany` 等 annotation。
+
+    你沒有明確寫 `left-join`，他會變成 `undefined`。而 maintain 那條 left-join list 也會演變成一場悲劇。
 3. 更加沒有 `@Transactional` 等通用的 annotation (如何模仿 Spring Boot 的 `@Transactional`，詳見 [For Transactions](/blog/article/Fundamentals-of-Nestjs#9.1.1.-decorator-to-set-metadata)) 。
 
-4. 更沒有 `@Embedded` 跟 `@Embeddable` 來自然地把 Entity class 跟 Value Object 綁定 (強行使用這個 Pattern 是徒增 Project Complexity) 。
+4. 更沒有 `@Embedded` 跟 `@Embeddable` 來自然地把 Entity class 跟 Value Object 綁定 (在 Spring Boot 以外強行使用這個 Pattern 是徒增 Project Complexity) 。
 
 由於這位 Developer 的知識對這公司來說有點超前，而他又花太多時間在這方面，以致新的 feature 做得很緩慢甚至比實習生更差。所以被老闆一個月後勸退了。
 
-這對我來說是一個***示例***，如果想帶來創新及改變，必須先在 Personal Project 做，再對團隊提出 (也不要自己偷偷做，其他人不認同只會空辛苦一場) 。不用實例說明的話只會變成讓公司在你的 idea 上***賭時間***。
+這對我來說是一個***示例***，如果想帶來創新及改變，必須先在 Personal Project 做，再對團隊提出 (也不要自己偷偷做在公司 Project 做，其他人不認同只會空辛苦一場) 。不用實例說明的話只會變成讓公司在你的 idea 上*賭時間*。
 
-明顯*帶來改變*是費力不討好的，你沒有一定要熱情和想法很難為公司帶來改變，何況有很多不願意改變的人，~~但我就愛做~~。
+明顯***帶來改變***是費力不討好的，你沒有一定要熱情和想法很難為公司帶來改變，何況有很多不願意改變的人，~~但我就愛推動改變~~。
 
 現在我很習慣用 Spring Boot 跑 DDD 這套 Methodology 了，也希望有機會可以再跟他合作。因為有認知要使用 DDD 人真的不多，實在是太多把第一年經驗重覆 10 年的人，也很難找到對 DDD 有同樣研究程度的人。
 
@@ -162,11 +166,11 @@ graph TD;
 Tech Lead 的離開令我不得不從後端，Schema Design，上 Cloud，走 Lambda Function，CI/CD，一手包辦。
 
 這是一個很好的機會，在 "有一位比你更 senior 的人存在" 下，以下
-- Deployment
+- Deployment Strategy
 - Backend Architecture
 - Schema Design
 
-根本不可能讓 "更 junior" 的人隨便做決策的。Senior 很大機會把最有價值的工作搶來做的。
+根本不可能讓 "更 junior" 的人隨便做決策的。Senior 很大機會把最有價值的工作搶來做的 (更何況有些人單純只會邀功的？) 。
 
 正好這位 Tech Lead 的離開令我有隨意發揮的機會。同時我的發揮令到公司的原型產品能如期推出。我敢肯定這位 Tech Lead 繼續留下來的話，原型開發進度不可能有那麼快。
 
@@ -185,15 +189,25 @@ Tech Lead 的離開令我不得不從後端，Schema Design，上 Cloud，走 La
     每一種都經過很多時間研究。
     
 
+3. 完整的 Database Schema Migration 制度。
 
-3. 所有的 cloud infrastructure (rds, rds-proxy, load-balancer, cloudfront, ... 應有的都有)。以及後來使用 infrastructure as code via Terraform 來達成 infrastructure 的可重覆性。
-
-
-
-###### 寶貴的失敗經驗 {#backend_failed}
+3. 建立所有的 Cloud Infrastructure (rds, rds-proxy, load-balancer, cloudfront, ... 應有都有) 。以及後來使用 Terraform 來達成整個 Infrastructure 的可重覆性 (via Infrastructure as Code)。
 
 
-雖然我花了很多很多時間去研究，力求做到最好。可是我也是第一次***從零***去建立後端，包括 table design 和後端架構完全憑直覺，加上我沒有參與過好 project 的經驗，歷時一年的 nodejs backend 在新 Tech Lead 的帶領下用 Spring Boot 重寫。
+
+4. 一個完善的網頁，讓團隊成員可以取得所有 Cloud Infrastructure 的資訊 (從 terraform export 出來的)。例如
+    - websocket endpoints; 
+    - loadbalancer 每一個 port 對應的 service; 
+    - 各 service 的 cloudwatch log 連結
+    
+    等等。以上的內容都是從一個 backend endpoint 取得，建立了一個簡單的 Google Authentication (只有本公司 email 可登入成功)，只有登入成功後才可以從 endpoint 取得資訊，以確保內容保密。
+
+
+
+###### 失敗的 Backend 經驗 {#backend_failed}
+
+
+雖然我花了很多很多時間去研究，力求做到最好。可是我也是第一次***從零***去建立後端，包括 table design 和後端架構完全憑直覺，加上我沒有參與過好 Project 的經驗，歷時一年的 nodejs backend 在新 Tech Lead 的帶領下用 Spring Boot 重寫。
 
 這個 nodejs 發生甚麼事呢？
 
@@ -206,7 +220,7 @@ Tech Lead 的離開令我不得不從後端，Schema Design，上 Cloud，走 La
     > [詳細例子](/blog/article/Problem-of-SQL-Based-Nodejs-Backend-Should-we-use-Query-Builder-)
 
 
-4. 承上，domain logic 開始不容易維護了
+4. 承上，domain logic 開始不容易維護了，令我確信後台應***盡量避免***使用 SQL 或 SQL Builder 來維護 domain logic。
 
 5. 基本上變成了一個大泥球，service 也沒有按 domain 劃分好。再加上其他團隊成員的加入，就變得愈來愈亂了。
 
@@ -224,9 +238,9 @@ Tech Lead 的離開令我不得不從後端，Schema Design，上 Cloud，走 La
 - `memberService.joinProject` 跟 
 - `projectService.addMember` 
 
-哪個是正確的？**沒有對錯**，因為後端從根本沒有 Aggregate 這個概念，所有 resource 的建立都沒有 層級 可以規範。你可以想像跟 Project 這個 domain 有關的 logic 在各個 services 之間到處亂跑了嗎？
+哪個是正確的？**沒有對錯**，因為後端從根本沒有 Aggregate 這個概念，所有 resource 的建立都沒有 層級 可以規範。這種沒有對錯的 *N* 選 1 選擇題將會不停發生，你可以想像跟 Project 這個 domain 有關的 logic 在各個 services 之間到處亂跑了嗎？
 
-說到底，怎樣才能構成一個 Service？他的建立是基於甚麼原則？如果沒有原則，那就是即興﹑亂源而已。
+說到底，怎樣才能構成一個 Service？他的建立是基於甚麼原則？如果沒有原則，那就是即興，亂源而已。
 
 ###### 研究系統設計的方法論（思想框架，實行方法）
 
@@ -237,9 +251,24 @@ Tech Lead 的離開令我不得不從後端，Schema Design，上 Cloud，走 La
 - Hexagonal Architecture (Ports & Adapters)
 - Domain Driven Design
 
-他們其實都非常相似，dependency list 最終的依賴是 domain business 本身 (也就是 entity 的 domain behaviour)，而不是單單作為資料儲存的 (data class) entities。
+他們其實都非常相似，dependency list 最終的依賴是 domain business 本身 (也就是 entity 的 domain behaviour)，而不是單單作為資料儲存的 Data Class, Repository。
 
-我選擇深入的方向是 Domain Driven Design。從戰略層面 (design system by context 以及 event storming)，到戰術層面 (domain behaviour, value object, aggregate, etc)，我都花了不少時間去研究。
+- DDD:
+
+  ![](/assets/img/2025-12-08-16-55-40.png?width=500px)
+
+- Hexagonal Architecture:
+
+  ![](/assets/img/2025-12-08-16-55-58.png?width=500px)
+
+
+<spacer></spacer>
+
+我選擇深入的方向是 Domain Driven Design。
+- 從戰略層面 (design system by context 以及 event storming); 
+- 到戰術層面 (domain behaviour, value object, aggregate, etc)
+
+我都花了不少時間去研究。
 
 ![](/assets/img/2025-12-04-04-29-09.png)
 
@@ -368,7 +397,7 @@ AI 工具令 project manager 更輕鬆，同時令 developer 更忙更難受。
 
 我們耐性蠻高的新 Tech Lead 也跟他對不上嘴，更何況是我這種性格剛烈的 developer？我不在乎錢，你有種可以跟我對着幹，我是隨時就能離職那種。
 
-基於責任感，我也待了兩年半，基本上到這階段都把所有 tasks 分散出去了。其實我幹了一年就想跑路了，累得跟狗一樣，不對狗根本沒有我累...。
+其實我幹了一年就想跑路了，累得跟狗一樣，不對狗根本沒有我累...。可是增聘的人手確實不錯，我再待個一年看看，這樣一待就是兩年半。基本上到這階段都把所有 tasks 分散出去了。
 
 
 
@@ -391,18 +420,18 @@ AI 工具令 project manager 更輕鬆，同時令 developer 更忙更難受。
 - **能展示你能力的個人網站.** 其中包括 Portfolio，前後端 Design Principle，***能用***的 Deployment，相關的 Github project。
 
 - **一份令人容易閱讀的 CV.** 這吃一點點美術。你不需要有視覺誘導，但你要有能力***突出重點***。這包括︰
-  - 用心的排版，資訊量控制（美術的虛實，在排版中就是留白，字的疏密度）
+  1. ***用心的排版***，資訊量控制（美術的虛實，在排版中就是留白，字的疏密度）
 
-    ![](/assets/img/2025-12-04-11-35-49.png?width=300px)
+      ![](/assets/img/2025-12-04-11-35-49.png?width=300px)
     
 
-  - ***講重點***，不要加上 
-    - "我令到系統少了 85% error"
-    - "前端提昇了 30% 速度"
-    
-    等等。這些 "沒辦法證明"，"面試問不到" 的東西遠比想像中虛。如實說出你幹過甚麼就好。
+  2. ***講重點***，不要加上 
+        - "我令到系統少了 85% error"
+        - "前端提昇了 30% 速度"
+        
+        等等。這些 "沒辦法證明"，"面試問不到" 的東西遠比想像中虛。如實說出你幹過甚麼就好。
 
-  - ***不要說謊***，你沒有做過就誠實面對，面試官很愛從你的工作內容把細節問到底。
+  3. ***不要說謊***，你沒有做過就誠實面對，面試官很愛從你的工作內容把細節問到底。
   
     這次求職過程有面試過 Axa 香港（保險業的），被 4 個 Team Lead 連番轟炸 ...，真的把 CV 連同平常 工作/合作 方式問得很徹底。
 
@@ -420,7 +449,6 @@ AI 工具令 project manager 更輕鬆，同時令 developer 更忙更難受。
 尋尋覓覓，有些公司還在做那種我不想碰的 AI wrapper 所以沒有談下去，最後得到兩個 offer︰
 
 1. I-Charge Solutions International (ICS) 的 Analyst Progammer
-
 2. 中國銀行的 System Analyst
 
 I-Charge 如其說是一個 offer，他更像是一個 rejection。其實我薪金加幅寫了 HKD 5000，是留一個空間讓對方壓價，你但凡加個 HKD 3000 到 HKD 4000 我都會立刻接受，畢竟我真的很想轉環境。I-Charge 出 offer 的時候直接把加幅壓到只剩 HKD 1000。
