@@ -104,41 +104,41 @@ graph TD;
 
 ###### ❌ 不合理地從 MySQL 遷移到 MongoDB
 
-   後端用的 Spring Boot，原本是使用 MySQL，然後有一半已經改為 MongoDB。詢問轉換原因，"Tech Lead" 認為 business 經常改變，所以 MongoDB 這種沒有 schema 的 persistence solution 更適合，因為 schema 更具彈性（蛤？）。
+後端用的 Spring Boot，原本是使用 MySQL，然後有一半已經改為 MongoDB。詢問轉換原因，"Tech Lead" 認為 business 經常改變，所以 MongoDB 這種沒有 schema 的 persistence solution 更適合，因為 schema 更具彈性（蛤？）。
 
-   這絕對是一個***嚴重的 Skill Issue***。2023 年年底新 React Native Project 我直接從 MongoDB 變成 Prisma 加 PostgreSQL。這個新 project 至今跑了兩年，還是走得好好的，business 還一直改，用的是 (從 Nodejs Express 變成) Spring Boot。
+這絕對是一個**_嚴重的 Skill Issue_**。2023 年年底新 React Native Project 我直接從 MongoDB 變成 Prisma 加 PostgreSQL。這個新 project 至今跑了兩年，還是走得好好的，business 還一直改，用的是 (從 Nodejs Express 變成) Spring Boot。
 
 ###### ❌ 允許沒有 CI/CD
 
-   簡單的一個 React Application，原來是在 EC2 上跟 Spring Boot Backend 綁在一起，順便在 EC2 上 host 的。Deployment 方法是使用純手工的精美 shell script，連到 EC2 上作一輪精彩的操作 (打斷 spring，上傳 zip，unzip，啟動，...)。這是我第一家公司沒在用 CI/CD 的，也是太精彩了。
+簡單的一個 React Application，原來是在 EC2 上跟 Spring Boot Backend 綁在一起，順便在 EC2 上 host 的。Deployment 方法是使用純手工的精美 shell script，連到 EC2 上作一輪精彩的操作 (打斷 spring，上傳 zip，unzip，啟動，...)。這是我第一家公司沒在用 CI/CD 的，也是太精彩了。
 
-   作為 "Tech Lead" 竟然允許公司做的是手動 deploy？無論是前端還是後端，`DEV` 應該是 merge 了就立刻 deploy，所有爆炸性問題應盡早在 `DEV` 找到。UAT 同理。
+作為 "Tech Lead" 竟然允許公司做的是手動 deploy？無論是前端還是後端，`DEV` 應該是 merge 了就立刻 deploy，所有爆炸性問題應盡早在 `DEV` 找到。UAT 同理。
 
 ###### ❌ 對常用的 Technical Term 提出無意議的質疑
 
-   這位 "Tech Lead" 沒有使用 ***middleware*** 的經驗，所以不理解這個字是甚麼。
+這位 "Tech Lead" 沒有使用 **_middleware_** 的經驗，所以不理解這個字是甚麼。
 
-   在***寫後端***這個 context 下，跟我爭論 middleware 這個字可以有***很多***意思。可是有後端知識的人，但凡寫過 C#，寫過 nodejs，寫過 golang，都不會覺得 middleware 這個字有任何歧義。不就跟 Spring Boot 的 Filter 或者 AOP 一樣嗎？欄截 request，做一些處理而已。
+在**_寫後端_**這個 context 下，跟我爭論 middleware 這個字可以有**_很多_**意思。可是有後端知識的人，但凡寫過 C#，寫過 nodejs，寫過 golang，都不會覺得 middleware 這個字有任何歧義。不就跟 Spring Boot 的 Filter 或者 AOP 一樣嗎？欄截 request，做一些處理而已。
 
 ###### ❌ 沒有 Repository 的 Spring Boot
 
-   Spring Boot 以齊全的腳手架而聞名。
+Spring Boot 以齊全的腳手架而聞名。
 
-   這個舊 Spring Boot Project 有一個絕妙的點，整個項目 ***完全沒有*** repository 的概念。你都使用 mongo 了，不是有 `spring-data-mongodb` 可以用嗎？難道所有簡單的 "query" 都要自己手擼出來嗎。
+這個舊 Spring Boot Project 有一個絕妙的點，整個項目 **_完全沒有_** repository 的概念。你都使用 mongo 了，不是有 `spring-data-mongodb` 可以用嗎？難道所有簡單的 "query" 都要自己手擼出來嗎。
 
-   Nodejs 的話好歹還是有個 `Model` (from `mongoose`) 的概念，這個 Spring Boot Project 直接用 `MongoTemplate` 硬幹到底。還滿佈沒有 Type 的 `bson.Document` object，比 `js` 還更 `js`。
+Nodejs 的話好歹還是有個 `Model` (from `mongoose`) 的概念，這個 Spring Boot Project 直接用 `MongoTemplate` 硬幹到底。還滿佈沒有 Type 的 `bson.Document` object，比 `js` 還更 `js`。
 
-   如何在 Spring Boot 正確使用 MongoDB，請參看本 blog 文章: [Spring Data MongoDB](/blog/article/Spring-Data-MongoDB)。
+如何在 Spring Boot 正確使用 MongoDB，請參看本 blog 文章: [Spring Data MongoDB](/blog/article/Spring-Data-MongoDB)。
 
 ###### ❌ 不學無術，愛擺架子
 
-   抱有過份的階級觀念。他技術不行，但又死愛面子。在我這些認真好學，經常鑽研技術的 developer 眼中，根本沒辦法跟這種不好好做學問的人相處。我記得我進公司第 4 個月吧，我差點要鬧辭職了。
+抱有過份的階級觀念。他技術不行，但又死愛面子。在我這些認真好學，經常鑽研技術的 developer 眼中，根本沒辦法跟這種不好好做學問的人相處。我記得我進公司第 4 個月吧，我差點要鬧辭職了。
 
-   後來如我所料，它在離職後在自己的 Linkedin 自我介紹加上跟他完全沒關係的工作經驗 (整個 React Native 關他屁事呢？)。
+後來如我所料，它在離職後在自己的 Linkedin 自我介紹加上跟他完全沒關係的工作經驗 (整個 React Native 關他屁事呢？)。
 
-   ![](/assets/img/2025-12-09-01-51-33.png)
+![](/assets/img/2025-12-09-01-51-33.png)
 
-   我早已看清這個人沒甚麼學術誠信，我從直覺上就覺得跟這種人合不來。
+我早已看清這個人沒甚麼學術誠信，我從直覺上就覺得跟這種人合不來。
 
 #### 2023 年 11 月 ~ 2024 年 6 月
 
@@ -192,9 +192,9 @@ graph TD;
 
 由於這位 Developer 的知識對這公司來說有點超前，而他又花太多時間在這方面，以致新的 feature 做得很緩慢甚至比實習生更差。所以被老闆一個月後勸退了。
 
-這對我來說是一個***示例***，如果想帶來創新及改變，必須先在 Personal Project 做，再對團隊提出 (也不要自己偷偷做在公司 Project 做，其他人不認同只會空辛苦一場) 。不用實例說明的話只會變成讓公司在你的 idea 上*賭時間*。
+這對我來說是一個**_示例_**，如果想帶來創新及改變，必須先在 Personal Project 做，再對團隊提出 (也不要自己偷偷做在公司 Project 做，其他人不認同只會空辛苦一場) 。不用實例說明的話只會變成讓公司在你的 idea 上*賭時間*。
 
-明顯***帶來改變***是費力不討好的，你沒有一定要熱情和想法很難為公司帶來改變，何況有很多不願意改變的人，~~但我就愛推動改變~~。
+明顯**_帶來改變_**是費力不討好的，你沒有一定要熱情和想法很難為公司帶來改變，何況有很多不願意改變的人，~~但我就愛推動改變~~。
 
 現在我很習慣用 Spring Boot 跑 DDD 這套 Methodology 了，也希望有機會可以再跟他合作。因為有認知要使用 DDD 人真的不多，實在是太多把第一年經驗重覆 10 年的人，也很難找到對 DDD 有同樣研究程度的人。
 
@@ -214,47 +214,47 @@ graph TD;
 
 正好這位 "Tech Lead" 的離開令我有隨意發揮的機會。同時我的發揮令到公司的原型產品能如期推出。我敢肯定這位 "Tech Lead" 繼續留下來的話，原型開發進度不可能有那麼快。
 
-在小公司，當公司***缺人***的時候，你就可以得到這種中等或以上規模的公司得不到的機會。託賴公司對我的信任，加上我自己私人時間的研究，我在公司建立了
+在小公司，當公司**_缺人_**的時候，你就可以得到這種中等或以上規模的公司得不到的機會。託賴公司對我的信任，加上我自己私人時間的研究，我在公司建立了
 
 1. **所有 CI/CD Workflow.** \
-    包括 Backend (python, spring boot, nestjs, express) 其 pipeline (workflow) 所需的 `yml` file，以及提倡 github action 作為 CI/CD 工具 (後來 Gitlab 才宣佈不再支援香港)。
+   包括 Backend (python, spring boot, nestjs, express) 其 pipeline (workflow) 所需的 `yml` file，以及提倡 github action 作為 CI/CD 工具 (後來 Gitlab 才宣佈不再支援香港)。
 
 2. **兩㮔 Deployment 模式.** \
-    一種是 Lambda Function，一種是 ECS。
+   一種是 Lambda Function，一種是 ECS。
 
-    Lambda Function 也有很多種類︰
-    - 有 python 的；
-    - 有 nodejs 的；
-    - 有 spring boot (snap-started) 的；
-    - 有 unzipped size 超過 250 mb，經 docker image 跑的。
+   Lambda Function 也有很多種類︰
+   - 有 python 的；
+   - 有 nodejs 的；
+   - 有 spring boot (snap-started) 的；
+   - 有 unzipped size 超過 250 mb，經 docker image 跑的。
 
-    每一種都經過很多時間研究。
+   每一種都經過很多時間研究。
 
 3. **完整的 Database Schema Migration 制度.** \
-    這對多人合作建立 Backend 非常重要，每位成員 migrate schema 時都確保是當前最新狀態 (不然報錯)。
+   這對多人合作建立 Backend 非常重要，每位成員 migrate schema 時都確保是當前最新狀態 (不然報錯)。
 
 4. **所需的 Cloud Infrastructure.** \
-    包括 rds, rds-proxy, load-balancer, private load-balancer, cloudfront, ..., 應有的都有。以及後來使用 Terraform 來達成整個 Infrastructure 的可重覆性 (via Infrastructure as Code)。
+   包括 rds, rds-proxy, load-balancer, private load-balancer, cloudfront, ..., 應有的都有。以及後來使用 Terraform 來達成整個 Infrastructure 的可重覆性 (via Infrastructure as Code)。
 
 5. **完善的 Cloud Infrastructure 網頁.** \
-    讓團隊成員可以取得所有 Infrastructure 的資訊 (從 terraform export 出來的)。例如
-      - Websocket endpoints;
-      - Loadbalancer 每一個 port 對應的 service;
-      - 各 service 的 cloudwatch log 連結
+   讓團隊成員可以取得所有 Infrastructure 的資訊 (從 terraform export 出來的)。例如
+   - Websocket endpoints;
+   - Loadbalancer 每一個 port 對應的 service;
+   - 各 service 的 cloudwatch log 連結
 
-    等等。以上的內容都是從一個 backend endpoint 取得，並建立了一個簡單的 Google Authentication (只有本公司 email 可登入成功)，只有登入成功後才可以從 endpoint 取得資訊，以確保內容保密。
+   等等。以上的內容都是從一個 backend endpoint 取得，並建立了一個簡單的 Google Authentication (只有本公司 email 可登入成功)，只有登入成功後才可以從 endpoint 取得資訊，以確保內容保密。
 
 ###### 失敗的 Backend 經驗 {#backend_failed}
 
-雖然我花了很多很多時間去研究，力求做到最好。可是我也是第一次***從零***去建立後端，包括 table design 和後端架構完全憑直覺，加上我沒有參與過好 Project 的經驗，歷時一年的 nodejs backend 在新 Tech Lead 的帶領下用 Spring Boot 重寫。
+雖然我花了很多很多時間去研究，力求做到最好。可是我也是第一次**_從零_**去建立後端，包括 table design 和後端架構完全憑直覺，加上我沒有參與過好 Project 的經驗，歷時一年的 nodejs backend 在新 Tech Lead 的帶領下用 Spring Boot 重寫。
 
 這個 nodejs 發生甚麼事呢？
 
 1. **缺乏 Repository Layer.** \
-    Database 交互主要用一種名為 Kysely 的 query builder。儘管 architecture 走的是 controller service，但沒有 repository。
+   Database 交互主要用一種名為 Kysely 的 query builder。儘管 architecture 走的是 controller service，但沒有 repository。
 
 2. **Data 驅動的 Domain Logic.** \
-    所有 domain logic 都是用 query builder 來描寫。有時候甚至在 controller level 就擼 query 了。
+   所有 domain logic 都是用 query builder 來描寫。有時候甚至在 controller level 就擼 query 了。
 
 3. **開始出現複雜 Query.** \
     開始有很長的 sql，無數的 left join，複雜的 pgsql-specific 語句。
@@ -262,14 +262,14 @@ graph TD;
    > [詳細例子](/blog/article/Problem-of-SQL-Based-Nodejs-Backend-Should-we-use-Query-Builder-)
 
 4. **Query 難以 Debug.** \
-    承上，domain logic 開始不容易維護了，令我確信後台應***盡量避免***使用 SQL 或 SQL Builder 來維護 domain logic。也令我確信 domain logic 應該是***行為驅動***的。
+   承上，domain logic 開始不容易維護了，令我確信後台應**_盡量避免_**使用 SQL 或 SQL Builder 來維護 domain logic。也令我確信 domain logic 應該是**_行為驅動_**的。
 
 5. **Services 沒有按 Domain 劃分好.** \
-    基本上變成了一個大泥球，再加上其他團隊成員的加入，就變得愈來愈亂了。實際上在系統設計初期並沒有把 Domain 裏的 Context 劃分出來。
+   基本上變成了一個大泥球，再加上其他團隊成員的加入，就變得愈來愈亂了。實際上在系統設計初期並沒有把 Domain 裏的 Context 劃分出來。
 
 看着這個後端變成這個樣子，自己也有一點心痛。
 
-是不是用 Spring Boot 上面的問題就解決了？答案是***否定***的。Spring Boot 充其量是多了一個 JPA，可以幫你自動建立 Repository。但沒有走對正確的方法論（思考框架），最後其實用甚麼語言都會變成一托 $*$。
+是不是用 Spring Boot 上面的問題就解決了？答案是**_否定_**的。Spring Boot 充其量是多了一個 JPA，可以幫你自動建立 Repository。但沒有走對正確的方法論（思考框架），最後其實用甚麼語言都會變成一托 $*$。
 
 以下都是沒有方法論的通病
 
@@ -316,7 +316,7 @@ graph TD;
 
 ![](/assets/img/2025-12-04-04-29-09.png)
 
-我覺得 DDD 對我最大影響是 schema design 的一些思維改變。例如所有 table 被設計時都一定需要思考它在一個 domain 裏的哪個 ***Context*** (Context-First)。這些設計不管你後端走不走 domain driven design 的戰術路線都通用的。
+我覺得 DDD 對我最大影響是 schema design 的一些思維改變。例如所有 table 被設計時都一定需要思考它在一個 domain 裏的哪個 **_Context_** (Context-First)。這些設計不管你後端走不走 domain driven design 的戰術路線都通用的。
 
 關於 DDD 的戰術部分，其實戰可參考我的文章 (第 5.1.1 開始)︰
 
@@ -332,7 +332,7 @@ graph TD;
 
 因為缺人，公司終於認真擴充人手。同時我是公司唯二的 developer，所以就由我來尋找未來的伙伴了。因為當時我只有五年的經驗，我沒自信能帶領一個項目走向成功，所以要老闆盡可能也找一些資深的人來帶領我們。
 
-不想踩雷，所以要求比較嚴謹。有前端需要的話，***必須***有 Portfolio。有後端需要的話，會由我旁邊的 AI engineer 補充我沒問到的問題。有的 candidate 讀書成績好但沒甚麼經驗的，也會被老闆抓來讓我們看看。
+不想踩雷，所以要求比較嚴謹。有前端需要的話，**_必須_**有 Portfolio。有後端需要的話，會由我旁邊的 AI engineer 補充我沒問到的問題。有的 candidate 讀書成績好但沒甚麼經驗的，也會被老闆抓來讓我們看看。
 
 面試問題大概是從 CV 的工作內容中選幾項我感興趣的追問下去，看是不是我們需要的和有沒有在撒謊（學術誠信也是能力一部分）。除了 CV 外，我會問問自己遇到的痛點（討教嘛）。
 
@@ -392,7 +392,7 @@ graph TD;
 
 AI 工具令 project manager 更輕鬆，同時令 developer 更忙更難受。
 
-以前這位 no code manager 會在 figma 畫原型，當半個 ui designer。會用 lovable UI 後，直接整個生成出來。但是需求不停變，他也沒辦法用咒語把他 "想要的" 的呈現到 lovable UI 的預覽中，導致需求跟預覽沒辦法統一，根本不知道要不要再參考這個***預覽***。
+以前這位 no code manager 會在 figma 畫原型，當半個 ui designer。會用 lovable UI 後，直接整個生成出來。但是需求不停變，他也沒辦法用咒語把他 "想要的" 的呈現到 lovable UI 的預覽中，導致需求跟預覽沒辦法統一，根本不知道要不要再參考這個**_預覽_**。
 
 正常一間公司，都會有 ui designer 在產品開發的最初期跟 project manager 緊密聯系，做出一個可以模疑整個 business flow 的假貨，在早期就把邏輯，ux，都確定好。現在這公司嘗試 skip 掉這個 ui designer，來折磨 developer。
 
@@ -412,7 +412,7 @@ AI 工具令 project manager 更輕鬆，同時令 developer 更忙更難受。
 
 其實公司最大的問題是由沒有編程經驗的人來做 project manager。他們一天沒有意識到這個問題，基本上公司都不會走得遠。
 
-沒有編程經驗的 pm ，或者是說，沒有在 IT 公司***受聘過***的 no code pm，真的應該每天下班拿個一小時出來學習怎樣寫程式，不然這種 pm 只會把一個又一個 developer 趕走。
+沒有編程經驗的 pm ，或者是說，沒有在 IT 公司**_受聘過_**的 no code pm，真的應該每天下班拿個一小時出來學習怎樣寫程式，不然這種 pm 只會把一個又一個 developer 趕走。
 
 要不要看看對岸台灣的 no code PM 都在幹甚麼的？
 
@@ -436,31 +436,30 @@ AI 工具令 project manager 更輕鬆，同時令 developer 更忙更難受。
 
 最後工作找了一個多月，因為我一路以來（無論是上班時，或者是下班後）都在不斷思考和不斷作出新的嘗試，我把這些嘗試總結成 [Portfolio](/portfolio)，或者是 [Blog](/blog) 中的文章，方便以後重塑同一塊知識點。
 
-展示這些 "作品" 後面試機會還挺多的。我的方向是 全端/純後端，技術棧方面，後端找的是 Spring Boot, Nodejs 或者是 Rust，前端找的是 React / React-Native，且***拒絕所有***純前端的工作，因為這與我的職涯規劃相沖。
+展示這些 "作品" 後面試機會還挺多的。我的方向是 全端/純後端，技術棧方面，後端找的是 Spring Boot, Nodejs 或者是 Rust，前端找的是 React / React-Native，且**_拒絕所有_**純前端的工作，因為這與我的職涯規劃相沖。
 
 我個人認為一個合格的 application 需要有
 
 - **能展示你能力的個人網站.** \
-    其中包括 Portfolio，前後端的設計理念 (如技術選型，其原因)，***能用***的 Deployment，相關的 Github project。
+   其中包括 Portfolio，前後端的設計理念 (如技術選型，其原因)，**_能用_**的 Deployment，相關的 Github project。
 
 - **一份令人容易閱讀的 CV.** \
-    這吃一點點美術。你要有能力***突出重點***，包括︰
+   這吃一點點美術。你要有能力**_突出重點_**，包括︰
+  1. **_用心的排版_**，資訊量控制（美術的虛實，在排版中就是留白，字的疏密度）
 
-    1. ***用心的排版***，資訊量控制（美術的虛實，在排版中就是留白，字的疏密度）
+     ![](/assets/img/2025-12-04-11-35-49.png?width=300px)
 
-        ![](/assets/img/2025-12-04-11-35-49.png?width=300px)
+  2. **_講重點_**，不要加上
+     - "我令到系統少了 85% error"
+     - "前端提昇了 30% 速度"
 
-    2. ***講重點***，不要加上
-        - "我令到系統少了 85% error"
-        - "前端提昇了 30% 速度"
+     等等。這些沒辦法被證明的陳述遠比想像中虛。如實說出你幹過甚麼就好。
 
-        等等。這些沒辦法被證明的陳述遠比想像中虛。如實說出你幹過甚麼就好。
+  3. **_不要說謊_**，你沒有做過就誠實面對，面試官很愛從你的工作內容把細節問到底。
 
-    3. ***不要說謊***，你沒有做過就誠實面對，面試官很愛從你的工作內容把細節問到底。
+     這次求職過程有面試過 Axa 香港（保險業的），被 4 個 Team Lead 連番轟炸 ...，真的把 CV 連同平常 工作/合作 方式問得很徹底。
 
-        這次求職過程有面試過 Axa 香港（保險業的），被 4 個 Team Lead 連番轟炸 ...，真的把 CV 連同平常 工作/合作 方式問得很徹底。
-
-        ![](/assets/img/2025-12-05-03-06-03.png)
+     ![](/assets/img/2025-12-05-03-06-03.png)
 
 #### 兩個 Offer
 

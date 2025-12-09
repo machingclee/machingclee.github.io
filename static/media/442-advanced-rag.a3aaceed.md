@@ -3,7 +3,6 @@ title: "Retrieval Evaluation Metrics: MRR, nDCG, and Recall@K"
 date: 2025-12-08
 id: blog0442
 tag: llm, rag
-toc: true
 intro: Study of Advanced Rag Technique
 ---
 
@@ -70,7 +69,7 @@ If the relevant document was at position 1:
 
 **MRR = (0.333 + 1.000 + 0.500) / 3 = 0.611**
 
-##### How it's implemented in this course
+##### How it's implemented
 
 ```python
 def calculate_mrr(keyword: str, retrieved_docs: list) -> float:
@@ -108,21 +107,28 @@ nDCG measures **the quality of the entire ranking**, not just the first result. 
 ##### The Formula
 
 **Step 1: Calculate DCG (Discounted Cumulative Gain)**
-```
-DCG@k = Σ (relevance_i / log₂(i + 1))
-```
 
-Where i is the position (1-indexed) and relevance_i is the relevance score at position i.
+$$
+\texttt{DCG@k} = \sum_{i=1}^k \frac{\texttt{relevance}_i}{\log_2(i+1)}
+$$
+
+Where $i$ is the document retrival position and 
+$$
+\texttt{relevance}_i\in \{0,1\}
+$$
+is the relevance score at position $i$, detailed example will be given in [#relavance_example].
+
+The choice of  $\log_2$ simply ensures the whole summand is a non-negative value, and because it grows slower than $x\mapsto x$, it provides higher score for later relevant result (less penality).
 
 **Step 2: Calculate IDCG (Ideal DCG)**
 The best possible DCG if you ranked all relevant docs at the top.
 
 **Step 3: Calculate nDCG**
-```
+```text
 nDCG@k = DCG@k / IDCG@k
 ```
 
-##### Example (Binary Relevance: 0 or 1)
+##### Example (Binary Relevance: 0 or 1) {#relavance_example}
 
 Query: "insurance products"
 
@@ -167,7 +173,7 @@ The logarithmic discount penalizes relevant results that appear lower:
 A relevant document at position 1 contributes **1.0** to DCG.  
 A relevant document at position 10 contributes only **0.289**.
 
-##### How it's implemented in this course
+##### How it's implemented
 
 ```python
 def calculate_dcg(relevances: list[int], k: int) -> float:
@@ -380,7 +386,7 @@ test = TestQuestion(
 - [Wikipedia: Mean Reciprocal Rank](https://en.wikipedia.org/wiki/Mean_reciprocal_rank)
 - [Wikipedia: Discounted Cumulative Gain](https://en.wikipedia.org/wiki/Discounted_cumulative_gain)
 - [RAGAS Evaluation Metrics](https://docs.ragas.io/)
-- Week 5 Implementation: `evaluation/eval.py`
+- Ed Donner, [*AI Engineer Core Track: LLM Engineering, RAG, QLoRA, Agents*](https://www.udemy.com/course/llm-engineering-master-ai-and-large-language-models/), Udemy
 
 
 
