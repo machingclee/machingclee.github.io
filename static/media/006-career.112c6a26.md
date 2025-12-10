@@ -106,9 +106,9 @@ graph TD;
 
 ###### ❌ 都 2023 年了還沒在用 Typescript ？
 
-我不了解他們的技術選型是如何做到 3 人合作 (我入職前的 team size)，但建持使用 `js` 來跑這個 frontend 網頁 project。到我接手的時候，他只是一個四圍都是 `any` type 的炸彈。我要花很多時間從 chrome debugger (source 頁面) 把 data type 弄清楚，再把重點要改的頁面變成 `.ts` 檔才有辦法改下去。
+我不了解他們的技術選型是如何做到 3 人合作 (我入職前的 team size)，但堅持使用 `js` 來跑這個 frontend 網頁 project。到我接手的時候，他只是一個到處都是 `any` type 的炸彈。我要花很多時間從 chrome debugger (source 頁面) 把 data type 弄清楚，再把重點要改的頁面變成 `.ts` 檔才有辦法改下去。
 
-這年頭不選 `typescript` 這個 lead 是有病的嗎？還是根本有 nodejs 生態的知識？
+這年頭不選 `typescript` 是根本沒有 nodejs 生態的知識嗎？
 
 
 
