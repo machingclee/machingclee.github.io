@@ -212,7 +212,6 @@ Nodejs 的話好歹還是有個 `Model` (from `mongoose`) 的概念，這個 Spr
 
 ![](/assets/img/2025-12-07-11-56-39.png)
 
-###### 建立 Dev Team 所有基礎設施
 
 "Tech Lead" 的離開令我不得不從後端，Schema Design，上 Cloud，走 Lambda Function，CI/CD，一手包辦。這是一個很好的機會，在 "有一位比你更 senior 的人存在" 下，以下
 
@@ -223,6 +222,10 @@ Nodejs 的話好歹還是有個 `Model` (from `mongoose`) 的概念，這個 Spr
 根本不可能讓 "更 junior" 的人隨便做決策的。Senior 很大機會把最有價值的工作搶來做的 (更何況有些人單純只會邀功的？) 。
 
 正好這位 "Tech Lead" 的離開令我有隨意發揮的機會。同時我的發揮令到公司的原型產品能如期推出。我敢肯定這位 "Tech Lead" 繼續留下來的話，原型開發進度不可能有那麼快。
+
+
+##### 建立 Dev Team 所有基礎設施
+
 
 在小公司，當公司***缺人***的時候，你就可以得到這種中等或以上規模的公司得不到的機會。託賴公司對我的信任，加上我自己私人時間的研究，我在公司建立了
 
@@ -243,7 +246,7 @@ Nodejs 的話好歹還是有個 `Model` (from `mongoose`) 的概念，這個 Spr
 3. **完整的 Database Schema Migration 制度.** \
    這對多人合作建立 Backend 非常重要，每位成員 migrate schema 時都確保是當前最新狀態 (不然報錯)。
 
-4. **所需的 Cloud Infrastructure.** \
+4. **所有必需的 Cloud Infrastructure.** \
    包括 rds, rds-proxy, load-balancer, private load-balancer, cloudfront, ..., 應有的都有。以及後來使用 Terraform 來達成整個 Infrastructure 的可重覆性 (via Infrastructure as Code)。
 
 5. **完善的 Cloud Infrastructure 網頁.** \
@@ -254,7 +257,7 @@ Nodejs 的話好歹還是有個 `Model` (from `mongoose`) 的概念，這個 Spr
 
    等等。以上的內容都是從一個 backend endpoint 取得，並建立了一個簡單的 Google Authentication (只有本公司 email 可登入成功)，只有登入成功後才可以從 endpoint 取得資訊，以確保內容保密。
 
-###### 失敗的 Backend 經驗 {#backend_failed}
+##### 失敗的 Backend 經驗 {#backend_failed}
 
 雖然我花了很多很多時間去研究，力求做到最好。可是我也是第一次***從零***去建立後端，包括 table design 和後端架構完全憑直覺，加上我沒有參與過好 Project 的經驗，歷時一年的 nodejs backend 在新 Tech Lead 的帶領下用 Spring Boot 重寫。
 
@@ -296,7 +299,7 @@ Nodejs 的話好歹還是有個 `Model` (from `mongoose`) 的概念，這個 Spr
 
 說到底，怎樣才能構成一個 Service？他的建立是基於甚麼原則？如果沒有原則，那就是即興，亂源，成為 `util`/`helper` 的另一個命名用詞而已。
 
-###### 研究系統設計的方法論（思想框架，實行方法）
+##### 研究系統設計的方法論（思想框架，實行方法）
 
 所以為免重蹈覆轍，開始學習後端的一些方法論。到網上找一找的話除了傳統的 Controller-Service-Repository (最簡單的)，你會看到︰
 
