@@ -4,6 +4,7 @@ date: 2025-12-03
 id: personal0006
 tag: personal
 intro: What I have done in these two years
+indent: true
 ---
 
 <style>
@@ -24,40 +25,6 @@ intro: What I have done in these two years
     padding: 10px;
     background-color : rgb(248, 249, 250) !important;
   }
-
-  /* Indent all paragraphs FIRST */
-  p {
-    text-indent: 1.85em !important;
-  }
-
-  /* Then override with exceptions */
-  
-  /* Remove indentation from paragraphs with images */
-  p:has(img) {
-    text-indent: 0 !important;
-  }
-
-  /* Remove indentation from first paragraph after any heading */
-  h1 + p,
-  h2 + p,
-  h3 + p,
-  h4 + p,
-  h5 + p,
-  h6 + p {
-    text-indent: 0 !important;
-  }
-
-  /* Remove indentation from paragraphs in lists */
-  li p {
-    text-indent: 0 !important;
-  }
-
-  /* Remove indentation from paragraphs after spacer or image - MUST BE LAST */
-  p:has(.spacer) + p,
-  p:has(img) + p {
-    text-indent: 0 !important;
-  }
-  
 </style>
 
 ### Office 環境的改變
@@ -86,7 +53,7 @@ graph TD;
   --> B["<div style='padding-bottom: 10px'><span style='border-radius: 4px; border: 1px solid rgba(0,0,0,0.4); padding: 0px 4px'>2023年05月~08月</span>  扭螺絲，加 backend endpoint，加 ui</div>"]
   --> C["<div style='padding-bottom: 10px'><span style='border-radius: 4px; border: 1px solid rgba(0,0,0,0.4); padding: 0px 4px'>2023年09月~11月</span>  開始移動端 Project</div>"]
   --> D["<div style='padding-bottom: 10px'><div style='padding-bottom: 4px'><div><span style='border-radius: 4px; border: 1px solid rgba(0,0,0,0.4); padding: 0px 4px'>2023年11月</span>  Intern 入職</div><div><span style='border-radius: 4px; border: 1px solid rgba(0,0,0,0.4); padding: 0px 4px'>2023年12月末</span>  ''Tech Lead (?)'' 離職</div></div>"]
-  --> E["<div style='padding-bottom: 10px'><span style='border-radius: 4px; border: 1px solid rgba(0,0,0,0.4); padding: 0px 4px'>2024年01月~06月</span>  我 + 半年實習 + 1 個月本地 Developer</div>"]
+  --> E["<div style='padding-bottom: 10px'><span style='border-radius: 4px; border: 1px solid rgba(0,0,0,0.4); padding: 0px 4px'>2024年01月~06月</span>  我 + 半年的實習 + 1 個月的本地 Developer</div>"]
   --> F["<div style='padding-bottom: 10px'><div><span style='border-radius: 4px; border: 1px solid rgba(0,0,0,0.4); padding: 0px 4px'>2024年07月~09月</span> 開始擴充人手至 5 Dev Developer + 1 AI developer，</div><div>新 Tech Lead 加入</div></div>"]
   --> |1 年後| G["<div style='padding-bottom: 10px'><span style='border-radius: 4px; border: 1px solid rgba(0,0,0,0.4); padding: 0px 4px'>2025年08月</span>  同事有的被裁，有的離職</div>"]
   --> H["<div style='padding-bottom: 10px'><span style='border-radius: 4px; border: 1px solid rgba(0,0,0,0.4); padding: 0px 4px'>2025年12月中</span>  我離職</div>"]
@@ -102,11 +69,11 @@ graph TD;
 
 其一，他不熟 React；其二，他沒有幹過 native mobile application 的項目。以致他沒有任何基礎在新項目上作出任何技術上的決策。而作為 react developer 的我，理所當然決定使用 react-native 來開發新項目了。
 
-因為我有參與舊 project 的一些短期維護，所以看到這位 Lead 帶領下 project 的一些慘況以及令我對他抱有負面看法。
+因為我有參與舊 project 的一些短期維護，所以看到這位 Lead 帶領下 project 的一些慘況以及他的行為令我對他抱有極為負面的看法。
 
 ###### ❌ 都 2023 年了還沒在用 Typescript ？
 
-我不了解他們的技術選型是如何做到 3 人合作 (我入職前的 team size)，但堅持使用 `js` 來跑這個 frontend 網頁 project。到我接手的時候，他只是一個到處都是 `any` type 的炸彈。我要花很多時間從 chrome debugger (source 頁面) 把 data type 弄清楚，再把重點要改的頁面變成 `.ts` 檔才有辦法改下去。
+我不了解他們的技術選型是如何做到 3 人合作 (我入職前的 team size)，但堅持使用 `js` 來跑這個網頁 project。到我接手的時候，他只是一個到處都是 `any` type 的炸彈。我要花很多時間從 chrome debugger (source 頁面) 把 data type 弄清楚，再把重點要改的頁面變成 `.ts` 檔才有辦法改下去。
 
 這年頭不選 `typescript` 是根本沒有 nodejs 生態的知識嗎？
 
@@ -116,7 +83,9 @@ graph TD;
 
 後端用的 Spring Boot，原本是使用 MySQL，然後有一半已經改為 MongoDB。詢問轉換原因，"Tech Lead" 認為 business 經常改變，所以 MongoDB 這種沒有 schema 的 persistence solution 更適合，因為 schema 更具彈性（蛤？）。
 
-這絕對是一個***嚴重的 Skill Issue***。2023 年年底新 React Native Project 我直接從 MongoDB 變成 Prisma 加 PostgreSQL。這個新 project 至今跑了兩年，還是走得好好的，business 還一直改，用的是 (從 Nodejs Express 變成) Spring Boot。
+這絕對是一個***嚴重的 Skill Issue***。
+
+2023 年年底的新 React Native Project 我直接從 MongoDB 改成使用 Prisma + PostgreSQL。這個新 project 至今跑了兩年，還是走得好好的，business 還一直改，用的是 (從 Nodejs Express 變成) Spring Boot。
 
 ###### ❌ 允許沒有 CI/CD
 
@@ -160,15 +129,21 @@ Nodejs 的話好歹還是有個 `Model` (from `mongoose`) 的概念，這個 Spr
 
 <Example>
 
-**例子.** 例如我們有一個 `User` table 了，他硬多加一個 `UserRegistration` table，其中跟 `User` table 相比 column 幾本都是重覆的，但其實在 `User` table 多加一個 `status` enum 就完事。他新增的 table 又不是 reference to `User` table 做 Polymorphism。
+<spacer height="0"></spacer>
+
+**例子.** 例如我們有一個 `User` table 了，他硬多加一個 `UserRegistration` table，其中跟 `User` table 相比 column 幾本都是重覆的，但其實在 `User` table 多加一個 `status` enum 就完事。
+
+而他新增的 table 又不是 reference to `User` table 做 polymorphism ...。
 
 </Example>
 
-寫着寫着整個 backend 愈來愈亂。十月份左右，他覺得自己可以做的貢獻太少，所以提出離職了。
+<spacer height="0"></spacer>
 
-我作為新人，沒甚麼從零自己弄後端的經驗，也只好邊學邊做。
 
-後來我們使用 MongoDB 的方式根本與 relational db 方式沒差別，所以在 2023 年年底從 MongoDB 遷移到 PostgreSQL 去了。這遷移工作自然也是由我來做的。
+
+寫着寫着整個 backend 愈來愈亂。十月份左右，他終於覺得自己可以做的貢獻太少，所以提出離職了。他的通知期是兩個月，12 份月離開。
+
+工作這幾年都由更 senior 的人來***從零***建立後端，這方面我沒甚麼 hands-on 經驗，也只好邊學邊做。後來我們使用 MongoDB 的方式根本與 relational db 方式沒差別，所以在 2023 年年底從 MongoDB 遷移到 PostgreSQL 去了。這遷移工作自然也是由我來做的。
 
 ##### 幾乎獨撐的半年，人事小變動
 
@@ -224,16 +199,16 @@ Nodejs 的話好歹還是有個 `Model` (from `mongoose`) 的概念，這個 Spr
 正好這位 "Tech Lead" 的離開令我有隨意發揮的機會。同時我的發揮令到公司的原型產品能如期推出。我敢肯定這位 "Tech Lead" 繼續留下來的話，原型開發進度不可能有那麼快。
 
 
-##### 建立 Dev Team 所有基礎設施
+##### 建立 Development Team 所有基礎設施
 
 
 在小公司，當公司***缺人***的時候，你就可以得到這種中等或以上規模的公司得不到的機會。託賴公司對我的信任，加上我自己私人時間的研究，我在公司建立了
 
 1. **所有 CI/CD Workflow.** \
-   包括 Backend (python, spring boot, nestjs, express) 其 pipeline (workflow) 所需的 `yml` file，以及提倡 github action 作為 CI/CD 工具 (後來 Gitlab 才宣佈不再支援香港)。
+   包括所有 backend (Python, Spring Boot, Nestjs, Express) 其 pipeline (workflow) 所需的 `yml` file，以及提倡 Github Action 作為 CI/CD 工具 (後來 Gitlab 才宣佈不再支援香港)。
 
 2. **兩㮔 Deployment 模式.** \
-   一種是 Lambda Function，一種是 ECS。
+   CI/CD workflow 有兩種 deployment 模式，一種是經 Lambda Function，一種是經 ECS。
 
    Lambda Function 也有很多種類︰
    - 有 python 的；
@@ -247,7 +222,7 @@ Nodejs 的話好歹還是有個 `Model` (from `mongoose`) 的概念，這個 Spr
    這對多人合作建立 Backend 非常重要，每位成員 migrate schema 時都確保是當前最新狀態 (不然報錯)。
 
 4. **所有必需的 Cloud Infrastructure.** \
-   包括 rds, rds-proxy, load-balancer, private load-balancer, cloudfront, ..., 應有的都有。以及後來使用 Terraform 來達成整個 Infrastructure 的可重覆性 (via Infrastructure as Code)。
+   包括 rds, rds-proxy, load-balancer, private load-balancer, cloudfront, ..., 應有的都有。以及後來使用 Terraform 來達成整個 Infrastructure 的可重覆性。
 
 5. **完善的 Cloud Infrastructure 網頁.** \
    讓團隊成員可以取得所有 Infrastructure 的資訊 (從 terraform export 出來的)。例如
@@ -370,7 +345,7 @@ Nodejs 的話好歹還是有個 `Model` (from `mongoose`) 的概念，這個 Spr
 
      之類的怪東西，花括號是甚麼鬼 ...。在 `<input />` box 利用 `onChange` 或 `useRef` 來 紀錄/拿取 輸入內容也做不到。
 
-   - **地雷 4.** 問後台有甚麼方法確認 requester 身份，竟然完全沒經驗，答不出任何方案（例如可以經 header / cookie 傳訊息 ...），更不用問要傳甚麼訊息了。
+   - **地雷 4.** 問後台有甚麼方法確認 request user 身份，竟然完全沒經驗，答不出任何方案（例如可以經 header / cookie 傳訊息 ...），更不用問要傳甚麼訊息了。
 
    說來真的很神奇，十個 applicant 裏面，真的只有 1, 2 個會有 Portfolio。這明明是引導 interviewer 問你熟悉的問題的好機會。
 
@@ -393,7 +368,7 @@ Nodejs 的話好歹還是有個 `Model` (from `mongoose`) 的概念，這個 Spr
 
 陣容在當時來說非常全面了。只可惜這位 Android Developer 學不動 expo 生態，最終也用不上他的 android 知識來為 expo project 添加功能。而且他的前端能力完全沒辦法在 react 生態下表現出來 ...。
 
-#### 2025 年 1 月 ~ 2025 年 8 月 (離職念頭的萌芽)
+#### 2024 年 10 月 ~ 2025 年 8 月 (離職念頭的萌芽)
 
 ![](/assets/img/2025-12-07-12-05-59.png)
 
@@ -413,9 +388,31 @@ AI 工具令 project manager 更輕鬆，同時令 developer 更忙更難受。
 
 後來他乾脆 ui 都不弄了，要我們通靈，我們做好後他再想怎麼改。所以我們要以 "會被改掉" 前提下去做新的 UI。這算是這公司的一大特色，大開眼界了。
 
-##### 大陸同事被裁，以及同事的離職
+#### 各自離職，前端將成缺口
 
-2025 年 7 月底大陸同事被辭退， 8 月底一位前端同事有其他機會而離職；此外，現在公司一年多沒有薪金調整。種種的原因也促使我嘗試找更好的機會。
+- 2025 年 7 月底大陸同事被辭退；
+
+- 2025 年 8 月底一位前端同事有其他機會而離職。
+
+各方溝通後能看出公司想以限制加薪的方式讓 香港/大陸 職員自然流失，把重心放在澳洲。這也促使我尋找更好的發展機會。經過 [#find_job] 後︰
+
+- 2025 年 12 月中旬 我離職；
+
+- 2026 年 1 月中旬 新 Tech Lead 離職。
+
+
+
+```mermaid
+graph TD;
+A["5 Dev + 1 AI (HK)"] --> |1年後| B["<span style='color: blue'>1 New Dev (Australia)</span> + 1 Dev (China) + 1 AI (HK)"]
+```
+
+9 月份新聘的澳洲 developer 不會前端，也就是 2026 年 1 月後所有***極為繁重***的 frontend (手機 + 網頁) 工作將全推給***一個人***承擔。
+
+而公司最近 interview 的下一任新 Tech Lead 非常會 Cloud，但只會 Angular，也就等於在這公司的前端上沒有任何輸出能力。前端這工作量沒有兩個人來分擔基本上是啃不下的。尤其是手機端需要 Android + iOS 同時維護，還要理解 Expo Ecosystem 和 App Store Connect 跟 Google Play Console 的各種 configuration，不是隨便找個 React Developer 就能夠應付的。
+
+看來前端部分將成為一個極大的流失缺口，都是被工作量和不恰當人才聘用迫走的。
+
 
 #### 公司最大的問題
 
@@ -423,9 +420,9 @@ AI 工具令 project manager 更輕鬆，同時令 developer 更忙更難受。
 
 <spacer></spacer>
 
-其實公司最大的問題是由沒有編程經驗的人來做 project manager。他們一天沒有意識到這個問題，基本上公司都不會走得遠。
+作為小公司，其實公司最大的問題除了招聘了**純 Backend** 這職位外，還有由沒有編程經驗的人來做 Product Manager。他們一天沒有意識到這個問題，基本上公司都不會走得遠。
 
-沒有編程經驗的 pm ，或者是說，沒有在 IT 公司***受聘過***的 no code pm，真的應該每天下班拿個一小時出來學習怎樣寫程式，不然這種 pm 只會把一個又一個 developer 趕走。
+沒有編程經驗的 PM ，或者是說，沒有在 IT 公司***受聘過***的 no code PM，真的應該每天下班拿個一小時出來學習怎樣寫程式，不然這種 PM 只會把一個又一個 developer 趕走。
 
 要不要看看對岸台灣的 no code PM 都在幹甚麼的？
 
@@ -433,13 +430,11 @@ AI 工具令 project manager 更輕鬆，同時令 developer 更忙更難受。
 
 再看看我們現在公司那位？
 
-我們耐性蠻高的新 Tech Lead 也跟他對不上嘴，更何況是我這種性格剛烈的 developer？我不在乎錢，你有種可以跟我對着幹，我是隨時就能離職那種。
+我們耐性非常高的新 Tech Lead 也跟他對不上嘴，更何況是我這種性格比較剛烈的 developer？我不在乎錢，你有種可以跟我對着幹，我是隨時就能離職那種。
 
-其實我幹了一年就想跑路了，累得跟狗一樣，不對狗根本沒有我累 ... 。可是新增聘的人手確實不錯，所以我再待個一年看看，這樣一待就是兩年半。
+其實我幹了一年就想跑路了，累得跟狗一樣。可是新增聘的人手確實不錯所以再待個一年看看，這樣一待就是兩年半。基本上到這階段 (9 月份) 都把所有責任都分散出去了，是隨時都能離開的狀態。
 
-基本上到這階段都把所有責任都分散出去了，是隨時都能離開的狀態。
-
-### 求職 (2025 年 9 月)
+### 求職 (2025 年 9 月) {#find_job}
 
 #### 策略
 
@@ -456,23 +451,25 @@ AI 工具令 project manager 更輕鬆，同時令 developer 更忙更難受。
 - **能展示你能力的個人網站.** \
    其中包括 Portfolio，前後端的設計理念 (如技術選型，其原因)，***能用***的 Deployment，相關的 Github project。
 
-- **一份令人容易閱讀的 CV.** \
+- **一份容易閱讀的 CV.** \
    這吃一點點美術。你要有能力***突出重點***，包括︰
   1. ***用心的排版***，資訊量控制（美術的虛實，在排版中就是留白，字的疏密度）
 
      ![](/assets/img/2025-12-04-11-35-49.png?width=300px)
 
   2. ***講重點***，不要加上
-     - "我令到系統少了 85% error"
-     - "前端提昇了 30% 速度"
+     - "令系統少了 85% error"
+     - "令前端提昇了 30% 速度"
 
      等等。這些沒辦法被證明的陳述遠比想像中虛。如實說出你幹過甚麼就好。
 
   3. ***不要說謊***，你沒有做過就誠實面對，面試官很愛從你的工作內容把細節問到底。
+  
+      每一個工作上的決策背後都有前因後果的，如果你的工作內容是***編***出來的很容易就被問出來。
 
-     這次求職過程有面試過 Axa 香港（保險業的），被 4 個 Team Lead 連番轟炸 ...，真的把 CV 連同平常 工作/合作 方式問得很徹底。
+      這次求職過程有面試過 Axa 香港（保險業的），被 4 個 Team Lead 連番轟炸 ...，真的把 CV 連同平常 工作/合作 方式都問得很徹底。
 
-     ![](/assets/img/2025-12-05-03-06-03.png)
+      ![](/assets/img/2025-12-05-03-06-03.png)
 
 #### 兩個 Offer
 
