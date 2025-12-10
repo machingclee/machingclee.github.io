@@ -98,15 +98,25 @@ graph TD;
 
 大概二年半前我剛加入現在的公司的時候，剛好是當時公司主力項目的最終階段。我主要都在修他們已有的 feature，加加功能，扭扭螺絲。那個時段正好是人力交替周期，辭職的辭職，各有不同的出路。IT 相關的職員只剩下一個 senior 的 "Tech Lead" 跟一個 AI engineer。
 
-不到三個月，公司開展一個新的手機項目。這領域對這位 "Tech Lead" 來說非常陌生。其一，在帶領同事幹活的這二年，他都只專注後端的工作，二年來從不讓雙手沾染任何 nodejs。其二，他沒有幹過 native mobile application 的項目。以致他沒有任何基礎在新項目上作出任何技術上的決策。而作為 react developer 的我，理所當然決定使用 react-native 來開發新項目了。
+三個月後，公司展開一個新的手機項目。這領域對這位 "Tech Lead" 來說非常陌生。
+
+其一，他不熟 React；其二，他沒有幹過 native mobile application 的項目。以致他沒有任何基礎在新項目上作出任何技術上的決策。而作為 react developer 的我，理所當然決定使用 react-native 來開發新項目了。
 
 因為我有參與舊 project 的一些短期維護，所以看到這位 Lead 帶領下 project 的一些慘況以及令我對他抱有負面看法。
+
+###### ❌ 都 2023 年了還沒在用 Typescript ？
+
+我不了解他們的技術選型是如何做到 3 人合作 (我入職前的 team size)，但建持使用 `js` 來跑這個 frontend 網頁 project。到我接手的時候，他只是一個四圍都是 `any` type 的炸彈。我要花很多時間從 chrome debugger (source 頁面) 把 data type 弄清楚，再把重點要改的頁面變成 `.ts` 檔才有辦法改下去。
+
+這年頭不選 `typescript` 這個 lead 是有病的嗎？還是根本有 nodejs 生態的知識？
+
+
 
 ###### ❌ 不合理地從 MySQL 遷移到 MongoDB
 
 後端用的 Spring Boot，原本是使用 MySQL，然後有一半已經改為 MongoDB。詢問轉換原因，"Tech Lead" 認為 business 經常改變，所以 MongoDB 這種沒有 schema 的 persistence solution 更適合，因為 schema 更具彈性（蛤？）。
 
-這絕對是一個**_嚴重的 Skill Issue_**。2023 年年底新 React Native Project 我直接從 MongoDB 變成 Prisma 加 PostgreSQL。這個新 project 至今跑了兩年，還是走得好好的，business 還一直改，用的是 (從 Nodejs Express 變成) Spring Boot。
+這絕對是一個***嚴重的 Skill Issue***。2023 年年底新 React Native Project 我直接從 MongoDB 變成 Prisma 加 PostgreSQL。這個新 project 至今跑了兩年，還是走得好好的，business 還一直改，用的是 (從 Nodejs Express 變成) Spring Boot。
 
 ###### ❌ 允許沒有 CI/CD
 
@@ -116,15 +126,15 @@ graph TD;
 
 ###### ❌ 對常用的 Technical Term 提出無意議的質疑
 
-這位 "Tech Lead" 沒有使用 **_middleware_** 的經驗，所以不理解這個字是甚麼。
+這位 "Tech Lead" 沒有使用 ***middleware*** 的經驗，所以不理解這個字是甚麼。
 
-在**_寫後端_**這個 context 下，跟我爭論 middleware 這個字可以有**_很多_**意思。可是有後端知識的人，但凡寫過 C#，寫過 nodejs，寫過 golang，都不會覺得 middleware 這個字有任何歧義。不就跟 Spring Boot 的 Filter 或者 AOP 一樣嗎？欄截 request，做一些處理而已。
+在***寫後端***這個 context 下，跟我爭論 middleware 這個字可以有***很多***意思。可是有後端知識的人，但凡寫過 C#，寫過 nodejs，寫過 golang，都不會覺得 middleware 這個字有任何歧義。不就跟 Spring Boot 的 Filter 或者 AOP 一樣嗎？欄截 request，做一些處理而已。
 
 ###### ❌ 沒有 Repository 的 Spring Boot
 
 Spring Boot 以齊全的腳手架而聞名。
 
-這個舊 Spring Boot Project 有一個絕妙的點，整個項目 **_完全沒有_** repository 的概念。你都使用 mongo 了，不是有 `spring-data-mongodb` 可以用嗎？難道所有簡單的 "query" 都要自己手擼出來嗎。
+這個舊 Spring Boot Project 有一個絕妙的點，整個項目 ***完全沒有*** repository 的概念。你都使用 mongo 了，不是有 `spring-data-mongodb` 可以用嗎？難道所有簡單的 "query" 都要自己手擼出來嗎。
 
 Nodejs 的話好歹還是有個 `Model` (from `mongoose`) 的概念，這個 Spring Boot Project 直接用 `MongoTemplate` 硬幹到底。還滿佈沒有 Type 的 `bson.Document` object，比 `js` 還更 `js`。
 
@@ -192,9 +202,9 @@ Nodejs 的話好歹還是有個 `Model` (from `mongoose`) 的概念，這個 Spr
 
 由於這位 Developer 的知識對這公司來說有點超前，而他又花太多時間在這方面，以致新的 feature 做得很緩慢甚至比實習生更差。所以被老闆一個月後勸退了。
 
-這對我來說是一個**_示例_**，如果想帶來創新及改變，必須先在 Personal Project 做，再對團隊提出 (也不要自己偷偷做在公司 Project 做，其他人不認同只會空辛苦一場) 。不用實例說明的話只會變成讓公司在你的 idea 上*賭時間*。
+這對我來說是一個***示例***，如果想帶來創新及改變，必須先在 Personal Project 做，再對團隊提出 (也不要自己偷偷做在公司 Project 做，其他人不認同只會空辛苦一場) 。不用實例說明的話只會變成讓公司在你的 idea 上*賭時間*。
 
-明顯**_帶來改變_**是費力不討好的，你沒有一定要熱情和想法很難為公司帶來改變，何況有很多不願意改變的人，~~但我就愛推動改變~~。
+明顯***帶來改變***是費力不討好的，你沒有一定要熱情和想法很難為公司帶來改變，何況有很多不願意改變的人，~~但我就愛推動改變~~。
 
 現在我很習慣用 Spring Boot 跑 DDD 這套 Methodology 了，也希望有機會可以再跟他合作。因為有認知要使用 DDD 人真的不多，實在是太多把第一年經驗重覆 10 年的人，也很難找到對 DDD 有同樣研究程度的人。
 
@@ -214,7 +224,7 @@ Nodejs 的話好歹還是有個 `Model` (from `mongoose`) 的概念，這個 Spr
 
 正好這位 "Tech Lead" 的離開令我有隨意發揮的機會。同時我的發揮令到公司的原型產品能如期推出。我敢肯定這位 "Tech Lead" 繼續留下來的話，原型開發進度不可能有那麼快。
 
-在小公司，當公司**_缺人_**的時候，你就可以得到這種中等或以上規模的公司得不到的機會。託賴公司對我的信任，加上我自己私人時間的研究，我在公司建立了
+在小公司，當公司***缺人***的時候，你就可以得到這種中等或以上規模的公司得不到的機會。託賴公司對我的信任，加上我自己私人時間的研究，我在公司建立了
 
 1. **所有 CI/CD Workflow.** \
    包括 Backend (python, spring boot, nestjs, express) 其 pipeline (workflow) 所需的 `yml` file，以及提倡 github action 作為 CI/CD 工具 (後來 Gitlab 才宣佈不再支援香港)。
@@ -246,7 +256,7 @@ Nodejs 的話好歹還是有個 `Model` (from `mongoose`) 的概念，這個 Spr
 
 ###### 失敗的 Backend 經驗 {#backend_failed}
 
-雖然我花了很多很多時間去研究，力求做到最好。可是我也是第一次**_從零_**去建立後端，包括 table design 和後端架構完全憑直覺，加上我沒有參與過好 Project 的經驗，歷時一年的 nodejs backend 在新 Tech Lead 的帶領下用 Spring Boot 重寫。
+雖然我花了很多很多時間去研究，力求做到最好。可是我也是第一次***從零***去建立後端，包括 table design 和後端架構完全憑直覺，加上我沒有參與過好 Project 的經驗，歷時一年的 nodejs backend 在新 Tech Lead 的帶領下用 Spring Boot 重寫。
 
 這個 nodejs 發生甚麼事呢？
 
@@ -262,14 +272,14 @@ Nodejs 的話好歹還是有個 `Model` (from `mongoose`) 的概念，這個 Spr
    > [詳細例子](/blog/article/Problem-of-SQL-Based-Nodejs-Backend-Should-we-use-Query-Builder-)
 
 4. **Query 難以 Debug.** \
-   承上，domain logic 開始不容易維護了，令我確信後台應**_盡量避免_**使用 SQL 或 SQL Builder 來維護 domain logic。也令我確信 domain logic 應該是**_行為驅動_**的。
+   承上，domain logic 開始不容易維護了，令我確信後台應***盡量避免***使用 SQL 或 SQL Builder 來維護 domain logic。也令我確信 domain logic 應該是***行為驅動***的。
 
 5. **Services 沒有按 Domain 劃分好.** \
    基本上變成了一個大泥球，再加上其他團隊成員的加入，就變得愈來愈亂了。實際上在系統設計初期並沒有把 Domain 裏的 Context 劃分出來。
 
 看着這個後端變成這個樣子，自己也有一點心痛。
 
-是不是用 Spring Boot 上面的問題就解決了？答案是**_否定_**的。Spring Boot 充其量是多了一個 JPA，可以幫你自動建立 Repository。但沒有走對正確的方法論（思考框架），最後其實用甚麼語言都會變成一托 $*$。
+是不是用 Spring Boot 上面的問題就解決了？答案是***否定***的。Spring Boot 充其量是多了一個 JPA，可以幫你自動建立 Repository。但沒有走對正確的方法論（思考框架），最後其實用甚麼語言都會變成一托 $*$。
 
 以下都是沒有方法論的通病
 
@@ -282,7 +292,7 @@ Nodejs 的話好歹還是有個 `Model` (from `mongoose`) 的概念，這個 Spr
 - `memberService.joinProject` 跟
 - `projectService.addMember`
 
-哪個是正確的？答案是**沒有對錯**，因為後端從根本沒有 Aggregate 這個概念，所有 resource 的建立都沒有層級可以規範。這種沒有對錯的 _N_ 選 1 選擇題將會不停發生，你可以想像跟 Project 這個 domain 有關的 logic 在各個 services 之間到處亂跑了嗎？
+哪個是正確的？答案是**沒有對錯**，因為後端從根本沒有 Aggregate 這個概念，所有 resource 的建立都沒有層級可以規範。這種沒有對錯的 *N* 選 1 選擇題將會不停發生，你可以想像跟 Project 這個 domain 有關的 logic 在各個 services 之間到處亂跑了嗎？
 
 說到底，怎樣才能構成一個 Service？他的建立是基於甚麼原則？如果沒有原則，那就是即興，亂源，成為 `util`/`helper` 的另一個命名用詞而已。
 
@@ -316,7 +326,7 @@ Nodejs 的話好歹還是有個 `Model` (from `mongoose`) 的概念，這個 Spr
 
 ![](/assets/img/2025-12-04-04-29-09.png)
 
-我覺得 DDD 對我最大影響是 schema design 的一些思維改變。例如所有 table 被設計時都一定需要思考它在一個 domain 裏的哪個 **_Context_** (Context-First)。這些設計不管你後端走不走 domain driven design 的戰術路線都通用的。
+我覺得 DDD 對我最大影響是 schema design 的一些思維改變。例如所有 table 被設計時都一定需要思考它在一個 domain 裏的哪個 ***Context*** (Context-First)。這些設計不管你後端走不走 domain driven design 的戰術路線都通用的。
 
 關於 DDD 的戰術部分，其實戰可參考我的文章 (第 5.1.1 開始)︰
 
@@ -332,7 +342,7 @@ Nodejs 的話好歹還是有個 `Model` (from `mongoose`) 的概念，這個 Spr
 
 因為缺人，公司終於認真擴充人手。同時我是公司唯二的 developer，所以就由我來尋找未來的伙伴了。因為當時我只有五年的經驗，我沒自信能帶領一個項目走向成功，所以要老闆盡可能也找一些資深的人來帶領我們。
 
-不想踩雷，所以要求比較嚴謹。有前端需要的話，**_必須_**有 Portfolio。有後端需要的話，會由我旁邊的 AI engineer 補充我沒問到的問題。有的 candidate 讀書成績好但沒甚麼經驗的，也會被老闆抓來讓我們看看。
+不想踩雷，所以要求比較嚴謹。有前端需要的話，***必須***有 Portfolio。有後端需要的話，會由我旁邊的 AI engineer 補充我沒問到的問題。有的 candidate 讀書成績好但沒甚麼經驗的，也會被老闆抓來讓我們看看。
 
 面試問題大概是從 CV 的工作內容中選幾項我感興趣的追問下去，看是不是我們需要的和有沒有在撒謊（學術誠信也是能力一部分）。除了 CV 外，我會問問自己遇到的痛點（討教嘛）。
 
@@ -392,7 +402,7 @@ Nodejs 的話好歹還是有個 `Model` (from `mongoose`) 的概念，這個 Spr
 
 AI 工具令 project manager 更輕鬆，同時令 developer 更忙更難受。
 
-以前這位 no code manager 會在 figma 畫原型，當半個 ui designer。會用 lovable UI 後，直接整個生成出來。但是需求不停變，他也沒辦法用咒語把他 "想要的" 的呈現到 lovable UI 的預覽中，導致需求跟預覽沒辦法統一，根本不知道要不要再參考這個**_預覽_**。
+以前這位 no code manager 會在 figma 畫原型，當半個 ui designer。會用 lovable UI 後，直接整個生成出來。但是需求不停變，他也沒辦法用咒語把他 "想要的" 的呈現到 lovable UI 的預覽中，導致需求跟預覽沒辦法統一，根本不知道要不要再參考這個***預覽***。
 
 正常一間公司，都會有 ui designer 在產品開發的最初期跟 project manager 緊密聯系，做出一個可以模疑整個 business flow 的假貨，在早期就把邏輯，ux，都確定好。現在這公司嘗試 skip 掉這個 ui designer，來折磨 developer。
 
@@ -412,7 +422,7 @@ AI 工具令 project manager 更輕鬆，同時令 developer 更忙更難受。
 
 其實公司最大的問題是由沒有編程經驗的人來做 project manager。他們一天沒有意識到這個問題，基本上公司都不會走得遠。
 
-沒有編程經驗的 pm ，或者是說，沒有在 IT 公司**_受聘過_**的 no code pm，真的應該每天下班拿個一小時出來學習怎樣寫程式，不然這種 pm 只會把一個又一個 developer 趕走。
+沒有編程經驗的 pm ，或者是說，沒有在 IT 公司***受聘過***的 no code pm，真的應該每天下班拿個一小時出來學習怎樣寫程式，不然這種 pm 只會把一個又一個 developer 趕走。
 
 要不要看看對岸台灣的 no code PM 都在幹甚麼的？
 
@@ -436,26 +446,26 @@ AI 工具令 project manager 更輕鬆，同時令 developer 更忙更難受。
 
 最後工作找了一個多月，因為我一路以來（無論是上班時，或者是下班後）都在不斷思考和不斷作出新的嘗試，我把這些嘗試總結成 [Portfolio](/portfolio)，或者是 [Blog](/blog) 中的文章，方便以後重塑同一塊知識點。
 
-展示這些 "作品" 後面試機會還挺多的。我的方向是 全端/純後端，技術棧方面，後端找的是 Spring Boot, Nodejs 或者是 Rust，前端找的是 React / React-Native，且**_拒絕所有_**純前端的工作，因為這與我的職涯規劃相沖。
+展示這些 "作品" 後面試機會還挺多的。我的方向是 全端/純後端，技術棧方面，後端找的是 Spring Boot, Nodejs 或者是 Rust，前端找的是 React / React-Native，且***拒絕所有***純前端的工作，因為這與我的職涯規劃相沖。
 
 我個人認為一個合格的 application 需要有
 
 - **能展示你能力的個人網站.** \
-   其中包括 Portfolio，前後端的設計理念 (如技術選型，其原因)，**_能用_**的 Deployment，相關的 Github project。
+   其中包括 Portfolio，前後端的設計理念 (如技術選型，其原因)，***能用***的 Deployment，相關的 Github project。
 
 - **一份令人容易閱讀的 CV.** \
-   這吃一點點美術。你要有能力**_突出重點_**，包括︰
-  1. **_用心的排版_**，資訊量控制（美術的虛實，在排版中就是留白，字的疏密度）
+   這吃一點點美術。你要有能力***突出重點***，包括︰
+  1. ***用心的排版***，資訊量控制（美術的虛實，在排版中就是留白，字的疏密度）
 
      ![](/assets/img/2025-12-04-11-35-49.png?width=300px)
 
-  2. **_講重點_**，不要加上
+  2. ***講重點***，不要加上
      - "我令到系統少了 85% error"
      - "前端提昇了 30% 速度"
 
      等等。這些沒辦法被證明的陳述遠比想像中虛。如實說出你幹過甚麼就好。
 
-  3. **_不要說謊_**，你沒有做過就誠實面對，面試官很愛從你的工作內容把細節問到底。
+  3. ***不要說謊***，你沒有做過就誠實面對，面試官很愛從你的工作內容把細節問到底。
 
      這次求職過程有面試過 Axa 香港（保險業的），被 4 個 Team Lead 連番轟炸 ...，真的把 CV 連同平常 工作/合作 方式問得很徹底。
 
