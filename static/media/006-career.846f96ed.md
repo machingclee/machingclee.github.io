@@ -123,27 +123,18 @@ Nodejs 的話好歹還是有個 `Model` (from `mongoose`) 的概念，這個 Spr
 
 ##### "Tech Lead" 的離去
 
-這位 "Teah Lead" 既然覺得用 MySQL 太複雜，而且更愛 MongoDB，所以理所當然沒甚麼阻力下我們都用上 Express 加 MongoDB 作後端 (這個 Nodejs 後來被 Spring Boot 所取代，這又是這位 "Tech Lead" 離開後的一個故事了)。
-
-這位 "Tech Lead" 愛加 table，加一些奇怪的 design，我又沒甚麼經驗去否定就隨他︰
-
-<Example>
-
-<spacer height="0"></spacer>
-
-**例子.** 例如我們有一個 `User` table 了，他硬多加一個 `UserRegistration` table，其中跟 `User` table 相比 column 幾本都是重覆的，但其實在 `User` table 多加一個 `status` enum 就完事。
-
-而他新增的 table 又不是 reference to `User` table 做 polymorphism ...。
-
-</Example>
-
-<spacer height="0"></spacer>
+十月份左右，他終於覺得自己可以做的貢獻太少，所以提出離職了。他的通知期是兩個月，12 份月離開。
 
 
 
-寫着寫着整個 backend 愈來愈亂。十月份左右，他終於覺得自己可以做的貢獻太少，所以提出離職了。他的通知期是兩個月，12 份月離開。
+當時的 Tech Lead 偏愛 MongoDB，而因為他即將離去所以選擇我當時熟悉的 Tech Stack。為了開發效率我們嘗試 Express + MongoDB。工作這幾年都由更 senior 的人來***從零***建立後端，這方面我沒甚麼 hands-on 經驗，也只好邊學邊做。
 
-工作這幾年都由更 senior 的人來***從零***建立後端，這方面我沒甚麼 hands-on 經驗，也只好邊學邊做。後來我們使用 MongoDB 的方式根本與 relational db 方式沒差別，所以在 2023 年年底從 MongoDB 遷移到 PostgreSQL 去了。這遷移工作自然也是由我來做的。
+
+
+後來我們使用 MongoDB 的方式根本與 relational db 方式沒差別，所以在 2023 年年底從 MongoDB 遷移到 PostgreSQL 去了。這遷移工作自然也是由我來做的。
+
+
+
 
 ##### 幾乎獨撐的半年，人事小變動
 
