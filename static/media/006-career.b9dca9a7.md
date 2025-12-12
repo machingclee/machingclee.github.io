@@ -187,6 +187,8 @@ Nodejs 的話好歹還是有個 `Model` (from `mongoose`) 的概念，這個 Spr
 
 ![](/assets/img/2025-12-07-11-56-39.png)
 
+<spacer></spacer>
+
 
 "Tech Lead" 的離開令我不得不從後端，Schema Design，上 Cloud，走 Lambda Function，CI/CD，一手包辦。這是一個很好的機會，在 "有一位比你更 senior 的人存在" 下，以下
 
