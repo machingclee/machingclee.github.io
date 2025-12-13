@@ -127,52 +127,12 @@ Nodejs 的話好歹還是有個 `Model` (from `mongoose`) 的概念，這個 Spr
 
 
 
-當時的 Tech Lead 偏愛 MongoDB，而因為他即將離去所以選擇我當時熟悉的 Tech Stack。為了開發效率我們嘗試 Express + MongoDB。工作這幾年都由更 senior 的人來***從零***建立後端，這方面我沒甚麼 hands-on 經驗，也只好邊學邊做。
+當時的 Tech Lead 偏愛 MongoDB，而因為他即將離去所以選擇我當時熟悉的 Tech Stack。為了開發效率我們嘗試 Express + MongoDB (最終變成 Spring Boot + PostgreSQL，這又是另一個故事了)。工作這幾年都由更 senior 的人來***從零***建立後端，這方面我沒甚麼 hands-on 經驗，也只好邊學邊做。
 
 
 
 後來我們使用 MongoDB 的方式根本與 relational db 方式沒差別，所以在 2023 年年底從 MongoDB 遷移到 PostgreSQL 去了。這遷移工作自然也是由我來做的。
 
-
-
-
-##### 幾乎獨撐的半年，人事小變動
-
-![](/assets/img/2025-12-07-19-51-09.png)
-
-###### 一位半年的實習生
-
-為了減輕我的工作量，公司試驗性地增聘人手。在 2023 年 11 月公司請了一位實習生，很會用 AI（我當時還不怎麼用），交付給實習生的任務大都能處理好。儘管我們後端用的是直接用 SQL 跟 database 交互的方式，都可以很快上手然後處理後台的 business logic。
-
-後端方面，他主要是負責 UI 的新頁面，有需要甚麼 data 的話，他都可以自己去聯一下表弄一個 `GET` endpoint。因為沒有 ORM，完全沒有 N+1 問題的包袱，寫出來的東西在 query builder 加持下也鮮有 performance 問題。
-
-前端日常我會偶爾指導一下 AI 不會提到，但實作時才會發現的問題。最典型就是修改 list 的內容時瘋狂 `useState` 導致的效能問題。用 redux 精準控制需要 rerender 的組件即可解決。這是一類遇不到就很難解釋清楚的前端陷阱。
-
-最後這半年的成果也成功幫他後來在恒生銀行取得另一份實習工作。
-
-###### 一位待了一個月的本地 Developer
-
-這半年間 (4月還是5月份) 我們也面試了一位本地的 Developer，跟我一樣是念數學系的。Domain Driven Design (DDD) 這種概念都是從他那邊學的，研究過 DDD 更加能發現現在 Nodejs Backend 的問題 (我們在 [#backend_failed] 再討論)。
-
-只可惜 DDD 是很吃 framework 的一種設計模式。現存的 nodejs + express 是不可能做到的。就算使用 NestJS + TypeORM 還是會有一定的困難，例如︰
-
-1. 沒有一個對標 Spring Boot 的 `ApplicationEventPublisher`；
-
-2. 沒有機制能對標 Spring Boot 的 Proxy 來處理 `@OneToMany`，`@ManyToMany` 等 annotation。
-
-   你沒有明確寫 left join，他會變成 `undefined`。而 maintain 那條 left join list 也會演變成一場悲劇。
-
-3. 沒有 `@Transactional` 等通用的 annotation (如何模仿 Spring Boot 的 `@Transactional`，詳見 [For Transactions](/blog/article/Fundamentals-of-Nestjs#9.1.1.-decorator-to-set-metadata)) 。
-
-4. 沒有 `@Embedded` 跟 `@Embeddable` 來自然地把 Entity class 跟 Value Object 綁定 (在 Spring Boot 以外強行使用這個 Pattern 是徒增 Project Complexity) 。
-
-由於這位 Developer 的知識對這公司來說有點超前，而他又花太多時間在這方面，以致新的 feature 做得很緩慢甚至比實習生更差。所以被老闆一個月後勸退了。
-
-這對我來說是一個***示例***，如果想帶來創新及改變，必須先在 Personal Project 做，再對團隊提出 (也不要自己偷偷做在公司 Project 做，其他人不認同只會空辛苦一場) 。不用實例說明的話只會變成讓公司在你的 idea 上*賭時間*。
-
-明顯***帶來改變***是費力不討好的，你沒有一定要熱情和想法很難為公司帶來改變，何況有很多不願意改變的人，~~但我就愛推動改變~~。
-
-現在我很習慣用 Spring Boot 跑 DDD 這套 Methodology 了，也希望有機會可以再跟他合作。因為有認知要使用 DDD 人真的不多，實在是太多把第一年經驗重覆 10 年的人，也很難找到對 DDD 有同樣研究程度的人。
 
 ##### 得來不易的決策機會
 
@@ -225,7 +185,47 @@ Nodejs 的話好歹還是有個 `Model` (from `mongoose`) 的概念，這個 Spr
 
    等等。以上的內容都是從一個 backend endpoint 取得，並建立了一個簡單的 Google Authentication (只有本公司 email 可登入成功)，只有登入成功後才可以從 endpoint 取得資訊，以確保內容保密。
 
-##### 失敗的 Backend 經驗 {#backend_failed}
+
+##### 幾乎獨撐的半年，人事小變動
+
+![](/assets/img/2025-12-07-19-51-09.png)
+
+###### 一位半年的實習生
+
+為了減輕我的工作量，公司試驗性地增聘人手。在 2023 年 11 月公司請了一位實習生，很會用 AI（我當時還不怎麼用），交付給實習生的任務大都能處理好。儘管我們後端用的是直接用 SQL 跟 database 交互的方式，都可以很快上手然後處理後台的 business logic。
+
+後端方面，他主要是負責 UI 的新頁面，有需要甚麼 data 的話，他都可以自己去聯一下表弄一個 `GET` endpoint。因為沒有 ORM，完全沒有 N+1 問題的包袱，寫出來的東西在 query builder 加持下也鮮有 performance 問題。
+
+前端日常我會偶爾指導一下 AI 不會提到，但實作時才會發現的問題。最典型就是修改 list 的內容時瘋狂 `useState` 導致的效能問題。用 redux 精準控制需要 rerender 的組件即可解決。這是一類遇不到就很難解釋清楚的前端陷阱。
+
+最後這半年的成果也成功幫他後來在恒生銀行取得另一份實習工作。
+
+###### 一位待了一個月的本地 Developer，Domain Driven Design 的啟蒙老師
+
+這半年間 (4月還是5月份) 我們也面試了一位本地的 Developer，跟我一樣是念數學系的。Domain Driven Design (DDD) 這種概念都是從他那邊學的，研究過 DDD 更加能發現現在 Nodejs Backend 的問題 (我們在 [#backend_failed] 再討論)。
+
+只可惜 DDD 是很吃 framework 的一種設計模式。現存的 nodejs + express 是不可能做到的。就算使用 NestJS + TypeORM 還是會有一定的困難，例如︰
+
+1. 沒有一個對標 Spring Boot 的 `ApplicationEventPublisher`；
+
+2. 沒有機制能對標 Spring Boot 的 Proxy 來處理 `@OneToMany`，`@ManyToMany` 等 annotation。
+
+   你沒有明確寫 left join，他會變成 `undefined`。而 maintain 那條 left join list 也會演變成一場悲劇。
+
+3. 沒有 `@Transactional` 等通用的 annotation (如何模仿 Spring Boot 的 `@Transactional`，詳見 [For Transactions](/blog/article/Fundamentals-of-Nestjs#9.1.1.-decorator-to-set-metadata)) 。
+
+4. 沒有 `@Embedded` 跟 `@Embeddable` 來自然地把 Entity class 跟 Value Object 綁定 (在 Spring Boot 以外強行使用這個 Pattern 是徒增 Project Complexity) 。
+
+由於這位 Developer 的知識對這公司來說有點超前，而他又花太多時間在這方面，以致新的 feature 做得很緩慢甚至比實習生更差。所以被老闆一個月後勸退了。
+
+這對我來說是一個***示例***，如果想帶來創新及改變，必須先在 Personal Project 做，再對團隊提出 (也不要自己偷偷做在公司 Project 做，其他人不認同只會空辛苦一場) 。不用實例說明的話只會變成讓公司在你的 idea 上*賭時間*。
+
+明顯***帶來改變***是費力不討好的，你沒有一定要熱情和想法很難為公司帶來改變，何況有很多不願意改變的人，~~但我就愛推動改變~~。
+
+現在我很習慣用 Spring Boot 跑 DDD 這套 Methodology 了，也希望有機會可以再跟他合作。因為有認知要使用 DDD 人真的不多，實在是太多把第一年經驗重覆 10 年的人，也很難找到對 DDD 有同樣研究程度的人。
+
+##### 從零建立 Backend 吸取的教訓
+###### 失敗談 {#backend_failed}
 
 雖然我花了很多很多時間去研究，力求做到最好。可是我也是第一次***從零***去建立後端，包括 table design 和後端架構完全憑直覺，加上我沒有參與過好 Project 的經驗，歷時一年的 nodejs backend 在新 Tech Lead 的帶領下用 Spring Boot 重寫。
 
@@ -234,23 +234,28 @@ Nodejs 的話好歹還是有個 `Model` (from `mongoose`) 的概念，這個 Spr
 1. **缺乏 Repository Layer.** \
    Database 交互主要用一種名為 Kysely 的 query builder。儘管 architecture 走的是 controller service，但沒有 repository。
 
-2. **Data 驅動的 Domain Logic.** \
+2. **Data/SQL 驅動的 Domain Logic.** \
    所有 domain logic 都是用 query builder 來描寫。有時候甚至在 controller level 就擼 query 了。
 
-3. **開始出現複雜 Query.** \
+   當所有 domain logic 都是 data 驅動，也就是經由 sql 去操弄，將導致下一個結果︰
+
+3. **開始出現複雜及難以維的 Query.** \
     開始有很長的 sql，無數的 left join，複雜的 pgsql-specific 語句。
 
    > [詳細例子](/blog/article/Problem-of-SQL-Based-Nodejs-Backend-Should-we-use-Query-Builder-)
 
-4. **Query 難以 Debug.** \
-   承上，domain logic 開始不容易維護了，令我確信後台應***盡量避免***使用 SQL 或 SQL Builder 來維護 domain logic。也令我確信 domain logic 應該是***行為驅動***的。
+   Domain logic 開始不容易維護了，你不可能在 SQL 上加 Break Point。
+   
+   這令我開始確信後台應***盡量避免***使用 SQL 或 SQL Builder 來維護 domain logic。也令開始相信 domain logic 應該是***行為驅動***的。
 
 5. **Services 沒有按 Domain 劃分好.** \
    基本上變成了一個大泥球，再加上其他團隊成員的加入，就變得愈來愈亂了。實際上在系統設計初期並沒有把 Domain 裏的 Context 劃分出來。
 
 看着這個後端變成這個樣子，自己也有一點心痛。
 
-是不是用 Spring Boot 上面的問題就解決了？答案是***否定***的。Spring Boot 充其量是多了一個 JPA，可以幫你自動建立 Repository。但沒有走對正確的方法論（思考框架），最後其實用甚麼語言都會變成一托 $*$。
+###### Spring Boot 不是萬靈丹
+
+是不是用 Spring Boot 上面的問題就解決了？答案是***否定***的。Spring Boot 充其量是多了一個 JPA，可以幫你自動建立 Repository；或是多了一個 `@Transactional` 幫助你滅少 "爛 data"。但沒有走對正確的方法論（思考框架），最後其實用甚麼語言都會變成一托 $*$。
 
 以下都是沒有方法論的通病
 
@@ -267,7 +272,9 @@ Nodejs 的話好歹還是有個 `Model` (from `mongoose`) 的概念，這個 Spr
 
 說到底，怎樣才能構成一個 Service？他的建立是基於甚麼原則？如果沒有原則，那就是即興，亂源，成為 `util`/`helper` 的另一個命名用詞而已。
 
-##### 研究系統設計的方法論（思想框架，實行方法）
+很明顯，使用 Spring Boot 並不能解決上述問題。***但是***，使用 Spring Boot 令以下的 Methodology 變得容易實現︰
+
+###### 系統設計的方法論（思想框架，實行方法）
 
 所以為免重蹈覆轍，開始學習後端的一些方法論。到網上找一找的話除了傳統的 Controller-Service-Repository (最簡單的)，你會看到︰
 
@@ -299,11 +306,11 @@ Nodejs 的話好歹還是有個 `Model` (from `mongoose`) 的概念，這個 Spr
 
 我覺得 DDD 對我最大影響是 schema design 的一些思維改變。例如所有 table 被設計時都一定需要思考它在一個 domain 裏的哪個 ***Context*** (Context-First)。這些設計不管你後端走不走 domain driven design 的戰術路線都通用的。
 
-關於 DDD 的戰術部分，其實戰可參考我的文章 (第 5.1.1 開始)︰
+關於 DDD 的戰術部分，其*實戰*可參考我的文章 (第 5.1.1 開始)︰
 
 - [Timetable System for an Art School :: Invoke the command from controller](/portfolio/Commercial-Timetable-System-for-an-Art-School#5.1.1.-step-1.-invoke-the-command-from-controller)
 
-更多的參考可到文章的 Reference section 找到。
+更多的參考可到文章的 [Book and Video References](http://localhost:3000/portfolio/Commercial-Timetable-System-for-an-Art-School#8.-book-and-video-references) 找到。
 
 #### 2024 年 7 月 ~ 2024 年 9 月
 
