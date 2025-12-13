@@ -93,11 +93,6 @@ graph TD;
 
 作為 "Tech Lead" 竟然允許公司做的是手動 deploy？無論是前端還是後端，`DEV` 應該是 merge 了就立刻 deploy，所有爆炸性問題應盡早在 `DEV` 找到。UAT 同理。
 
-###### ❌ 對常用的 Technical Term 提出無意議的質疑
-
-這位 "Tech Lead" 沒有使用 ***middleware*** 的經驗，所以不理解這個字是甚麼。
-
-在***寫後端***這個 context 下，跟我爭論 middleware 這個字可以有***很多***意思。可是有後端知識的人，但凡寫過 C#，寫過 nodejs，寫過 golang，都不會覺得 middleware 這個字有任何歧義。不就跟 Spring Boot 的 Filter 或者 AOP 一樣嗎？欄截 request，做一些處理而已。
 
 ###### ❌ 沒有 Repository 的 Spring Boot
 
