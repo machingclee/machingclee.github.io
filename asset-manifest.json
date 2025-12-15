@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.b8e14714.chunk.css",
-    "main.js": "/static/js/main.c77768a6.chunk.js",
+    "main.css": "/static/css/main.58d515b7.chunk.css",
+    "main.js": "/static/js/main.a02eec85.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.38a4ee07.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.485c9d3f.chunk.js": "/static/js/2.485c9d3f.chunk.js",
@@ -435,7 +435,7 @@
     "static/media/436-openai-model.md": "/static/media/436-openai-model.e5f40067.md",
     "static/media/437-week2.md": "/static/media/437-week2.db4e3dcc.md",
     "static/media/438-expomodules.md": "/static/media/438-expomodules.ebd1dcbd.md",
-    "static/media/439-week4.md": "/static/media/439-week4.fd071a5f.md",
+    "static/media/439-week4.md": "/static/media/439-week4.fb28d200.md",
     "static/media/440-mermaid.md": "/static/media/440-mermaid.a68e5b1e.md",
     "static/media/441-RAG-study.md": "/static/media/441-RAG-study.8ee619ab.md",
     "static/media/442-advanced-rag.md": "/static/media/442-advanced-rag.a9e8b71d.md",
@@ -503,7 +503,7 @@
     "static/js/runtime-main.38a4ee07.js",
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.485c9d3f.chunk.js",
-    "static/css/main.b8e14714.chunk.css",
-    "static/js/main.c77768a6.chunk.js"
+    "static/css/main.58d515b7.chunk.css",
+    "static/js/main.a02eec85.chunk.js"
   ]
 }
