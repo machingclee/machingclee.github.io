@@ -8,7 +8,6 @@ img: /assets/img/2025-12-11-07-56-15.png
 scale: 1.4
 offsetx: 28
 offsety: -9
-wip: true
 ---
 
 <style>
@@ -669,7 +668,7 @@ answer_question(
 
 #### The Blog Exploer
 
-Actually I have deployed the model which works amazingly well! You can play around with my chatbot to ask me about some technical questions. 
+Actually I have deployed the model which works amazingly well! You can play around with my chatbot to ask me about some technical questions.  
 
 ![](/assets/img/2025-12-16-23-02-50.png)
 
