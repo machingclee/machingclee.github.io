@@ -153,9 +153,8 @@ class CustomDocument(TypedDict):
     tags: str
     title: str
     text: str
-
-
 ```
+
 #### Models for semantic chunking {#models_for_semantic_chunks}
 ```py
 class Result(BaseModel):
