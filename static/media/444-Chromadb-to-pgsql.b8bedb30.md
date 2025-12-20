@@ -693,7 +693,8 @@ async def answer(question: str):
 Our agentic solution make use of metadata to route users to different answers. 
 
 Assume that such data are simply "title" or "id" of the related documents, then we can update it arbitrarily in postgresql as follows:
-#### Find Articles for Directly Adjustment
+
+#### Find Articles for Direct Adjustment
 ```SQL
 --- find article with target title
 SELECT id, metadata->>'title' as current_title
