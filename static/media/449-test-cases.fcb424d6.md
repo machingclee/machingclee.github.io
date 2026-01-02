@@ -28,7 +28,7 @@ Our testing approach makes use of the following:
 ![](/assets/img/2026-01-01-21-37-54.png)
 
 
-##### `application-test.yml`
+##### application-test.yml
 
 ```yml
 spring:
@@ -68,14 +68,14 @@ logging:
 `datasource.hikari.auto-commit` is set to `false` ***on purpose*** because our `commandInvoker` is already executed within transactionals managed by `TransactionTemplate` (which we haved defined in Part 1). 
 
 
-##### `junit-platform.properties` 
+##### junit-platform.properties
 
 ```text
 spring.test.constructor.autowire.mode=all
 ```
-This is to to enable constructor injection in tests, otherwise only `@Autowired` can achieve dependency injection in `SpringBootTest`
+This is to to enable constructor injection in tests, otherwise only `@Autowired` can achieve dependency injection in `SpringBootTest`.
 
-##### `schema.sql`
+##### schema.sql
 
 `schema.sql` is used to instantiate all the tables when our testcontainer is launched. This is basically a `sql` script consisting of `CREATE IF NOT EXISTS` statements 
 
@@ -101,6 +101,9 @@ dependencies {
 
 #### `~/.testcontainers.properties`
 
+This config file is positioned at the ***User Level*** instead of the project level, as it directly  influences how mac interact with the docker engine.
+
+
 ```text
 testcontainers.reuse.enable=true
 docker.client.strategy=org.testcontainers.dockerclient.UnixSocketClientProviderStrategy
@@ -108,40 +111,42 @@ docker.client.strategy=org.testcontainers.dockerclient.UnixSocketClientProviderS
 
 ##### testcontainers.reuse.enable=true
 
-Technically this is an hard-requirement for docker to ***prevent*** accidental container accumulation. Without this docker will ignore the `withReuse(true)` in our `TestContainerConfiguration`.
+- Technically this is an hard-requirement for docker to ***prevent*** accidental container accumulation.
+- Without this docker will ignore the `withReuse(true)` in our `TestContainerConfiguration`.
 
 
 
 ##### docker.client.strategyy=org.testcontainers.dockerclient.UnixSocketClientProviderStrategy
 ###### Problem
 
-Testcontainers needs to communicate with Docker, but there are multiple ways to do this:
+Testcontainers needs to communicate with Docker, but there are multiple ways:
 - Unix socket (macOS/Linux): docker.sock
 - Named pipes (Windows)
 - TCP connection (remote Docker)
 - Docker Desktop on macOS with specific socket locations
 ###### Solution
-`docker.client.strategy` tells Testcontainers which method to use.
+- `docker.client.strategy` tells Testcontainers which method to use.
 
-Setting `docker.client.strategy` as above forces Testcontainers to use the Unix socket strategy, which:
+- Setting `docker.client.strategy` as above forces Testcontainers to use the Unix socket strategy, which:
 
-- Connects directly to docker.sock (or Docker Desktop's socket)
-- Most reliable on macOS with Docker Desktop
-- Avoids auto-detection issues that can cause delays or failures
+  - Connects directly to docker.sock (or Docker Desktop's socket)
+  - Most reliable on macOS with Docker Desktop
+  - Avoids auto-detection issues that can cause delays or failures
 
-Without this setting, Testcontainers tries multiple strategies in order, which can:
+- Without this setting, Testcontainers tries multiple strategies in order, which can:
 
-- Add 5-10 seconds of delay on startup
-- Fail if auto-detection picks the wrong strategy
+  - Add 5-10 seconds of delay on startup
+  - Fail if auto-detection picks the wrong strategy
 
-Other Common Strategies:
+- Other Common Strategies:
 
-- `UnixSocketClientProviderStrategy` - Unix socket (macOS/Linux)
-- `DockerMachineClientProviderStrategy` - Docker Machine (legacy)
-- `EnvironmentAndSystemPropertyClientProviderStrategy` - Use `DOCKER_HOST` env var
-- `NpipeSocketClientProviderStrategy` - Named pipes (Windows)
+  - `UnixSocketClientProviderStrategy` - Unix socket (macOS/Linux)
+  - `DockerMachineClientProviderStrategy` - Docker Machine (legacy)
+  - `EnvironmentAndSystemPropertyClientProviderStrategy` - Use `DOCKER_HOST` env var
+  - `NpipeSocketClientProviderStrategy` - Named pipes (Windows)
 
-It speeds up test startup and ensures reliable Docker connection by skipping auto-detection.
+
+**Conclusion.** It speeds up test startup and ensures reliable Docker connection by skipping auto-detection.
 
 
 
@@ -152,8 +157,8 @@ This script will:
 
 - Read our prisma file, execute `npx prisma migrate diff` to produce a `.sql` file;
 
-- Translate SQLite specific stored procedures into PostgreSQL specific stored procedure (see `convert_to_postgresql`), this step ***can be ignored*** when we have already used PostgreSQL (as the conversion script will `str`-substitute nothing);
-- Rearrange the order of the table creation to prevent incorrect sequence of resource creation (like an index is created before the table exists).
+- Translate SQLite specific stored procedures into PostgreSQL specific stored procedures (see `convert_to_postgresql`), this step ***can be ignored*** when we have already used PostgreSQL (as the conversion script will `str`-substitute nothing);
+- Rearrange the order of the table creations to prevent incorrect sequence to create resources   (like an index is created before the table exists).
 
 ```bash-1}
 #!/bin/bash
@@ -434,12 +439,12 @@ echo "  3. Set DATABASE_URL environment variable"
 echo "  4. Run: cd $PRISMA_PROJECT_ROOT && npx prisma migrate dev --name init"
 ```
 
-### TestcontainersConfiguration Class
+### The `TestcontainersConfiguration` Class
 #### Implementation
 
-In from line 39 to 50 we will check that if a test-container is being reused.
+From line 39-50 we will check that if a test-container is being reused.
 
-1. If schema exists (being reused), we simply truncate to empty all existing data. 
+1. If a schema exists (testcontainer being reused), we simply truncate all tables to empty all existing data to restore our database into a fresh state.
 
 2. Otherwise we apply the `schema.sql` file to generate all tables.
 
@@ -822,19 +827,19 @@ JDBC URL: jdbc:postgresql://localhost:52106/testdb
 #### The BaseTest
 
 
-Purpose: Automatically truncates the `event` table before each test to ensure clean state.
+Purpose: Automatically truncates the `event` table ***before each test*** to ensure a clean event table.
 
 ```kotlin
-// src/test/kotlin/com/scriptmanager/integration/BaseIntegrationTest.kt
+// src/test/kotlin/com/scriptmanager/integration/BaseTest.kt
 @SpringBootTest
 @ActiveProfiles("test")
 @Import(TestcontainersConfiguration::class)
-abstract class BaseIntegrationTest (
+abstract class BaseTest (
     private val eventRepository: EventRepository
 ){
     @BeforeEach
     fun truncateEventsBeforeEachTest() {
-        println("[BaseIntegrationTest] Truncating events table...")
+        println("[BaseTest] Truncating events table...")
         eventRepository.deleteAll()
         println("   ✔  Events table cleared")
     }
@@ -894,13 +899,11 @@ class SimpleEventTest(
 
 #### Two Levels of Cleanup
 
-##### Context Level (TestcontainersConfiguration)
+##### Context Level (in `TestcontainersConfiguration`)
 
-**When**: Spring context is created
-
-**What**: All tables truncated
-
-**How**: `TRUNCATE TABLE ... RESTART IDENTITY CASCADE`
+- **When**: Spring context is created
+- **What**: All tables are truncated
+- **How**: `TRUNCATE TABLE ... RESTART IDENTITY CASCADE`
 
 ```kotlin
 private fun truncateAllTables(container: PostgreSQLContainer<*>) {
@@ -911,11 +914,9 @@ private fun truncateAllTables(container: PostgreSQLContainer<*>) {
 
 ##### Test Level (BaseTest)
 
-**When**: Before each test method
-
-**What**: Only `event` table cleared
-
-**How**: `eventRepository.deleteAll()`
+- **When**: Before each test method
+- **What**: Only `event` table will be cleared
+- **How**: `eventRepository.deleteAll()`
 
 ```kotlin
 @BeforeEach
@@ -936,7 +937,7 @@ fun truncateEventsBeforeEachTest() {
 
 We can group a list of test classes and launch all the testing at the same time. 
 
-Since we can control the execution order in `@SelectClasseds`, it is possible to luanch a "resource initialization step" and let the remaining tests reuse the resources.
+Since we can control the execution order in `@SelectClasseds`, it is possible to launch a "resource initialization step" and let the remaining tests reuse the resources.
 
 
 
@@ -949,7 +950,7 @@ import org.junit.platform.suite.api.SuiteDisplayName
 @SuiteDisplayName("All Tests Suite")
 @SelectClasses(
     InitializeResourcesTest::class,   // order 0
-    DatabaseIntegrationTest::class,   // order 1 
+    DataBaseTest::class,              // order 1 
     EventPersistenceTest::class,      // order 2
     CommandInvokerTest::class         // order 3
 )
@@ -984,7 +985,7 @@ When we exclude `build`:
 
 
 
-### Potential Questions
+### Further Questions
 
 #### Can I inspect the database during tests?
 
@@ -1000,7 +1001,7 @@ We can connect to the database via any GUI application for inspection.
 
 #### Are tables dropped after each test?
 
-No, schema persists, data is truncated only before the launch of new tests.
+No, schema persists, data are truncated only before the launch of new tests.
 
 #### What about transaction rollback?
 

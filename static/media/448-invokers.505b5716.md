@@ -8,6 +8,55 @@ intro: "Introduce Command- and Query-Invoker to achieve CQRS."
 
 ---
 
+### Event Entity
+
+The model definition of an `Event` entity is defined by:
+
+```kotlin
+package com.scriptmanager.common.entity
+
+import dev.james.processor.GenerateDTO
+import jakarta.persistence.*
+import org.hibernate.annotations.DynamicInsert
+import org.hibernate.annotations.Generated
+
+@Entity
+@GenerateDTO
+@DynamicInsert
+@Table(name = "event")
+class Event(
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Int? = null,
+
+    @Column(name = "request_id", nullable = false)
+    var requestId: String = "",
+
+    @Column(name = "created_at")
+    @Generated
+    val createdAt: Double? = null,
+
+    @Column(name = "created_at_hk")
+    @Generated
+    val createdAtHk: String? = null,
+
+    @Column(name = "event_type", nullable = false)
+    var eventType: String = "",
+
+    @Column(name = "event", nullable = false, columnDefinition = "TEXT")
+    var payload: String = "",
+
+    @Column(name = "request_user_email", nullable = false)
+    var requestUserEmail: String = "",
+
+    @Column(name = "success", nullable = false)
+    var success: Boolean = true,
+
+    @Column(name = "failure_reason", nullable = false)
+    var failureReason: String = ""
+)
+```
+
 ### Command Invoker
 
 #### Command
@@ -221,7 +270,7 @@ class SpringDomainEventDispatcher(
 
 - **Case 2 (With Authentication ).** Usually a request is dilivered by a thread, and for each thread we authenticate the message passed from the request header (not to be confused by the single-threading model of nodejs, they work differently).
 
-  Once authenticated, we put `userID,` `userEmail`, or some other extra information into `MDC`, a thread-local object via `MDC.put("key", value)` 
+  Once authenticated, we put `userID,` `userEmail`, or some other extra information into `MDC`, a thread-local object via `MDC.put("key", value)`.
 
   For example, let's consider an implmentation of `AuthAspect` for a pointcut used to get user from JWT-token:
 
@@ -315,7 +364,7 @@ class SpringDomainEventDispatcher(
 
 In both cases, the original `requestId` is instantiated from the `invoke` method of our `commandHandler` (see line-245 below), and each thread will have a consistent `requestId`. 
 
-This is especially helpful to trace a sequence of commands one after another which are triggered via event by event.
+This is especially helpful to trace a sequence of commands one after another which are triggered via event by event, as required by a ***single request***.
 
 Next we define a helpful trailing closure when our function requires to access the `ExecutionContext` for metadata:
 
@@ -936,7 +985,6 @@ class ResetClassNumbersPolicy(
         resetClassNumbersOfPackage(event)
     }
 
-
     @EventListener
     fun resetClassNumbersOn(event_: TimetableDomainEvent.SingleClassRemovedEvent) {
         val event = event_ as IHasPackageId
@@ -948,7 +996,6 @@ class ResetClassNumbersPolicy(
         val event = event_ as IHasPackageId
         resetClassNumbersOfPackage(event)
     }
-
 
     @EventListener
     fun resetClassNumbersOn(event_: TimetableDomainEvent.ClassesCreatedEvent) {
