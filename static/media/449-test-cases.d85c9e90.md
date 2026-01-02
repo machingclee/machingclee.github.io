@@ -124,8 +124,15 @@ Testcontainers needs to communicate with Docker, but there are multiple ways:
 - Named pipes (Windows)
 - TCP connection (remote Docker)
 - Docker Desktop on macOS with specific socket locations
+
+
+`docker.client.strategy` tells Testcontainers which method to use. Without this setting, Testcontainers tries multiple strategies in order, which can:
+
+- Add 5-10 seconds of delay on startup
+- Fail if auto-detection picks the wrong strategy
+
 ###### Solution
-- `docker.client.strategy` tells Testcontainers which method to use.
+
 
 - Setting `docker.client.strategy` as above forces Testcontainers to use the Unix socket strategy, which:
 
@@ -133,10 +140,7 @@ Testcontainers needs to communicate with Docker, but there are multiple ways:
   - Most reliable on macOS with Docker Desktop
   - Avoids auto-detection issues that can cause delays or failures
 
-- Without this setting, Testcontainers tries multiple strategies in order, which can:
 
-  - Add 5-10 seconds of delay on startup
-  - Fail if auto-detection picks the wrong strategy
 
 - Other Common Strategies:
 
