@@ -8,18 +8,6 @@ intro: "Instead of using in-memory mocks for event storage in tests, we use Test
 ---
 
 
-### Prerequisites
-
-Our testing approach makes use of the following:
-
-
-- **Spring Boot 3.2** with Kotlin
-- **Testcontainers** with PostgreSQL 15
-- **Real Database via Test Container** (no mocking of repositories)
-- **Schema from schema.sql** (to instantiate the entire database that is identical to the production schema)
-- **Database Events** for persistence testing
-- **Container Reuse** for speed (so that we don't need to spin up the database each time we test it)
-- **Event Table Truncation** No event from other tests will conteminate our testing
 
 ### Configuration
 
@@ -73,7 +61,7 @@ logging:
 ```text
 spring.test.constructor.autowire.mode=all
 ```
-This is to to enable constructor injection in tests, otherwise only `@Autowired` can achieve dependency injection in `SpringBootTest`.
+This is to enable constructor injection in tests, otherwise only `@Autowired` can achieve dependency injection in `SpringBootTest`.
 
 ##### schema.sql
 
@@ -826,12 +814,29 @@ JDBC URL: jdbc:postgresql://localhost:52106/testdb
 ```
 
 
-### Test Classes
-
-#### The BaseTest
+### Testing
 
 
-Purpose: Automatically truncates the `event` table ***before each test*** to ensure a clean event table.
+#### Test Files Structure
+
+![](/assets/img/2026-01-03-19-09-34.png?width=500px)
+- We separate our resources by domains
+- As is controllers:
+  - Tests are ***resourced based***, since system states are nothing but resources
+  - We don't want there to be a "God Test File" that handle all the tests of an aggregate
+- Tests should cover all the commands (which change system states), so we can directly follow our controller to organize our test cases
+
+
+#### The `BaseTest` Class and `@BeforeEach`
+
+
+
+**Purpose of the Class.** This define the basic operations that all test would execute.
+
+In our case, we truncates/clean-up the `event` table ***before each test*** to keep a clean event table so that the events dispatched from our commands are easily testable.
+
+
+
 
 ```kotlin
 // src/test/kotlin/com/scriptmanager/integration/BaseTest.kt
@@ -850,7 +855,95 @@ abstract class BaseTest (
 }
 ```
 
-#### Example Tests
+
+Based on the natural of the tests we may add further clearnup process for each using `@BeforeEach` to ensure all tests are completely isolatd.
+
+#### Two Levels of Cleanup
+
+##### Context Level (in `TestcontainersConfiguration`)
+
+- **When**: Spring context is created
+- **What**: All tables are truncated
+- **How**: `TRUNCATE TABLE ... RESTART IDENTITY CASCADE`
+
+```kotlin
+private fun truncateAllTables(container: PostgreSQLContainer<*>) {
+    val tables = getAllTableNames()
+    statement.execute("TRUNCATE TABLE ${tables.joinToString(", ")} RESTART IDENTITY CASCADE")
+}
+```
+
+##### Test Level (BaseTest)
+
+- **When**: Before each test method
+- **What**: Only `event` table will be cleared
+- **How**: `eventRepository.deleteAll()`
+
+```kotlin
+@BeforeEach
+fun truncateEventsBeforeEachTest() {
+    eventRepository.deleteAll()
+}
+```
+
+##### Why Two Levels?
+
+| Level   | Frequency        | Scope       | Use Case                   |
+| ------- | ---------------- | ----------- | -------------------------- |
+| Context | Once per context | All tables  | Fresh start for test class |
+| Test    | Before each test | Events only | Isolate event assertions   |
+
+
+#### Test Suite
+
+We can group a list of test classes and launch all the testing at the same time. 
+
+Since we can control the execution order in `@SelectClasseds`, it is possible to launch a "resource initialization step" and let the remaining tests reuse the resources.
+
+
+
+
+```kotlin
+import org.junit.platform.suite.api.SelectClasses
+import org.junit.platform.suite.api.Suite
+import org.junit.platform.suite.api.SuiteDisplayName
+
+@Suite
+@SuiteDisplayName("All Tests Suite")
+@SelectClasses(
+    InitializeResourcesTest::class,   // order 0
+    DataBaseTest::class,              // order 1 
+    EventPersistenceTest::class,      // order 2
+    CommandInvokerTest::class         // order 3
+)
+class AllTestsSuite
+```
+
+
+
+#### Assetions that we can use
+
+With `import org.junit.jupiter.api.Assertions.*` we have:
+
+
+- ID Validation: `assertNotNull(entity.id!!)`
+- Property Matching: `assertEquals(expected, actual.property)`
+- Exception Verification: 
+  ```kotlin
+  val exception = assertThrows(IllegalArgumentException::class.java) {
+      // some transaction
+      ... 
+  }
+  // we can even test the rollbacked state here
+  assertTrue(exception.message!!.contains("..."))
+  ```
+           
+
+#### Examples
+##### Simple Arrange, Act and Assert (AAA)
+
+
+Straight forward tests can be defined easily via annotated methods:
 
 ```kotlin
 package com.scriptmanager.integration.shellscriptmanager
@@ -901,69 +994,114 @@ class SimpleEventTest(
 }
 ```
 
-#### Two Levels of Cleanup
-
-##### Context Level (in `TestcontainersConfiguration`)
-
-- **When**: Spring context is created
-- **What**: All tables are truncated
-- **How**: `TRUNCATE TABLE ... RESTART IDENTITY CASCADE`
-
-```kotlin
-private fun truncateAllTables(container: PostgreSQLContainer<*>) {
-    val tables = getAllTableNames()
-    statement.execute("TRUNCATE TABLE ${tables.joinToString(", ")} RESTART IDENTITY CASCADE")
-}
-```
-
-##### Test Level (BaseTest)
-
-- **When**: Before each test method
-- **What**: Only `event` table will be cleared
-- **How**: `eventRepository.deleteAll()`
-
-```kotlin
-@BeforeEach
-fun truncateEventsBeforeEachTest() {
-    eventRepository.deleteAll()
-}
-```
-
-##### Why Two Levels?
-
-| Level   | Frequency        | Scope       | Use Case                   |
-| ------- | ---------------- | ----------- | -------------------------- |
-| Context | Once per context | All tables  | Fresh start for test class |
-| Test    | Before each test | Events only | Isolate event assertions   |
-
-
-#### Test Suite
-
-We can group a list of test classes and launch all the testing at the same time. 
-
-Since we can control the execution order in `@SelectClasseds`, it is possible to launch a "resource initialization step" and let the remaining tests reuse the resources.
-
-
-
-```kotlin
-import org.junit.platform.suite.api.SelectClasses
-import org.junit.platform.suite.api.Suite
-import org.junit.platform.suite.api.SuiteDisplayName
-
-@Suite
-@SuiteDisplayName("All Tests Suite")
-@SelectClasses(
-    InitializeResourcesTest::class,   // order 0
-    DataBaseTest::class,              // order 1 
-    EventPersistenceTest::class,      // order 2
-    CommandInvokerTest::class         // order 3
-)
-class AllTestsSuite
-```
-
-
  
+##### Complicated AAA Using Nested Inner Class
 
+- For complicated tests we may need to separate the `arrange` and `act-assert` separately. 
+
+- Sometimes when multiple `act-assert`s can share the same arrange logic, we also group similar tests together:
+
+
+```kotlin
+@SpringBootTest
+class FolderTest(
+    private val eventRepository: EventRepository,
+    private val folderRepository: ScriptsFolderRepository,
+    private val commandInvoker: CommandInvoker,
+    private val objectMapper: ObjectMapper,
+    private val entityManager: EntityManager
+) : BaseTest(eventRepository) {
+    @Nested
+    @DisplayName("Cascade Deletion")
+    open inner class CascadeDeletionTests {
+        private lateinit var parentFolder: ScriptsFolder
+        private lateinit var subfolder: ScriptsFolder
+        private lateinit var scriptInSubfolder: ShellScriptResponse
+
+        @BeforeEach
+        @Transactional
+        open fun arrange() {
+            parentFolder = commandInvoker.invoke(
+                CreateFolderCommand("Parent_${System.currentTimeMillis()}")
+            )
+
+            subfolder = commandInvoker.invoke(
+                AddSubfolderCommand(
+                    parentFolderId = parentFolder.id!!,
+                    name = "Subfolder_${System.currentTimeMillis()}"
+                )
+            )
+
+            this@FolderTest.entityManager.flush()
+
+            scriptInSubfolder = commandInvoker.invoke(
+                CreateScriptCommand(
+                    folderId = subfolder.id!!,
+                    name = "Script_${System.currentTimeMillis()}",
+                    content = "echo 'Hello, World!'"
+                )
+            )
+        }
+
+        @Test
+        @Transactional
+        open fun `should delete folder, subfolders and all scripts inside`() {
+            // Act
+            commandInvoker.invoke(DeleteFolderCommand(parentFolder.id!!))
+            this@FolderTest.entityManager.flush()
+
+            // Assert - All entities deleted
+            assertNull(
+                folderRepository.findByIdOrNull(parentFolder.id!!),
+                "Parent folder should be deleted"
+            )
+            assertNull(
+                folderRepository.findByIdOrNull(subfolder.id!!),
+                "Subfolder should be deleted"
+            )
+            assertNull(
+                shellScriptRepository.findByIdOrNull(scriptInSubfolder.id!!),
+                "Script should be deleted"
+            )
+
+            // Assert - Events emitted
+            val events = eventRepository.findAll()
+            val folderCreatedEvents = events.filter { it.eventType == "FolderCreatedEvent" }
+            val subfolderCreatedEvents = events.filter { it.eventType == "SubfolderAddedEvent" }
+            val scriptCreatedEvents = events.filter { it.eventType == "ScriptCreatedEvent" }
+            val folderDeletedEvents = events.filter { it.eventType == "FolderDeletedEvent" }
+            val scriptDeletedEvents = events.filter { it.eventType == "ScriptDeletedEvent" }
+
+            assertEquals(1, folderCreatedEvents.size, "Should have 1 FolderCreatedEvents from setup")
+            assertEquals(1, subfolderCreatedEvents.size, "Should have 1 SubfolderAddedEvent from setup")
+            assertEquals(1, scriptCreatedEvents.size, "Should have 1 ScriptCreatedEvent from setup")
+
+            assertEquals(2, folderDeletedEvents.size, "Should emit 2 FolderDeletedEvents")
+            assertEquals(1, scriptDeletedEvents.size, "Should emit 1 ScriptDeletedEvent")
+        }
+
+        @Test
+        @Transactional
+        open fun `should emit events with correct folder IDs`() {
+            commandInvoker.invoke(DeleteFolderCommand(parentFolder.id!!))
+            this@FolderTest.entityManager.flush()
+            // Assert
+            val folderDeleteEvents = eventRepository.findAll()
+                .filter { it.eventType == "FolderDeletedEvent" }
+                .map { objectMapper.readValue<FolderDeletedEvent>(it.payload) }
+
+            assertTrue(
+                folderDeleteEvents.any { it.folderId == parentFolder.id!! },
+                "Should emit event for parent folder"
+            )
+            assertTrue(
+                folderDeleteEvents.any { it.folderId == subfolder.id!! },
+                "Should emit event for subfolder"
+            )
+        }
+    }
+}
+```
 
 
 
@@ -973,19 +1111,24 @@ class AllTestsSuite
 
 **Problem.** IntelliJ IDEA tries to index the `build/` directory after each test run, causing the IDE to freeze.
 
-**Solution.** Mark `build` as Excluded via: 
+**Solution.** Mark `build/` as *Excluded* via: 
 
-1. Right-click `build` folder in Project view
+1. Right-click `build/` folder in Project view
 2. Select **"Mark Directory as"** → **"Excluded"**
 3. Folder turns orange/red and won't be indexed
 
 
-When we exclude `build`:
+When we exclude `build/`:
 
-- No indexing of generated files
-- Faster IDE performance
-- No autocomplete from generated code
-- Test reports still accessible
+1. No indexing of generated files
+2. Faster IDE performance
+3. No autocomplete from generated code
+4. Test reports still accessible
+
+
+Next we also uncheck the following to avoid accidentally indexing a large file:
+
+![](/assets/img/2026-01-03-19-47-20.png)
 
 
 
