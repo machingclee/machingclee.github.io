@@ -819,19 +819,37 @@ JDBC URL: jdbc:postgresql://localhost:52106/testdb
 
 #### Test Files Structure
 
-![](/assets/img/2026-01-03-19-09-34.png?width=500px)
-- We separate our resources by domains
-- As is controllers:
-  - Tests are ***resourced based***, since system states are nothing but resources
-  - We don't want there to be a "God Test File" that handle all the tests of an aggregate
-- Tests should cover all the commands (which change system states), so we can directly follow our controller to organize our test cases
+![](/assets/img/2026-01-04-13-53-16.png)
+
+- We separated our commands by resources (a natural separations, as is controller).
+
+  **Remark.** If we only separate commands by aggregate level, that separation is usually too bulky (a god test file).
+
+- We test our commands one by one based on resource level naturally.
+
+- Since each endpoint in a controller will call exactly one command, the tests will cover all basic functionalities, ***but it is not enough***.
+
+
+
+- Some method will have ***authentication and authroization***, for those methods we should also add a ***controller test***. 
+
+  But concerns are clearly separated, we are concerned only about if the `AuthroizationException` was thrown, then that's enough.
+
+#### Which kind of Tests we are Doing?
+
+| Test Type | What It Tests | Our Current Test |
+|-----------|---------------|-------------------|
+| Unit Test | Single class in isolation (mocked dependencies) | ❌ No external dependencies are mocked |
+| Integration Test | Multiple layers working together | ✅ We are here |
+| Controller Test | HTTP layer (MockMvc) | ❌ We have no Authentication |
+| E2E Test | Full system via UI/API | ❌ We don't have software to test Tauri App UI-wise |
 
 
 #### The `BaseTest` Class and `@BeforeEach`
 
 
 
-**Purpose of the Class.** This define the basic operations that all test would execute.
+**Purpose of the Class.** This defines the basic operations that all test would execute.
 
 In our case, we truncates/clean-up the `event` table ***before each test*** to keep a clean event table so that the events dispatched from our commands are easily testable.
 
@@ -940,7 +958,8 @@ With `import org.junit.jupiter.api.Assertions.*` we have:
            
 
 #### Examples
-##### Simple Arrange, Act and Assert (AAA)
+##### Integration Test
+###### Simple Arrange, Act and Assert (AAA)
 
 
 Straight forward tests can be defined easily via annotated methods:
@@ -995,7 +1014,7 @@ class SimpleEventTest(
 ```
 
  
-##### Complicated AAA Using Nested Inner Class
+###### Complicated AAA Using Nested Inner Class
 
 - For complicated tests we may need to separate the `arrange` and `act-assert` separately. 
 
@@ -1103,7 +1122,53 @@ class FolderTest(
 }
 ```
 
+##### Controller Test
 
+```kotlin
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
+
+@SpringBootTest
+@AutoConfigureMockMvc
+@ActiveProfiles("test")
+@Import(TestcontainersConfiguration::class)
+class FolderControllerTest(
+    private val mockMvc: MockMvc,
+    private val objectMapper: ObjectMapper,
+    private val eventRepository: EventRepository,
+    private val folderRepository: ScriptsFolderRepository
+) {
+
+    @BeforeEach
+    fun setUp() {
+        eventRepository.deleteAll()
+    }
+
+    @Test
+    fun `should create folder with required headers`() {
+        // Arrange
+        val folderName = "TestFolder_${System.currentTimeMillis()}"
+        val request = CreateFolderRequest(name = folderName)
+        val requestJson = objectMapper.writeValueAsString(request)
+
+        // Act & Assert
+        mockMvc.perform(
+            post("/folders")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestJson)
+                .header("Authorization", "Bearer mock-jwt-token")
+        )
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.success").value(true))
+            .andExpect(jsonPath("$.result.name").value(folderName))
+
+        val folders = folderRepository.findAll()
+        assert(folders.any { it.name == folderName })
+    }
+}
+```
 
 ### IDE Freezes During Tests
 
