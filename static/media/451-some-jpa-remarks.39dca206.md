@@ -1,5 +1,5 @@
 ---
-title: "insertable=false and updatable=false in JPA"
+title: "What does it mean by `insertable=false` and `updatable=false` in `JoinTable` and `JoinColumn` of JPA"
 date: 2026-01-07
 id: blog0450
 tag: springboot
@@ -7,58 +7,18 @@ toc: true
 intro: "In JPA insertable=false and updatable=false is super confusing when it is OneToOne and OneToMany, we clarify the two cases to avoid the misuse of weird patterns that make things work unexpectedly."
 ---
 
+### On Parent Side
+
+Since we always mark `insertable=true` and `updatable=true` in `@JoinTable` of parent side ***by default***, we only discuss the child side:
 
 
+### On Child Side
 
-### With Join Table
 
-Consider the following example:
+#### With Join Table (Using `@JoinTable`)
 
-```kotlin{71-72}
-// The owner side
-@Entity
-@GenerateDTO
-@DynamicInsert
-@Table(name = "workspace", indexes = [Index(columnList = "id")])
-class Workspace(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int? = null,
-
-    @Embedded
-    var name: Name,
-
-    @Column(name = "ordering", nullable = false)
-    var ordering: Int = 0,
-
-    @Column(name = "created_at")
-    val createdAt: Double? = null,
-
-    @Column(name = "created_at_hk")
-    val createdAtHk: String? = null
-) {
-    @Embeddable
-    class Name(
-        @Column(name = "name", nullable = false)
-        var value: String,
-    ) {
-        init {
-            require(value.isNotBlank()) { "Workspace name cannot be blank" }
-            require(value.length >= 3) { "Workspace name must be at least 3 characters long" }
-        }
-    }
-
-    @OneToMany(fetch = FetchType.LAZY)
-    @Cascade(CascadeType.ALL)
-    @JoinTable(
-        name = "rel_workspace_folder",
-        joinColumns = [JoinColumn(name = "workspace_id", referencedColumnName = "id")],
-        inverseJoinColumns = [JoinColumn(name = "folder_id", referencedColumnName = "id")]
-    )
-    var folders: MutableSet<ScriptsFolder> = mutableSetOf()
-}
-
-// The child side
+##### The Children
+```kotlin{27,28}
 @Entity
 @GenerateDTO
 @DynamicInsert
@@ -85,18 +45,21 @@ class ScriptsFolder(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinTable(
         name = "rel_workspace_folder",
-        joinColumns = [JoinColumn(name = "folder_id", referencedColumnName = "id", insertable = false, updatable = false)],
-        inverseJoinColumns = [JoinColumn(name = "workspace_id", referencedColumnName = "id", insertable = false, updatable = false)]
+        joinColumns = [JoinColumn(insertable = false, updatable = false, name = "folder_id", referencedColumnName = "id")],
+        inverseJoinColumns = [JoinColumn(insertable = false, updatable = false, name = "workspace_id", referencedColumnName = "id")]
     )
     var parentWorkspace: Workspace? = null
 }
 ```
+##### What does `insertable = updatable = false` mean?
+Note that we have made both `JoinColumn`'s to have attributes:
 
-Note that we have marked both `JoinColumn` to use 
 - `insertable = false`
 - `updatable = false`
 
-which makes the child side completely `ready-only`. Marking them `false` means that the dirty check for the assignement
+which makes the child side completely `ready-only`.  
+
+Setting them to be `false` means that the ***dirty check*** for the assignement
 ```kotlin
 folder.parentWorkspace = otherWorkspace
 ```
@@ -104,12 +67,15 @@ folder.parentWorkspace = otherWorkspace
 - ***will not*** ***insert*** a relation into the join table
 - ***will not*** ***update*** the relation in the join table
 
-Now the relation is completely controlled by the parent, which is usually an aggregate.
+Now the relation is completely controlled by the parent, which is usually an aggregate, via as simply as 
+```kotlin
+workspace.folders.add(folder)
+```
 
-### Without Join Table
+#### Without Join Table (Using `@JoinColumn`)
 
 Which means that a table has a column that directly points to the primary key of another column. For example:
-
+##### The Children
 ```kotlin{27}
 class AiScriptedTool(
     @Id
@@ -141,13 +107,15 @@ class AiScriptedTool(
     var shellScript: ShellScript? = null
 }
 ```
-By this the assignment 
+##### What does `insertable = updatable = false` mean?
+
+Now the dirty check for the assignment 
 
 ```kotlin
 aiScriptedTool.shellScript = someShellScript
 ```
-- ***will not include*** `shell_script_id` in the insert statement of persisting `aiScriptedTool`
-- ***will not update*** `shell_script_id` in the update statement of modifying `aiScriptedTool` 
+- ***will not include*** `shell_script_id` in the `INSERT` statement of persisting `aiScriptedTool`
+- ***will not update*** `shell_script_id` in the `UPDATE` statement of modifying `aiScriptedTool` 
 
 But then how to set the relation properly? We strictly follow the following steps:
 
@@ -156,14 +124,20 @@ But then how to set the relation properly? We strictly follow the following step
 
 
 ### When do we want `insertable=true` and `updatable=true`?
-#### Enforce Domian Logic by Privating Constructor
-It is not rare but one common occasion is:
+#### Enforce Domain Logic by Making Constructor Private
+
+##### Scenario
+
+It is not rare and one common scenario is:
+
 > You want to ***private out*** the constructor of an aggregate and create factory method for your entity objects to enforce domain logics.
 
 
 For example, a `Message` entity must be one of `TextMessage`, `ImageMessage` and `VoiceMessage`, therefore creating and persisting the `Message` object alone in the database will ***violate*** the domain logic.
 
 In other words, `Message` and one of the remaining classes must appear in pair.
+
+##### Code Example (Factory Pattern)
 
 By privating the constructor we can write
 
@@ -174,7 +148,7 @@ class Message private constructor(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int? = null,
-    
+
     @Column(name = "created_at")
     @Generated
     val createdAt: Double? = null,
@@ -204,9 +178,12 @@ class Message private constructor(
     }
 }
 ```
-Now no one can create `Message` entity alone, prohibiting invalid domain logic from the prospective of data integrity.
 
-#### Caveat
+This is known as ***Factory Pattern*** and widely used in Domain Driven Design.
+
+Now no one can create `Message` entity alone, prohibiting invalid domain logic from the prospective of data integrity ***in coding level***.
+
+#### Caveat for Different Choices of Databases
 
 The `save` behaviour for the above bidirectionally-bound entities can vary in different databases.
 
@@ -223,9 +200,9 @@ textMessage.parentMessage = message
 messageRepository.save(message)
 ```
 - SQLite enforces foreign key constraints ***immediately*** during each `INSERT`
+
 - It does ***not*** support deferred constraint checking
-- Other databases (PostgreSQL, MySQL) can defer FK checks until transaction commit
+- Other databases (such as PostgreSQL, MySQL) can ***defer*** Foreign-Key checks until transaction commit
+- JPA does not change its persistence strategy (order of persistence) based on different dialects. 
 
-and JPA does not change its persistence strategy (order of persistence) based on different dialects. 
-
-If your choice of database support the above operation, just go ahead, otherwise the "persist parent first, then child" approach is the most reliable.
+If our choice of database supports the above operations, just go ahead. Otherwise the *persist parent first, then persist child* rule is the most reliable.

@@ -65,153 +65,56 @@ date: 2025-10-25
 
 
 
+### Demo Video
 
-### Iced Version
 
+In the following we ***Double click*** to ***execute*** the script for launching application:
 
-#### Repository
+<customvideo src="/assets/videos/demo-video-ssm-tauri.mp4"></customvideo>
 
+### Why this Project
 
-This series of projects aims at ***experimenting*** GUI framework in Rust ecosystem. This `Iced` version is my first attempt:
+#### Reason
 
-- [2025-10-13-shell-script-gui-app](https://github.com/machingclee/2025-10-13-shell-script-gui-app)<Center>
+One of my headaches as a full-stack developer is to debug a bunch of micro-services:
 
-<customvideo src="/assets/videos/006.mp4" width="100%"></customvideo>
+<Example>
 
-</Center>
+They have to be launched by using ***different*** IDEs, ***different*** scripts, and versioned by ***different*** SourceTree windows.
 
+</Example>
 
-#### Short Summary
+I want to start debugging the target piece of service simply by one click, and this "click" should be easily searchable.
 
-I have recorded the detail in [this article](/blog/article/Iced-First-Trial-to-GUI-Application-in-Rust). 
 
-As I quickly discovered the limitation and drawback of this framework, this version was suspended and became very rough, I would like to skip it here.
+#### Attempt In the Past
+##### Difficulties
+Back to the day when I started **my second year** as a software developer, I made my first attempt using Qt in C++ with QML as the UI implementation, the project was named as
 
+- [Multiple Projects Starter (with video demo)](/portfolio/Multiple-Projects-Starter)
 
+##### Why I Stopped
 
+I stopped the development because very soon I notice that the application state persistence and UI update logic are kind of messy. At that time I was not skillful enough to handle it.
 
+Desktop application is not as easy as it seems to be, it is a mixed breed of frontend and backend software, we need ***solid knowledge on both sides*** to make it robust.
 
-### Egui Version
 
+#### Finally Tauri and the Remaining Tech Stack
 
-<Center>
+After 5 years of experience I decided to build it again. The technical choices:
+- Frontend by React
+- UI-app-state management by Redux
+- UI-server state management by RTK-Query
+- Backend state management (yes, the SQLite database) by Spring Boot using Domain Driven Design
 
+The idea of ***separating UI state*** into *app-state* and *server-state* originates from 
 
-[![](/assets/img/2025-10-26-17-29-12.png)](/assets/img/2025-10-26-17-29-12.png)
+- [You still use Redux?](https://www.youtube.com/watch?v=5-1LM2NySR0) 
 
+by Theo - t3․gg. At that time one popular pattern is to use Zustand (for app state) and React-Query (for server state).
 
-</Center>
-
-#### About the Project in this Initial Stage
-
-##### Demo Video
-
-
-
-<customvideo src="/assets/videos/demo-video-ssm.mp4"></customvideo>
-
-
-##### Project Repository
-
-
-
-- [2025-10-15-shell-script-manager](https://github.com/machingclee/2025-10-15-shell-script-manager)
-
-
-
-
-##### Tech Stack
-
-<rustssmtechstack></rustssmtechstack>
-
-
-##### Purpose for this Stage
-
-
-- When there are many projects opened at the same time, finding and switching between them is a nightmare. 
-- Especially when I need to switch to ***different*** IDEs and sourcetree folders for pulling or creating merge requests.
-
-- Plus I want a project to ***get me more used*** to Rust programming.
-
-
-
-#### Decision between `Egui`, `Tauri` and `Iced`
-
-
-##### `Iced` 
-
-The official website of iced is linked [***here***](https://iced.rs/).
-
-My first attemp to GUI application in rust starts with `Iced`:
-
-- [2025-10-13-Iced-gui-experiment](https://github.com/machingclee/2025-10-13-Iced-gui-experiment)
-
-To me `Iced` has the following ***disadvantages***:
-
-1. `Iced` is ***nice*** for the philosophy of mutating any application state by messages. But it is also ***bad*** in the sense that every tiny little UI state change must be processed by a message.
-
-
-2. It is a relatively ***young*** framework.  Its first stable version was released in 2022.
-
-3. The ***variety*** of UI-components in `Iced` is relatively ***limited*** compared to other frameworks, a simple and standard component such as "context-menu" is even not a built-in component in the framework.
-
-
-
-##### `Tauri`
-
-
-As of the time I build this application I was trying `egui` and didn't study `Tauri` yet, I will definitely give it a try.
-
-
-
-
-
-
-##### Why `egui` stands out for Rust Beginner
-
-From the point of view of learning a language, I personally prefer `egui` for the following reasons when I make the study:
-
-- [Rich UI components and Rich Documentation (click me)](https://www.egui.rs/)
-
-  [![](/assets/img/2025-10-26-14-19-40.png)](/assets/img/2025-10-26-14-19-40.png)
-
-
-
-- Easy to learn, we copy the code from [official website](https://www.egui.rs/) ***for whatever component*** we want and start implementing our own logic.
-
-- ***Same language*** in frontend and backend, enjoyable experience for the communication between frontend and backend.
-
-
-- Rust has built-in channel-and-message mechanism, making the ***Domain Driven Design***  easy to implement. Therefore we have clear separation of concerns by defining:
-
-  - **Commands.** Only command can trigger backend/system state change.
-  - **Event.** Only event can trigger UI state change
-  - And each completion of a command will dispatch one or more events.
-
-
-
-
-
-#### Future Plan: Rewrite in `Tauri`
-
-- This project has already satisfied my learning purpose of getting familiar with Rust programming language.
-
-
-- I will rewrite this project in `Tauri` as I am not going to write graphics-intensive applications  (game tools, 3D viewers, data visualization), which are what `egui` good at. 
-
-- With my react skill I can get a more ***polished*** UI with $\frac{1}{10}$ the effort, and I can focus on features instead of fighting with UI implementation (in `egui` making an `egui::Frame` to have a "hover-and-highlight" effect is horribly difficult).
-
-
-#### References
-
-- [Official Website](https://www.egui.rs/)
-
-- NL Tech, [*First Look at Iced GUI Library 🦀 Rust's Elm-Inspired Framework for Desktop Apps*](https://www.youtube.com/watch?v=n7fyOuHNx0M&t=2937s), YouTube
-
-- NL Tech, [*Rust Immediate Mode GUI with Egui ⚡ Building a Real Desktop App*](https://www.youtube.com/watch?v=DJVKNRN5avo), YouTube
-
-
-
+But nowadays Redux has caught up with this pattern and introduced RTK-Query (as a direct competitor to React-Query), resulting in my choices.
 
 
 ### Tauri Version
@@ -221,32 +124,30 @@ From the point of view of learning a language, I personally prefer `egui` for th
 
 </Center>
 
-#### With Original Tauri Backend in Rust
-##### About the Project in this Second Stage
-
-##### Demo Video
-
-
-In the following we ***Double click*** to ***execute*** the script for launching application:
-
-<customvideo src="/assets/videos/demo-video-ssm-tauri.mp4"></customvideo>
 
 
 
-
-
-###### Project Repository
+#### Project Repository
 
 
 - [2025-10-27-shell-script-manager-tauri](https://github.com/machingclee/2025-10-27-shell-script-manager-tauri)
 
 
-###### Tech Stack
+
+
+
+#### With Original Tauri Backend in Rust
+
+
+
+
+
+##### Tech Stack
 
 <taurissmtechstack></taurissmtechstack>
 
 
-###### Purpose for this Stage
+##### Purpose for this Stage
 
 - This project is a continuation of [my previous project](/portfolio/GUI-Desktop-Application-I:-Shell-Script-Manager-in-_Egui_) of the same application which was written in `egui`.
 
@@ -395,4 +296,164 @@ The backend launches in 0.3s, it is fast enough as a desktop application:
 ##### Full Detail of the Spring Boot Backed Version
 
 More detail can be found in [this article](/blog/article/Offline-Tauri-Application-with-Local-Spring-Boot-Backend-via-GraalVM).
+
+
+
+
+### Deplicated 
+
+
+I tried to create this software in Rust. I have made three attempts to try different existing GUI frameworks, and ***evnetually*** I choose Tauri.
+
+I leave a record of the remaining two trials here for future reference (in case I need them again):
+
+
+#### Iced Version
+
+
+
+This series of projects aims at ***experimenting*** GUI framework in Rust ecosystem. This `Iced` version is my first attempt:
+##### Demo Video
+
+
+<customvideo src="/assets/videos/006.mp4" width="100%"></customvideo>
+
+
+
+
+##### Repository
+
+
+- [2025-10-13-shell-script-gui-app](https://github.com/machingclee/2025-10-13-shell-script-gui-app)
+
+
+
+##### Short Summary
+
+I have recorded the detail in [this article](/blog/article/Iced-First-Trial-to-GUI-Application-in-Rust). 
+
+As I quickly discovered the limitation and drawback of this Iced framework, this project (using Iced) was suspended.
+
+
+I moved on to try another framework:
+
+
+#### Egui Version
+
+
+<Center>
+
+
+[![](/assets/img/2025-10-26-17-29-12.png)](/assets/img/2025-10-26-17-29-12.png)
+
+
+</Center>
+
+##### About the Project in this Initial Stage
+
+###### Demo Video
+
+
+
+<customvideo src="/assets/videos/demo-video-ssm.mp4"></customvideo>
+
+
+###### Project Repository
+
+
+
+- [2025-10-15-shell-script-manager](https://github.com/machingclee/2025-10-15-shell-script-manager)
+
+
+
+
+###### Tech Stack
+
+<rustssmtechstack></rustssmtechstack>
+
+
+###### Purpose for this Stage
+
+
+- When there are many projects opened at the same time, finding and switching between them is a nightmare. 
+- Especially when I need to switch to ***different*** IDEs and sourcetree folders for pulling or creating merge requests.
+
+- Plus I want a project to ***get me more used*** to Rust programming.
+
+
+
+##### Decision between `Egui`, `Tauri` and `Iced`
+
+
+###### `Iced` 
+
+The official website of iced is linked [***here***](https://iced.rs/).
+
+My first attemp to GUI application in rust starts with `Iced`:
+
+- [2025-10-13-Iced-gui-experiment](https://github.com/machingclee/2025-10-13-Iced-gui-experiment)
+
+To me `Iced` has the following ***disadvantages***:
+
+1. `Iced` is ***nice*** for the philosophy of mutating any application state by messages. But it is also ***bad*** in the sense that every tiny little UI state change must be processed by a message.
+
+
+2. It is a relatively ***young*** framework.  Its first stable version was released in 2022.
+
+3. The ***variety*** of UI-components in `Iced` is relatively ***limited*** compared to other frameworks, a simple and standard component such as "context-menu" is even not a built-in component in the framework.
+
+
+
+###### `Tauri`
+
+
+As of the time I build this application I was trying `egui` and didn't study `Tauri` yet, I later definitely gave it a try.
+
+
+
+
+
+
+###### Why `egui` stands out for Rust Beginner
+
+From the point of view of learning a language, I personally prefer `egui` for the following reasons when I make the study:
+
+- [Rich UI components and Rich Documentation (click me)](https://www.egui.rs/)
+
+  [![](/assets/img/2025-10-26-14-19-40.png)](/assets/img/2025-10-26-14-19-40.png)
+
+
+
+- Easy to learn, we copy the code from [official website](https://www.egui.rs/) ***for whatever component*** we want and start implementing our own logic.
+
+- ***Same language*** in frontend and backend, enjoyable experience for the communication between frontend and backend.
+
+
+- Rust has built-in channel-and-message mechanism, making the ***Domain Driven Design***  easy to implement. Therefore we have clear separation of concerns by defining:
+
+  - **Commands.** Only command can trigger backend/system state change.
+  - **Event.** Only event can trigger UI state change
+  - And each completion of a command will dispatch one or more events.
+
+
+
+
+
+##### Future Plan: Rewrite in `Tauri`
+
+- This project has already satisfied my learning purpose of getting familiar with Rust programming language.
+
+
+- I will rewrite this project in `Tauri` as I am not going to write graphics-intensive applications  (game tools, 3D viewers, data visualization), which are what `egui` good at. 
+
+- With my react skill I can get a more ***polished*** UI with $\frac{1}{10}$ the effort, and I can focus on features instead of fighting with UI implementation (in `egui` making an `egui::Frame` to have a "hover-and-highlight" effect is horribly difficult).
+
+
+##### References
+
+- [Official Website](https://www.egui.rs/)
+
+- NL Tech, [*First Look at Iced GUI Library 🦀 Rust's Elm-Inspired Framework for Desktop Apps*](https://www.youtube.com/watch?v=n7fyOuHNx0M&t=2937s), YouTube
+
+- NL Tech, [*Rust Immediate Mode GUI with Egui ⚡ Building a Real Desktop App*](https://www.youtube.com/watch?v=DJVKNRN5avo), YouTube
 
