@@ -59,13 +59,13 @@ Note that we have made both `JoinColumn`'s to have attributes:
 
 which makes the child side completely `ready-only`.  
 
-Setting them to be `false` means that the ***dirty check*** for the assignement
+For `@JoinTable` the ***dirty check*** for the assignement
 ```kotlin
 folder.parentWorkspace = otherWorkspace
 ```
 
-- ***will not*** ***insert*** a relation into the join table
-- ***will not*** ***update*** the relation in the join table
+- `insertable = false` $\implies$ ***will not*** ***insert*** a relation into the join table
+- `updatable = false` $\implies$ ***will not*** ***update*** the relation in the join table
 
 Now the relation is completely controlled by the parent, which is usually an aggregate, via as simply as 
 ```kotlin
@@ -109,13 +109,13 @@ class AiScriptedTool(
 ```
 ##### What does `insertable = updatable = false` mean?
 
-Now the dirty check for the assignment 
+For `@JoinColumn` now the dirty check for the assignment 
 
 ```kotlin
 aiScriptedTool.shellScript = someShellScript
 ```
-- ***will not include*** `shell_script_id` in the `INSERT` statement of persisting `aiScriptedTool`
-- ***will not update*** `shell_script_id` in the `UPDATE` statement of modifying `aiScriptedTool` 
+- `insertable = false` $\implies$ ***will not include*** `shell_script_id` in the `INSERT` statement of persisting `aiScriptedTool`
+- `updatable = false` $\implies$ ***will not update*** `shell_script_id` in the `UPDATE` statement of modifying `aiScriptedTool` 
 
 But then how to set the relation properly? We strictly follow the following steps:
 
@@ -184,7 +184,7 @@ This is known as ***Factory Pattern*** and widely used in Domain Driven Design.
 Now no one can create `Message` entity alone, prohibiting invalid domain logic from the prospective of data integrity ***in coding level***.
 
 #### Caveat for Different Choices of Databases
-
+##### Failure in SQLite
 The `save` behaviour for the above bidirectionally-bound entities can vary in different databases.
 
 Takes these lines for example:
@@ -194,15 +194,19 @@ Takes these lines for example:
 val message = Message()
 val audioMessage = AudioMessage(audioUrl, transcriptionText)
 message.audioMessage = audioMessage
-textMessage.parentMessage = message
+audioMessage.parentMessage = message
 
 // eventually:
 messageRepository.save(message)
 ```
-- SQLite enforces foreign key constraints ***immediately*** during each `INSERT`
 
-- It does ***not*** support deferred constraint checking
-- Other databases (such as PostgreSQL, MySQL) can ***defer*** Foreign-Key checks until transaction commit
+- The above throws an exception for SQLite because SQLite enforces foreign key constraints ***immediately*** during each `INSERT`, which 
+  - Tries to persist `audioMessage` first (without our control); However
+  - No available `id` can be assigned to `AudioMessage.messageId` at that time.
+
+- Other databases (such as PostgreSQL, MySQL) can ***defer*** Foreign-Key checks until transaction commit, unforturnately SQLite does not.
 - JPA does not change its persistence strategy (order of persistence) based on different dialects. 
+
+##### For Database that Supports Deferred Constraint Checking
 
 If our choice of database supports the above operations, just go ahead. Otherwise the *persist parent first, then persist child* rule is the most reliable.
