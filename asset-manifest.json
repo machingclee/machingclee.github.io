@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.dffff847.chunk.css",
-    "main.js": "/static/js/main.783d9123.chunk.js",
+    "main.js": "/static/js/main.a2f748e9.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.75e3efbf.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.240900fc.chunk.js": "/static/js/2.240900fc.chunk.js",
@@ -65,7 +65,7 @@
     "static/media/026-cpp_02.md": "/static/media/026-cpp_02.8c0e86bd.md",
     "static/media/027-cpp_03.md": "/static/media/027-cpp_03.fe701b00.md",
     "static/media/028-texcommand.md": "/static/media/028-texcommand.3320ecca.md",
-    "static/media/029-live2d.md": "/static/media/029-live2d.9f67b52a.md",
+    "static/media/029-live2d.md": "/static/media/029-live2d.7db334f3.md",
     "static/media/030-chrome_automation.md": "/static/media/030-chrome_automation.b5588d42.md",
     "static/media/031-automation_winapp.md": "/static/media/031-automation_winapp.ca9ddfe7.md",
     "static/media/032-python-import.md": "/static/media/032-python-import.e0321524.md",
@@ -514,6 +514,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.240900fc.chunk.js",
     "static/css/main.dffff847.chunk.css",
-    "static/js/main.783d9123.chunk.js"
+    "static/js/main.a2f748e9.chunk.js"
   ]
 }
