@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.dffff847.chunk.css",
-    "main.js": "/static/js/main.366f5439.chunk.js",
+    "main.js": "/static/js/main.1bc2b88d.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.0807a3cc.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.1a99385d.chunk.js": "/static/js/2.1a99385d.chunk.js",
@@ -450,7 +450,7 @@
     "static/media/449-test-cases.md": "/static/media/449-test-cases.c81dc5c0.md",
     "static/media/450-opentelemetry-and-datasource-micrometer copy.md": "/static/media/450-opentelemetry-and-datasource-micrometer copy.adc154ba.md",
     "static/media/451-some-jpa-remarks.md": "/static/media/451-some-jpa-remarks.c5ecbb2b.md",
-    "static/media/452-basic-C.md": "/static/media/452-basic-C.511e2cd0.md",
+    "static/media/452-basic-C.md": "/static/media/452-basic-C.80d61856.md",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
     "static/media/Midterm_Review_limsupinf.1e2193c7.pdf": "/static/media/Midterm_Review_limsupinf.1e2193c7.pdf",
@@ -515,6 +515,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.1a99385d.chunk.js",
     "static/css/main.dffff847.chunk.css",
-    "static/js/main.366f5439.chunk.js"
+    "static/js/main.1bc2b88d.chunk.js"
   ]
 }

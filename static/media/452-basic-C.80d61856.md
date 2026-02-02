@@ -73,7 +73,7 @@ Now an `ls -l` (`l` stands for long format) command to a file gives
 └──────────────────────────────────────────────────── permissions
 ```
 
-Which shows that this file has mode number `0644`, with staff being `4` and with other mata data.
+Which shows that this file has mode number `0644`, with the group `staff` being `4` and with other matadata.
 
 In C we cannot omit `0` as it tells the compiler this number is in octal format. 
 
@@ -195,8 +195,8 @@ obj/%.o : src/%.c
 
   1. By definition `$(TARGET): $(OBJ)` means `$(OBJ)` is a dependency (list) of `$(TARGET)` rule;
 
-  2. It tries find whether the object file in `$(OBJ)` exists, if not it tries to find any pattern rule that match files in `$(OBJ)`;
+  2. It tries to find whether the object file in `$(OBJ)` exists, if not it tries to find any pattern rule that match files in `$(OBJ)`;
   3. Pattern rule `obj/%.o` gets executed repeatedly;
-  4. When all pattern rules are done, it goes further to `gcc -o $@ $?`, where `$@` is the target name, and `$?$` is a name in `$(OBJ)`;
+  4. When all pattern rules are done, `$(TARGET)` rule goes further to `gcc -o $@ $?`, where `$@` is the target name, and `$?$` is a name in `$(OBJ)`;
 
   ![](/assets/img/2026-02-01-23-20-59.png)
