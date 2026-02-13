@@ -389,4 +389,3 @@ Usage:
 - Use `fprintf(stderr, ...)` for error messages
 - Provide a `-h` help option
 
-This pattern makes our C programs professional, user-friendly, and scriptable!
