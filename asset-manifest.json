@@ -1,21 +1,21 @@
 {
   "files": {
     "main.css": "/static/css/main.dffff847.chunk.css",
-    "main.js": "/static/js/main.252b8bab.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.b9aa9cef.js",
+    "main.js": "/static/js/main.573fafb6.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.b95e8d98.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
-    "static/js/2.79516b1a.chunk.js": "/static/js/2.79516b1a.chunk.js",
-    "static/js/3.edaf4675.chunk.js": "/static/js/3.edaf4675.chunk.js",
-    "static/js/4.4f825108.chunk.js": "/static/js/4.4f825108.chunk.js",
-    "static/js/5.58193e84.chunk.js": "/static/js/5.58193e84.chunk.js",
-    "static/js/6.759c018d.chunk.js": "/static/js/6.759c018d.chunk.js",
-    "static/js/7.6b1bc0f7.chunk.js": "/static/js/7.6b1bc0f7.chunk.js",
-    "static/js/8.6c2b783d.chunk.js": "/static/js/8.6c2b783d.chunk.js",
+    "static/js/2.43ecd0ea.chunk.js": "/static/js/2.43ecd0ea.chunk.js",
+    "static/js/3.1c2fb735.chunk.js": "/static/js/3.1c2fb735.chunk.js",
+    "static/js/4.6b6b2a5b.chunk.js": "/static/js/4.6b6b2a5b.chunk.js",
+    "static/js/5.031d3e14.chunk.js": "/static/js/5.031d3e14.chunk.js",
+    "static/js/6.8a9c214d.chunk.js": "/static/js/6.8a9c214d.chunk.js",
+    "static/js/7.b13b0663.chunk.js": "/static/js/7.b13b0663.chunk.js",
+    "static/js/8.fd3400be.chunk.js": "/static/js/8.fd3400be.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.79516b1a.chunk.js.LICENSE.txt": "/static/js/2.79516b1a.chunk.js.LICENSE.txt",
-    "static/js/3.edaf4675.chunk.js.LICENSE.txt": "/static/js/3.edaf4675.chunk.js.LICENSE.txt",
-    "static/js/4.4f825108.chunk.js.LICENSE.txt": "/static/js/4.4f825108.chunk.js.LICENSE.txt",
-    "static/js/7.6b1bc0f7.chunk.js.LICENSE.txt": "/static/js/7.6b1bc0f7.chunk.js.LICENSE.txt",
+    "static/js/2.43ecd0ea.chunk.js.LICENSE.txt": "/static/js/2.43ecd0ea.chunk.js.LICENSE.txt",
+    "static/js/3.1c2fb735.chunk.js.LICENSE.txt": "/static/js/3.1c2fb735.chunk.js.LICENSE.txt",
+    "static/js/4.6b6b2a5b.chunk.js.LICENSE.txt": "/static/js/4.6b6b2a5b.chunk.js.LICENSE.txt",
+    "static/js/7.b13b0663.chunk.js.LICENSE.txt": "/static/js/7.b13b0663.chunk.js.LICENSE.txt",
     "static/media/001-distrbution-example.md": "/static/media/001-distrbution-example.d1192f62.md",
     "static/media/001-housing.md": "/static/media/001-housing.37e59f9e.md",
     "static/media/001-tkinter.md": "/static/media/001-tkinter.e4db2167.md",
@@ -456,6 +456,8 @@
     "static/media/455-on-endianess.md": "/static/media/455-on-endianess.5bd48d5f.md",
     "static/media/456-strtok.md": "/static/media/456-strtok.cca6a932.md",
     "static/media/457-arg-parser.md": "/static/media/457-arg-parser.0b5297ba.md",
+    "static/media/458-strace-multiplexing.md": "/static/media/458-strace-multiplexing.339983d6.md",
+    "static/media/459-strace-in-mac.md": "/static/media/459-strace-in-mac.5d3cf643.md",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
     "static/media/Midterm_Review_limsupinf.1e2193c7.pdf": "/static/media/Midterm_Review_limsupinf.1e2193c7.pdf",
@@ -516,10 +518,10 @@
     "static/media/wonderbricks_limited.935dc3cc.png": "/static/media/wonderbricks_limited.935dc3cc.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.b9aa9cef.js",
+    "static/js/runtime-main.b95e8d98.js",
     "static/css/2.d36edc37.chunk.css",
-    "static/js/2.79516b1a.chunk.js",
+    "static/js/2.43ecd0ea.chunk.js",
     "static/css/main.dffff847.chunk.css",
-    "static/js/main.252b8bab.chunk.js"
+    "static/js/main.573fafb6.chunk.js"
   ]
 }
