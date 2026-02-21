@@ -64,15 +64,6 @@ int select(int nfds,
            struct timeval *timeout);
 ```
 
-#### Function Signature
-```c
-int select(int nfds, 
-           fd_set *readfds, 
-           fd_set *writefds,
-           fd_set *exceptfds, 
-           struct timeval *timeout);
-```
-
 **Returns:** 
 - Number of ready file descriptors (> 0)
 - 0 if timeout expired

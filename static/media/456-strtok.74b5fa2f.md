@@ -1,5 +1,5 @@
 ---
-title: "Understanding `strtok()` in C"
+title: "Understand `strtok()` in C"
 date: 2026-02-14
 id: blog0456
 tag: C

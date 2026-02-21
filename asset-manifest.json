@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.dffff847.chunk.css",
-    "main.js": "/static/js/main.573fafb6.chunk.js",
+    "main.js": "/static/js/main.3f040b35.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.b95e8d98.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.43ecd0ea.chunk.js": "/static/js/2.43ecd0ea.chunk.js",
@@ -454,9 +454,9 @@
     "static/media/453-draw-event-storming-by-code copy.md": "/static/media/453-draw-event-storming-by-code copy.e0140f29.md",
     "static/media/454-single-pointer-vs-double-pointer-in-c.md": "/static/media/454-single-pointer-vs-double-pointer-in-c.ab0fb1cb.md",
     "static/media/455-on-endianess.md": "/static/media/455-on-endianess.5bd48d5f.md",
-    "static/media/456-strtok.md": "/static/media/456-strtok.cca6a932.md",
+    "static/media/456-strtok.md": "/static/media/456-strtok.74b5fa2f.md",
     "static/media/457-arg-parser.md": "/static/media/457-arg-parser.0b5297ba.md",
-    "static/media/458-strace-multiplexing.md": "/static/media/458-strace-multiplexing.339983d6.md",
+    "static/media/458-strace-multiplexing.md": "/static/media/458-strace-multiplexing.72bae22a.md",
     "static/media/459-strace-in-mac.md": "/static/media/459-strace-in-mac.5d3cf643.md",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
@@ -522,6 +522,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.43ecd0ea.chunk.js",
     "static/css/main.dffff847.chunk.css",
-    "static/js/main.573fafb6.chunk.js"
+    "static/js/main.3f040b35.chunk.js"
   ]
 }
