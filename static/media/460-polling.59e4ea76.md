@@ -18,6 +18,10 @@ intro: "Understand the io multiplexing via poll function"
 </style>
 
 
+### Repository
+
+- https://github.com/machingclee/2026-02-20-networking-in-C/blob/main/poll_example.c
+
 ### What is `poll()`?
 
 `poll()` is a system call for I/O multiplexing that allows a program to monitor multiple file descriptors simultaneously, waiting for one or more to become ready for I/O operations. It's an alternative to `select()` that addresses some of its limitations.
