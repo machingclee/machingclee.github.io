@@ -59,7 +59,7 @@ In this example, Table A is the **outer table** (scanned once) and Table B is th
 
 **When it's used.**
 - Small outer table with indexed inner table
-- Selective WHERE clauses (few matching rows)
+- Selective `WHERE` clauses (few matching rows)
 
 **Performance.**
 - Time complexity: $O(n \cdot m)$ where $n$ = outer rows, $m$ = inner rows
@@ -73,10 +73,10 @@ WHERE c.state = 'CA';
 ```
 
 **Execution order.**
-- **Step 1.** Apply WHERE clause - filter customers by state (returns 5 customers from 10 total)
+- **Step 1.** Apply `WHERE` clause - filter customers by state (returns 5 customers from 10 total)
 - **Step 2.** For each of those 5 customers, use index to find their orders
 
-Good choice: only 5 CA customers after filtering. The `customers` (outer table) is small after WHERE clause, and `orders` (inner table) is large (1M rows) but has index on `customer_id`. Result: Only 5 index lookups - very fast!
+Good choice: only 5 CA customers after filtering. The `customers` (outer table) is small after `WHERE` clause, and `orders` (inner table) is large (1M rows) but has index on `customer_id`. Result: Only 5 index lookups - very fast!
 
 #### Hash Join
 
@@ -105,8 +105,8 @@ In this example, Table A is the **build input** (smaller table, used to create h
 - **Optimizer chooses hash join based on cost**, which can be lower than nested loop even with indexes when.
   - Both tables return many rows (poor selectivity) - repeatedly using an index becomes expensive
   - Full table scans + hash join is faster than many index lookups
-  - The WHERE clause filters result in large intermediate result sets
-- Example. If our WHERE clause returns 50,000 customers, doing 50,000 index lookups on orders is slower than scanning both tables and hashing
+  - The `WHERE` clause filters result in large intermediate result sets
+- Example. If our `WHERE` clause returns 50,000 customers, doing 50,000 index lookups on orders is slower than scanning both tables and hashing
 
 **Performance.**
 - Time complexity: $O(n + m)$ - linear
@@ -130,14 +130,14 @@ WHERE o.order_date >= '2025-01-01';
 ```
 
 **Execution order.**
-- **Step 1.** Apply WHERE clause - filter orders by date (returns 100k orders)
+- **Step 1.** Apply `WHERE` clause - filter orders by date (returns 100k orders)
 - **Step 2.** Now need to join these 100k orders with `order_items`
 
-Even with index on `order_id`, if WHERE returns 100k orders.
+Even with index on `order_id`, if `WHERE` returns 100k orders.
 - **Nested loop.** 100k index lookups on `order_items` (expensive!)
 - **Hash join.** Scan filtered orders + scan `order_items` = faster!
 
-The WHERE clause is applied FIRST, creating a large intermediate result. Then the join algorithm is chosen based on that filtered row count. Optimizer chooses hash join based on cost estimates.
+The `WHERE` clause is applied FIRST, creating a large intermediate result. Then the join algorithm is chosen based on that filtered row count. Optimizer chooses hash join based on cost estimates.
 
 #### Merge Join (Sort-Merge Join)
 
@@ -188,11 +188,11 @@ graph TD
     style Out7 fill:#fff3cd
 ```
 
-**Key insight.** Each pointer advances monotonically through its table - we never go backwards. When we find order 3 with 2 items, we scan through both items for order 3, then move on. We don't need to rescan because both tables are sorted.
+Each pointer advances monotonically through its table - we never go backwards. When we find order 3 with 2 items, we scan through both items for order 3, then move on. We don't need to rescan because both tables are sorted.
 
-**Key advantage.** Each table is scanned only once during the merge phase, making it very efficient for large datasets that are already sorted.
+**Advantage.** Each table is scanned only once during the merge phase, making it very efficient for large datasets that are already sorted.
 
-**When it's used.**
+**When it is used.**
 - Both inputs already sorted (indexes on join columns) - avoids expensive sort phase
 - Non-equality joins ($<$, $>$, BETWEEN) - unlike hash join which only works with $=$
 - Large sorted datasets where hash join would require too much memory
@@ -215,9 +215,9 @@ ORDER BY c.id;
 **Execution order.**
 - **Step 1.** Both tables have clustered indexes on their join columns, so they're already sorted
 - **Step 2.** Merge phase only - scan both tables once with two pointers
-- **Step 3.** Output is already sorted (bonus!)
+- **Step 3.** Output is already sorted (bonus)
 
-Result. Very fast! $O(n + m)$ - single scan of each table, no memory overhead.
+***Result.*** $O(n + m)$ - single scan of each table.
 
 ##### Example 2. Range joins
 ```sql
@@ -243,20 +243,20 @@ ORDER BY e.dept_id;
 **Answer.** Hash join is typically better! But merge join might be chosen when.
 
 **Case A. Result needs sorting (`ORDER BY` clause present)**
-- **Step 1.** Apply WHERE clause - filter employees by salary
+- **Step 1.** Apply `WHERE` clause - filter employees by salary
 - **Step 2 (Hash join).** Build hash on departments, probe with employees → unsorted result
 - **Step 3 (Sort result).** by `dept_id` for `ORDER BY`, costing $O(N\log N)$, where $N$ = number of results
 
 vs.
 
-- **Step 1.** Apply WHERE clause - filter employees by salary  
+- **Step 1.** Apply `WHERE` clause - filter employees by salary  
 - **Step 2 (Merge join approach).** Sort employees by dept_id: $O(n \log n)$
 - **Step 3.** Sort departments by id: $O(m \log m)$
 - **Step 4.** Merge (output is already sorted!) → $O(n + m)$
 
 If the result set is large, sorting it after hash join is expensive. Merge join produces pre-sorted output, saving the final sort step.
 
-**Case B. Limited memory (hash table won't fit)**
+**Case B. Limited memory (hash table would not fit)**
 ```sql
 SELECT * FROM huge_orders o
 JOIN massive_items i ON o.category_id = i.category_id;
@@ -323,7 +323,7 @@ JOIN orders o ON c.id = o.customer_id
 WHERE c.country = 'USA';
 ```
 
-**Scenario 1.** USA has 5 customers, orders.customer_id indexed
+**Scenario 1.** USA has 5 customers, `orders.customer_id` indexed
 - **Best choice.** Nested Loop (5 index lookups)
 
 **Scenario 2.** USA has 900 customers, no indexes, plenty of RAM
@@ -391,14 +391,14 @@ Let's examine a real-world example of query results to understand what they reve
 **What this means.** Autovacuum is not triggering frequently enough. By default, autovacuum analyzes a table when:
 
 $$
-N > T +  k \times r
+N > T +  k \cdot n
 $$
 
 where 
 - $N$ = `n_mod_since_analyze`
 - $T$ = `autovacuum_analyze_threshold`
 - $k$ = `autovacuum_analyze_scale_factor` and
-- $r$ = `reltuples`
+- $n$ = `reltuples`
 
 with ***default values*** $T=50$ and $k=0.1$ (10% of table rows).
 
@@ -434,7 +434,7 @@ More accurate after recent analysis, less accurate as table changes
 
 **Example for `Notification_Logging`.**
 - If it has ~67,000 rows, autovacuum triggers at. $50 + 0.1 \times 67000 = 6750$ modifications
-- Current. 6,723 modifications → approaching threshold but hasn't triggered yet
+- Currently: 6,723 modifications, approaching threshold but hasn't triggered yet
 - Meanwhile, 25 days of stale statistics means the query planner is working with outdated cardinality estimates
 
 **Performance implications.** Our application might experience:
@@ -715,7 +715,7 @@ Atlas restricts direct access to plan cache operations (`$planCacheStats`, `getP
 - Increased CPU or memory usage for specific queries
 - More timeouts or slow query log entries
 
-#### Analyze a `explain("executionStats")` output
+#### Analyze an `explain("executionStats")` output
 
 ```javascript
 db.orders.find({ status: "pending" }).explain("executionStats")
@@ -740,13 +740,13 @@ db.orders.find({ status: "pending" }).explain("executionStats")
 
 ##### High examination ratio (totalDocsExamined / nReturned > 10)
 
-  **Common misconception:** "High examination ratio is inevitable because we filter documents with WHERE clauses first, then return results."
+  > **Misconception.** "High examination ratio is inevitable because we filter documents with `WHERE` clauses first, then return results."
 
-  **Why this is wrong:** With proper indexes, the database uses the index to **identify matching documents BEFORE examining them**. The index IS the filter mechanism.
+  This is wrong, with proper indexes, the database uses the index to **identify matching documents BEFORE examining them**. The index ***is*** the filter mechanism.
 
-  **Critical question:** "But don't I need to scan all rows to check the WHERE condition?"
+  > **Question.** "But don't I need to scan all rows to check the `WHERE` condition?"
 
-  **Answer:** No! This is the ENTIRE PURPOSE of indexes - to avoid scanning all rows.
+  No! This is the entire purpose of indexes - to avoid scanning all rows.
 
   **How B-tree indexes eliminate full scans:**
 
@@ -814,12 +814,12 @@ db.orders.find({ status: "pending" }).explain("executionStats")
   // WITH index:    Read 1,000 docs, examined 1,000, returned 1,000 (1.0x ratio)
   ```
 
-  **Why you DON'T need to scan all rows with an index:**
-
-  The B-tree index is a **pre-sorted lookup table** that was built when you created the index:
+  > **Question.** Why we DON'T need to scan all rows with an index?  
+  
+  The B-tree index is a **pre-sorted lookup table** that was built when we created the index:
 
   ```javascript
-  // When you run: db.users.createIndex({ status: 1 })
+  // When we run: db.users.createIndex({ status: 1 })
   // MongoDB builds this mapping (simplified):
 
   Index structure:
@@ -829,7 +829,7 @@ db.orders.find({ status: "pending" }).explain("executionStats")
     "pending": [7, 8, 9, ... 499,000 document IDs]
   }
 
-  // When you query: db.users.find({ status: "active" })
+  // When we query: db.users.find({ status: "active" })
   // MongoDB does NOT scan the collection!
   // Instead:
   // 1. Look up "active" in the pre-built index → Found! [5, 12, 23, ...]
@@ -935,7 +935,7 @@ db.orders.find({ status: "pending" }).explain("executionStats")
   nReturned: 10
   ```
 
-  **When does the optimizer choose the wrong index?**
+  > **Question.** When does the optimizer choose the wrong index?
 
   The query optimizer uses **statistics** to estimate how many documents each index will need to examine (this estimate is called **cardinality**). It chooses the index with the lowest estimated cost.
 
@@ -989,15 +989,15 @@ db.orders.find({ status: "pending" }).explain("executionStats")
 
   **Why this happens:**
 
-  1. **Statistics capture data distribution at a point in time**
-  2. **Data changes** (inserts, updates, deletes skew distribution)
-  3. **Optimizer uses OLD cardinality estimates** to calculate index costs
-  4. **Wrong index appears cheaper** based on outdated information
-  5. **Query uses IXSCAN but examines many irrelevant documents**
+  1. Statistics capture data distribution at a point in time
+  2. Data changes (inserts, updates, deletes skew distribution)
+  3. Optimizer uses OLD cardinality estimates to calculate index costs
+  4. Wrong index appears cheaper based on outdated information
+  5. Query uses IXSCAN but examines many irrelevant documents
 
   **MongoDB vs SQL databases - same behavior:**
 
-  This is NOT unique to MongoDB - **all major databases (PostgreSQL, MySQL, Oracle, SQL Server) have the same issue**. They all:
+  This is NOT unique to MongoDB - **major databases** (PostgreSQL, MySQL, Oracle, SQL Server) have the same issue. They all:
   - Use B-tree indexes (same data structure)
   - Rely on statistics for query planning
   - Need periodic statistics updates to maintain optimal plans
@@ -1009,7 +1009,7 @@ db.orders.find({ status: "pending" }).explain("executionStats")
 
   When stale statistics cause wrong index selection, we have several solutions:
 
-  **Solution 1: Update statistics (Permanent fix - RECOMMENDED)**
+  **Solution 1: Update statistics (Permanent fix)**
 
   MongoDB automatically maintains statistics, but we can force a refresh:
 
@@ -1153,6 +1153,10 @@ All three metrics matter for optimal query performance.
 
 ### MongoDB Query Examples: From Optimal to Problematic
 
+
+![](/assets/img/2026-02-25-23-09-57.png)
+
+
 Understanding what makes queries slow helps identify when statistics might be stale. Here are real-world query patterns that commonly suffer from performance issues:
 
 **Document schema context:**
@@ -1182,7 +1186,6 @@ Understanding what makes queries slow helps identify when statistics might be st
 
 #### Baseline: Optimal Query Performance
 
-![](/assets/img/2026-02-25-23-09-57.png)
 
 Before examining slow queries, let's see what optimal performance looks like:
 
@@ -1566,8 +1569,7 @@ Expansion factor: 2.04x (12920 / 6319)
 - Without `allowDiskUse: true`, large result sets could exceed memory limits
 
 **Why this is slow:**
-- **No index can help** aggregation pipelines that start with $unwind
-- Must perform **full collection scan** (COLLSCAN) to access all documents
+- **No index can help**, aggregation pipelines that start with `$unwind` must perform **full collection scan** (COLLSCAN) to access all documents
 - Array unwinding creates intermediate result set **2x larger** than input
 - Grouping and sorting operations consume significant memory
 - For larger arrays or collections, execution time grows linearly with total unwound documents
@@ -2021,7 +2023,7 @@ db.llmsummaries.find({
 })
 ```
 
-**For aggregation with $unwind (Example 4 above):**
+**For aggregation with `$unwind` (Example 4 above):**
 ```javascript
 // Option 1: Add $match before $unwind to reduce documents processed
 db.llmsummaries.aggregate([
@@ -2055,7 +2057,7 @@ db.llmsummaries.aggregate([
 - **With allowDiskUse:** Prevents memory errors for larger result sets
 - **Note:** Indexes cannot optimize `$unwind` operations, but can speed up initial `$match`
 
-**Alternative: Pre-aggregate during data ingestion**
+**Alternative:** Pre-aggregate during data ingestion
 ```javascript
 // If groupID counts are critical, maintain them at document level
 {
@@ -2099,7 +2101,7 @@ db.createView(
 - **Speedup:** 10-15x faster
 - **Trade-off:** Additional storage and update complexity
 
-**For OR queries (Example 6 above):**
+**For `OR` queries (Example 6 above):**
 ```javascript
 // Create separate indexes for each OR condition
 db.llmsummaries.createIndex({
@@ -2168,16 +2170,16 @@ db.llmsummaries.find({
 - Extremely high efficiency ratios for single-document results (Example 5: 6319x)
 - **Large expansion factors in aggregations** (Example 4: 2.04x with $unwind)
 
-**Real-world threshold examples from above:**
+**Threshold examples from above:**
 
-**Example 1 (Nested array query):**
+**Example 1 (Nested array query).**
 ```javascript
 Efficiency ratio: 6319 examined / 3 returned = 2106x
 Execution time: 148ms for 3 documents = ~49ms per document
 Data read: 22MB for result size likely <100KB = 220x overhead
 ```
 
-**Example 2 (Regex text search):**
+**Example 2 (Regex text search).**
 ```javascript
 Efficiency ratio: 6319 examined / 6 returned = 1053x
 Execution time: 24ms for 6 documents = ~4ms per document
@@ -2185,7 +2187,7 @@ String operations: ~442,330 regex matches performed
 CPU time: 24.6ms spent on pattern matching
 ```
 
-**Example 3 ($elemMatch compound condition):**
+**Example 3 (`$elemMatch` compound condition).**
 ```javascript
 Efficiency ratio: Undefined (0 returned, 6319 examined)
 Execution time: 10ms for 0 documents
@@ -2193,7 +2195,7 @@ Array element checks: ~442,330 compound condition evaluations (6319 × 70)
 CPU time: 10.2ms spent on nested AND condition evaluation
 ```
 
-**Example 4 (Aggregation pipeline with $unwind):**
+**Example 4 (Aggregation pipeline with `$unwind`).**
 ```javascript
 Expansion factor: 6319 input → 12920 unwound = 2.04x
 Execution time: 638ms for aggregating into 124 groups = ~5.15ms per group
@@ -2202,7 +2204,7 @@ Memory usage: In-memory grouping and sorting of 12920 documents
 No index utility: Aggregations starting with $unwind require full COLLSCAN
 ```
 
-**Example 5 (Date range query):**
+**Example 5 (Date range query).**
 ```javascript
 Efficiency ratio: 6319 examined / 1 returned = 6319x (WORST!)
 Execution time: 10ms for 1 document
@@ -2210,7 +2212,7 @@ Date comparisons: ~442,330 range checks (6319 × 70 × 2 conditions)
 CPU time: 10.8ms spent on NumberLong range comparisons
 ```
 
-**Example 6 (OR query with SUBPLAN):**
+**Example 6 (OR query with SUBPLAN).**
 ```javascript
 Efficiency ratio: 6319 examined / 1243 returned = 5.08x (BEST!)
 Execution time: 15ms for 1,243 documents = ~0.012ms per document
@@ -2219,7 +2221,7 @@ Field checks: ~885,000 nested field evaluations (6319 × 70 × 2 OR conditions)
 CPU time: 15.1ms spent on OR condition evaluation
 ```
 
-**Key insights from all examples:**
+**Summary from all examples.**
 - **All scan entire collection** (6,319 docs) but different bottlenecks:
   - Example 1: Slowest per document (49ms) - nested array traversal overhead
   - Example 2: High CPU (24.6ms) - regex pattern matching complexity
@@ -2231,7 +2233,6 @@ CPU time: 15.1ms spent on OR condition evaluation
   - Example 1 & 2: Poor efficiency (2106x, 1053x) - waste 99.9% of examined data
   - Example 3: 100% waste (0 returned, but scanned all 6,319 docs)
   - Example 5: Worst efficiency (6319x) - 99.98% waste for single result
-- **Key takeaway:** Even "efficient" queries (Example 6) benefit from indexes to avoid full scans
 - **All need proper indexes** to avoid full collection scans
 
 ##### Check index statistics
@@ -2381,7 +2382,7 @@ function checkCollectionStatsAtlas(collectionName) {
 
 #### Solutions in MongoDB
 
-**1st Clear Plan Cache.**
+##### Clear Plan Cache
 
 **Self-hosted MongoDB:**
 ```javascript
@@ -2411,7 +2412,7 @@ db.collection.dropIndex("index_name")
 db.collection.createIndex({ field: 1 }, { name: "index_name" })
 ```
 
-**2nd Rebuild Indexes.**
+##### Rebuild Indexes
 ```javascript
 // Rebuild specific index
 db.collection.reIndex()
@@ -2421,7 +2422,7 @@ db.collection.dropIndex("index_name")
 db.collection.createIndex({ field: 1 })
 ```
 
-**3rd Use Index Hints.**
+##### Use Index Hints
 ```javascript
 // Force specific index usage
 db.collection.find({ field: value }).hint({ field: 1 })
@@ -2430,7 +2431,7 @@ db.collection.find({ field: value }).hint({ field: 1 })
 db.collection.find({ field: value }).hint({ $natural: 1 })
 ```
 
-**4th Analyze Query Performance.**
+##### Analyze Query Performance
 ```javascript
 // Get detailed execution statistics
 db.collection.find({ field: value }).explain("executionStats")
@@ -2440,7 +2441,7 @@ db.setProfilingLevel(2)  // Profile all operations
 db.system.profile.find().limit(10).sort({ ts: -1 })
 ```
 
-**5th Configure Plan Cache Settings.**
+##### Configure Plan Cache Settings
 
 **Self-hosted MongoDB 5.0+:**
 ```javascript
@@ -2476,7 +2477,7 @@ db.adminCommand({
 #### Monitor After Bulk Operations
 
 All databases require statistics updates after.
-- Large INSERT/UPDATE/DELETE operations
+- Large `INSERT`/`UPDATE`/`DELETE` operations
 - Data imports or migrations
 - Index creation or modification
 - Schema changes
