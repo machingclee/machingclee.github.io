@@ -389,83 +389,105 @@ ORDER BY n_mod_since_analyze DESC;
 
 #### Interpret Real Statistic Results
 
-Consider this output.
 
-```sql
- schemaname | relname    | n_live_tup | n_dead_tup | n_mod_since_analyze | last_autoanalyze      | last_analyze
-------------+------------+------------+------------+---------------------+-----------------------+-------------
- public     | orders     |  1000000   |    50000   |      300000         | 2026-01-01 08:00:00   | NULL
- public     | customers  |    10000   |      100   |         50          | 2026-02-20 10:30:00   | NULL
-```
 
-**Analysis.**
+![](/assets/img/2026-02-24-17-46-58.png)
 
-**orders table (PROBLEM).**
-- 1M live rows, 300K modifications since last analyze (30% changed!)
-- 50K dead rows (needs VACUUM)
-- Last analyzed over a month ago
-- **Action needed.** Run `ANALYZE orders;` immediately
+The analyiss is as follows:
 
-**customers table (OK).**
-- 10K live rows, only 50 modifications (0.5% changed)
-- Last analyzed recently (4 days ago)
-- **No action needed**
+**Notification_Logging (REQUIRES ATTENTION).**
+- 6,723 modifications since last analyze (most active table)
+- Last analyzed 27 days ago (2026-01-30)
+- **Action needed.** Run `ANALYZE Notification_Logging;` - high write activity suggests stale distribution statistics
+
+**Session (MONITOR CLOSELY).**
+- 2,770 modifications since last analyze
+- Last analyzed 44 days ago (2026-01-13)
+- **Consider action.** Depending on table size, this could be significant (e.g., if table has only 5,000 rows, this is 55% changed!)
+
+**Tagging_Rel_Team_tag (STALE).**
+- 2,498 modifications since last analyze
+- Last analyzed 93 days ago (2025-11-25) - over 3 months!
+- **Action needed.** Run `ANALYZE Tagging_Rel_Team_tag;` - statistics are definitely stale
+
+**Rel_Issue_Message (VERY STALE).**
+- 2,404 modifications since last analyze
+- Last analyzed 101 days ago (2025-11-17) - over 3 months!
+- **Action needed.** Run `ANALYZE Rel_Issue_Message;` immediately
+
+**Tagging_Tag (EXTREMELY STALE).**
+- 2,116 modifications since last analyze
+- Last analyzed 112 days ago (2025-11-06) - nearly 4 months!
+- **Action needed.** Run `ANALYZE Tagging_Tag;` immediately - optimizer likely making poor decisions
+
+**Message (MODERATELY STALE).**
+- 1,386 modifications since last analyze
+- Last analyzed 73 days ago (2025-12-15) - over 2 months
+- **Action recommended.** Run `ANALYZE Message;` - statistics likely outdated
+
+**Overall assessment:**
+- All tables show modifications without recent manual analysis (`last_analyze` is NULL)
+- Autovacuum has run, but may not be frequent enough
+- The oldest statistics (Tagging_Tag, Rel_Issue_Message) are 3-4 months old
+- **Immediate action:** Run `ANALYZE` on all tables, especially the older ones
+- **Long-term fix:** Adjust autovacuum settings to analyze more frequently
 
 #### Compare execution plan with actual stats
 
 ```sql
 -- Get execution plan estimate
-EXPLAIN SELECT * FROM orders WHERE status = 'shipped';
--- Output shows: "Seq Scan on orders (cost=0.00..18334.00 rows=500 ...)"
+EXPLAIN SELECT * FROM "Session" WHERE "userId" = 'abc123';
+-- Output shows: "Seq Scan on Session (cost=0.00..2834.00 rows=50 ...)"
 
 -- Get actual row count
-SELECT COUNT(*) FROM orders WHERE status = 'shipped';
--- Returns: 50000
+SELECT COUNT(*) FROM "Session" WHERE "userId" = 'abc123';
+-- Returns: 350
 ```
 
-**Problem.** Planner estimated 500 rows but actual is 50,000 (100x off!)
+**Problem.** Planner estimated 50 rows but actual is 350 (7x off!)
 
-**Why.** Statistics are stale - the distribution of `status` values has changed significantly since last `ANALYZE`.
+**Why.** Statistics are stale - the Session table has 2,770 modifications since last analyze (44 days ago). User session distribution has changed significantly since last `ANALYZE`.
 
 **Impact.**
 - Planner might choose nested loop join expecting small result set
 - Allocated memory might be insufficient
-- Query takes 10x longer than it should
+- Query takes significantly longer than it should
+- If this query is used in joins, the entire execution plan could be suboptimal
 
 **Solution.** 
 ```sql
-ANALYZE orders;
+ANALYZE "Session";
 ```
 
 After running `ANALYZE`, check the plan again.
 ```sql
-EXPLAIN SELECT * FROM orders WHERE status = 'shipped';
--- Now shows: "Seq Scan on orders (cost=0.00..18334.00 rows=48500 ...)"
+EXPLAIN SELECT * FROM "Session" WHERE "userId" = 'abc123';
+-- Now shows: "Seq Scan on Session (cost=0.00..2834.00 rows=345 ...)"
 ```
 
-Much better! The estimate is now close to the actual count (48,500 vs 50,000).
+Much better! The estimate is now close to the actual count (345 vs 350).
 
 #### Solutions in PostgreSQL
 
 ##### Manual ANALYZE
 ```sql
 -- Analyze specific table
-ANALYZE orders;
+ANALYZE "Session";
 
 -- Analyze specific column (faster for large tables)
-ANALYZE orders (status, customer_id);
+ANALYZE "Notification_Logging" ("userId", "createdAt");
 
 -- Analyze all tables in database
 ANALYZE;
 
 -- Verbose mode to see what's happening
-ANALYZE VERBOSE orders;
+ANALYZE VERBOSE "Session";
 ```
 
 ##### Configure Autovacuum
 ```sql
 -- Per-table autovacuum settings
-ALTER TABLE orders SET (
+ALTER TABLE "Notification_Logging" SET (
   autovacuum_analyze_scale_factor = 0.05,  -- Analyze after 5% of rows change
   autovacuum_analyze_threshold = 1000      -- Minimum 1000 rows before analyzing
 );
@@ -475,7 +497,7 @@ SELECT
   relname,
   reloptions
 FROM pg_class
-WHERE relname = 'orders';
+WHERE relname = 'Notification_Logging';
 ```
 
 **Recommended settings for high-traffic tables.**

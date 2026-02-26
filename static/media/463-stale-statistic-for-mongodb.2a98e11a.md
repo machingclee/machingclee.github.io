@@ -53,7 +53,7 @@ MongoDB's query planner can suffer from.
 
 ### Detecting Stale Statistics in MongoDB
 
-#### Key difference from relational databases 
+#### Key Difference from Relational Databases 
 
 Unlike PostgreSQL or Oracle, MongoDB doesn't maintain explicit staleness indicators like `n_mod_since_analyze` or `stale_stats` columns. Instead, we must detect stale statistics indirectly through performance symptoms and query analysis.
 
@@ -230,8 +230,8 @@ db.orders.find({ status: "pending" }).explain("executionStats")
   | **Data structures accessed** | Main table only | Index tree + specific docs | Separate lookup structure |
   | **Comparisons needed** | 1,000,000 | ~20 (tree depth) + 1,000 | 1000x fewer |
   | **Documents read from disk** | 1,000,000 | 1,000 | Read only matches |
-  | **Time complexity** | $O(N)$ linear | $O(\log N + K)$ | K = matching docs |
-  | **Actual time** | 10+ seconds | 10 milliseconds | 1000x faster |
+  | **Time complexity** | $O(N)$ linear | $O(\log N + K)$ | $K$ = matching docs |
+  | **Actual time** | 10+ s | 10 ms | 1000x faster |
   | **totalDocsExamined** | 1,000,000 | 1,000 | Only matching docs |
   | **Examination ratio** | 1000x | 1.0x | Perfect efficiency |
 
@@ -241,15 +241,15 @@ db.orders.find({ status: "pending" }).explain("executionStats")
 
   **No!** The index IS a pre-built answer to your WHERE condition.
 
-  When you create an index, MongoDB:
-  1. **Scans all rows ONCE** during index creation
-  2. **Builds a sorted structure** (B-tree) with the answer
-  3. **Maintains it** as data changes
+  When we ***create*** an index, MongoDB:
+  1. Scans all rows **ONCE** during index creation
+  2. Builds a sorted structure (B-tree) with the answer
+  3. Maintains it as data changes
 
-  When you query:
-  1. **Look up in the pre-built answer** (the index)
-  2. **Get document IDs instantly** (no scanning needed)
-  3. **Fetch only those specific documents**
+  When we ***query***:
+  1. Look up in the pre-built answer (the index)
+  2. Get document IDs instantly (no scanning needed)
+  3. Fetch only those specific documents
 
   Think of it as: "Scanning is done at index creation time, not at query time."
 
@@ -289,7 +289,7 @@ db.orders.find({ status: "pending" }).explain("executionStats")
 
 ##### Collection scans (stage: "COLLSCAN") when an index should exist
 
-  This is the PRIMARY indicator. If you see `COLLSCAN`:
+  This is the PRIMARY indicator. If we see `COLLSCAN`:
   - No index exists on filtered fields, OR
   - Optimizer determined full scan is cheaper (table too small, or query returns >30% of data)
 
@@ -303,7 +303,7 @@ db.orders.find({ status: "pending" }).explain("executionStats")
   // Collection has 10M documents - needs index on userId!
   ```
 
-##### Wrong index chosen (indexName shows unexpected index)
+##### Wrong index chosen (`indexName` shows unexpected index)
 
   Even with `IXSCAN`, the optimizer might choose the wrong index due to stale statistics:
 
@@ -318,9 +318,9 @@ db.orders.find({ status: "pending" }).explain("executionStats")
 
   > **Question.** When does the optimizer choose the wrong index?
 
-  The query optimizer uses **statistics** to estimate how many documents each index will need to examine (this estimate is called **cardinality**). It chooses the index with the lowest estimated cost.
+  The query optimizer uses ***statistics*** to estimate how many documents each index will need to examine (this estimate is called ***cardinality***). It chooses the index with the lowest estimated cost.
 
-  **Scenario: Stale statistics cause wrong index selection**
+###### Scenario 1: Stale statistics cause wrong index selection
 
   Consider a `users` collection with 1,000,000 documents and two indexes:
   - Index A: `{ status: 1 }` (user account status)
@@ -341,7 +341,7 @@ db.orders.find({ status: "pending" }).explain("executionStats")
     - Index B: ~1 doc to scan (correct)
     - **Still chooses Index B** (correct by luck)
 
-  **Now a different scenario with multiple stale statistics:**
+###### Scenario 2: With multiple stale statistics
 
   Query: `db.users.find({ status: "premium", country: "USA" })`
 
@@ -368,7 +368,9 @@ db.orders.find({ status: "pending" }).explain("executionStats")
   // Examination ratio: 800,000 / 8,000 = 100x inefficiency!
   ```
 
-  **Why this happens:**
+###### Summary to two scanerios
+
+  **Why this happens.**
 
   1. Statistics capture data distribution at a point in time
   2. Data changes (inserts, updates, deletes skew distribution)
@@ -376,23 +378,17 @@ db.orders.find({ status: "pending" }).explain("executionStats")
   4. Wrong index appears cheaper based on outdated information
   5. Query uses IXSCAN but examines many irrelevant documents
 
-  **MongoDB vs SQL databases - same behavior:**
-
-  This is NOT unique to MongoDB - **major databases** (PostgreSQL, MySQL, Oracle, SQL Server) have the same issue. They all:
+  **MongoDB vs SQL databases (same behavior).**  This is ***NOT*** unique to MongoDB, major databases (such as PostgreSQL, MySQL, Oracle, SQL Server) have the same issue. They all:
   - Use B-tree indexes (same data structure)
   - Rely on statistics for query planning
   - Need periodic statistics updates to maintain optimal plans
   - Can choose wrong indexes when statistics are stale
 
-  The index mechanics work identically - the problem is the optimizer's **decision-making** based on outdated information, not the index structure itself.
+  The index mechanics work identically - the problem is the optimizer's ***decision-making*** based on outdated information, not the index structure itself.
 
-  **How to fix: Force the optimizer to use the correct index**
+  **How to fix.** Force the optimizer to use the correct index. When stale statistics cause wrong index selection, we have several solutions:
 
-  When stale statistics cause wrong index selection, we have several solutions:
-
-  **Solution 1: Update statistics (Permanent fix)**
-
-  MongoDB automatically maintains statistics, but we can force a refresh:
+  **Solution 1 (Update statistics, a permanent fix).**   MongoDB automatically maintains statistics, but we can force a refresh:
 
   ```javascript
   // Option 1: Reindex the collection (updates statistics)
@@ -406,9 +402,7 @@ db.orders.find({ status: "pending" }).explain("executionStats")
   db.users.createIndex({ country: 1 })
   ```
 
-  **Solution 2: Use index hints (Temporary workaround)**
-
-  Force the query to use a specific index:
+  **Solution 2 (Use index hints, a temporary workaround).** Force the query to use a specific index:
 
   ```javascript
   // Force use of status index
@@ -425,9 +419,7 @@ db.orders.find({ status: "pending" }).explain("executionStats")
     .explain("executionStats")
   ```
 
-  **Solution 3: Create compound index (Better long-term solution)**
-
-  If queries frequently filter on multiple fields:
+  **Solution 3 (Create compound index, a long-term solution).**  If queries frequently filter on multiple fields:
 
   ```javascript
   // Create compound index
@@ -438,9 +430,7 @@ db.orders.find({ status: "pending" }).explain("executionStats")
   // Uses status first (10% selectivity) then country (eliminates most remaining)
   ```
 
-  **Solution 4: Rewrite query (Alternative approach)**
-
-  Sometimes restructuring the query helps:
+  **Solution 4 (Rewrite query).** Sometimes restructuring the query helps:
 
   ```javascript
   // Original problematic query
@@ -453,9 +443,7 @@ db.orders.find({ status: "pending" }).explain("executionStats")
   ])
   ```
 
-  **Verification: Confirm the fix worked**
-
-  After applying any solution, verify using `explain()`:
+  **Verification.** Confirm the fix worked, after applying any solution, verify using `explain()`:
 
   ```javascript
   db.users.find({ status: "premium", country: "USA" })
@@ -468,38 +456,38 @@ db.orders.find({ status: "pending" }).explain("executionStats")
   //    Much better than 100x before!
   ```
 
-  **Best practice workflow:**
+  **Common practice workflow.**
 
   1. **Short-term**: Use `.hint()` to immediately fix slow queries in production
   2. **Medium-term**: Update statistics with `reIndex()` or `validate` command
   3. **Long-term**: Create compound indexes for frequently-used query patterns
   4. **Ongoing**: Schedule regular statistics updates (weekly/monthly depending on data change rate)
 
-##### High execution time (executionTimeMillis significantly higher than baseline)
+##### High execution time (`executionTimeMillis` significantly higher than baseline)
 
   Combined with other metrics to identify problems.
 
-#### Summary: Why examination ratio IS a good metric
+#### Why examination ratio IS a good metric
 
   - **Ratio near 1.0x** → Index working perfectly, only examines matching docs
+
   - **Ratio 1.5-3x** → Acceptable for multikey indexes or range queries  
   - **Ratio > 10x** → Problem! Either no index (COLLSCAN) or wrong index (IXSCAN with poor selectivity)
 
-#### Diagnostic workflow: What to check in order
+#### Diagnostic Workflow: What to check in order
 
-  1. **First:** Check `stage` - is it COLLSCAN or IXSCAN?
-    - COLLSCAN → Need to create index
-    - IXSCAN → Continue to next check
+  1. **First:** Check `stage` - is it `COLLSCAN` or `IXSCAN`?
+    - `COLLSCAN` → Need to create index
+    - `IXSCAN` → Continue to next check
 
   2. **Second:** Check `indexName` - is it the right index?
-    - Wrong index → Update statistics or use hint
+    - Wrong index → Update statistics or use `hint`
     - Correct index → Continue to next check
 
   3. **Third:** Check examination ratio - is the index selective?
     - High ratio with correct index → Index has poor selectivity, need compound index
-    - Low ratio → Everything is good!
 
-#### Example analysis
+#### Example Analysis
 
 ```javascript
 // Good performance (index used efficiently)
@@ -523,9 +511,9 @@ totalDocsExamined: 50000
 Ratio: 500x (PROBLEM - stale statistics, wrong index!)
 ```
 
-**Conclusion:** 
+#### Conclusion
 
-Checking for IXSCAN vs COLLSCAN is crucial, but examination ratio provides additional diagnostic value. All three metrics together tell the full story:
+Checking for `IXSCAN` vs `COLLSCAN` is crucial, but examination ratio provides additional diagnostic value. All three metrics together tell the full story:
 - **Stage type** → Are we using an index at all?
 - **Examination ratio** → Is the index effective?
 - **Index name** → Are we using the RIGHT index?
@@ -535,12 +523,14 @@ All three metrics matter for optimal query performance.
 ### MongoDB Query Examples: From Optimal to Problematic
 
 
+Let's examine the following real database:
+
 ![](/assets/img/2026-02-25-23-09-57.png)
 
 
 Understanding what makes queries slow helps identify when statistics might be stale. Here are real-world query patterns that commonly suffer from performance issues:
 
-**Document schema context:**
+**Document Schema.**
 ```javascript
 {
   _id: ObjectId,
@@ -576,51 +566,54 @@ db.llmsummaries.find({ _id: ObjectId("68abc7447d87776535cb4d04") })
   .explain("executionStats")
 ```
 
-**Key findings from the output:**
+**Key findings from the output.**
 
-**Execution Statistics:**
-```javascript
-executionStats: {
-  executionSuccess: true,
-  nReturned: 1,
-  executionTimeMillis: 0,
-  totalKeysExamined: 1,
-  totalDocsExamined: 1
-}
-```
+1. **Execution Statistics.**
+    ```javascript
+    executionStats: {
+    executionSuccess: true,
+    nReturned: 1,
+    executionTimeMillis: 0,
+    totalKeysExamined: 1,
+    totalDocsExamined: 1
+    }
+    ```
 
-**Performance Analysis:**
-- **Efficiency ratio:** `1 / 1 = 1.0x` (perfect!)
-- **Execution time:** 0ms (sub-millisecond)
-- **Index usage:** `EXPRESS_IXSCAN` on `_id_` index
-- **No plan caching needed:** `isCached: false` - simple `_id` lookups don't require caching
+2. **Performance Analysis.**
 
-**Query Plan:**
-```javascript
-winningPlan: {
-  isCached: false,
-  stage: 'EXPRESS_IXSCAN',        // Optimized index scan (MongoDB 8.0+)
-  keyPattern: '{ _id: 1 }',
-  indexName: '_id_'
-}
-rejectedPlans: []                  // No alternative plans considered
-```
+    | Metric | Value | Notes |
+    |--------|-------|-------|
+    | **Efficiency ratio** | `1 / 1 = 1.0x` | Perfect! |
+    | **Execution time** | 0ms | Sub-millisecond |
+    | **Index usage** | `EXPRESS_IXSCAN` on `_id_` index | — |
+    | **Plan caching** | `isCached: false` | Simple `_id` lookups don't require caching |
 
-**Resource Usage:**
-```javascript
-operationMetrics: {
-  docBytesRead: 68251,            // ~68KB document size
-  idxEntryBytesRead: 14,          // Only 14 bytes read from index
-  cpuNanos: 155102                // ~155 microseconds CPU time
-}
-```
+3. **Query Plan.**
+    ```javascript
+    winningPlan: {
+    isCached: false,
+    stage: 'EXPRESS_IXSCAN',        // Optimized index scan (MongoDB 8.0+)
+    keyPattern: '{ _id: 1 }',
+    indexName: '_id_'
+    }
+    rejectedPlans: []                  // No alternative plans considered
+    ```
 
-**What makes this optimal:**
-- **Perfect index utilization:** Index lookup required only 14 bytes, found exact document pointer immediately
-- **Optimal execution path:** No rejected plans, no caching overhead, zero optimization time
-- **No stale statistics concerns:** Direct `_id` lookup always uses primary index, no cardinality estimation needed
+4. **Resource Usage.**
+    ```javascript
+    operationMetrics: {
+      docBytesRead: 68251,            // ~68KB document size
+      idxEntryBytesRead: 14,          // Only 14 bytes read from index
+      cpuNanos: 155102                // ~155 microseconds CPU time
+    }
+    ```
 
-**This is what we aim for:**
+What makes this optimal:
+- **Perfect index utilization.** Index lookup required only 14 bytes, found exact document pointer immediately
+- **Optimal execution path.** No rejected plans, no caching overhead, zero optimization time
+- **No stale statistics concerns.** Direct `_id` lookup always uses primary index, no cardinality estimation needed
+
+This is what we aim for because:
 - Examination ratio of 1.0x (perfect selectivity)
 - Sub-millisecond execution
 - Appropriate index usage
@@ -699,13 +692,16 @@ db.llmsummaries.find({
 ```
 
 **Performance analysis:**
-- **Efficiency ratio:** 6319 / 3 = **2,106x inefficiency!**
-- **Collection scan:** Examined every single document in the collection
-- **No index usage:** `totalKeysExamined: 0` confirms no index helped
-- **Resource waste:** Read 22MB of data to return 3 matching documents
-- **Nested array overhead:** Must scan through `result` array in each document
 
-**Why this is slow:**
+| Metric | Value | Impact |
+|--------|-------|--------|
+| **Efficiency ratio** | 6319 / 3 = **2,106x inefficiency!** | Extremely wasteful |
+| **Collection scan** | Examined every single document | 6,319 documents |
+| **Index usage** | `totalKeysExamined: 0` | No index helped |
+| **Resource waste** | Read 22MB of data | To return 3 matching documents |
+| **Nested array overhead** | Must scan `result` array | In each document |
+
+Why this is slow:
 - MongoDB must open and examine all 6,319 documents
 - For each document, traverse the nested `result` array
 - Check each `assignee` array element within each result
@@ -780,13 +776,16 @@ db.llmsummaries.find({
 ```
 
 **Performance analysis:**
-- **Efficiency ratio:** 6319 / 6 = **1,053x inefficiency!**
-- **Collection scan:** Full collection scan despite only 6 matches
-- **Regex overhead:** Case-insensitive pattern matching (`/i` flag) on every document
-- **Nested array scanning:** Must check `result.summary` in every array element
-- **No text index:** Cannot leverage inverted index structure for text search
 
-**Why this is particularly slow:**
+| Metric | Value | Impact |
+|--------|-------|--------|
+| **Efficiency ratio** | 6319 / 6 = **1,053x inefficiency!** | Highly wasteful |
+| **Collection scan** | Full collection scan | Despite only 6 matches |
+| **Regex overhead** | Case-insensitive pattern matching (`/i` flag) | On every document |
+| **Nested array scanning** | Must check `result.summary` | In every array element |
+| **No text index** | Cannot leverage inverted index | For text search |
+
+Why this is particularly slow:
 - Case-insensitive regex (`/i`) prevents simple string comparison
 - MongoDB evaluates regex pattern against every `summary` field in every `result` array
 - With ~70 result elements per document: 6,319 docs × 70 elements = ~442,330 string matches!
@@ -902,13 +901,16 @@ db.llmsummaries.find({
 ```
 
 **Performance analysis:**
-- **Efficiency ratio:** Undefined (0 returned), but examined **all 6,319 documents** unnecessarily
-- **Collection scan:** Cannot short-circuit even though no matches exist
-- **No index usage:** `totalKeysExamined: 0` confirms no compound index available
-- **$elemMatch complexity:** Must evaluate AND condition on nested arrays for every document
-- **Resource waste:** Read 22MB to return zero results
 
-**Why this is particularly inefficient:**
+| Metric | Value | Impact |
+|--------|-------|--------|
+| **Efficiency ratio** | Undefined (0 returned) | Examined **all 6,319 documents** unnecessarily |
+| **Collection scan** | Cannot short-circuit | Even though no matches exist |
+| **Index usage** | `totalKeysExamined: 0` | No compound index available |
+| **$elemMatch complexity** | Must evaluate AND condition | On nested arrays for every document |
+| **Resource waste** | Read 22MB | To return zero results |
+
+Why this is particularly inefficient:
 - **Compound condition overhead:** MongoDB evaluates both `topic.name = "FLOORING"` AND `location.detail = "2F"` for each result element
 - **Nested array scanning:** With ~70 result elements per document: 6,319 docs × 70 = ~442,330 array element checks
 - **No early termination:** Even though no matches found, must scan entire collection to confirm
@@ -943,13 +945,16 @@ Expansion factor: 2.04x (12920 / 6319)
 3. **$sort**: Sorts 124 groups in memory by count descending
 
 **Performance analysis:**
-- The aggregation processes **2.04x more documents** than the input collection size
-- Each document's `result` array contains ~2 elements on average
-- **638ms execution time** for processing 12,920 unwound documents
-- Memory-intensive operation as all grouping and sorting happens in RAM
-- Without `allowDiskUse: true`, large result sets could exceed memory limits
 
-**Why this is slow:**
+| Metric | Value | Impact |
+|--------|-------|--------|
+| **Document expansion** | **2.04x** more than input | 12,920 unwound from 6,319 input |
+| **Array size** | ~2 elements on average | Per `result` array |
+| **Execution time** | **638ms** | For processing 12,920 unwound documents |
+| **Memory usage** | Memory-intensive operation | All grouping and sorting in RAM |
+| **Memory limits** | Without `allowDiskUse: true` | Large result sets could exceed limits |
+
+Why this is slow:
 - **No index can help**, aggregation pipelines that start with `$unwind` must perform **full collection scan** (COLLSCAN) to access all documents
 - Array unwinding creates intermediate result set **2x larger** than input
 - Grouping and sorting operations consume significant memory
@@ -1080,13 +1085,16 @@ db.llmsummaries.find({
 ```
 
 **Performance analysis:**
-- **Efficiency ratio:** 6319 / 1 = **6,319x inefficiency!**
-- **Collection scan:** Examined every document for single match
-- **No index usage:** `totalKeysExamined: 0` confirms no index on date field
-- **Range query overhead:** Must evaluate `$gte` AND `$lte` conditions on nested arrays
-- **Resource waste:** Read 22MB to return 1 matching document
 
-**Why this is extremely inefficient:**
+| Metric | Value | Impact |
+|--------|-------|--------|
+| **Efficiency ratio** | 6319 / 1 = **6,319x inefficiency!** | Worst efficiency among all examples |
+| **Collection scan** | Examined every document | For single match |
+| **Index usage** | `totalKeysExamined: 0` | No index on date field |
+| **Range query overhead** | Must evaluate `$gte` AND `$lte` | On nested arrays |
+| **Resource waste** | Read 22MB | To return 1 matching document |
+
+Why this is extremely inefficient:
 - **Date range comparisons:** MongoDB evaluates both conditions (`$gte` and `$lte`) on every nested `issueCreatedAt` field
 - **Nested array scanning:** With ~70 result elements per document: 6,319 docs × 70 = ~442,330 date comparisons
 - **NumberLong overhead:** Each comparison requires handling 64-bit integer values
@@ -1209,19 +1217,22 @@ db.llmsummaries.find({
 ```
 
 **Performance analysis:**
-- **Efficiency ratio:** 6319 / 1243 = **5.08x inefficiency**
-- **Better selectivity:** Returns 1,243 documents (19.7% of collection) - best match rate among all examples!
-- **Still collection scan:** `SUBPLAN` stage with `COLLSCAN` input - no indexes used
-- **Fast execution:** Only 15ms despite scanning entire collection (benefit of higher match rate)
-- **No index usage:** `totalKeysExamined: 0` confirms no indexes on either field
 
-**Why this has better efficiency than other examples:**
+| Metric | Value | Impact |
+|--------|-------|--------|
+| **Efficiency ratio** | 6319 / 1243 = **5.08x inefficiency** | Better than other examples |
+| **Selectivity** | Returns 1,243 documents (19.7%) | Best match rate among all examples! |
+| **Scan type** | `SUBPLAN` stage with `COLLSCAN` | No indexes used |
+| **Execution time** | Only 15ms | Despite scanning entire collection |
+| **Index usage** | `totalKeysExamined: 0` | No indexes on either field |
+
+Why this has better efficiency than other examples:
 - **Higher match rate:** OR condition is less selective - many documents match at least one condition
 - **19.7% hit rate:** Returns 1,243 out of 6,319 documents examined
 - **Less wasted work:** Compared to Example 5 (99.98% waste), this only wastes ~80% of examined data
 - **Fast per-document:** 15ms / 1243 docs = ~0.012ms per returned document
 
-**Why it still needs optimization:**
+Why it still needs optimization:
 - **SUBPLAN with COLLSCAN:** MongoDB uses subplan optimization for OR but still scans all documents
 - **Cannot short-circuit:** Must check both OR conditions on every nested array element
 - **Nested array overhead:** With ~70 result elements per document: 6,319 docs × 70 × 2 fields = ~885,000 field checks
@@ -1229,7 +1240,9 @@ db.llmsummaries.find({
 
 #### Performance Improvement Strategies
 
-**For the nested array query (Example 1 above):**
+##### Index Design
+
+###### For the nested array query (Example 1 above)
 ```javascript
 // Create multikey index on nested array field
 db.llmsummaries.createIndex({
@@ -1244,13 +1257,13 @@ db.llmsummaries.createIndex({
 // - Efficiency ratio: 1.0x (instead of 2106x)
 ```
 
-**Expected improvement:**
+Expected improvement:
 - **Before index:** 148ms, examined 6,319 docs, read 22MB
 - **After index:** <5ms, examined 3 docs, read ~40KB
 - **Speedup:** 30-50x faster
 - **Resource savings:** 99.95% less data read
 
-**For compound queries on arrays:**
+###### For compound queries on arrays
 ```javascript
 // Create compound index for multiple common filters
 db.llmsummaries.createIndex({
@@ -1262,7 +1275,7 @@ db.llmsummaries.createIndex({
 // Move frequently-queried array elements to root level
 ```
 
-**For text searches (Example 2 above):**
+###### For text searches (Example 2 above)
 ```javascript
 // Create text index on summary fields
 db.llmsummaries.createIndex({
@@ -1283,13 +1296,13 @@ db.llmsummaries.find({
 // - Efficiency ratio: Much closer to 1.0x
 ```
 
-**Expected improvement:**
+Expected improvement:
 - **Before text index:** 24ms, examined 6,319 docs, ~442,330 regex operations
 - **After text index:** <10ms, examined only matching docs, efficient word lookup
 - **Speedup:** 2-5x faster
 - **Note:** Text indexes work with `$text` operator, not `$regex`
 
-**Alternative for regex patterns:**
+Alternative for regex patterns:
 ```javascript
 // If regex is required, consider filtering first
 db.llmsummaries.find({
@@ -1301,7 +1314,7 @@ db.llmsummaries.find({
 db.llmsummaries.createIndex({ "result.keywords": 1 })
 ```
 
-**For $elemMatch compound queries (Example 3 above):**
+###### For `$elemMatch` compound queries (Example 3 above)
 ```javascript
 // Option 1: Create compound multikey index
 db.llmsummaries.createIndex({
@@ -1326,13 +1339,13 @@ db.llmsummaries.find({
 // - Can short-circuit when no matches exist
 ```
 
-**Expected improvement:**
+Expected improvement:
 - **Before index:** 10ms, examined all 6,319 docs, read 22MB, 0 results
 - **After compound index:** <5ms, examined only candidate docs, early termination
 - **Speedup:** 2-3x faster even for non-matching queries
 - **Resource savings:** 95%+ less data read when matches exist
 
-**Alternative: Denormalize for critical queries**
+Alternative: Denormalize for critical queries
 ```javascript
 // If this query pattern is frequent, denormalize to root level
 // Add aggregated fields during document creation:
@@ -1354,7 +1367,7 @@ db.llmsummaries.find({
 })
 ```
 
-**For date range queries (Example 5 above):**
+###### For date range queries (Example 5 above)
 ```javascript
 // Create index on nested date field
 db.llmsummaries.createIndex({
@@ -1376,13 +1389,13 @@ db.llmsummaries.find({
 // - Efficiency ratio: Much closer to 1.0x (instead of 6319x!)
 ```
 
-**Expected improvement:**
+Expected improvement:
 - **Before index:** 10ms, examined 6,319 docs, read 22MB, 1 result
 - **After index:** <5ms, examined only docs within date range, minimal reads
 - **Speedup:** 2-5x faster for typical date range queries
 - **Resource savings:** 99%+ less data scanned
 
-**Alternative: Denormalize for frequent date queries**
+Alternative: Denormalize for frequent date queries
 ```javascript
 // If date range queries are critical, add indexed date field at root level
 {
@@ -1406,7 +1419,7 @@ db.llmsummaries.find({
 })
 ```
 
-**For aggregation with `$unwind` (Example 4 above):**
+###### For aggregation with `$unwind` (Example 4 above)
 ```javascript
 // Option 1: Add $match before $unwind to reduce documents processed
 db.llmsummaries.aggregate([
@@ -1434,13 +1447,13 @@ db.llmsummaries.aggregate([
 ])
 ```
 
-**Expected improvement:**
+Expected improvement:
 - **Current performance:** 638ms, 6,319 input → 12,920 unwound (2.04x expansion)
 - **With $match filter:** Reduces input document set, proportionally faster
 - **With allowDiskUse:** Prevents memory errors for larger result sets
 - **Note:** Indexes cannot optimize `$unwind` operations, but can speed up initial `$match`
 
-**Alternative:** Pre-aggregate during data ingestion
+**Alternative.** Pre-aggregate during data ingestion
 ```javascript
 // If groupID counts are critical, maintain them at document level
 {
@@ -1478,13 +1491,13 @@ db.createView(
 // Query the view with $merge for incremental updates
 ```
 
-**Expected improvement with pre-aggregation:**
+Expected improvement with pre-aggregation:
 - **Before:** 638ms processing 12,920 unwound documents
 - **After:** <50ms querying pre-computed counts from document root
 - **Speedup:** 10-15x faster
 - **Trade-off:** Additional storage and update complexity
 
-**For `OR` queries (Example 6 above):**
+For `OR` queries (Example 6 above):
 ```javascript
 // Create separate indexes for each OR condition
 db.llmsummaries.createIndex({
@@ -1510,13 +1523,13 @@ db.llmsummaries.find({
 // - Better efficiency as collection grows
 ```
 
-**Expected improvement:**
+Expected improvement:
 - **Before indexes:** 15ms, examined 6,319 docs, 5.08x efficiency, read 22MB
 - **After indexes:** <10ms, examined only matching index entries, ~1.5-2x efficiency
 - **Speedup:** 1.5-2x faster
 - **Scalability:** Performance gain increases with collection size growth
 
-**Alternative: Denormalize with boolean flags**
+Alternative: Denormalize with boolean flags
 ```javascript
 // Add pre-computed flags at root level for frequent OR patterns
 {
@@ -1540,7 +1553,7 @@ db.llmsummaries.find({
 })
 ```
 
-**Signs these queries need attention:**
+##### Signs these queries need attention
 - `explain()` shows `COLLSCAN` instead of `IXSCAN` (or `SUBPLAN` with `COLLSCAN` for OR queries)
 - `totalDocsExamined / nReturned > 100` for low selectivity (Example 1: 2106x, Example 2: 1053x, Example 5: 6319x!)
 - Even "good" selectivity can be improved (Example 6: 5.08x with 1,243 results, but still scans all docs)
@@ -1553,7 +1566,7 @@ db.llmsummaries.find({
 - Extremely high efficiency ratios for single-document results (Example 5: 6319x)
 - **Large expansion factors in aggregations** (Example 4: 2.04x with $unwind)
 
-**Threshold examples from above:**
+##### Examples Analysis
 
 **Example 1 (Nested array query).**
 ```javascript
@@ -1604,7 +1617,7 @@ Field checks: ~885,000 nested field evaluations (6319 × 70 × 2 OR conditions)
 CPU time: 15.1ms spent on OR condition evaluation
 ```
 
-**Summary from all examples.**
+Summary from all examples: 
 - **All scan entire collection** (6,319 docs) but different bottlenecks:
   - Example 1: Slowest per document (49ms) - nested array traversal overhead
   - Example 2: High CPU (24.6ms) - regex pattern matching complexity
@@ -1637,7 +1650,7 @@ Look for.
 db.collection.getPlanCache().list()
 ```
 
-**Key indicators (self-hosted MongoDB only).**
+Key indicators (self-hosted MongoDB only):
 - **Old cached plans.** `timeOfCreation` shows plans cached for weeks/months on low-write collections
 - **Multiple active plans for same query shape.** Indicates optimizer uncertainty
 - **Plans with poor `works` values.** High work units suggest inefficient plan
@@ -1656,21 +1669,21 @@ db.collection.getPlanCache().list()
 db.collection.stats()
 ```
 
-**Monitor changes in.**
+Monitor changes in:
 - `count` - total documents (significant growth?)
 - `size` - data size in bytes
 - `avgObjSize` - average document size (data shape changing?)
 - `nindexes` - number of indexes
 - `totalIndexSize` - index size growth
 
-**When to suspect stale statistics.**
+When to suspect stale statistics:
 - Collection has grown >50% since last plan cache clear
 - Index size has grown disproportionately to data size
 - Query patterns have changed but performance hasn't adapted
 
 ##### Practical Detection Query
 
-**For self-hosted MongoDB:**
+For self-hosted MongoDB:
 
 ```javascript
 // Comprehensive staleness check (self-hosted only)
@@ -1712,7 +1725,7 @@ function checkCollectionStats(collectionName) {
 }
 ```
 
-**For MongoDB Atlas:**
+For MongoDB Atlas:
 
 ```javascript
 // Atlas-compatible staleness check
@@ -1767,7 +1780,7 @@ function checkCollectionStatsAtlas(collectionName) {
 
 ##### Clear Plan Cache
 
-**Self-hosted MongoDB:**
+Self-hosted MongoDB:
 ```javascript
 // Clear all cached plans for a collection
 db.collection.getPlanCache().clear()
@@ -1780,7 +1793,7 @@ db.collection.getPlanCache().clearPlansByQuery(
 )
 ```
 
-**MongoDB Atlas:**
+MongoDB Atlas:
 ```javascript
 // Direct plan cache clearing not available in Atlas
 // Atlas manages plan cache automatically
@@ -1826,7 +1839,7 @@ db.system.profile.find().limit(10).sort({ ts: -1 })
 
 ##### Configure Plan Cache Settings
 
-**Self-hosted MongoDB 5.0+:**
+Self-hosted MongoDB 5.0+:
 ```javascript
 // Plan cache is managed automatically
 // But we can influence it through query settings
@@ -1842,7 +1855,7 @@ db.adminCommand({
 })
 ```
 
-**MongoDB Atlas approach:**
+MongoDB Atlas approach:
 - **Use Performance Advisor.** Atlas automatically suggests indexes and identifies slow queries
 - **Enable Profiling.** Set profiling level via Atlas UI (Cluster → Configuration → Additional Settings)
 - **Monitor Metrics.** Track query efficiency through Atlas monitoring dashboard
@@ -1884,7 +1897,7 @@ Monitor for performance degradation that might indicate stale statistics:
 
 These alert configurations can be set up in three ways:
 
-**Method 1: Atlas Web UI (Easiest - Visual Interface)**
+**Method 1:** Atlas Web UI (Easiest - Visual Interface)
 1. Log into MongoDB Atlas Console: https://cloud.mongodb.com
 2. Select your Project
 3. Click "Alerts" in the left sidebar
@@ -1894,7 +1907,7 @@ These alert configurations can be set up in three ways:
 7. Configure notification channels (email, Slack, PagerDuty, etc.)
 8. Save the alert
 
-**Method 2: Atlas Admin API (Programmatic - REST API)**
+**Method 2:** Atlas Admin API (Programmatic - REST API)
 ```bash
 # Create alert via REST API
 curl --user "{PUBLIC_KEY}:{PRIVATE_KEY}" --digest \
@@ -1920,7 +1933,7 @@ curl --user "{PUBLIC_KEY}:{PRIVATE_KEY}" --digest \
   }'
 ```
 
-**Method 3: Terraform (Infrastructure as Code)**
+**Method 3:** Terraform (Infrastructure as Code)
 ```hcl
 resource "mongodbatlas_alert_configuration" "query_efficiency" {
   project_id = var.project_id
@@ -2074,7 +2087,7 @@ db.system.profile.aggregate([
 // This would show Example 5 (6319x) at the top!
 ```
 
-**Recommended workflow (Alerts + Profiling together):**
+**Recommended workflow:** Alerts + Profiling together
 ```javascript
 // Step 1: Set up Atlas alerts (one-time setup)
 // → Alerts notify you WHEN performance degrades
@@ -2102,7 +2115,7 @@ db.setProfilingLevel(0)
 
 For self-hosted MongoDB, you need to set up external monitoring since Atlas's built-in alerts aren't available.
 
-**Option 1: Prometheus + Grafana + Alertmanager (Recommended)**
+**Option 1:** Prometheus + Grafana + Alertmanager (Recommended)
 
 This is the most popular open-source stack for MongoDB monitoring:
 
@@ -2155,7 +2168,7 @@ volumes:
   grafana-storage:
 ```
 
-**Prometheus configuration (prometheus.yml):**
+Prometheus configuration (prometheus.yml):
 ```yaml
 global:
   scrape_interval: 15s
@@ -2178,7 +2191,7 @@ scrape_configs:
       - targets: ['mongodb-exporter:9216']
 ```
 
-**Alert rules (alerts.yml) - Equivalent to Atlas alerts:**
+Alert rules (alerts.yml) - Equivalent to Atlas alerts:
 ```yaml
 groups:
   - name: mongodb_performance
@@ -2244,7 +2257,7 @@ groups:
           description: "{{ $value }} active connections to MongoDB"
 ```
 
-**Alertmanager configuration (alertmanager.yml):**
+Alertmanager configuration (alertmanager.yml):
 ```yaml
 global:
   resolve_timeout: 5m
@@ -2289,7 +2302,7 @@ receivers:
         send_resolved: true
 ```
 
-**Deploy the stack:**
+Deploy the stack:
 ```bash
 # Start all services
 docker-compose up -d
@@ -2302,9 +2315,9 @@ docker-compose up -d
 # Dashboard ID: 2583 (Percona MongoDB Exporter)
 ```
 
-**Option 2: MongoDB Enterprise Ops Manager (Commercial)**
+**Option 2:** MongoDB Enterprise Ops Manager (Commercial)
 
-If you have MongoDB Enterprise, use Ops Manager which provides Atlas-like features:
+If we have MongoDB Enterprise, use Ops Manager which provides Atlas-like features:
 
 ```bash
 # Install Ops Manager
@@ -2316,7 +2329,7 @@ sudo rpm -ivh mongodb-mms-x.x.x.x86_64.rpm
 # Same alert types as Atlas available
 ```
 
-**Option 3: Custom Python/Node.js Monitoring Script**
+**Option 3:** Custom Python/Node.js Monitoring Script
 
 For simpler setups, create a custom monitoring script:
 
@@ -2402,7 +2415,7 @@ sudo systemctl enable mongodb-monitor
 sudo systemctl start mongodb-monitor
 ```
 
-**Option 4: Nagios/Zabbix Integration**
+**Option 4:** Nagios/Zabbix Integration
 
 ```bash
 # For Nagios - install MongoDB plugin
@@ -2426,7 +2439,7 @@ define service {
 }
 ```
 
-**Comparison of self-hosted monitoring solutions:**
+Comparison of self-hosted monitoring solutions:
 
 | Solution | Setup Complexity | Features | Cost | Best For |
 |----------|-----------------|----------|------|----------|
@@ -2435,7 +2448,7 @@ define service {
 | Custom Scripts | Low | Basic | Free | Small deployments |
 | Nagios/Zabbix | High | Good | Free | Existing monitoring |
 
-**Recommended approach for self-hosted:**
+Recommended approach for self-hosted:
 1. **Start with:** Custom Python script (quick to set up)
 2. **Scale to:** Prometheus + Grafana (production-ready)
 3. **Enterprise:** Ops Manager (if budget allows)
