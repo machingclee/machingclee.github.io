@@ -21,10 +21,7 @@ intro: "Explanation to some simple joins in SQL dabase"
   }
 </style>
 
-### What Are Database Statistics
 
-
-Before diving into stale statistics, we need to understand the join algorithms that database optimizers choose between. These algorithms are fundamental to how databases combine data from multiple tables.
 
 ### Nested Loop Join
 
