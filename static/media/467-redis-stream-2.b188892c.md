@@ -18,11 +18,17 @@ intro: "Master Redis Streams for production-grade message processing. Learn abou
 </style>
 
 
-### Consumer Groups: Production-Ready Message Processing
+### Consumer Groups
 
-Consumer Groups in Redis Stream is the answer to distributive message processing, similar to Kafka consumer groups. They solve all the coordination problems we had with manual `XREAD`.
+<item>
 
-#### Key Features
+**What is it?** Consumer Groups in Redis Stream is analogous to Kafka consumer groups. They solve the coordination problems we had with manual `XREAD`.
+
+</item>
+
+<item>
+
+**Key Features.**
 
 1. **Independent consumer groups.** Multiple groups can process the same stream independently
 
@@ -32,29 +38,9 @@ Consumer Groups in Redis Stream is the answer to distributive message processing
 5. **Consumer failure handling.** Can claim messages from dead consumers
 6. **Last delivered ID tracking.** Group tracks progress automatically
 
-#### Consumer Group Architecture
 
-```text
-Stream: orders:payments
-├── Message 1: 1709251200000-0
-├── Message 2: 1709251200001-0
-├── Message 3: 1709251200002-0
-└── Message 4: 1709251200003-0
+</item>
 
-Consumer Group: payment-processors
-├── last_delivered_id: 1709251200003-0
-├── Consumer: worker-1
-│   └── PEL: [1709251200000-0, 1709251200002-0]  (pending messages)
-└── Consumer: worker-2
-    └── PEL: [1709251200001-0, 1709251200003-0]
-
-Consumer Group: analytics-team
-├── last_delivered_id: 1709251200001-0
-├── Consumer: analyst-1
-│   └── PEL: [1709251200000-0]
-└── Consumer: analyst-2
-    └── PEL: [1709251200001-0]
-```
 ### Commands for Consumer Group
 #### `XGROUP`
 
@@ -62,7 +48,11 @@ Consumer Group: analytics-team
 
 ##### `XGROUP CREATE` - Create Consumer Group
 
-Syntax:
+
+<item> 
+
+**Syntax.**
+
 ```text
 XGROUP CREATE stream group_name starting_id [MKSTREAM]
 ```
@@ -73,82 +63,144 @@ Parameters:
 - `starting_id` - Where to start reading (`0` = beginning, `$` = only new messages)
 - `MKSTREAM` - Create stream if it doesn't exist (optional)
 
-Examples:
+</item> 
+
+<item>
+
+
+
+**Examples.**
+
+Create consumer group starting from beginning:
 
 ```bash
-# Create consumer group starting from beginning
 XGROUP CREATE orders:payments payment-processors 0
-# Create group starting from current position (only new messages)
+```
+
+Create group starting from current position (only new messages):
+
+```bash
 XGROUP CREATE orders:payments analytics-team $
-# Create group and stream if stream doesn't exist
+```
+
+Create group and stream if stream doesn't exist:
+
+```bash
 XGROUP CREATE orders:refunds refund-processors 0 MKSTREAM
-# Error if group already exists
+```
+
+Error if group already exists:
+
+```bash
 XGROUP CREATE orders:refunds refund-processors 0
 ```
 
-When to use `0` vs `$`:
+
+</item>
+
+<item>
+
+**When to use `0` vs `$`.**
+
+**Using `0`** - Process all existing + new messages:
 
 ```bash
-# 0 - Process all existing + new messages
 XGROUP CREATE backfill-orders backfill-processors 0
-# Use case: Need to process historical data
-
-# $ - Only process new messages (ignore existing)
-XGROUP CREATE orders:payments real-time-processors $
-# Use case: Real-time processing, don't care about backlog
 ```
+
+
+**Using `$`** - Only process new messages (ignore existing):
+
+```bash
+XGROUP CREATE orders:payments real-time-processors $
+```
+
+
+</item>
 
 ##### `XGROUP SETID` - Reset Group Position
 
-Syntax:
+<item>
+
+**Syntax.**
+
 ```text
 XGROUP SETID stream group_name new_id
 ```
 
-Use cases:
+</item>
+
+<item> 
+
+**Use cases.**
+
+
+
+Skip to only new messages:
 
 ```bash
-# Reset to beginning (reprocess all messages)
-XGROUP SETID orders:payments payment-processors 0
-
-# Reset to specific message ID
-XGROUP SETID orders:payments payment-processors 1709251200500-0
-
-# Skip to only new messages
 XGROUP SETID orders:payments payment-processors $
+```
 
-# Recovery scenario: Processing got stuck at bad message
-# Skip past the problematic message
+Reset to beginning (reprocess all messages):
+
+```bash
+XGROUP SETID orders:payments payment-processors 0
+```
+
+Reset to specific message ID:
+
+```bash
+XGROUP SETID orders:payments payment-processors 1709251200500-0
+```
+
+**Recovery scenario.** Processing got stuck at bad message - skip past the problematic message:
+
+```bash
 XGROUP SETID orders:payments payment-processors 1709251200123-0
 ```
 
+</item>
+
 ##### `XGROUP DESTROY` - Delete Consumer Group
 
-```bash
-# Delete consumer group (cannot be undone!)
-XGROUP DESTROY orders:payments analytics-team
-# Returns: 1 (success)
+Delete consumer group (cannot be undone!):
 
-# Deleting non-existent group
-XGROUP DESTROY orders:payments fake-group
-# Returns: 0 (group didn't exist)
+```bash
+XGROUP DESTROY orders:payments analytics-team
 ```
+
+Returns: `1` (success)
+
+Deleting non-existent group:
+
+```bash
+XGROUP DESTROY orders:payments fake-group
+```
+
+Returns: `0` (group didn't exist)
 
 ##### `XGROUP DELCONSUMER` - Remove Consumer
 
-```bash
-# Remove specific consumer from group
-XGROUP DELCONSUMER orders:payments payment-processors worker-1
-# Returns: 2 (number of pending messages that were assigned to worker-1)
+Remove specific consumer from group:
 
-# These pending messages become available for other consumers
+```bash
+XGROUP DELCONSUMER orders:payments payment-processors worker-1
 ```
+
+Returns: `2` (number of pending messages that were assigned to worker-1)
+
+These pending messages become available for other consumers.
+
+
 
 #### `XREADGROUP`
 
 `XREADGROUP` reads messages with automatic distribution and tracking.
 
-Syntax:
+##### Syntax
+
+
 ```text
 XREADGROUP GROUP group_name consumer_name \
     [COUNT count] [BLOCK ms] [NOACK] STREAMS stream_name ID
@@ -167,6 +219,39 @@ Parameters:
   - `0` = check PEL first (returns this consumer's pending messages)
   - Valid message ID (e.g., `1709251200000-0`) = returns messages with ID greater than specified, including any that are in this consumer's PEL
 
+<item>
+
+**Side Effect (When `ID=>` and `COUNT > 0`).** In this case when we execute `XREADGROUP` to a consumer, the consumer has an internal state that records the `last_id` consumed. 
+
+The next time we execute `XREADGROUP` again the messages that are ***older than*** the `last_id` will be ***eliminated***
+
+
+</item>
+
+<item>
+
+**Side Effect (When `ID=>`).** `XREADGROUP` with `ID=>` consumes messages from the stream, redis also immediately adds them to consumer's PEL
+
+</item>
+
+
+
+</item>
+
+<item>
+
+***No* Side Effect (When `ID=0`)** In this case `XREADGROUP` reads from the consumer's PEL, ***not*** from the stream directly. 
+
+The returned messages are already consumed but ***not*** ACKed.
+
+> **Remark.** PEL is a separate **radix tree** data structure tracking unacknowledged messages per consumer.
+
+In this case we also say that we read the ***pending messages*** of a consumer.
+
+
+</item>
+
+
 ##### Understand `PEL` (Pending Entry List) Behavior
 
 When `XREADGROUP` returns messages, they are **immediately added to the consumer's PEL** before any processing begins. This happens at the moment of consumption, not after processing. The PEL tracks unacknowledged messages and enables reliable message delivery:
@@ -176,9 +261,14 @@ When `XREADGROUP` returns messages, they are **immediately added to the consumer
 - Use `NOACK` flag only when you don't need reliability (fire-and-forget scenarios)
 - Only messages that need acknowledgment enter the PEL
 
-##### Example 1: Basic Consumer Group Read
 
-Setup:
+##### Examples
+
+###### Basic Consumer Group Read
+
+<item>
+
+**Setup.**
 
 ```bash
 # Create stream with messages
@@ -190,134 +280,156 @@ XADD orders:payments * orderID 1003 amount 300 userID 789
 XGROUP CREATE orders:payments payment-processors 0
 ```
 
-Consumer 1 reads:
+
+`>` means "give me new messages ***not yet delivered*** to this group":
 
 ```bash
-# > means "give me new messages not yet delivered to this group"
 XREADGROUP GROUP payment-processors worker-1 COUNT 2 \
     STREAMS orders:payments >
-
-# Returns:
-# 1) 1) "orders:payments"
-#    2) 1) 1) "1709251200000-0"
-#          2) 1) "orderID" 2) "1001" 3) "amount" 4) "100" 5) "userID" 6) "123"
-#       2) 1) "1709251200001-0"
-#          2) 1) "orderID" 2) "1002" 3) "amount" 4) "200" 5) "userID" 6) "456"
 ```
 
-**Important: PEL Tracking Happens Immediately**
+</item>
 
-These 2 messages are **immediately added to worker-1's Pending Entry List (PEL)** the moment `XREADGROUP` returns them—before any processing happens. They will remain in the PEL until either:
+<item>
+
+**PEL Tracking.** These 2 messages are ***immediately*** added to `worker-1`'s Pending Entry List (`PEL`) the moment `XREADGROUP` returns them—before any processing happens. 
+
+They will remain in the `PEL` until either:
 - Successfully acknowledged with `XACK` after processing completes
-- Reclaimed by another consumer via `XCLAIM` (if worker-1 crashes or takes too long)
+- Reclaimed by another consumer via `XCLAIM` (if `worker-1` crashes or takes too long)
 
-This immediate PEL tracking is what enables at-least-once delivery semantics: if the consumer crashes before ACKing, the messages remain in the PEL and can be recovered.
+This immediate `PEL` tracking is what enables at-least-once delivery semantics: if the consumer crashes before ACKing, the messages remain in the `PEL` and can be recovered.
 
 Consumer 2 reads (simultaneously):
 
 ```bash
 XREADGROUP GROUP payment-processors worker-2 COUNT 2 \
     STREAMS orders:payments >
-
-# Returns:
-# 1) 1) "orders:payments"
-#    2) 1) 1) "1709251200002-0"
-#          2) 1) "orderID" 2) "1003" 3) "amount" 4) "300" 5) "userID" 6) "789"
-
-# Worker-2 gets DIFFERENT message (automatic distribution!)
-# Messages 1001, 1002 already assigned to worker-1
 ```
+Here
+- `worker-2` gets ***different*** messages (automatic distribution!)
 
-##### Example 2: Blocking Read with Consumer Group
+- Messages 1001, 1002 already assigned to `worker-1`
+
+</item>
+
+###### Blocking Read with Consumer Group
+
+By using `XREADGROUP` we  (i) ***create*** `worker-1` and  (ii) ***listen*** to new messages to the stream at the same time:
 
 ```bash
-# Worker-1: Block waiting for new messages
 XREADGROUP GROUP payment-processors worker-1 BLOCK 30000 \
     STREAMS orders:payments >
+```
 
-# (Waiting...)
+We can test by adding a new message in another terminal:
 
-# Add new message in another terminal
+```bash
 XADD orders:payments * orderID 1004 amount 400 userID 111
-
-# Worker-1 immediately receives:
-# 1) 1) "orders:payments"
-#    2) 1) 1) "1709251200003-0"
-#          2) 1) "orderID" 2) "1004" ...
 ```
 
-##### Example 3: Check Pending Messages with ID 0
+###### With Specific ID Value
+
+<item>
+
+**Resume from Specific Point.** `XREADGROUP` returns messages with ID greater than specified, including:
+
+1. ***Pending*** messages from this consumer's PEL with ID > specified ID
+2. ***New*** messages from stream with ID > specified ID (not yet delivered to group)
 
 ```bash
-# Worker-1 has unacknowledged messages in PEL
-# Use ID = 0 to see pending messages for THIS consumer
-
-XREADGROUP GROUP payment-processors worker-1 STREAMS orders:payments 0
-
-# Returns messages in worker-1's PEL:
-# 1) 1) "orders:payments"
-#    2) 1) 1) "1709251200000-0"
-#          2) ... (orderID 1001)
-#       2) 1) "1709251200001-0"
-#          2) ... (orderID 1002)
-
-# Use case: Recovery after crash - check what was being processed
+XREADGROUP GROUP mygroup consumer1 STREAMS \
+    mystream 1709251200000-0
 ```
 
-##### Special ID Values
 
+</item>
+
+
+<item>
+
+**Example.** If consumer has pending 
 ```bash
-# > = Get new undelivered messages (most common)
-XREADGROUP GROUP mygroup consumer1 STREAMS mystream >
-# Use case: Normal worker loop - get messages not yet delivered to any consumer in group
-
-# 0 = Get MY pending messages (from PEL)
-XREADGROUP GROUP mygroup consumer1 STREAMS mystream 0
-# Use case: Recovery after crash - see what THIS consumer was processing
-
-# Valid message ID = Get messages after that ID (including from PEL if needed)
-XREADGROUP GROUP mygroup consumer1 STREAMS mystream 1709251200000-0
-# Use case: Resume from specific point, will return:
-#   1. Pending messages from this consumer's PEL with ID > specified ID
-#   2. New messages from stream with ID > specified ID
-# Example: If consumer has pending [1709251200005-0, 1709251200010-0]
-#          and you query with ID 1709251200007-0
-#          Returns: 1709251200010-0 (from PEL) + any newer undelivered messages
+[1709251200005-0, 1709251200010-0]
 ```
+and we query with ID `1709251200007-0`, it returns: `1709251200010-0` (from ***PEL***) + any newer ***undelivered*** messages from the stream.
+
+</item>
 
 #### `XACK`
 
-`XACK` removes messages from the Pending Entry List (PEL), signaling successful processing.
 
-`XACK` ***only works with consumer groups***. When using `XREAD` without consumer groups, there is no PEL and no `XACK` command—you must manually track which messages you've processed.
+##### Syntax
 
-Syntax:
 ```text
 XACK stream group_name message_id [message_id ...]
 ```
 
-Note that `group_name` is required—this command only operates within the context of a consumer group.
+Note that `group_name` is required, this command only operates within the context of a consumer group.
 
-Examples:
+##### What is it?
+- `XACK` removes messages from the Pending Entry List (PEL), signaling successful processing.
 
+- `XACK` ***only*** works with consumer groups. When using `XREAD` without consumer groups, there is no `PEL` and no `XACK` command, we must manually track which messages we have processed.
+
+- `XACK` ***does not*** delete messages from the stream for potential reprocessing, auditing, or consumption by other consumer groups.
+
+  More specifically, even we have `ACK`-ed a message via 
+  ```python
+  r.xack('orders:payments',    # the stream
+         'payment-processors', # the consumer group
+          message_id)
+  ```
+
+  1. **Stream Storage**: ACKed messages remain in the stream permanently (unless explicitly trimmed with `XTRIM`)
+
+  2. **PEL**: `XACK` only removes messages from the consumer group's PEL. We can verify the message is removed from PEL by checking:
+      ```bash
+      XREADGROUP GROUP payment-processors \
+          worker-1 STREAMS orders:payments 0
+      ```
+      If the message was ACKed, it will NOT appear in this result (because it's no longer in worker-1's PEL).
+  
+
+
+**Different Read Commands See Different Views:**
+- `XREAD STREAMS orders:payments 0` - Reads ALL messages from stream (includes ACKed messages)
+- `XREADGROUP ... STREAMS orders:payments 0` - Reads only unACKed messages from THIS consumer's PEL
+- `XREADGROUP ... STREAMS orders:payments >` - Reads new messages not yet delivered to consumer group
+
+To actually remove messages from the stream, use `XTRIM`:
 ```bash
-# Worker reads messages
-XREADGROUP GROUP payment-processors worker-1 STREAMS orders:payments >
-# Returns message: 1709251200000-0
-
-# Process the payment
-# ... payment successful ...
-
-# Acknowledge message (remove from PEL)
-XACK orders:payments payment-processors 1709251200000-0
-# Returns: 1 (number of messages acknowledged)
-
-# Can ACK multiple messages at once
-XACK orders:payments payment-processors 1709251200000-0 1709251200001-0 1709251200002-0
-# Returns: 3
+XTRIM orders:payments MINID 1709251200100-0  # Remove older messages
+XTRIM orders:payments MAXLEN 1000             # Keep only last 1000
 ```
 
-Complete workflow:
+
+
+##### Examples 
+###### Complete Workflow (From Read to `ACK`)
+1. Worker reads messages:
+    ```bash
+    XREADGROUP GROUP payment-processors worker-1 STREAMS orders:payments >
+    ```
+    It returns message: `1709251200000-0`
+
+2. Process the payment (... payment successful ...)
+
+3. Acknowledge message (remove from PEL):
+    ```bash
+    XACK orders:payments payment-processors 1709251200000-0
+    ```
+    Returns: `1` (number of messages acknowledged)
+
+4. Can `ACK` multiple messages at once:
+
+    ```bash
+    XACK orders:payments payment-processors 1709251200000-0 1709251200001-0 1709251200002-0
+    ```
+
+    Returns: `3`
+
+###### Python Script Example
 
 ```python
 import redis
@@ -337,6 +449,11 @@ while True:
     
     if result:
         stream, messages = result[0]
+        
+        # Check if there are messages (list could be empty)
+        if not messages:
+            continue
+            
         message_id, data = messages[0]
         
         try:
@@ -352,6 +469,126 @@ while True:
             print(f'Failed: {message_id}, Error: {e}')
             # Will be re-processed when we check PEL
 ```
+
+
+#### `XINFO`
+
+`XINFO` provides detailed information about streams, groups, and consumers.
+
+Three subcommands:
+
+
+##### `XINFO STREAM` - Stream Details
+
+```bash
+XINFO STREAM orders:payments
+```
+
+##### `XINFO GROUPS` - List Consumer Groups
+
+```bash
+XINFO GROUPS orders:payments
+```
+
+<item>
+
+**Example output (Listpack).**
+
+```bash
+1) 1) "name"
+   2) "payment-processors"
+   3) "consumers"
+   4) (integer) 1
+   5) "pending"
+   6) (integer) 0
+   7) "last-delivered-id"
+   8) "1772438927833-0"
+   9) "entries-read"
+  10) (integer) 16
+  11) "lag"
+  12) (integer) 0
+```
+
+</item>
+
+<item>
+
+**Key fields.**
+- `name` - Consumer group name
+- `consumers` - Number of active consumers in this group
+- `pending` - Total unacknowledged messages across all consumers
+- `last-delivered-id` - Last message ID delivered to any consumer (determines what `ID=>` returns)
+- **`entries-read`** - Total messages read by this group since creation
+- `lag` - Number of messages in stream not yet delivered (stream length - entries-read)
+
+</item>
+
+<item>
+
+**Important.** If `last-delivered-id` is ahead of all message IDs in the stream, `XREADGROUP` with `ID=>` will return nothing. 
+
+If it is intended to re-deliver all messages again, run 
+
+```bash
+XGROUP SETID <stream> <group> 0
+``` 
+
+
+Upon reset, any blocking call of `XGROUPREAD` will process those messages.
+
+
+</item>
+
+##### `XINFO CONSUMERS` - List Consumers in Group
+
+```bash
+XINFO CONSUMERS orders:payments payment-processors
+```
+
+##### Python Monitoring Script
+
+
+```python
+import redis
+import json
+
+r = redis.Redis(decode_responses=True)
+
+def monitor_consumer_groups(stream_name):
+    """Monitor health of consumer groups"""
+    print(f'\n=== Stream: {stream_name} ===')
+    
+    # Stream stats
+    stream_info = r.xinfo_stream(stream_name)
+    print(f'Total messages: {stream_info["length"]}')
+    print(f'Consumer groups: {stream_info["groups"]}')
+    print(f'Last message ID: {stream_info["last-generated-id"]}\n')
+    
+    # Each consumer group
+    groups = r.xinfo_groups(stream_name)
+    for group in groups:
+        group_name = group['name']
+        print(f'Group: {group_name}')
+        print(f'  Consumers: {group["consumers"]}')
+        print(f'  Pending: {group["pending"]}')
+        print(f'  Last delivered: {group["last-delivered-id"]}')
+        
+        # Each consumer in group
+        consumers = r.xinfo_consumers(stream_name, group_name)
+        for consumer in consumers:
+            print(f'    Consumer: {consumer["name"]}')
+            print(f'      Pending: {consumer["pending"]}')
+            print(f'      Idle: {consumer["idle"]}ms')
+            
+            # Alert if consumer is too idle
+            if consumer['idle'] > 300000 and consumer['pending'] > 0:
+                print(f'      ALERT: Consumer may be dead!')
+        print()
+```
+
+Output of the script:
+
+![](/assets/img/2026-03-02-11-07-36.png)
 
 #### Error Recovery: Ensuring At-Least-Once Delivery
 
@@ -426,7 +663,7 @@ def consumer_with_retry():
 ```
 
 **Key Points:**
-- Use `ID=0` to read YOUR pending messages
+- Use `ID=0` to read pending messages
 - Check PEL periodically (e.g., every loop iteration or every N seconds)
 - Failed messages remain in PEL for next retry
 - Simple pattern for single consumer recovery
@@ -533,7 +770,7 @@ def recovery_worker(max_idle_time=60000, max_retries=3):
 - Centralized retry logic and DLQ management
 - Prevents message loss from permanent consumer failures
 
-##### Pattern 3: Combined Approach (Recommended)
+##### Pattern 3: Combined Approach
 
 Best practice: Regular consumers retry their own pending + dedicated recovery worker:
 
@@ -613,88 +850,74 @@ Two forms:
 1. Summary form - Overview of pending messages
 2. Detailed form - Individual message details
 
-##### `XPENDING` Summary
+##### Syntax
 
-Syntax:
-```text
-XPENDING stream group_name
-```
-
-Example:
-
-```bash
-# Worker-1 read 3 messages but hasn't ACKed them
-XREADGROUP GROUP payment-processors worker-1 COUNT 3 \
-    STREAMS orders:payments >
-
-# Check pending summary
-XPENDING orders:payments payment-processors
-
-# Returns:
-# 1) 3                      # Total pending count
-# 2) "1709251200000-0"      # Smallest pending ID
-# 3) "1709251200002-0"      # Largest pending ID
-# 4) 1) 1) "worker-1"       # Consumer name
-#       2) "3"              # Messages pending for this consumer
-```
-
-##### `XPENDING` Detailed
-
-Syntax:
 ```text
 XPENDING stream group_name [IDLE min_idle_time] start_id end_id \
     count [consumer_name]
 ```
 
-Examples:
+#####  Examples
+
+
+###### Get pending messages from a consumer group
+
+Get detailed info for first 10 pending messages:
 
 ```bash
-# Get detailed info for first 10 pending messages
 XPENDING orders:payments payment-processors - + 10
-
-# Returns:
-# 1) 1) "1709251200000-0"        # Message ID
-#    2) "worker-1"                # Consumer
-#    3) 15000                     # Milliseconds since delivered
-#    4) 2                         # Delivery count (how many times read)
-# 2) 1) "1709251200001-0"
-#    2) "worker-1"
-#    3) 15000
-#    4) 1
-# 3) 1) "1709251200002-0"
-#    2) "worker-2"
-#    3) 8000
-#    4) 1
-
-# Get pending messages idle for more than 60 seconds (60000 ms)
-XPENDING orders:payments payment-processors IDLE 60000 - + 10
-
-# Returns only messages not processed for > 60s:
-# 1) 1) "1709251200000-0"
-#    2) "worker-1"
-#    3) 65000                     # Idle for 65 seconds!
-#    4) 3                         # Already tried 3 times
-
-# Get pending messages for specific consumer
-XPENDING orders:payments payment-processors - + 10 worker-1
-
-# Returns only worker-1's pending messages
 ```
 
-##### Use Case: Finding Stuck Messages
+Returns for each message:
+1. Message ID
+2. Consumer name
+3. Milliseconds since delivered
+4. Delivery count (how many times read)
+
+
+
+We have used `XGROUP SETID` to trigger the consumption of a stream in a blocking while-loop of `XGROUPREAD`, and deliberately thrown exceptions for a few of them, making them be consumed but not ACKed.
 
 ```bash
-# Find messages stuck for > 5 minutes (300000 ms)
-XPENDING orders:payments payment-processors IDLE 300000 - + 100
-
-# Returns:
-# 1) 1) "1709251200015-0"
-#    2) "worker-3"
-#    3) 450000         # Stuck for 7.5 minutes!
-#    4) 1
-
-# These are candidates for claiming (reassigning to another consumer)
+1) 1) "1772438038075-0"
+   2) "worker-1"
+   3) (integer) 109119
+   4) (integer) 1
+2) 1) "1772438927833-0"
+   2) "worker-1"
+   3) (integer) 109118
+   4) (integer) 1
 ```
+
+
+###### Get pending messages from a consumer group idle for more than 60 seconds (60000 ms)
+
+Returns only messages not processed for > 60s:
+
+```bash
+XPENDING orders:payments payment-processors IDLE 60000 - + 10
+```
+
+
+
+
+###### Get pending messages from specific consumer
+
+```bash
+XPENDING orders:payments payment-processors - + 10 worker-1
+```
+
+Returns only `worker-1`'s pending messages.
+
+##### Major Use Case: Finding Stuck Messages
+
+Find messages stuck for > 5 minutes (300000 ms):
+
+```bash
+XPENDING orders:payments payment-processors IDLE 300000 - + 100
+```
+
+These are candidates for ***claiming*** (***reassigning*** to another consumer).
 
 #### `XCLAIM`
 
@@ -714,28 +937,48 @@ Parameters:
 
 Examples:
 
-##### Example 1: Basic Claim
+##### Example 1: Basic Claim Flow
 
-```bash
-# Worker-1 crashed after reading message
-XREADGROUP GROUP payment-processors worker-1 STREAMS orders:payments >
-# Returns: 1709251200000-0 (now in worker-1's PEL)
+1. `worker-1` crashed after reading message:
 
-# Worker-1 crashes and doesn't recover
+    ```bash
+    XREADGROUP GROUP payment-processors worker-1 STREAMS orders:payments >
+    ```
 
-# Check pending (5 minutes later = 300000 ms)
-XPENDING orders:payments payment-processors IDLE 300000 - + 10
-# Shows: 1709251200000-0 owned by worker-1, idle for 300000ms
+2. Returns: `1709251200000-0` (now in worker-1's PEL)
 
-# Worker-2 claims the stuck message
-XCLAIM orders:payments payment-processors worker-2 60000 1709251200000-0
+3. `worker-1` crashes and doesn't recover.
 
-# Returns the claimed message:
-# 1) 1) "1709251200000-0"
-#    2) 1) "orderID" 2) "1001" 3) "amount" 4) "100" ...
+4. Check pending (5 minutes later = 300000 ms):
 
-# Message now in worker-2's PEL
-```
+    ```bash
+    XPENDING orders:payments payment-processors IDLE 300000 - + 10
+    ```
+
+5. Shows: `1709251200000-0` owned by `worker-1`, idle for 300000ms
+
+6. `worker-2` claims the stuck message:
+
+    ```bash
+    XCLAIM orders:payments payment-processors 
+        worker-2 \
+        60000 \ # min-idle time
+        1709251200000-0
+    ```
+
+7. Returns the claimed message:
+    ```bash
+    1) 1) "1772438038075-0"
+      2) "worker-1"
+      3) (integer) 109119
+      4) (integer) 1
+    2) 1) "1772438927833-0"
+      2) "worker-1"
+      3) (integer) 109118
+      4) (integer) 1
+    ```
+
+8. Message now in `worker-2`'s PEL.
 
 ##### Example 2: Automated Recovery Worker
 
@@ -807,167 +1050,23 @@ def recovery_worker():
 # recovery_worker()
 ```
 
+Here the `delivery_count` is recorded in the `struct` of `PEL` and is very helpful to implementing maximum retry threshold for DLQ.
+
 ##### Example 3: Claim Multiple Messages
 
+Claim multiple stuck messages at once:
+
 ```bash
-# Claim multiple stuck messages at once
 XCLAIM orders:payments payment-processors worker-3 60000 \
   1709251200000-0 1709251200001-0 1709251200002-0
-
-# Returns all 3 claimed messages
-# All moved from original consumers to worker-3's PEL
 ```
 
-#### `XINFO`
-
-`XINFO` provides detailed information about streams, groups, and consumers.
-
-Three subcommands:
-
-1. `XINFO STREAM` - Stream information
-2. `XINFO GROUPS` - List consumer groups
-3. `XINFO CONSUMERS` - List consumers in a group
-
-##### `XINFO STREAM` - Stream Details
-
-```bash
-XINFO STREAM orders:payments
-
-# Returns:
-#  1) "length"
-#  2) 5                         # Number of messages in stream
-#  3) "radix-tree-keys"
-#  4) 1
-#  5) "radix-tree-nodes"
-#  6) 2
-#  7) "last-generated-id"
-#  8) "1709251200004-0"         # Most recent message ID
-#  9) "groups"
-# 10) 2                         # Number of consumer groups
-# 11) "first-entry"
-# 12) 1) "1709251200000-0"      # Oldest message
-#     2) 1) "orderID" 2) "1001" ...
-# 13) "last-entry"
-# 14) 1) "1709251200004-0"      # Newest message
-#     2) 1) "orderID" 2) "1005" ...
-```
-
-##### `XINFO GROUPS` - List Consumer Groups
-
-```bash
-XINFO GROUPS orders:payments
-
-# Returns:
-# 1) 1)  "name"
-#    2)  "payment-processors"
-#    3)  "consumers"
-#    4)  3                      # Number of consumers in group
-#    5)  "pending"
-#    6)  15                     # Total pending messages
-#    7)  "last-delivered-id"
-#    8)  "1709251200004-0"      # Last message delivered to any consumer
-# 2) 1)  "name"
-#    2)  "analytics-team"
-#    3)  "consumers"
-#    4)  2
-#    5)  "pending"
-#    6)  5
-#    7)  "last-delivered-id"
-#    8)  "1709251200003-0"
-```
-
-##### `XINFO CONSUMERS` - List Consumers in Group
-
-```bash
-XINFO CONSUMERS orders:payments payment-processors
-
-# Returns:
-# 1) 1) "name"
-#    2) "worker-1"
-#    3) "pending"
-#    4) 5                       # Messages in worker-1's PEL
-#    5) "idle"
-#    6) 15000                   # Milliseconds since last activity
-# 2) 1) "name"
-#    2) "worker-2"
-#    3) "pending"
-#    4) 8
-#    5) "idle"
-#    6) 2000
-# 3) 1) "name"
-#    2) "worker-3"
-#    3) "pending"
-#    4) 2
-#    5) "idle"
-#    6) 450000                  # Dead consumer? Idle for 7.5 minutes!
-```
-
-##### Practical Monitoring Example
+Returns all 3 claimed messages. All moved from original consumers to worker-3's PEL.
 
 
-```python
-import redis
-import json
+### Concurrent Message Processing
 
-r = redis.Redis(decode_responses=True)
-
-def monitor_consumer_groups(stream_name):
-    """Monitor health of consumer groups"""
-    print(f'\n=== Stream: {stream_name} ===')
-    
-    # Stream stats
-    stream_info = r.xinfo_stream(stream_name)
-    print(f'Total messages: {stream_info["length"]}')
-    print(f'Consumer groups: {stream_info["groups"]}')
-    print(f'Last message ID: {stream_info["last-generated-id"]}\n')
-    
-    # Each consumer group
-    groups = r.xinfo_groups(stream_name)
-    for group in groups:
-        group_name = group['name']
-        print(f'Group: {group_name}')
-        print(f'  Consumers: {group["consumers"]}')
-        print(f'  Pending: {group["pending"]}')
-        print(f'  Last delivered: {group["last-delivered-id"]}')
-        
-        # Each consumer in group
-        consumers = r.xinfo_consumers(stream_name, group_name)
-        for consumer in consumers:
-            print(f'    Consumer: {consumer["name"]}')
-            print(f'      Pending: {consumer["pending"]}')
-            print(f'      Idle: {consumer["idle"]}ms')
-            
-            # Alert if consumer is too idle
-            if consumer['idle'] > 300000 and consumer['pending'] > 0:
-                print(f'      ALERT: Consumer may be dead!')
-        print()
-
-# Usage:
-# monitor_consumer_groups('orders:payments')
-
-# Output:
-# === Stream: orders:payments ===
-# Total messages: 25
-# Consumer groups: 2
-# Last message ID: 1709251200024-0
-#
-# Group: payment-processors
-#   Consumers: 3
-#   Pending: 15
-#   Last delivered: 1709251200024-0
-#     Consumer: worker-1
-#       Pending: 5
-#       Idle: 15000ms
-#     Consumer: worker-2
-#       Pending: 8
-#       Idle: 2000ms
-#     Consumer: worker-3
-#       Pending: 2
-#       Idle: 450000ms
-#       ALERT: Consumer may be dead!
-```
-
-#### Scaling with Asyncio: Concurrent Message Processing
+#### Asyncio
 
 For **I/O-bound workloads** (API calls, database queries, external services), asyncio provides efficient concurrent processing with minimal overhead compared to threads.
 
@@ -1096,7 +1195,7 @@ server1-consumer-0: Payment 1001 completed: $99.99
 server1-consumer-0: ACKed 1709251200000-0
 ```
 
-##### Pattern 2: Asyncio with Error Recovery
+##### Asyncio with Error Recovery
 
 Combine async processing with PEL-based retry:
 
@@ -1189,75 +1288,17 @@ When to use Threading:
 - Using blocking libraries (no async support)
 - Better fault isolation (thread crashes don't affect others)
 
-##### Production Deployment: Multi-Process + Asyncio
 
-Combine processes (horizontal scaling) with asyncio (vertical scaling):
+#### Semaphore
 
-```python
-# consumer_asyncio.py
-import asyncio
-import redis.asyncio as redis
-import os
-import sys
+Similar to [Multithreading with Semaphore](/blog/article/Multithreading-with-Semaphore) in Kotlin, we don't want the unlimited amount of messages to exhaust all the resource of a machine.
 
-async def main():
-    # Each Kubernetes pod runs this script
-    pod_name = os.getenv('POD_NAME', 'unknown')
-    consumers_per_pod = int(os.getenv('CONSUMERS_PER_POD', '10'))
-    
-    # Create consumer group
-    r = await redis.Redis(
-        host=os.getenv('REDIS_HOST', 'localhost'),
-        port=6379,
-        decode_responses=True
-    )
-    try:
-        await r.xgroup_create('orders:payments', 'payment-processors', id='0', mkstream=True)
-    except redis.ResponseError as e:
-        if 'BUSYGROUP' not in str(e):
-            raise
-    await r.close()
-    
-    # Launch coroutines
-    tasks = [
-        consumer_with_retry(f'{pod_name}-consumer-{i}')
-        for i in range(consumers_per_pod)
-    ]
-    
-    print(f'{pod_name}: Starting {consumers_per_pod} async consumers')
-    await asyncio.gather(*tasks)
+We use `Semaphore` to 
 
-if __name__ == '__main__':
-    asyncio.run(main())
-```
+- limit concurrent downstream requests
+- Prevents overwhelming external APIs or databases
+- Balances throughput with resource constraints
 
-Kubernetes Deployment:
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: payment-consumers
-spec:
-  replicas: 5  # 5 pods
-  template:
-    spec:
-      containers:
-      - name: consumer
-        image: payment-consumer:latest
-        env:
-        - name: POD_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.name
-        - name: CONSUMERS_PER_POD
-          value: "10"  # 10 coroutines per pod
-        - name: REDIS_HOST
-          value: "redis-service"
-```
-
-Result: 5 pods × 10 coroutines = **50 concurrent consumers** processing messages in parallel!
-
-##### Performance Considerations
 
 ```python
 # Async consumer with concurrency control
@@ -1294,148 +1335,3 @@ async def consumer_with_concurrency_limit(consumer_name: str, max_concurrent: in
 
 # asyncio.run(consumer_with_concurrency_limit('worker-1', max_concurrent=5))
 ```
-
-**Key Points:**
-- Use `Semaphore` to limit concurrent downstream requests
-- Prevents overwhelming external APIs or databases
-- Balances throughput with resource constraints
-
-#### Complete Example
-
-Full payment processing system with consumer groups:
-
-```python
-import redis
-import time
-import logging
-from typing import Dict, Any
-
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
-class PaymentConsumer:
-    def __init__(
-        self,
-        stream_name: str,
-        group_name: str,
-        consumer_name: str,
-        redis_host: str = 'localhost'
-    ):
-        self.r = redis.Redis(host=redis_host, port=6379, decode_responses=True)
-        self.stream_name = stream_name
-        self.group_name = group_name
-        self.consumer_name = consumer_name
-        
-        # Ensure consumer group exists
-        try:
-            self.r.xgroup_create(stream_name, group_name, id='0', mkstream=True)
-            logger.info(f'Created consumer group: {group_name}')
-        except redis.ResponseError as e:
-            if 'BUSYGROUP' not in str(e):
-                raise
-            logger.info(f'Consumer group already exists: {group_name}')
-    
-    def process_payment(self, data: Dict[str, Any]) -> bool:
-        """Process a payment"""
-        order_id = data.get('orderID')
-        amount = data.get('amount')
-        user_id = data.get('userID')
-        
-        logger.info(f'Processing payment: Order={order_id}, Amount=${amount}, User={user_id}')
-        
-        try:
-            # Simulate payment processing
-            time.sleep(0.5)
-            
-            # Simulate occasional failures
-            import random
-            if random.random() < 0.1:  # 10% failure rate
-                raise Exception('Payment gateway timeout')
-            
-            logger.info(f'Payment successful: Order={order_id}')
-            return True
-            
-        except Exception as e:
-            logger.error(f'Payment failed: Order={order_id}, Error={e}')
-            return False
-    
-    def start(self):
-        """Start consuming messages"""
-        logger.info(f'Consumer {self.consumer_name} started')
-        
-        while True:
-            try:
-                # Read messages (blocking with 5s timeout)
-                result = self.r.xreadgroup(
-                    groupname=self.group_name,
-                    consumername=self.consumer_name,
-                    streams={self.stream_name: '>'},
-                    count=10,
-                    block=5000
-                )
-                
-                if not result:
-                    logger.debug('No new messages')
-                    continue
-                
-                stream_name, messages = result[0]
-                
-                for message_id, data in messages:
-                    success = self.process_payment(data)
-                    
-                    if success:
-                        # ACK message
-                        self.r.xack(self.stream_name, self.group_name, message_id)
-                        logger.info(f'ACKed message: {message_id}')
-                    else:
-                        # Leave in PEL for retry
-                        logger.warning(f'Left in PEL for retry: {message_id}')
-                
-            except KeyboardInterrupt:
-                logger.info('Shutting down...')
-                break
-            except Exception as e:
-                logger.error(f'Error in consumer loop: {e}')
-                time.sleep(5)
-
-# Run multiple consumers
-if __name__ == '__main__':
-    import sys
-    consumer_name = sys.argv[1] if len(sys.argv) > 1 else 'worker-1'
-    
-    consumer = PaymentConsumer(
-        stream_name='orders:payments',
-        group_name='payment-processors',
-        consumer_name=consumer_name
-    )
-    
-    consumer.start()
-```
-
-Running the system:
-
-```bash
-# Terminal 1: Start consumer 1
-python payment_consumer.py worker-1
-
-# Terminal 2: Start consumer 2
-python payment_consumer.py worker-2
-
-# Terminal 3: Start consumer 3
-python payment_consumer.py worker-3
-
-# Terminal 4: Add payments
-redis-cli
-XADD orders:payments * orderID 1001 amount 99.99 userID 123
-XADD orders:payments * orderID 1002 amount 149.50 userID 456
-XADD orders:payments * orderID 1003 amount 49.99 userID 789
-XADD orders:payments * orderID 1004 amount 199.99 userID 111
-
-# Terminal 5: Monitor
-XINFO CONSUMERS orders:payments payment-processors
-XPENDING orders:payments payment-processors
-
-# Check for stuck messages
-XPENDING orders:payments payment-processors IDLE 60000 - + 10
-```
-

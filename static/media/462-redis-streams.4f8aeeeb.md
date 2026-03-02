@@ -23,13 +23,14 @@ Redis Streams is a data structure specifically designed for message queue and ev
 
 #### Key Features
 
-- Unique IDs: Every message has a globally unique, auto-generated ID
-- Structured data: Messages can have multiple field-value pairs
-- Consumer groups: Built-in support for distributed consumption
-- ACK mechanism: Native acknowledgment with pending message tracking
-- Range queries: Query messages by ID or timestamp
-- Persistence: Messages stay in stream until explicitly deleted
-- $O(1)$ access: Fast lookup by message ID
+- **Unique IDs.** Every message has a globally unique, auto-generated ID
+
+- **Structured data.** Messages can have multiple field-value pairs
+- **Consumer groups.** Built-in support for distributed consumption
+- **ACK mechanism.** Native acknowledgment with pending message tracking
+- **Range queries.** Query messages by ID or timestamp
+- **Persistence.** Messages stay in stream until explicitly deleted
+- **$O(1)$ access.** Fast lookup by message ID
 
 #### Basic Stream Operations
 
@@ -312,12 +313,12 @@ Understanding the structure:
 ```
 
 #### On `XREAD`
-##### Various Examples using `XREAD`    
 
 
-<item>
 
-**Reading Messages with XREAD.** `XREAD` is the basic consumer command for reading messages from one or more streams.
+##### Syntax
+
+`XREAD` is the basic consumer command for reading messages from one or more streams.
 
 Basic syntax:
 ```text
@@ -333,79 +334,45 @@ Parameters:
 - `STREAMS`: Keyword followed by stream name(s) and starting ID(s)
 - `ID`: Starting position (`0` = from beginning, `$` = only new messages)
 
-</item>
 
-<item>
+##### Various Examples using `XREAD`    
 
-**Read All Messages from Beginning.**
+
+
+###### Read All Messages from Beginning
+
+Read from the start (ID 0):
 
 ```bash
-# Read from the start (ID 0)
 XREAD STREAMS orders:payments 0
-
-# Returns:
-# 1) 1) "orders:payments"
-#    2) 1) 1) "1709251200000-0"
-#          2) 1) "orderID" 2) "1001" 3) "seafood" 4) "68" 5) "beverages" 6) "30" 7) "amount" 8) "598" 9) "userID" 10) "123"
-#       2) 1) "1709251200001-0"
-#          2) 1) "orderID" 2) "1002" 3) "seafood" 4) "150" 5) "amount" 6) "450" 7) "userID" 8) "456"
-#       3) 1) "1709251200002-0"
-#          2) 1) "orderID" 2) "1003" 3) "beverages" 4) "80" 5) "desserts" 6) "40" 7) "amount" 8) "320" 9) "userID" 10) "789"
 ```
-</item>
 
-<item>
 
-**Read with COUNT Limit.**
+###### Read with COUNT Limit
+
+Read only first 2 messages:
 
 ```bash
-# Read only first 2 messages
 XREAD COUNT 2 STREAMS orders:payments 0
-
-# Returns only first 2 messages:
-# 1) 1) "orders:payments"
-#    2) 1) 1) "1709251200000-0"
-#          2) ... (order 1001)
-#       2) 1) "1709251200001-0"
-#          2) ... (order 1002)
 ```
-</item>
 
-<item>
 
-**Read from Specific Position.**
+###### Read from Specific Position
+Read messages after ID `1709251200000-0`:
 
 ```bash
-# Read messages after ID 1709251200000-0
 XREAD STREAMS orders:payments 1709251200000-0
-
-# Returns messages with ID > 1709251200000-0:
-# 1) 1) "orders:payments"  
-#    2) 1) 1) "1709251200001-0"
-#          2) ... (order 1002)
-#       2) 1) "1709251200002-0"
-#          2) ... (order 1003)
 ```
-</item>
 
-<item>
 
-**Blocking Read for New Messages.**
 
-Using `$` to wait for new messages:
+###### Blocking Read for New Messages
+
 
 ```bash
-# $ means "only messages added AFTER this command"
+XREAD BLOCK 0 STREAMS orders:payments 0
+# or 
 XREAD BLOCK 0 STREAMS orders:payments $
-# Blocks until new message arrives...
-
-# In another terminal, add a new message:
-XADD orders:payments * orderID 1004 amount 999 userID 111
-
-# First terminal immediately receives:
-# 1) 1) "orders:payments"
-#    2) 1) 1) "1709251200003-0"
-#          2) 1) "orderID" 2) "1004" 3) "amount" 4) "999" 5) "userID" 6) "111"
 ```
 
 Difference between `0` and `$`:
@@ -432,26 +399,18 @@ XREAD BLOCK 5000 STREAMS orders:payments $
 # Returns: Only messages added AFTER this command was issued
 ```
 
-</item>
 
-<item>
 
-**Blocking with Timeout.**
+ ###### Blocking with Timeout
 
 ```bash
 # Wait for max 30 seconds (30000 milliseconds)
 XREAD BLOCK 30000 STREAMS orders:payments $
 
-# If new message arrives within 30s: returns immediately
-# If no message after 30s: returns null
-# Returns: (nil)
 ```
 
-</item>
 
-<item>
-
-**Reading from Multiple Streams.**
+###### Read from Multiple Streams
 
 ```bash
 # Create multiple streams
@@ -460,22 +419,13 @@ XADD orders:refunds * refundID 3001 amount 50
 XADD orders:subscriptions * subID 4001 amount 29.99
 
 # Read from all three streams simultaneously
-XREAD STREAMS orders:payments orders:refunds orders:subscriptions 0 0 0
-#              └─stream names (3)─┘                                └─IDs (3)─┘
-
-# Returns:
-# 1) 1) "orders:payments"
-#    2) 1) 1) "1709251200004-0"
-#          2) ... payment data ...
-# 2) 1) "orders:refunds"
-#    2) 1) 1) "1709251200005-0"
-#          2) ... refund data ...
-# 3) 1) "orders:subscriptions"
-#    2) 1) 1) "1709251200006-0"
-#          2) ... subscription data ...
+XREAD STREAMS \
+    # stream names
+    orders:payments orders:refunds orders:subscriptions \
+    # ids
+    0 0 0 
 ```
 
-</item>
 
 ##### `XREAD` Behavior: Messages Persist
 
