@@ -899,7 +899,6 @@ XPENDING orders:payments payment-processors IDLE 60000 - + 10
 ```
 
 
-
 ###### Get pending messages from specific consumer
 
 ```bash

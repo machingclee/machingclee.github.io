@@ -20,7 +20,7 @@ intro: "Study statistic study via HyerLogLog."
 
 ### Introduction
 
-HyperLogLog is a probabilistic data structure used to estimate the **cardinality** (number of distinct elements) of a set with very little memory. It does not store actual elements — instead, it uses a hash function and statistical properties of a **Bernoulli process** to approximate the count.
+HyperLogLog is a probabilistic data structure used to estimate the ***cardinality*** (number of distinct elements) of a set with very little memory. It does not store actual elements — instead, it uses a hash function and statistical properties of a ***Bernoulli process*** to approximate the count.
 
 ### The Bernoulli Process Behind HyperLogLog
 
@@ -34,7 +34,7 @@ $$\qquad\displaystyle P(\text{leading zeros} = k) = \left(\frac{1}{2}\right)^{k+
 
 #### The Core Intuition
 
-When we hash an element, the output is a binary string where each bit behaves like an independent fair coin flip. HyperLogLog counts the **position of the leftmost 1-bit** (i.e., the number of leading zeros + 1) in this hash.
+When we hash an element, the output is a binary string where each bit behaves like an independent fair coin flip. HyperLogLog counts the ***position of the leftmost 1-bit*** (i.e., the number of leading zeros + 1) in this hash.
 
 For example:
 
@@ -58,7 +58,7 @@ where $\hat{n}$ is the estimated number of distinct elements.
 
 Each element has a $\left(\frac{1}{2}\right)^k$ probability of producing $k$ leading zeros. So the expected number of elements we need to hash before seeing $k$ leading zeros for the first time is $2^k$.
 
-Conversely, after hashing $n$ distinct elements, the **maximum** leading zeros $R$ we have observed is expected to satisfy:
+Conversely, after hashing $n$ distinct elements, the ***maximum*** leading zeros $R$ we have observed is expected to satisfy:
 
 $$\qquad 2^R \approx n \quad \Longrightarrow \quad R \approx \log_2 n$$
 
@@ -74,36 +74,32 @@ This is close to the actual count of 1,000,000 — computed using only a few kil
 
 #### From Single Estimate to HyperLogLog
 
-<item>
 
-**Original Approach.** A single $2^R$ estimate has dangerously high variance. Consider this failure case:
+##### Dangerous Single Estimate
+
+A single $2^R$ estimate has dangerously high variance. Consider this failure case:
 
 - We have $n = 1{,}000{,}000$ distinct elements
-- By pure bad luck, the **very first** element we hash produces 30 leading zeros
+- By pure bad luck, the ***very first*** element we hash has already produced 30 leading zeros
 - Our estimate: $\hat{n} \approx 2^{30} = 1{,}073{,}741{,}824$, which is a $1000$ times over-estimate from one unlucky hash
 
-The solution is to not rely on a single global max. Instead, collect many **independent** estimates of $R$ and average them, then the outliers cancel out.
+The solution is to not rely on a single global max. Instead, collect many ***independent*** estimates of $R$ and average them, then the outliers cancel out.
 
+##### Modification 1: Multiple hash functions, but too expensive
 
-</item>
+This is used in older algorithms like Flajolet-Martin, 1985.
 
-<item>
-
-**Approach 1 (Multiple independent hash functions).** This is used in older algorithms like Flajolet-Martin, 1985.
-
-In this approach for each input we run $m$ independent hash functions on each element, producing $m$ independent values of $R_1, R_2, \ldots, R_m$. Average them. 
+For each input we run $m$ independent hash functions on each element, producing $m$ independent values of $R_1, R_2, \ldots, R_m$. Average them. 
 
 The downside: we must compute $m$ hash functions per element, which is expensive.
 
-</item>
+##### Modification 2: Bit splitting, our final choice
 
-<item>
+This is used in HyperLogLog, Flajolet et al. 2007 (see [#ref]).
 
-**Approach 2 (Bit splitting).** This is used in HyperLogLog, Flajolet et al. 2007 (see [#ref]).
-
-In this approach we use a **single** hash function, but split its output into two parts:
-- The **first $b$ bits** → register index (which slot to update)
-- The **remaining bits** → count leading zeros in this part
+We use a ***single*** hash function, but split its output into two parts:
+- The ***first $b$ bits*** → register index (which slot to update)
+- The ***remaining bits*** → count leading zeros in this part
 
 For example, with $b = 2$ we have $m = 2^2 = 4$ registers (one for each 2-bit value: `00`, `01`, `10`, `11`). Say each hash output is 8 bits:
 
@@ -115,7 +111,7 @@ hash(userD) = 00|000111   first 2 bits = "00" = register 0,  remaining "000111" 
 hash(userE) = 11|000001   first 2 bits = "11" = register 3,  remaining "000001" → 5 leading zeros
 ```
 
-Each register keeps only the **max** leading zeros seen so far among elements routed to it:
+Each register keeps only the ***max*** leading zeros seen so far among elements routed to it:
 
 ```text
 Register 0: max = 3       (only userD)
@@ -143,7 +139,7 @@ where $M_j$ is the max leading zeros in register $j$, and $\alpha_m$ is a bias c
 The formula of $\hat n$ is derived as follows:
 
 
-- Each register $j$ sees roughly $n/m$ elements (spread evenly, since we assume the hash function is purely random). Its leading-zero count estimates the **local** count:
+- Each register $j$ sees roughly $n/m$ elements (spread evenly, since we assume the hash function is purely random). Its leading-zero count estimates the ***local*** count:
 
   $$\qquad\displaystyle 2^{M_j} \approx \frac{n}{m}$$
 
@@ -155,14 +151,14 @@ The formula of $\hat n$ is derived as follows:
 
   $$\qquad\hat{n} = \frac{m}{\displaystyle\sum_{j=1}^{m} \frac{1}{m \cdot 2^{M_j}}} = \frac{m}{\dfrac{1}{m}\displaystyle\sum_{j=1}^{m} 2^{-M_j}} = \frac{m^2}{\displaystyle\sum_{j=1}^{m} 2^{-M_j}}$$
 
-So the **first $m$** is from the harmonic mean formula ($m$ values averaged), and the **second $m$** is from scaling each register's local estimate up to a global one. $\alpha_m$ then corrects the remaining systematic bias.
+So the ***first $m$*** is from the harmonic mean formula ($m$ values averaged), and the ***second $m$*** is from scaling each register's local estimate up to a global one. $\alpha_m$ then corrects the remaining systematic bias.
 
 
-</item>
+
 
 #### The Bias Correction Constant $\alpha_m$ {#alpha_m}
 
-The raw harmonic mean estimator is systematically biased **high**. Rare large values of $2^{M_j}$ pull the estimate up more than common small values pull it down — an asymmetry arising from Jensen's inequality applied to the convex function $2^x$.
+The raw harmonic mean estimator is systematically biased ***high***. Rare large values of $2^{M_j}$ pull the estimate up more than common small values pull it down — an asymmetry arising from Jensen's inequality applied to the convex function $2^x$.
 
 Flajolet et al. derived the correction factor analytically by modelling the expected value of the raw estimator and solving:
 
@@ -215,4 +211,4 @@ output: 64-bit integer
 
 ### Reference {#ref}
 
-- [**[PEOF]** Philippe Flajolet, Éric Fusy, Olivier Gandouet, Frédéric Meunier — "HyperLogLog: the analysis of a near-optimal cardinality estimation algorithm", DMTCS Proceedings, 2007](https://algo.inria.fr/flajolet/Publications/FlFuGaMe07.pdf)
+- [**[PEOF]** Philippe Flajolet, Éric Fusy, Olivier Gandouet, Frédéric Meunier, *HyperLogLog: the analysis of a near-optimal cardinality estimation algorithm*, DMTCS Proceedings, 2007](https://algo.inria.fr/flajolet/Publications/FlFuGaMe07.pdf)
