@@ -20,41 +20,48 @@ intro: "We discuss the backup of redis database."
 
 ### Overview
 
-Redis provides two complementary data persistence mechanisms to survive restarts and failures: RDB snapshots and AOF (Append Only File). Understanding how each works — and how they combine — is essential for building a highly available Redis deployment.
+Redis provides two complementary data persistence mechanisms to survive restarts and failures: ***RDB snapshots*** and ***AOF*** (Append Only File). Thus far we have learnt many features in Redis that are helpful in building performant services, but our service would easily break down without data persistence.
+
+Understanding how each works and how they combine is helpful for building a highly available Redis deployment.
 
 ### RDB Snapshot
 
-An RDB file is a compact, point-in-time binary snapshot of the entire dataset. Redis can create RDB files either manually or automatically.
+An RDB file is a compact, point-in-time binary snapshot of the entire dataset. Redis can create RDB files either manually or automatically by two commands:
 
 #### Manual Trigger: `SAVE` and `BGSAVE`
+ 
+<item>
 
-The `SAVE` command performs a synchronous snapshot. While the RDB file is being written, Redis blocks all client requests — no reads or writes are served until the file is complete. This makes `SAVE` unsuitable for production use.
+**`SAVE`** The `SAVE` command performs a synchronous snapshot. While the RDB file is being written, Redis ***blocks*** all client request, no reads or writes are served until the file is complete. This makes `SAVE` unsuitable for production use.
 
-```text
-SAVE
-```
+</item>
 
-The `BGSAVE` command is the production-safe alternative. When invoked, Redis calls the `fork()` system function from glibc to create a child process. The child process takes ownership of the snapshot operation and writes the RDB file to disk, while the parent process continues to serve client requests without interruption.
+<item>
 
-```text
-BGSAVE
-```
 
-The `fork()` call itself is extremely fast — typically measured in milliseconds — so the blocking window for the main thread is negligible. All the time-consuming I/O work happens in the child process.
+**`BGSAVE`** The `BGSAVE` command is the production-safe alternative. When being invoked, Redis calls the `fork()` system function from `glibc` to create a child process. The child process takes ownership of the snapshot operation and writes the RDB file to disk, while the parent process continues to serve client requests ***without interruption***.
+
+</item>
+
+<item>
+
+**`fork()`** The `fork()` call itself is extremely fast,  typically measured in milliseconds, so the blocking window for the main thread is negligible. All the time-consuming I/O work happens in the child process.
+
+</item>
 
 #### Auto Trigger: Four Occasions that Invoke `BGSAVE`
 
 Redis can be configured to trigger `BGSAVE` automatically under the following four conditions:
 
-1. `save m n` in `redis.conf` — if at least `n` keys are modified within `m` seconds, `BGSAVE` is triggered automatically. For example, `save 900 1` means: trigger a snapshot if at least 1 key changes within 900 seconds.
+1. `save m n` in `redis.conf` — when within `m` seconds at least `n` keys get modified, `BGSAVE` is triggered automatically. For example, `save 900 1` means: trigger a snapshot if at least 1 key changes within 900 seconds.
 
-2. Replication — when a replica (slave) requests a full resync from the master, the master executes `BGSAVE` to generate an RDB file and sends it to the replica.
+2. Replication — when a replica (slave) requests a full `resync` from the master, the master executes `BGSAVE` to generate an RDB file and sends it to the replica.
 
-3. `DEBUG RELOAD` — this command instructs Redis to reload its dataset from disk, and it triggers `BGSAVE` beforehand to ensure the on-disk snapshot is current.
+3. `DEBUG RELOAD` — this command instructs Redis to reload its dataset from disk, and it triggers `BGSAVE` ***beforehand*** to ensure the on-disk snapshot is current.
 
-4. `SHUTDOWN` without AOF — when Redis receives a `SHUTDOWN` command and AOF persistence is disabled, Redis automatically calls `BGSAVE` to preserve the current state before shutting down.
+4. `SHUTDOWN` without AOF — when Redis receives a `SHUTDOWN` command and AOF persistence is disabled, Redis automatically calls `BGSAVE` to preserve the current state ***before*** shutting down.
 
-To disable RDB snapshots entirely, set the following in `redis.conf`:
+To ***disable*** RDB snapshots entirely, set the following in `redis.conf`:
 
 ```text
 save ""
@@ -101,7 +108,7 @@ appendfilename "appendonly.aof"
 
 #### `appendfsync` — Controlling Flush Frequency
 
-The `appendfsync` option controls how often Redis flushes the in-memory AOF buffer to disk:
+The `appendfsync` option in `redis.conf` controls how often Redis flushes the in-memory AOF buffer to disk:
 
 <table>
   <colgroup><col style="width:120px"/><col/></colgroup>
@@ -115,44 +122,89 @@ The `appendfsync` option controls how often Redis flushes the in-memory AOF buff
 
 For most deployments, `everysec` offers the best balance between safety and performance.
 
-#### AOF Rewrite: Compacting the Log
+#### AOF Rewrite: Compactifying the Log
 
 Over time, the AOF file grows without bound. Many commands in the log may become redundant — for instance, setting the same key a hundred times only requires the final state to restore correctly.
 
-AOF rewrite compacts the file by scanning the current in-memory dataset and writing the minimal set of commands needed to reproduce it from scratch. This is triggered either manually or automatically.
+AOF-rewrite ***compatifies*** the file by scanning the current in-memory dataset and writing the minimal set of commands needed to reproduce the same result from scratch. This is triggered either manually or automatically.
 
-To trigger manually:
+To trigger it manually:
 
 ```text
 BGREWRITEAOF
 ```
 
-To configure automatic rewriting in `redis.conf`:
+To configure automatic AOF-rewriting in `redis.conf`:
 
 ```text
 auto-aof-rewrite-percentage 100
 auto-aof-rewrite-min-size 64mb
 ```
 
-- `auto-aof-rewrite-percentage 100` means: trigger a rewrite when the AOF file has grown by 100% relative to its size at the last rewrite (i.e., doubled in size).
+- `auto-aof-rewrite-percentage 100` means: trigger a rewrite when the AOF file has ***grown*** by 100% relative to its size at the last rewrite (i.e., doubled in size).
+
 - `auto-aof-rewrite-min-size 64mb` ensures the rewrite only triggers once the AOF file is at least 64 MB, preventing frequent rewrites on small datasets.
 
 The rewrite is handled by a child process spawned via `fork()`. The only moment the main thread is blocked is during the fork itself — which, as noted for `BGSAVE`, is negligible. All subsequent rewrite I/O happens in the child.
 
 #### The Two-Buffer Problem During Rewrite
 
-While the child process rewrites the AOF in the background, the parent continues to accept write commands. These new writes must not be lost, but they also cannot go into the file the child is building (which represents the state at the time of the fork).
+While the child process rewrites the AOF in the background, the parent continues to accept write commands. There are now two AOF files in play:
+
+- The ***old AOF file*** (still on disk, being actively appended to) and
+- The ***new compacted AOF file*** the child is in the process of building. 
+
+These incoming write commands must not be lost, but they cannot go into the new compacted AOF file — because the child started from a frozen snapshot of memory at the moment of `fork()`, and its output file is meant to faithfully represent exactly that snapshot. Mixing in new writes would break that consistency.
 
 To handle this, Redis maintains two buffers simultaneously during a rewrite:
 
-- `aof_buf` — the regular AOF buffer, which continues flushing to the current (old) AOF file as usual.
-- `aof_rewrite_buf` — a secondary buffer that accumulates all new writes that arrive _during_ the rewrite.
+- `aof_buf` — the regular AOF buffer, which continues flushing to the current (old) AOF file as usual. Every incoming write still flows through here normally.
+
+- `aof_rewrite_buf` — a secondary buffer. ***Every incoming write is also mirrored here*** so that no commands are lost after the child's snapshot point.
 
 When the child finishes writing the new compacted AOF file, the parent appends the contents of `aof_rewrite_buf` to it, then atomically replaces the old AOF file. This ensures no writes are lost, but it also means every write during the rewrite period is written to _two_ buffers.
 
+```mermaid
+flowchart TD
+    A([Write Command Arrives]) --> B[Parent Process]
+    B --> C[aof_buf]
+    B --> D[aof_rewrite_buf]
+    C --> E[(Old AOF File\non disk)]
+    D --> F[held in memory\nduring rewrite]
+
+    G([fork]) --> H[Child Process]
+    H --> I[(New Compacted\nAOF File)]
+
+    J{Child finished?} -- Yes --> K[Append aof_rewrite_buf\nto new AOF file]
+    K --> L[Atomically replace\nold AOF with new AOF]
+    L --> M([Done])
+
+    I --> J
+    F --> K
+
+    classDef process fill:#4a90d9,stroke:#2c5f8a,color:#fff
+    classDef buffer fill:#e8a838,stroke:#b07820,color:#fff
+    classDef file fill:#5ba85a,stroke:#3a6e39,color:#fff
+    classDef decision fill:#7c5cbf,stroke:#4e3880,color:#fff
+    classDef action fill:#c0392b,stroke:#922b21,color:#fff
+
+    class A,G,M process
+    class C,D,F buffer
+    class E,I file
+    class J decision
+    class K,L action
+    class B,H process
+```
+
 #### Multi-Part AOF in Redis 7.0
 
-Redis 7.0 introduced Multi-Part AOF to eliminate the dual-write overhead described above. The AOF is split into three logical components:
+The two-buffer approach above introduces a ***dual-write overhead***: every write command that arrives while a rewrite is in progress must be written twice:
+- Once into `aof_buf` (flushed to the old AOF file) and 
+- Once into `aof_rewrite_buf` (held in memory). 
+
+This doubles the write amplification for every incoming command during the rewrite window, increasing both memory usage and CPU cost.
+
+Redis 7.0 introduced Multi-Part AOF to eliminate this overhead. The AOF is split into three logical components:
 
 - **Base AOF.** A single file representing the compacted baseline state, equivalent to the output of a rewrite.
 - **Incr AOF.** Receives all new write commands appended incrementally since the last rewrite.
