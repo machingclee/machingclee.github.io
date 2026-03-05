@@ -80,10 +80,10 @@ This is close to the actual count of 1,000,000 — computed using only a few kil
 A single $2^R$ estimate has dangerously high variance. Consider this failure case:
 
 - We have $n = 1{,}000{,}000$ distinct elements
-- By pure bad luck, the ***very first*** element we hash has already produced 30 leading zeros
+- By pure bad luck, the ***very first*** element we just hashed happens to have 30 leading zeros
 - Our estimate: $\hat{n} \approx 2^{30} = 1{,}073{,}741{,}824$, which is a $1000$ times over-estimate from one unlucky hash
 
-The solution is to not rely on a single global max. Instead, collect many ***independent*** estimates of $R$ and average them, then the outliers cancel out.
+The solution is to not rely on a single global max. Instead, collect many ***independent*** estimates of $R$ and average them, then the outliers (exceptionally large value) cancel out. This special average is called ***harmonic mean***.
 
 ##### Modification 1: Multiple Hash Functions, But ...
 

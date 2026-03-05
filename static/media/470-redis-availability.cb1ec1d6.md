@@ -181,19 +181,6 @@ flowchart TD
 
     I --> J
     F --> K
-
-    classDef process fill:#4a90d9,stroke:#2c5f8a,color:#fff
-    classDef buffer fill:#e8a838,stroke:#b07820,color:#fff
-    classDef file fill:#5ba85a,stroke:#3a6e39,color:#fff
-    classDef decision fill:#7c5cbf,stroke:#4e3880,color:#fff
-    classDef action fill:#c0392b,stroke:#922b21,color:#fff
-
-    class A,G,M process
-    class C,D,F buffer
-    class E,I file
-    class J decision
-    class K,L action
-    class B,H process
 ```
 
 #### Multi-Part AOF in Redis 7.0
