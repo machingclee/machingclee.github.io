@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.5fa4b51e.chunk.css",
-    "main.js": "/static/js/main.30646909.chunk.js",
+    "main.js": "/static/js/main.a2f58815.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.87ab3064.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.538b5a93.chunk.js": "/static/js/2.538b5a93.chunk.js",
@@ -30,14 +30,14 @@
     "static/media/004-countability-discontinuity.md": "/static/media/004-countability-discontinuity.15ffb6e0.md",
     "static/media/004-emotion_vgg.md": "/static/media/004-emotion_vgg.399c1181.md",
     "static/media/004-macbook.md": "/static/media/004-macbook.ecb5ce0e.md",
-    "static/media/005-cangjie-punctuation.md": "/static/media/005-cangjie-punctuation.6ae8c071.md",
+    "static/media/005-cangjie-punctuation.md": "/static/media/005-cangjie-punctuation.f12165d8.md",
     "static/media/005-conda-useful-commands.md": "/static/media/005-conda-useful-commands.5760325f.md",
     "static/media/005-ineq.md": "/static/media/005-ineq.c2126177.md",
     "static/media/005-yolo-custom-training.md": "/static/media/005-yolo-custom-training.7c21d3e1.md",
     "static/media/006-career.md": "/static/media/006-career.309f3691.md",
     "static/media/006-qt-project-starter.md": "/static/media/006-qt-project-starter.b95660d8.md",
     "static/media/007-electron-next.md": "/static/media/007-electron-next.551c9013.md",
-    "static/media/007-logitech-setting.md": "/static/media/007-logitech-setting.e6e48a2a.md",
+    "static/media/007-logitech-setting.md": "/static/media/007-logitech-setting.16a7afb0.md",
     "static/media/007-redux-saga.md": "/static/media/007-redux-saga.cb509a48.md",
     "static/media/008-defectGAN.md": "/static/media/008-defectGAN.160592d3.md",
     "static/media/009-algorithms.md": "/static/media/009-algorithms.2fdb7732.md",
@@ -51,7 +51,7 @@
     "static/media/014-mobileapp.md": "/static/media/014-mobileapp.53f2d394.md",
     "static/media/015-disquz.md": "/static/media/015-disquz.c6fec0eb.md",
     "static/media/015-tiemetable-system.md": "/static/media/015-tiemetable-system.1cc4c5b3.md",
-    "static/media/016-shell-script-manager.md": "/static/media/016-shell-script-manager.e564032b.md",
+    "static/media/016-shell-script-manager.md": "/static/media/016-shell-script-manager.bb948b45.md",
     "static/media/016-spa-seo.md": "/static/media/016-spa-seo.79d662e9.md",
     "static/media/017-chatbot.md": "/static/media/017-chatbot.3d00de3a.md",
     "static/media/017-pytorch-study-notes.md": "/static/media/017-pytorch-study-notes.55820f54.md",
@@ -470,7 +470,7 @@
     "static/media/468-hyperlog.md": "/static/media/468-hyperlog.b49a889f.md",
     "static/media/469-hyperloglog-redis copy.md": "/static/media/469-hyperloglog-redis copy.840b9643.md",
     "static/media/470-redis-availability.md": "/static/media/470-redis-availability.cb1ec1d6.md",
-    "static/media/471-linux-kernel-fundamentals.md": "/static/media/471-linux-kernel-fundamentals.cf3c0a04.md",
+    "static/media/471-linux-kernel-fundamentals.md": "/static/media/471-linux-kernel-fundamentals.6a6158fa.md",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
     "static/media/Midterm_Review_limsupinf.1e2193c7.pdf": "/static/media/Midterm_Review_limsupinf.1e2193c7.pdf",
@@ -535,6 +535,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.538b5a93.chunk.js",
     "static/css/main.5fa4b51e.chunk.css",
-    "static/js/main.30646909.chunk.js"
+    "static/js/main.a2f58815.chunk.js"
   ]
 }

@@ -2,7 +2,7 @@
 title: 各標點符號的倉頡碼
 date: 2025-10-16
 id: personal0005
-tag: cangjie, personal
+tag: cangjie, personal, tech
 toc: none
 intro: Just a record.
 ---

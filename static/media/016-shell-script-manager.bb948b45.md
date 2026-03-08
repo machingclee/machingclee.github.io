@@ -445,9 +445,9 @@ Our [DeleteFolderCommand](https://github.com/machingclee/2025-10-27-shell-script
 
   - [Add ***Event*** into Event Queue (click)](https://github.com/machingclee/2025-10-27-shell-script-manager-tauri/blob/main/backend-spring/src/main/kotlin/com/scriptmanager/boundedcontext/scriptmanager/commandhandler/DeleteFolderHandler.kt#L53C27-L53C33)
 
-- By design each invokation of a command is handled by an event handler in a ***transaction*** shared from the parent scope:
+- By design each invokation of a command is handled by a command handler in a ***transaction*** shared from the parent scope:
 
-  - [Reuse Existing Transaction if Possible (click)](https://github.com/machingclee/2025-10-27-shell-script-manager-tauri/blob/main/backend-spring/src/main/kotlin/com/scriptmanager/common/domainutils/CommandInvoker.kt#L230)
+  - [Reuse Existing Transaction if Possible (click)](https://github.com/machingclee/2025-10-27-shell-script-manager-tauri/blob/main/backend-spring/src/main/kotlin/com/scriptmanager/common/domainutils/CommandInvoker.kt#L354)
 
 - If further side effects need to be triggered, these events will be captured by our `Policy` classes and dispatch further command for the corresponding changes.
 

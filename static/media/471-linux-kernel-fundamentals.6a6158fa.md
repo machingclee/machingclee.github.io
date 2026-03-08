@@ -2,7 +2,7 @@
 title: "Networking in Linux Kernel"
 date: 2026-03-07
 id: blog0471
-tag: linux, C
+tag: linux, C, networking
 toc: true
 intro: "We study networking via diving into the source code."
 ---
@@ -33,20 +33,48 @@ In modern servers the NIC is often a PCIe add-in card or an on-board controller.
 
 When a NIC receives a packet, it raises a ***hard interrupt***. The CPU stops what it is doing, saves registers, consults the interrupt vector table to find the registered handler for that interrupt vector, and jumps to it — the ISR (Interrupt Service Routine).
 
-For the `igb` driver the ISR is `igb_msix_ring`. It must run in the shortest time possible because while the ISR executes, all other interrupts on that CPU core are blocked. Its only jobs are:
+For the `igb` driver the ISR is a handling function (registered for hard interrupt) named `igb_msix_ring`.
+
+```c
+// file: drivers/net/ethernet/intel/igb/igb_main.c
+static irqreturn_t igb_msix_ring(int irq, void *data){
+    struct igb_q-vector *q_vector = data;
+
+    // Write the ITR value calculated from the previsou interrupt.
+    igb_write_itr(q_vector);
+
+    napi_schedule(&q_vector->napi);
+
+    return IRQ_HANDLED;
+}
+
+//file: net/core/dev.c
+static inline void __napi_schedule(struct softnet_data *sd,
+                                    struct napi_struct *napi)
+{
+    list_add_tail(&napi->poll_list, &sd->poll_list);
+    __raise_softirq_irqoff(NET_RX_SOFTIRQ);
+}
+```
+
+
+
+It must run in the shortest time possible because while the ISR executes, all other interrupts on that CPU core are blocked. Its only jobs are:
 
 1. Acknowledge the interrupt to the NIC hardware so it stops asserting the line.
 
 2. Call `napi_schedule` to queue the heavier processing work.
 3. Return immediately, restoring the CPU to what it was doing.
 
-All actual packet work — DMA mapping, `sk_buff` allocation, protocol dispatch — is deferred to a ***soft interrupt*** (softirq). A softirq runs after the hard interrupt handler returns, in a context that still cannot be preempted by user processes but can be preempted by other hard interrupts. This two-phase design lets the kernel acknowledge the hardware quickly and get out of the way, while actual packet processing happens in the softer deferred phase.
+All actual packet work — DMA mapping, `sk_buff` allocation, protocol dispatch — is ***deferred*** to a ***soft interrupt*** (`softirq`). 
+
+A `softirq` runs after the hard interrupt handler returns, in a context that still cannot be preempted by user processes but can be preempted by other hard interrupts. This two-phase design lets the kernel acknowledge the hardware quickly and get out of the way, while actual packet processing happens in the softer deferred phase.
 
 ```mermaid
 flowchart TD
     A([NIC receives packet]) --> B[Hard Interrupt raised]
-    B --> C[ISR runs on CPU]
-    C --> D[Acknowledge HW\nset softirq bit]
+    B --> C["<div>ISR runs on CPU<br/>igb_msix_ring(...)</div>"]
+    C --> D["<div>Acknowledge HW<br/>set softirq bit:<br/> __raise_softirq_irqoff(NET_RX_SOFTIRQ)</div>"]
     D --> E([Return from ISR])
     E --> F[Soft Interrupt phase]
     F --> G[DMA mapping\nskb allocation\nprotocol dispatch]
@@ -64,13 +92,15 @@ An `sk_buff` carries:
 - **Device reference** — a pointer to the `net_device` the packet arrived on.
 - **Checksum and timestamp fields** — used by the checksum offload engine and packet timestamping subsystem.
 
-The reason skb allocation is listed alongside DMA mapping in the softirq phase — rather than the hard interrupt phase — is deliberate. Allocating memory (`kmem_cache_alloc` from the `skbuff_head_cache` slab) and filling in metadata takes non-trivial time. Doing it inside a hard interrupt would block all other interrupts on that CPU core. Deferring it to the softirq phase keeps the ISR minimal and the system responsive.
+The reason `skb` allocation is listed alongside DMA mapping in the softirq phase — rather than the hard interrupt phase — is deliberate. Allocating memory (`kmem_cache_alloc` from the `skbuff_head_cache` slab) and filling in metadata takes non-trivial time. Doing it inside a hard interrupt would block all other interrupts on that CPU core. Deferring it to the softirq phase keeps the ISR minimal and the system responsive.
 
 ### `ksoftirqd` and `ksoftirqd_should_run`
 
-Each CPU core has a dedicated kernel thread called `ksoftirqd/N` (where `N` is the CPU index). It is created at boot time via `smpboot_register_percpu_thread`. Once created, the thread enters a loop managed by the `smpboot` infrastructure: it repeatedly calls `ksoftirqd_should_run` to decide whether there is pending softirq work, then calls `run_ksoftirqd` to process it.
+Each CPU core has a dedicated kernel thread called `ksoftirqd/N` (where `N` is the CPU index). It is created at boot time via `smpboot_register_percpu_thread`. 
 
-`ksoftirqd_should_run` is not an explicit `while` loop in user-visible code — the looping is done by `smpboot`'s thread function. Internally `ksoftirqd_should_run` simply checks whether any softirq is pending:
+Once created, the thread enters a loop managed by the `smpboot` infrastructure: it repeatedly calls `ksoftirqd_should_run` to decide whether there is pending `softirq` work, then calls `run_ksoftirqd` to process it.
+
+`ksoftirqd_should_run` is not an explicit `while` loop in user-visible code — the looping is done by `smpboot`'s thread function. Internally `ksoftirqd_should_run` simply checks whether any `softirq` is pending:
 
 ```c
 static int ksoftirqd_should_run(unsigned int cpu)
@@ -79,7 +109,27 @@ static int ksoftirqd_should_run(unsigned int cpu)
 }
 ```
 
-If `local_softirq_pending()` returns non-zero — meaning at least one softirq bit is set for this CPU — the thread wakes up and calls `run_ksoftirqd`, which in turn calls `__do_softirq`. That function iterates over the pending softirq bits and invokes the registered handler for each one. After draining the queue, the thread goes back to sleep. The result is a recurring, CPU-affine loop that processes soft interrupts without starving user-space.
+If `local_softirq_pending()` returns non-zero — meaning at least one `softirq` bit is set for this CPU — the thread wakes up and calls `run_ksoftirqd`, which in turn calls `__do_softirq`.
+
+`__softirq_pending` is a **per-CPU bitmask** — one bit per softirq type. `local_softirq_pending()` simply reads it:
+
+```c
+#define local_softirq_pending() \
+    (raw_cpu_read_4(__softirq_pending))
+```
+
+This is the **exact same variable** that `__raise_softirq_irqoff` writes to inside the ISR:
+
+```c
+void __raise_softirq_irqoff(unsigned int nr)
+{
+    or_softirq_pending(1UL << nr);   /* sets bit nr in __softirq_pending */
+}
+```
+
+So the full round-trip is: `igb_msix_ring` (ISR) calls `__raise_softirq_irqoff(NET_RX_SOFTIRQ)` → sets bit 3 of `__softirq_pending` for this CPU → `ksoftirqd_should_run` calls `local_softirq_pending()` → reads that same bit → returns non-zero → `ksoftirqd` wakes. 
+
+The ISR sets the bit; `ksoftirqd` wakes because it reads it. That function iterates over the pending `softirq` bits and invokes the registered handler for each one. After draining the queue, the thread goes back to sleep. The result is a recurring, CPU-affine loop that processes soft interrupts without starving user-space.
 
 ```mermaid
 flowchart TD
@@ -142,7 +192,7 @@ struct softnet_data {
 };
 ```
 
-Second, the softirq handlers for networking are registered:
+Second, the `softirq` handlers for networking are registered:
 
 ```c
 open_softirq(NET_TX_SOFTIRQ, net_tx_action);
@@ -163,7 +213,7 @@ NAPI's solution is to switch from interrupt-driven reception to a polling loop o
 
 1. The first packet on a queue triggers a normal hard interrupt.
 
-2. The ISR calls `napi_schedule`, which adds the queue's `napi_struct` to `softnet_data.poll_list` and **disables further interrupts for that queue**.
+2. The ISR calls `napi_schedule` (via `igb_msix_ring`), which adds the queue's `napi_struct` to `softnet_data.poll_list` and **disables further interrupts for that queue**.
 3. `ksoftirqd` (via `net_rx_action`) then calls the driver's registered `poll` callback in a loop, processing up to a `budget` number of packets per invocation without any further interrupts.
 4. Once the ring is empty (or the budget is exhausted), interrupts are re-enabled and polling stops.
 
@@ -182,9 +232,32 @@ struct napi_struct {
 
 The driver registers its `poll` function and a `weight` (typically 64) during `igb_probe`. When traffic arrives, NAPI orchestrates everything through this struct.
 
+#### What `napi_struct` Is {#napi_struct}
+
+`napi_struct` is a **pure software scheduling handle**. It carries no packet payload and touches no DMA memory. The three distinct things involved are:
+
+| Thing | What it is | Where it lives |
+|---|---|---|
+| `e1000_adv_rx_desc[]` | Hardware descriptor ring — physical DMA addresses the NIC writes packet bytes into | DMA-coherent memory, shared with NIC hardware |
+| `igb_rx_buffer[]` | Kernel-side mirror — `struct page*` and virtual addresses matching each descriptor slot | Normal kernel memory (`vmalloc`) |
+| `napi_struct` | Scheduling handle — tells NAPI *"queue N exists, here is its poll function, here is its budget"* | Embedded inside `igb_q_vector`, normal kernel memory |
+
+
+So when `igb_msix_ring` calls `napi_schedule(&q_vector->napi)`, it is not touching any packet data or DMA memory at all. It is simply putting the `napi_struct` onto `softnet_data.poll_list` — saying *"please call my `poll` function soon"*. 
+
+The `poll` function (`igb_poll`) is what later actually touches the `e1000_adv_rx_desc[]` ring to read packet data:
+
+```text
+napi_struct  →  schedules  →  igb_poll()
+                                  ↓
+                          reads e1000_adv_rx_desc[]  ← DMA data written by NIC
+                          looks up igb_rx_buffer[]   ← finds the matching page
+                          builds sk_buff             ← wraps the page for the stack
+```
+
 #### The Role of `poll_list`
 
-`poll_list` is a linked list of `napi_struct` instances. When a NIC's hard interrupt is fired, the driver adds its `napi_struct` to the current CPU's `softnet_data.poll_list` and then disables further NIC interruptions for that queue. Then, during `net_rx_action`, the kernel iterates over `poll_list`, calling each registered `poll` function to drain the hardware ring buffer. 
+`poll_list` is a linked list of `napi_struct` instances. When a NIC's hard interrupt is fired, the **NIC driver** (i.e. `igb` in this article — the kernel module that knows how to talk to this specific piece of hardware) adds its `napi_struct` to the current CPU's `softnet_data.poll_list` and then disables further NIC interruptions for that queue. Then, during `net_rx_action`, the kernel iterates over `poll_list`, calling each registered `poll` function to drain the hardware ring buffer. 
 
 After the ring is empty the NIC's interrupttion is re-enabled. `poll_list` is therefore the central handoff point between the hard-interrupt world and the softirq world. 
 
@@ -410,7 +483,11 @@ This one-to-one mapping of queue → vector → CPU core enables **interrupt aff
 
 Two kinds of handler are registered:
 
-- `igb_msix_ring` — one per Rx/Tx queue vector. When a packet arrives on queue `i`, the NIC raises vector `i`, which triggers `igb_msix_ring` on the affined CPU. This handler calls `napi_schedule`, which adds the queue's `napi_struct` to `softnet_data.poll_list` and raises the `NET_RX_SOFTIRQ` bit. `ksoftirqd` then wakes and calls `net_rx_action`, which drains the ring via the registered poll callback.
+- `igb_msix_ring` — one per Rx/Tx queue vector. When a packet arrives on queue `i`, the NIC raises vector `i`, which triggers `igb_msix_ring` on the affined CPU. 
+
+  This handler calls `napi_schedule`, which adds the queue's `napi_struct` (see [#napi_struct] for more detail) to `softnet_data.poll_list` and raises the `NET_RX_SOFTIRQ` bit. 
+  
+  `ksoftirqd` then wakes and calls `net_rx_action`, which drains the ring via the registered poll callback.
 
 - `igb_msix_other` — handles administrative events: link state changes, hardware errors, and similar non-data-path events.
 

@@ -2,7 +2,7 @@
 title: "Logitech 鍵盤設定 (for mac)"
 date: 2025-12-03
 id: personal0007
-tag: personal
+tag: personal, tech
 intro: 記錄鍵盤設定
 indent: false
 toc: false
