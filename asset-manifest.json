@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.5fa4b51e.chunk.css",
-    "main.js": "/static/js/main.78c2f53d.chunk.js",
+    "main.js": "/static/js/main.30646909.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.87ab3064.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.538b5a93.chunk.js": "/static/js/2.538b5a93.chunk.js",
@@ -34,7 +34,7 @@
     "static/media/005-conda-useful-commands.md": "/static/media/005-conda-useful-commands.5760325f.md",
     "static/media/005-ineq.md": "/static/media/005-ineq.c2126177.md",
     "static/media/005-yolo-custom-training.md": "/static/media/005-yolo-custom-training.7c21d3e1.md",
-    "static/media/006-career.md": "/static/media/006-career.f394d90e.md",
+    "static/media/006-career.md": "/static/media/006-career.309f3691.md",
     "static/media/006-qt-project-starter.md": "/static/media/006-qt-project-starter.b95660d8.md",
     "static/media/007-electron-next.md": "/static/media/007-electron-next.551c9013.md",
     "static/media/007-logitech-setting.md": "/static/media/007-logitech-setting.e6e48a2a.md",
@@ -51,7 +51,7 @@
     "static/media/014-mobileapp.md": "/static/media/014-mobileapp.53f2d394.md",
     "static/media/015-disquz.md": "/static/media/015-disquz.c6fec0eb.md",
     "static/media/015-tiemetable-system.md": "/static/media/015-tiemetable-system.1cc4c5b3.md",
-    "static/media/016-shell-script-manager.md": "/static/media/016-shell-script-manager.d623dc66.md",
+    "static/media/016-shell-script-manager.md": "/static/media/016-shell-script-manager.e564032b.md",
     "static/media/016-spa-seo.md": "/static/media/016-spa-seo.79d662e9.md",
     "static/media/017-chatbot.md": "/static/media/017-chatbot.3d00de3a.md",
     "static/media/017-pytorch-study-notes.md": "/static/media/017-pytorch-study-notes.55820f54.md",
@@ -535,6 +535,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.538b5a93.chunk.js",
     "static/css/main.5fa4b51e.chunk.css",
-    "static/js/main.78c2f53d.chunk.js"
+    "static/js/main.30646909.chunk.js"
   ]
 }

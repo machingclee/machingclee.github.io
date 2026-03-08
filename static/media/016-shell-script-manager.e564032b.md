@@ -1,9 +1,9 @@
 ---
 id: portfolio016
-title: "Desktop App  in _Iced_ → _Egui_ → _Tauri_ → _Spring Boot Integration_"
+title: "Tauri Desktop App with _Spring Boot_ Integration and _Automated Testing_"
 intro: Manage all shell scripts by a single application. This project also aims at learning gui application in rust, from Iced, then egui, and finally in tauri.
 thumbnail: /assets/img/2025-10-31-02-17-10.png
-tech: Rust, Egui, Tauri, Spring Boot
+tech: Rust, Egui, Tauri, Spring Boot, Junit
 thumbTransX: 0
 thumbTransY: 0
 hoverImageHeight: 160
@@ -65,72 +65,111 @@ date: 2025-10-25
 
 
 
-### Demo Video
+###  Project Repository and Demo Video
 
+<item>
 
-In the following we ***Double click*** to ***execute*** the script for launching application:
+**Repository.**
+
+- [2025-10-27-shell-script-manager-tauri](https://github.com/machingclee/2025-10-27-shell-script-manager-tauri)
+
+</item>
+
+<item>
+
+**Demo Video.** In the following video we  ***Double click*** to ***execute*** the script for launching application:
 
 <customvideo src="/assets/videos/demo-video-ssm-tauri.mp4"></customvideo>
 
+
+
+</item>
+
+
+<item>
+
+**Evolved UI.** Recently the UI has evolved to have 
+
+1. Workspaces and 
+2. Script Execution Histories
+3. Markdown Support
+
+![](/assets/img/2026-03-08-06-28-27.png?border=none)
+
+</item>
+
+
+
+
+
 ### Why this Project
 
-#### Reason
+<item>
 
-One of my headaches as a full-stack developer is to debug a bunch of micro-services:
+**Reason.** One of my headaches as a full-stack developer is to debug a bunch of ***different*** micro-services:
 
 <Example>
 
-They have to be launched by using ***different*** IDEs, ***different*** scripts, and versioned by ***different*** SourceTree windows.
+They have to be launched by using ***different*** IDEs, ***different*** scripts, and versioned by ***different*** SourceTree windows, and need to be ***grouped*** logically.
 
 </Example>
 
-I want to start debugging the target piece of service simply by one click, and this "click" should be easily searchable.
+
+I want to start debugging the target piece of service simply by one click, and this "click" should be easily searchable. The micro-services should also be grouped.
+
+</item>
 
 
-#### Attempt In the Past
-##### Difficulties
-Back to the day when I started **my second year** as a software developer, I made my first attempt using Qt in C++ with QML as the UI implementation, the project was named as
+<item>
+
+**Attempt In the Past.**
+
+
+<item>
+
+**Qt in C++.** Back to the day when I started ***my second year*** as a software developer, I made my first attempt using Qt in C++ with QML as the UI implementation, the project was named as
 
 - [Multiple Projects Starter (with video demo)](/portfolio/Multiple-Projects-Starter)
 
-##### Why I Stopped
-
-I stopped the development because very soon I notice that the application state persistence and UI update logic are kind of messy. At that time I was not skillful enough to handle it.
-
-Desktop application is not as easy as it seems to be, it is a mixed breed of frontend and backend software, we need ***solid knowledge on both sides*** to make it robust.
+</item>
 
 
-#### Finally Tauri and the Remaining Tech Stack
+<item>
 
-After 5 years of experience I decided to build it again. The technical choices:
+**Why I Stopped.** Very soon I notice that the persistence of application state and the update of UI logic are becoming messy. At that time I was ***not skillful enough*** to handle it.
+
+Desktop application is not as easy as it seems to be, it is a mixed breed of frontend and backend software, we need solid knowledge ***on both sides*** to make it robust.
+
+</item>
+
+</item>
+
+<item>
+
+**Decision on Tauri and RTK-Query.** After 5 years of experience I decided to build it again. The technical choices:
 - Frontend by React
 - UI-app-state management by Redux
 - UI-server state management by RTK-Query
 - Backend state management (yes, the SQLite database) by Spring Boot using Domain Driven Design
 
-The idea of ***separating UI state*** into *app-state* and *server-state* originates from 
+The idea of separating states into ***ui-state*** and ***server-state*** originates from 
 
-- [You still use Redux?](https://www.youtube.com/watch?v=5-1LM2NySR0) 
+- [*You still use Redux?* by Theo - t3․gg](https://www.youtube.com/watch?v=5-1LM2NySR0) 
 
-by Theo - t3․gg. At that time one popular pattern is to use Zustand (for app state) and React-Query (for server state).
+At that time one popular pattern is to use Zustand (for ui state) and React-Query (for server state).
 
 But nowadays Redux has caught up with this pattern and introduced RTK-Query (as a direct competitor to React-Query), resulting in my choices.
 
 
-### Tauri Version
+</item>
+
+### Tauri Version with Automated Testing
 <Center>
 
 [![](/assets/img/2025-10-31-02-19-13.png)](/assets/img/2025-10-31-02-19-13.png)
 
 </Center>
 
-
-
-
-#### Project Repository
-
-
-- [2025-10-27-shell-script-manager-tauri](https://github.com/machingclee/2025-10-27-shell-script-manager-tauri)
 
 
 
@@ -149,7 +188,7 @@ But nowadays Redux has caught up with this pattern and introduced RTK-Query (as 
 
 ##### Purpose for this Stage
 
-- This project is a continuation of [my previous project](/portfolio/GUI-Desktop-Application-I:-Shell-Script-Manager-in-_Egui_) of the same application which was written in `egui`.
+- This project is a continuation of my previous project (see [#deprecated]) of the same application which was written in `egui`.
 
 - Since I am going to extend this project, with `Tauri` I can free my mental resource for the frontend using `React` and focus more on the entire architecture of this application.
 
@@ -167,7 +206,17 @@ But nowadays Redux has caught up with this pattern and introduced RTK-Query (as 
     - The rust backend focuses more on OS level logic, such as the application title bar, the position of the close-max-min buttons, the application-menu, etc.
 
 
-###### Future Plan: Move the Domain Logic to `Spring Boot`
+##### Dicision to Move all Domain Logics to `Spring Boot`
+
+<item>
+
+**Separated Domains.** When developing desktop application very soon I realize the backend should be divided into ***two different*** domains. 
+
+- One is for OS Operation and 
+- One is for Application Logic.
+
+
+Doing CRUD is not the strength of Rust. We choose suiable languages for suitable purposes.
 
 ```text
 Tauri Frontend (TypeScript/React)
@@ -178,7 +227,7 @@ Tauri Backend (Rust) - Only OS operations:
   - Native notifications
   - System tray
   - Auto-updates
-        ↓ HTTP/gRPC
+        ↓ HTTP
 Spring Boot Backend - All business logic: (maybe jar file)
   - Domain models
   - Aggregates
@@ -189,10 +238,11 @@ Spring Boot Backend - All business logic: (maybe jar file)
 Database (SQLite)
 ```
 
+</item>
 
-###### Reasons for the Changes
+<item>
 
-With Rust I have encountered difficulty in writing SQLs (although with the help of query builder via `Prisma`). I still found the pain that:
+**Comparison of Rust and Spring Boot for CRUD.** With Rust I have encountered difficulty in handling SQLs. With the help of query builder via `Prisma`, I still found the pain point:
 
 1. Rust has no ***mature*** `ORM` in its ecosystem that is ***comparable*** to `JPA` in `Spring` world. I am fed up with ***manually*** adding and deleting records in association table between two or more tables:
     
@@ -200,10 +250,11 @@ With Rust I have encountered difficulty in writing SQLs (although with the help 
 
 2. When an application is not graphics-intensive, performance should not be placed at higher priority than the rigour of backend domain logic.
 
-3. Without ORM, maintaining domain logic is painful and easily reduced to unmaintainable messy side effects.
+3. Without ORM, maintaining domain logic is painful and easily reduced to unmaintainable messy side effects (via lengthy SQLs).
 
 4. Spring has a set of ***annotations*** that suit Domain Driven Design which help build solid domain models, while the ecosystem in Rust does not.
 
+</item>
 
 #### With Spring Boot Replacing the CRUD in Rust
 
@@ -212,7 +263,7 @@ With Rust I have encountered difficulty in writing SQLs (although with the help 
 
 Since spring boot provides all the nice features to maintain the state of an application (system), I have moved all the backend state mangement from Tauri's rust backend to spring boot.
 
-###### Result demonstration
+###### Result via GraalVM
 
 On the launch of our `Tauri` app, it will also execute an ***executable*** that spins up the spring boot backend server at a random port:
 
@@ -299,7 +350,8 @@ More detail can be found in [this article](/blog/article/Offline-Tauri-Applicati
 
 
 
-#### Test Cases via Spring Boot
+#### Event-based Testing in Spring Boot using Junit
+
 
 ##### Testcontainer
 
@@ -309,33 +361,23 @@ The detail of test container can be found in
 
 Basically we have done the following:
 
-1. Create a `.sql` file based on `schema.prisma` file.
+1. Create a `.sql` file based on `schema.prisma` file
+2. Translate the `.sql` for `sqlite` into `pgsql` version
+3. In spring boot we create a configuration class to use this `.sql` file when launching the test container
 
-2. Translate the `.sql` for `sqlite` into `pgsql` version.
-3. In spring boot we create a configuration class to use this `.sql` file when launching the test container.
-4. A `pgsql` database will be launched in a container
-5. We can reuse this container on every subsequence tests
-
-
-
-##### Event-based Testing
-
-- In our backend each side effect will be recorded as an `Event`.
-
-- For example, when a folder gets deleted, a `FolderDeletedEvent` will be dispatched. 
-
-- If further side effects need to be triggered, these events will be captured by our `Policy` classes and dispatch further command for the corresponding changes.
-
-- We verify our backend is in correct state by checking 
-  1. The number of persisted entities are correct and 
-  2. The correct events are dispatched. 
+After that:
+- When we run a test, a clean `pgsql` database will be launched in a container
+- We can reuse this container on every subsequence tests
 
 
 
-###### Specific exmaple
+##### Specific exmaple: `DeleteFolderCommand`
+
+###### Check for Entities {#check-for-entities}
 
 
-```kotlin
+
+```kotlin-1{9}
 @Test
 @Transactional
 open fun `should delete folder, subfolders and all scripts inside`() {
@@ -363,7 +405,12 @@ open fun `should delete folder, subfolders and all scripts inside`() {
         shellScriptRepository.findByIdOrNull(scriptIdInSubfolderId),
         "Script should be deleted"
     )
+```
 
+
+###### Check for Events {#check-for-events}
+
+```kotlin-28
     // Assert - Events emitted
     val events = eventRepository.findAll()
     val folderCreatedEvents = events.filter { it.eventType == "FolderCreatedEvent" }
@@ -380,13 +427,64 @@ open fun `should delete folder, subfolders and all scripts inside`() {
     assertEquals(2, scriptDeletedEvents.size, "Should emit 2 ScriptDeletedEvent")
 }
 ```
-###### More tests
+
+
+
+###### Explanation for the Command and Event Mechanism
+
+Our [DeleteFolderCommand](https://github.com/machingclee/2025-10-27-shell-script-manager-tauri/blob/main/backend-spring/src/main/kotlin/com/scriptmanager/boundedcontext/scriptmanager/command/folder/DeleteFolderCommand.kt) is invoked as follows:
+
+
+- This command is handled by [DeleteFolderHandler (click)](https://github.com/machingclee/2025-10-27-shell-script-manager-tauri/blob/main/backend-spring/src/main/kotlin/com/scriptmanager/boundedcontext/scriptmanager/commandhandler/DeleteFolderHandler.kt)
+
+- Note that this handler is `@Component` annotated, by reflection spring boot can identify which command it is going to handle at runtime, so we can create a mapping by dependencies injection:
+
+    - [`Map<ICommand, ICommandHandler>` (click)](https://github.com/machingclee/2025-10-27-shell-script-manager-tauri/blob/main/backend-spring/src/main/kotlin/com/scriptmanager/common/domainutils/CommandInvoker.kt#L263)
+
+- In our handler each side effect will be recorded as an `Event`.
+
+  - [Add ***Event*** into Event Queue (click)](https://github.com/machingclee/2025-10-27-shell-script-manager-tauri/blob/main/backend-spring/src/main/kotlin/com/scriptmanager/boundedcontext/scriptmanager/commandhandler/DeleteFolderHandler.kt#L53C27-L53C33)
+
+- By design each invokation of a command is handled by an event handler in a ***transaction*** shared from the parent scope:
+
+  - [Reuse Existing Transaction if Possible (click)](https://github.com/machingclee/2025-10-27-shell-script-manager-tauri/blob/main/backend-spring/src/main/kotlin/com/scriptmanager/common/domainutils/CommandInvoker.kt#L230)
+
+- If further side effects need to be triggered, these events will be captured by our `Policy` classes and dispatch further command for the corresponding changes.
+
+  For example, there is a list of rules that need to reset the default profile setting as well: [AIProfileDefaultPolicy](https://github.com/machingclee/2025-10-27-shell-script-manager-tauri/blob/main/backend-spring/src/main/kotlin/com/scriptmanager/boundedcontext/ai/policy/AIProfileDefaultPolicy.kt).
+
+  - These side effects can be handled in the ***same transaction*** by our definition:
+
+
+    - [Handle event in the same transaction (click)](http://github.com/machingclee/2025-10-27-shell-script-manager-tauri/blob/main/backend-spring/src/main/kotlin/com/scriptmanager/common/domainutils/CommandInvoker.kt#L118)
+
+  - Or can be handled like a ***transactional event***:
+
+    - [Handle event when transaction is committed (click)](https://github.com/machingclee/2025-10-27-shell-script-manager-tauri/blob/main/backend-spring/src/main/kotlin/com/scriptmanager/common/domainutils/CommandInvoker.kt#L125)
+
+  - That's why our `EventQueue` implementation has
+
+    - [`add` and `addTransactional` implementation (click)](https://github.com/machingclee/2025-10-27-shell-script-manager-tauri/blob/main/backend-spring/src/main/kotlin/com/scriptmanager/common/domainutils/CommandInvoker.kt#L62)
+
+
+ 
+- We verify our backend is in correct state by checking 
+  - The number of persisted entities are correct and 
+
+  - The correct events are dispatched. 
+
+  These are what we have done in [#check-for-entities] and [#check-for-events].
+
+
+##### More Tests
+Writing tests is fun, we can identify potential problem without integrated testing with the frontend.
+
 More tests can be found in [this file](https://github.com/machingclee/2025-10-27-shell-script-manager-tauri/blob/main/backend-spring/src/test/kotlin/com/scriptmanager/integration/domain/scriptmanager/FolderTest.kt).
 
-### Deplicated 
+### Deplicated {#deprecated}
 
 
-I tried to create this software in Rust. I have made three attempts to try different existing GUI frameworks, and ***evnetually*** I choose Tauri.
+I tried to create this software in Rust. I have made three attempts to try different existing GUI frameworks, and ***eventually*** I choose Tauri.
 
 I leave a record of the remaining two trials here for future reference (in case I need them again):
 
@@ -440,12 +538,6 @@ I moved on to try another framework:
 
 <customvideo src="/assets/videos/demo-video-ssm.mp4"></customvideo>
 
-
-###### Project Repository
-
-
-
-- [2025-10-15-shell-script-manager](https://github.com/machingclee/2025-10-15-shell-script-manager)
 
 
 

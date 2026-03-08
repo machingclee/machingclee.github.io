@@ -3,6 +3,7 @@ title: 下一站，中國銀行
 date: 2025-12-03
 id: personal0006
 tag: personal
+wip: true
 intro: What I have done in these two years
 indent: true
 ---
