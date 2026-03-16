@@ -353,7 +353,7 @@ to
 
 The overall workflow of synchronous blocking I/O follows the sequence illustrated in the diagram below:
 
-![](/assets/img/2026-03-15-23-16-49.png)
+![](/assets/img/2026-03-17-03-13-36.png)
 
 #### `recvfrom()` Execution Path
 
