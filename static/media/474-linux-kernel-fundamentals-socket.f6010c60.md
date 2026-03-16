@@ -32,10 +32,23 @@ int fd = socket(AF_INET, SOCK_STREAM, 0);
 
 We will be explaining the components in this image throughout the article. 
 
-For `inet_stream_ops`, please refer to [#protocol_table].
 
 #### System Call Entry
 
+`SYSCALL_DEFINE3(socket, ...)` is the kernel's definition of the `socket` system call. It executes ***at the moment*** user-space code calls `socket(AF_INET, SOCK_STREAM, 0)`. Here's the exact sequence:
+
+1. User space calls `socket(AF_INET, SOCK_STREAM, 0)` (from glibc / a C program).
+2. glibc issues a `syscall` instruction (on x86-64: `mov $SYS_socket, %rax; syscall`).
+3. CPU switches to kernel mode; the trap handler looks up the system call table entry for `__NR_socket` (syscall number 41 on x86-64).
+4. Kernel dispatches to the function registered for that number — which is exactly what `SYSCALL_DEFINE3(socket, ...)` expands to: `__x64_sys_socket(...)`.
+5. That function body runs — calling `sock_create()` → `__sock_create()` → `inet_create()` etc., as described below.
+
+The macro itself is a registration shorthand that:
+- Generates a properly-named kernel function (`__x64_sys_socket`).
+- Inserts a pointer to it into the kernel's syscall dispatch table at boot time.
+- Handles argument copying from user-space registers into kernel-space variables.
+
+Everything after that (the `sock_create` → `inet_create` chain) happens **within the same synchronous kernel execution context** before control returns to user space with the file descriptor.
 
 ```c
 // net/socket.c
@@ -64,7 +77,7 @@ int sock_create(int family, int type, int protocol, struct socket **res)
 
 <item>
 
-**Remark.** In linux kernel whenever a function is prefixed by `__`, then certain kinds of invariants have been computed/maintained before the exectution of this function.
+**Remark.** In linux kernel whenever a function is prefixed by `__`, then certain kind of invariants have been maintained before the exectution of this function.
 
 </item>
 
@@ -126,7 +139,7 @@ Without `rcu_dereference`, a concurrent `sock_unregister()` could free the struc
 
 #### `inet_create()` — Binding TCP
 ##### Implementation Detail
-```c
+```c-1
 static int inet_create(struct net *net, struct socket *sock,
                        int protocol, int kern)
 {
@@ -150,9 +163,9 @@ static int inet_create(struct net *net, struct socket *sock,
 }
 ```
 
-The key lookup is `&inetsw[sock->type]`.
+The key lookup is `&inetsw[sock->type]` (line 10).
 
-Here `sock->type` is `SOCK_STREAM`, `inetsw` is indexed by socket type, so `inetsw[SOCK_STREAM]` is the list of all registered ***protocols*** that serve stream sockets under `AF_INET`. 
+Here `sock->type` is `SOCK_STREAM`, the offset from the pointer `inetsw`  is exactly the index represeting the  socket type, so `inetsw[SOCK_STREAM]` is the list of all registered ***protocols*** that serve stream sockets under `AF_INET`. 
 
 The loop walks that list until it finds the matching entry (e.g., `IPPROTO_TCP`). From the matched entry (`struct inet_protosw *answer`) two bindings are made:
 
@@ -216,7 +229,7 @@ struct socket
               └── sk_data_ready → sock_def_readable
 ```
 
-### TCP Connection Lifecycle: `tcp_hashinfo.ehash`
+### TCP Connection Lifecycle: The Lookup Table `tcp_hashinfo.ehash`
 
 `__inet_lookup_skb` (called by `tcp_v4_rcv` on every arriving packet) searches `tcp_hashinfo.ehash` — the kernel's global hash table of all **established** TCP connections, keyed by 4-tuple `(src_ip, src_port, dst_ip, dst_port)`. There are two natural questions:
 
@@ -233,21 +246,21 @@ The insertion happens at the **third packet of the handshake**, long before `acc
 
 ```text
 Client  →  SYN
-               Kernel: tcp_v4_rcv()
-                         tcp_rcv_state_process()        [sk->sk_state == TCP_LISTEN]
-                           tcp_conn_request()
-                             inet_reqsk_alloc()          ← lightweight "request socket" (no full sock yet)
-                             inet_csk_reqsk_queue_hash_add()  ← stored in SYN queue (half-open)
-               Kernel: sends SYN-ACK
+    Kernel: tcp_v4_rcv()
+        tcp_rcv_state_process()        [sk->sk_state == TCP_LISTEN]
+        tcp_conn_request()
+            inet_reqsk_alloc()          ← lightweight "request socket" (no full sock yet)
+            inet_csk_reqsk_queue_hash_add()  ← stored in SYN queue (half-open)
+    Kernel: sends SYN-ACK
 
 Client  →  ACK  ← third packet; handshake completes
-               Kernel: tcp_v4_rcv()
-                         tcp_check_req()
-                           tcp_v4_syn_recv_sock()        ← allocates full struct sock for this connection
-                           inet_csk_complete_hashdance()
-                             inet_ehash_insert()         ← *** INSERT INTO tcp_hashinfo.ehash ***
-                             inet_csk_reqsk_queue_removed()   ← remove from SYN half-open queue
-                             inet_csk_reqsk_queue_add()       ← place on accept() backlog
+    Kernel: tcp_v4_rcv()
+        tcp_check_req()
+        tcp_v4_syn_recv_sock()        ← allocates full struct sock for this connection
+        inet_csk_complete_hashdance()
+            inet_ehash_insert()         ← *** INSERT INTO tcp_hashinfo.ehash ***
+            inet_csk_reqsk_queue_removed()   ← remove from SYN half-open queue
+            inet_csk_reqsk_queue_add()       ← place on accept() backlog
 ```
 
 By the time the application calls `accept()`, the `struct sock` is **already in the hash table**. `accept()` just dequeues it from the backlog and returns a file descriptor — it does not modify the hash table at all.
@@ -283,11 +296,11 @@ bool inet_ehash_insert(struct sock *sk, struct sock *osk, bool *found_dup_sk)
 }
 ```
 
-When a packet later arrives and `tcp_v4_rcv` calls `__inet_lookup_skb`, it hashes the packet's 4-tuple identically and walks that same bucket — typically O(1) — to find the match.
+When a packet later arrives and `tcp_v4_rcv` calls `__inet_lookup_skb`, it hashes the packet's 4-tuple identically and walks that same bucket,  typically in $O(1)$, to find the match.
 
 #### Removal — `close()` calls `inet_unhash()`
 
-Yes — when `close(conn_fd)` is called the kernel **does** remove the socket from the hash table, but not immediately at the `close()` call. It happens when the TCP state machine transitions to `TCP_CLOSE`:
+When `close(conn_fd)` is called the kernel  ***removes*** the socket from the hash table, but not immediately at the `close()` call. It happens when the TCP state machine transitions to `TCP_CLOSE`:
 
 ```text
 close(conn_fd)
@@ -301,11 +314,11 @@ close(conn_fd)
                                            ← *** REMOVED from tcp_hashinfo.ehash ***
 ```
 
-After `inet_unhash()` returns, no arriving packet with that 4-tuple can be routed to this socket. Any late-arriving packets hit the `goto no_tcp_socket` path in `tcp_v4_rcv` and are replied to with a RST.
+After `inet_unhash()` returns, no arriving packet with that 4-tuple can be routed to this socket. Any late-arriving packets hit the `goto no_tcp_socket` path in `tcp_v4_rcv` and  trigger an  RST reply, where RST means ***Reset*** (a control flag in the TCP header used to abruptly terminate a connection).
 
 <item>
 
-**TIME_WAIT.** The socket is not removed from the table at the instant `close()` is called — the removal happens after the FIN-ACK exchange completes and any queued data is flushed. Furthermore, after the socket itself is freed, a lightweight `tcp_timewait_sock` takes its place in `tcp_hashinfo.ehash` for **2×MSL seconds** (typically 60 s on Linux). This `TIME_WAIT` entry absorbs any late duplicate packets that arrive after the connection is logically closed, preventing them from being misdelivered to a future connection that reuses the same 4-tuple.
+**TIME_WAIT.** The socket is not removed from the table at the instance `close()` is called, the removal happens after the FIN-ACK exchange completes and any queued data is flushed. Furthermore, after the socket itself is freed, a lightweight `tcp_timewait_sock` takes its place in `tcp_hashinfo.ehash` for **2×MSL seconds** (typically 60 s on Linux). This `TIME_WAIT` entry absorbs any late duplicate packets that arrive after the connection is logically closed, preventing them from being misdelivered to a future connection that reuses the same 4-tuple.
 
 </item>
 
@@ -357,9 +370,15 @@ char buf[1024];
 recvfrom(conn_fd, buf, sizeof(buf), 0, NULL, NULL); // blocks here
 ```
 
-`recvfrom()` is called on the ***connected*** socket (`conn_fd`), not the listening one. The listening socket (`server_fd`) has no TCP connection state — its only job is to accept new clients. It has no `sk_receive_queue` carrying application data.
+<item bar>
 
-When a client connects, the kernel creates a new struct `sock` for that specific connection with its own TCP state machine, its own sequence numbers, and its own `sk_receive_queue`. That is what `accept()` returns as `conn_fd`.
+**Remark.** `recvfrom()` is called on the ***connected*** socket (`conn_fd`), not the listening one. The listening socket (`server_fd`) has no TCP connection state — its only job is to accept new clients. It has no `sk_receive_queue` carrying application data.
+
+</item>
+
+When a client connects, the kernel creates a new `struct sock` for that specific client connection with its own TCP state machine, its own sequence numbers, and its own `sk_receive_queue`. 
+
+`accept()` returns `conn_fd`, which is an integer file descriptor that indirectly reaches this `struct sock` through the chain: `fd` → `struct file` → `struct socket` → `struct sock` → `sk_receive_queue`.
 
 
  Note that both `accept()` and `recvfrom()` are blocking calls, but they block for different reasons:
@@ -377,7 +396,7 @@ Let's look at the underlying implementation that the `recv` function relies on. 
 
 After entering the system call, the user process enters ***kernel mode*** and executes a series of kernel protocol layer functions. 
 
-It then checks the receive queue of the socket object to see if there is any data; if not, it adds itself to the wait queue corresponding to the socket. 
+It then checks the receive queue of the socket object (`sk->sk_receive_queue`) to see if there is any data; if not, it adds itself to the wait queue corresponding to the socket. 
 
 Finally, it yields the CPU, and the operating system will select the next process in the ready state to execute. The entire process is shown in the following figure:
 
@@ -425,7 +444,7 @@ static inline int sock_recvmsg_nosec(struct socket *sock,
 }
 ```
 
-<item>
+<item bar>
 
 **Remark.** `sock_recvmsg` first calls `security_socket_recvmsg()` — an LSM (Linux Security Module) hook that lets SELinux / AppArmor / etc. deny the call before any data is touched. 
 
@@ -462,10 +481,10 @@ int inet_recvmsg(struct socket *sock,
 
 So `sk->sk_prot->recvmsg` resolves to `tcp_recvmsg`:
 
-##### `tcp_recvmsg()` and `skb_queue_walk`: The Core Receive Logic
+##### `tcp_recvmsg()` and `skb_queue_walk`: The Core Receive Logic {#recvmsg}
 
 
-```c{11}
+```c-1{11}
 int tcp_recvmsg(struct sock *sk, struct msghdr *msg,
                 size_t len, int nonblock,
                 int flags, int *addr_len)
@@ -519,7 +538,19 @@ sk->sk_receive_queue → [skb1] → [skb2] → [skb3] → (sentinel)
                    copy chunk  copy chunk  copy chunk  →  user buffer
 ```
 
+<item bar>
 
+**Remark (What is Sentinel?).** `sk_receive_queue` is a circular doubly-linked list where the queue head itself is the sentinel, a dummy node embedded in `struct sock` that carries no data. The walk stops when `skb` laps back and equals the head:
+
+```c
+for (skb = sk->sk_receive_queue.next;
+     skb != (struct sk_buff *)&sk->sk_receive_queue;  // stop when lapped back
+     skb = skb->next)
+```
+
+When the queue is empty, `head->next == head`, so the loop body never executes. This is the standard Linux `list_head` idiom used throughout the kernel.
+
+</item>
 
 ##### What's Happening when Copying Data from the List of `skb`'s
 
@@ -583,6 +614,10 @@ The kernel equally cannot write to a user pointer without first validating it. `
 
 ##### `sk_wait_data`
 
+When there is no data, from line 22 in the first code block of [#recvmsg] we are blocked by `sk_wait_data` to await for new incoming data. 
+
+The definition of  `sk_wait_data` relies on the following macros:
+
 First, under the `DEFINE_WAIT` macro, a wait queue entry wait is defined:
 
 ```c
@@ -590,9 +625,9 @@ First, under the `DEFINE_WAIT` macro, a wait queue entry wait is defined:
 #define DEFINE_WAIT(name) DEFINE_WAIT_FUNC(name, autoremove_wake_function)
 ```
 
-On this newly created wait queue entry:
+In this newly created wait queue entry:
 
-1. The callback function `autoremove_wake_function` is registered, and 
+1. The callback function `autoremove_wake_function` is registered (for what are being removed, see [#wake-up-path]), and 
 2. The current process descriptor `current` is associated with its private member:
 ```c
 #define DEFINE_WAIT_FUNC(name, function)        \
@@ -687,12 +722,19 @@ This does two critical things:
 
 So the actual CPU yield happens at `schedule_timeout()` → `schedule()`. 
 
-The process is moved off the run queue here and remains suspended until `sock_def_readable()` wakes it up. 
+The process is removed from the run queue here. More precisely, `schedule()` sets `task_struct->state` to `TASK_INTERRUPTIBLE` (a ***flag***, not a physical removal) so the scheduler will skip it when selecting the next task to run. It remains suspended until `sock_def_readable()` wakes it up. 
+
+
+<item bar>
+
+**Remark (`schedule()` is Blocking).** When `schedule()` is called, the process is blocked from the caller's perspective, but the CPU is not. `schedule()` performs a context switch: it saves the current process's registers and stack pointer, then loads another task's. Execution of the current process is frozen at that instruction until `try_to_wake_up()` sets its state back to `TASK_RUNNING` and re-enqueues it. The CPU runs other tasks in the meantime. In short: `schedule()` blocks **the calling process**, never the CPU.
+
+</item>
 
 Note also that `release_sock` / `lock_sock` bracket the sleep — the socket lock is dropped while the process sleeps so incoming softIRQ work can enqueue `skb`s, then reacquired before checking the condition again.
 
 
-When`schedule()` is called, the process sleeps and the CPU switches to another task.
+
 
 
 #### Hardware → Kernel → Socket Queue: The SoftIRQ Receive Path
@@ -700,7 +742,13 @@ When`schedule()` is called, the process sleeps and the CPU switches to another t
 ![](/assets/img/2026-03-16-04-47-33.png)
 
 
-While the user process is asleep inside `schedule()`, the NIC fires a hardware interrupt, the kernel's NAPI/softIRQ machinery processes the packet up through the IP layer, and then TCP takes over. The entry point for every incoming IPv4 TCP segment is `tcp_v4_rcv`.
+While the user process is asleep inside `schedule()`:
+
+1. The NIC fires a hardware interrupt
+2. The kernel's NAPI/softIRQ machinery processes the packet up through the IP layer
+3. And then TCP takes over.
+
+The entry point for every incoming IPv4 TCP segment is `tcp_v4_rcv`.
 
 ##### `tcp_v4_rcv` — Entry Point
 
@@ -825,7 +873,7 @@ NIC IRQ → NAPI poll → ip_rcv() → tcp_v4_rcv()
                                wake_up_interruptible() ← sleeping process unblocked
 ```
 
-#### Wake-Up Path
+#### Wake-Up Path {#wake-up-path}
 
 Because `sock_init_data()` set `sk->sk_data_ready = sock_def_readable`, when data is queued:
 
@@ -866,7 +914,7 @@ void __wake_up_sync_key(struct wait_queue_head *wq_head, unsigned int mode,
 }
 ```
 
-`__wake_up_common_lock` acquires the wait queue spinlock and delegates to `__wake_up_common`:
+`__wake_up_common_lock` acquires the wait queue `spinlock` and delegates to `__wake_up_common`:
 
 ```c
 // kernel/sched/wait.c
@@ -1039,8 +1087,8 @@ Control returns to the `do { } while` loop in `tcp_recvmsg`. This time `skb_queu
 The entire mechanism discussed in this article is **identical** for both HTTP and WebSocket connections. Both are plain TCP streams. At the kernel level, there is no "HTTP socket" or "WebSocket socket" — there is only `AF_INET, SOCK_STREAM`, and the four concepts covered in this article: socket creation, the blocking receive path, the SoftIRQ enqueue path, and the wake-up path.
 
 The difference between the two protocols is entirely in **what user space does after `recvfrom()` returns**.
-
-#### HTTP (Short-Lived Connections)
+#### Comparison
+##### HTTP (Short-Lived Connections)
 
 A minimal HTTP/1.0 server illustrates the "one request, one response, close" model:
 
@@ -1074,7 +1122,7 @@ while (1) {
 
 
 
-#### WebSocket (Long-Lived Connections)
+##### WebSocket (Long-Lived Connections)
 
 A WebSocket server keeps the `conn_fd` open and loops:
 
@@ -1117,7 +1165,7 @@ The only structural difference is that `close()` is never called between frames,
 - When the next frame arrives, `__inet_lookup_skb` finds the **same** `struct sock` again.
 - `sock_def_readable` wakes the **same** sleeping process again.
 
-#### Summary Table
+##### Summary Table
 
 | Aspect | HTTP (short-lived) | WebSocket (long-lived) |
 |---|---|---|
@@ -1131,6 +1179,63 @@ The only structural difference is that `close()` is never called between frames,
 | Kernel "awareness" of protocol | None — just TCP bytes | None — just TCP bytes |
 
 The kernel does not know or care whether the bytes flowing through a `SOCK_STREAM` socket represent HTTP/1.1, WebSocket frames, gRPC, or raw binary. Every layer from `tcp_v4_rcv` down to `copy_to_user` is shared. The protocol interpretation is exclusively a user-space concern.
+
+#### Terminate a WebSocket Connection
+
+A WebSocket connection can end in three ways, at decreasing levels of protocol cleanliness.
+
+##### Clean close — WS CLOSE handshake (RFC 6455 §5.5.1)
+
+Either peer sends a CLOSE frame; the receiver echoes it back; then the TCP connection is torn down with a normal FIN exchange:
+
+```text
+Client                                Server
+  │── CLOSE frame (opcode 0x8) ──────▶ │
+  │◀─ CLOSE frame (opcode 0x8) ──────  │
+  │── TCP FIN ──────────────────────▶  │
+  │◀─ TCP FIN ──────────────────────   │
+```
+
+The CLOSE frame follows the standard RFC 6455 two-byte frame header. The first byte is always `0x88` (`FIN=1`, `RSV=000`, `opcode=0x8`). The second byte encodes the mask bit and payload length:
+
+```text
+Minimal (no status code):
+  0x88 0x00   →  FIN=1, opcode=CLOSE, payload length = 0
+
+With a status code (most common):
+  0x88 0x02   →  FIN=1, opcode=CLOSE, payload length = 2
+  0xNN 0xNN   →  status code as big-endian uint16
+```
+
+Common status codes:
+
+| Code | Name | Meaning |
+|---|---|---|
+| 1000 | Normal Closure | Clean shutdown, all transfers complete |
+| 1001 | Going Away | Server shutting down or browser navigating away |
+| 1002 | Protocol Error | Protocol-level violation detected |
+| 1003 | Unsupported Data | Received data type cannot be handled |
+| 1011 | Internal Server Error | Unexpected server-side condition |
+
+After the CLOSE echo, the server calls
+
+`close(conn_fd)` → `tcp_close()` → `inet_unhash()`, 
+
+removing the socket from `tcp_hashinfo.ehash`. The `TCP_CLOSE` path described [above](#rcu) then completes the teardown.
+
+##### TCP FIN — half-close without WS CLOSE
+
+If the remote peer calls `close(fd)` without first sending a WS CLOSE frame, the kernel sends a TCP FIN. The local `recvfrom()` returns `0` (EOF). The WebSocket library treats this as an abnormal close and surfaces it as an error event.
+
+##### TCP RST — abrupt termination
+
+If the peer process crashes, the machine loses power, or a middlebox forcibly drops the connection, a TCP RST is delivered. `recvfrom()` returns `-1` with `errno = ECONNRESET`. No CLOSE frame exchange is possible, and any in-flight data is lost.
+
+| Termination mode | How `recvfrom()` signals it | CLOSE frame exchanged? |
+|---|---|---|
+| WS CLOSE handshake | Returns the CLOSE frame bytes, then `0` on next call | Yes |
+| TCP FIN (no WS CLOSE) | Returns `0` (EOF) | No |
+| TCP RST | Returns `-1`, `errno = ECONNRESET` | No |
 
 #### The Browser Is Just Another C Program
 
