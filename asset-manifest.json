@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.115cfc0b.chunk.css",
-    "main.js": "/static/js/main.3f4b0344.chunk.js",
+    "main.js": "/static/js/main.ac746406.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.4826bbce.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.f5d5eb88.chunk.js": "/static/js/2.f5d5eb88.chunk.js",
@@ -53,7 +53,7 @@
     "static/media/015-tiemetable-system.md": "/static/media/015-tiemetable-system.1cc4c5b3.md",
     "static/media/016-shell-script-manager.md": "/static/media/016-shell-script-manager.e98f570e.md",
     "static/media/016-spa-seo.md": "/static/media/016-spa-seo.79d662e9.md",
-    "static/media/017-chatbot.md": "/static/media/017-chatbot.3d00de3a.md",
+    "static/media/017-chatbot.md": "/static/media/017-chatbot.7046f71e.md",
     "static/media/017-pytorch-study-notes.md": "/static/media/017-pytorch-study-notes.55820f54.md",
     "static/media/018-tensorflow-revisit.md": "/static/media/018-tensorflow-revisit.53fdac51.md",
     "static/media/019-colab.md": "/static/media/019-colab.050bd7bc.md",
@@ -438,7 +438,7 @@
     "static/media/436-openai-model.md": "/static/media/436-openai-model.e5f40067.md",
     "static/media/437-week2.md": "/static/media/437-week2.db4e3dcc.md",
     "static/media/438-expomodules.md": "/static/media/438-expomodules.ebd1dcbd.md",
-    "static/media/439-week4.md": "/static/media/439-week4.4a8a6c69.md",
+    "static/media/439-week4.md": "/static/media/439-week4.c88c51ca.md",
     "static/media/440-mermaid.md": "/static/media/440-mermaid.a68e5b1e.md",
     "static/media/441-RAG-study.md": "/static/media/441-RAG-study.ad250631.md",
     "static/media/442-advanced-rag.md": "/static/media/442-advanced-rag.a9e8b71d.md",
@@ -474,7 +474,7 @@
     "static/media/472-linux-kernel-fundamentals-2.md": "/static/media/472-linux-kernel-fundamentals-2.352f994b.md",
     "static/media/473-study-rate-limiting.md": "/static/media/473-study-rate-limiting.2dd311fb.md",
     "static/media/474-linux-kernel-fundamentals-3-socket.md": "/static/media/474-linux-kernel-fundamentals-3-socket.a6f1c825.md",
-    "static/media/475-linux-kernel-fundamentals-4-websocket.md": "/static/media/475-linux-kernel-fundamentals-4-websocket.2f509eee.md",
+    "static/media/475-linux-kernel-fundamentals-4-websocket.md": "/static/media/475-linux-kernel-fundamentals-4-websocket.de4a4cc7.md",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
     "static/media/Midterm_Review_limsupinf.1e2193c7.pdf": "/static/media/Midterm_Review_limsupinf.1e2193c7.pdf",
@@ -539,6 +539,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.f5d5eb88.chunk.js",
     "static/css/main.115cfc0b.chunk.css",
-    "static/js/main.3f4b0344.chunk.js"
+    "static/js/main.ac746406.chunk.js"
   ]
 }

@@ -71,8 +71,17 @@ date: 2025-12-13
 You can already play with the chatbot which is available at the lower right corner:
 
 
-![](/assets/img/2025-12-22-01-15-14.png)
+![](/assets/img/2026-03-19-05-05-21.png)
 
+
+### Repository for the Answering Agent
+
+The following repository is the backend of our chatbot agent in this blog.
+
+
+- https://github.com/machingclee/2026-03-19-RAG-personal-blogging/blob/main/app.py
+
+I would like to keep the repository of how I make embeddings private, but the underlying idea has been outlined in [#chunking_strategy].
 
 
 ### Tech Stacks
@@ -83,7 +92,8 @@ You can already play with the chatbot which is available at the lower right corn
 ### Technique Involved
 
 
-#### Agentic Chunking
+
+#### Agentic Chunking {#chunking_strategy}
 
 Instead of standard chunking strategy like text overlapping, we let agent to understand the whole document and let it chunk the document into several pieces based on semantic meaning.
 
@@ -190,6 +200,80 @@ Reply only with the list of ranked chunk ids, nothing else. Include all the chun
     return [chunks[i - 1] for i in order]
 ```
 
+### Answering Strategy for Higher Accuracy
+
+#### Stage 1: Find suitable tags
+
+I have provided a constant tag list `TAGS` to the system prompt:
+
+```py
+def find_tag_by_question(self, question: str) -> str:
+    """Find the most relevant tag for a question"""
+    system_prompt = f"""You are a tag finder for a blog about programming and technology.
+        You are given a question from a user:
+        {question}
+        and you must respond with the most relevant tags, up to 5 tags, from the following list of tags: {TAGS}
+
+        Your answer should be in the following format: tag1,tag2,tag3,..., all relevant tags, separated by commas, 
+        with no spaces. If no tags are relevant, respond with "untagged".
+        """
+
+    response = self.client.chat.completions.create(
+        model=self.model,
+        messages=[{"role": "system", "content": system_prompt}],
+        max_tokens=300
+    )
+
+    return response.choices[0].message.content
+```
+
+Now based on the question and the constant `TAGS` I have provided, the agent can select scopes (tags) for the upcoming RAG process.
+
+#### Stage 2: Find the answer from scoped articles 
+
+##### Implementation
+
+Since each of my articles has been carefully tagged, to shrink the scope of vector search for better results I have made the following sql:
+
+```py
+cur.execute(
+    """
+    SELECT * FROM (
+        SELECT DISTINCT ON (metadata->>'title') id, content, metadata,
+                embedding <=> %s::vector AS distance
+        FROM embeddings
+        WHERE string_to_array(metadata->>'tags', ',') && %s::text[]
+        ORDER BY metadata->>'title', distance
+    ) sub
+    ORDER BY distance
+    LIMIT %s
+    """,
+    (query_embedding, tags, self.retrieval_k)
+)
+```
+
+Now instead of calculating distance from everything in the vector store, it now just computes the distances only for those have matching tags. 
+
+
+##### Caveat 
+
+Scoped vector search has enourmously enhanced the accuracy but it sacrifices the diversity of the answers. 
+
+For exmaple, I have an article on `f1`-score in computer vision and this score is actually an harmonic mean. But if I now search for harmonic mean, it will simply find the results related to mathematics as it is hard to relate this "harmonic mean" with computer vision.
+
+##### Solution
+
+There should be knowledge graph on how one word could relate to another word in our domain that we want to make question, in such a way we can enlarge the scope appropriately to include more answers. 
+
+For example, I could make:
+
+```py
+# expand ["harmonic-mean"] → ["harmonic-mean", "f1-score", "ml-metrics"]
+expanded = expand_tags(tags)
+```
+
+and then search using this expanded list of tags instead.
+
 
 ### Deployment 
 
@@ -198,7 +282,6 @@ The backend for the agentic solution is simply a `fast-api` application with end
 The application is bundled into a zip file and deployed onto AWS:
 
 ![](/assets/img/2025-12-22-02-02-37.png)
-
 
 
 

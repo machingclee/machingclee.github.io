@@ -19,7 +19,11 @@ intro: "Compare standard HTTP/1.1 and Websocket Request for both-way communicati
 ### Comparison
 
 
-The entire mechanism discussed in [Networking in Linux Kernel: Part III, How Socket Receive Data from NIC](/blog/article/Networking-in-Linux-Kernel-Part-III-How-Socket-Receive-Data-from-NIC) is **identical** for both HTTP and WebSocket connections. Both are plain TCP streams. At the kernel level, there is no "HTTP socket" or "WebSocket socket" — there is only `AF_INET, SOCK_STREAM`, and the four concepts covered in this article: socket creation, the blocking receive path, the SoftIRQ enqueue path, and the wake-up path.
+The entire mechanism discussed in [Networking in Linux Kernel: Part III, How Socket Receive Data from NIC](/blog/article/Networking-in-Linux-Kernel-Part-III-How-Socket-Receive-Data-from-NIC) is **identical** for both HTTP and WebSocket connections. Both are plain TCP streams. At the kernel level, there is no "HTTP socket" or "WebSocket socket", there are only `AF_INET`, `SOCK_STREAM`, and the four concepts covered in this article: 
+- Socket Creation
+- The Blocking Receive Path
+- The SoftIRQ Enqueue Path
+- The Wake-up Path
 
 The difference between the two protocols is entirely in **what user space does after `recvfrom()` returns**.
 
@@ -84,6 +88,8 @@ while (1) {
 
 The kernel has no awareness of the loop. Every iteration of `recvfrom()` goes through the exact same five-phase flow documented above: 
 
+<item>
+
 `tcp_recvmsg` \
 → `sk_wait_data` \
 → `schedule()` \
@@ -92,6 +98,8 @@ The kernel has no awareness of the loop. Every iteration of `recvfrom()` goes th
 → `try_to_wake_up` \
 → `finish_wait` \
 → `skb_copy_datagram_msg`
+
+</item>
 
 The only structural difference is that `close()` is never called between frames, so:
 
@@ -113,7 +121,7 @@ The only structural difference is that `close()` is never called between frames,
 | TCP connection teardown | Immediately after response | Only on `close()` or FIN/RST |
 | Kernel "awareness" of protocol | None — just TCP bytes | None — just TCP bytes |
 
-The kernel does not know or care whether the bytes flowing through a `SOCK_STREAM` socket represent HTTP/1.1, WebSocket frames, gRPC, or raw binary. Every layer from `tcp_v4_rcv` down to `copy_to_user` is shared. The protocol interpretation is exclusively a user-space concern.
+The kernel does not know or care whether the bytes that flow through a `SOCK_STREAM` socket represent HTTP/1.1, WebSocket frames, gRPC, or raw binary. Every layer from `tcp_v4_rcv` down to `copy_to_user` is shared. The protocol interpretation is exclusively a user-space concern.
 
 ### Terminate a WebSocket Connection
 
