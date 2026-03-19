@@ -58,7 +58,7 @@ Each chunk is one JSON object followed by `\n`. Simple to produce, simple to par
 {"type":"done"}\n
 ```
 
-Alternative: SSE (`text/event-stream`) uses the same chunked mechanism but with a specific format (`data: ...\n\n`) and built-in reconnect logic. NDJSON is simpler when you don't need reconnect.
+Alternatively, ***SSE*** (`text/event-stream`) uses the same chunked mechanism but with a specific format (`data: ...\n\n`) and built-in reconnection logic. Plain NDJSON streaming is simpler when we don't need to reconnect.
 
 ### HTTP/1.1 Streaming from Backend
 
@@ -112,9 +112,9 @@ app.get("/articles/stream", async (req, res) => {
 });
 ```
 
-### Receive HTTP/1.1 Stream from Frontend
+### Receive HTTP/1.1 (NDJSON) Stream from Frontend
 
-#### Client: fetch (Browser / Node.js)
+#### Client: `fetch` (Browser / Node.js)
 
 `fetch` exposes the response body as a `ReadableStream`. Read chunks with `.getReader()`.
 
@@ -153,13 +153,16 @@ try {
 }
 ```
 
-**Why buffer splitting matters:** a single `read()` call may contain multiple JSON lines, or a line may be split across two `read()` calls. Always accumulate into a buffer and split on `\n`.
+<item bar>
+
+**Remark (Why buffer splitting matters).** A single `read()` call may contain multiple JSON lines, or a line may be split across two `read()` calls. Always accumulate into a buffer and split on `\n`.
+
+</item>
 
 
+#### Client: `axios` (Browser only)
 
-#### Client: axios (Browser only)
-
-Axios has limited streaming support. Use `onDownloadProgress` — note it gives the **cumulative** text so far, not just the new chunk.
+`axios` has limited streaming support via `onDownloadProgress`, note that it gives the ***cumulative*** text so far, not just the new chunk.
 
 ```javascript
 await axios.get("/articles/stream", {
@@ -172,15 +175,13 @@ await axios.get("/articles/stream", {
 });
 ```
 
-Prefer native `fetch` for streaming — it gives true chunk-by-chunk control.
-
-
+In comparison, the native `fetch` for streaming gives true chunk-by-chunk control.
 
 ### Lambda Streaming (AWS)
 
-Standard Lambda + API Gateway **always buffers** the full response — chunked encoding is stripped at the gateway.
+Standard Lambda + API Gateway ***always buffers*** to produce a full response, chunked encoding is stripped at the gateway.
 
-To stream from Lambda you must:
+To stream from Lambda we must:
 1. Use ***Lambda Function URL*** (not API Gateway) with `InvokeMode: RESPONSE_STREAM` instead of using API gateway
 2. Python may need to remove Mangum (it's a buffered adapter) or use Mangum v0.17+ streaming mode. 
 3. Make sure to remove all ***authentication type***

@@ -68,10 +68,11 @@ date: 2025-12-13
 
 ### Result
 
-You can already play with the chatbot which is available at the lower right corner:
+You can already chat to my blog explorer available at the lower right corner:
 
+![](/assets/img/2026-03-20-02-12-47.png)
 
-![](/assets/img/2026-03-19-05-05-21.png)
+![](/assets/img/2026-03-19-05-05-21.png?width=500px)
 
 
 ### Repository for the Answering Agent
@@ -289,8 +290,8 @@ any article about insertable = true
 
 By identifying
 
-1. What question have our system ***rephased***;
-2. What ***categories*** of answers our system try to confine;
+1. What is the ***rephased*** question that our system has made;
+2. What ***categories*** (the tags) of answers that our system tries to narrow down;
 
 
 We can observe our agent ***cannot relate*** the question to anything about spring boot.
