@@ -892,6 +892,7 @@ We have used `XGROUP SETID` to trigger the consumption of a stream in a blocking
 
 ###### Get pending messages from a consumer group idle for more than 60 seconds (60000 ms)
 
+
 Returns only messages not processed for > 60s:
 
 ```bash

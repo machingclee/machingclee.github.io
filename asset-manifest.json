@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.115cfc0b.chunk.css",
-    "main.js": "/static/js/main.ed28b0f9.chunk.js",
+    "main.js": "/static/js/main.d95cb1f3.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.2e99881a.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.8ed27000.chunk.js": "/static/js/2.8ed27000.chunk.js",
@@ -53,7 +53,7 @@
     "static/media/015-tiemetable-system.md": "/static/media/015-tiemetable-system.1cc4c5b3.md",
     "static/media/016-shell-script-manager.md": "/static/media/016-shell-script-manager.e98f570e.md",
     "static/media/016-spa-seo.md": "/static/media/016-spa-seo.79d662e9.md",
-    "static/media/017-chatbot.md": "/static/media/017-chatbot.fe962964.md",
+    "static/media/017-chatbot.md": "/static/media/017-chatbot.0bf2ead9.md",
     "static/media/017-pytorch-study-notes.md": "/static/media/017-pytorch-study-notes.55820f54.md",
     "static/media/018-tensorflow-revisit.md": "/static/media/018-tensorflow-revisit.53fdac51.md",
     "static/media/019-colab.md": "/static/media/019-colab.050bd7bc.md",
@@ -466,7 +466,7 @@
     "static/media/464-different-joins.md": "/static/media/464-different-joins.995eb3a2.md",
     "static/media/465-stale-statistic-for-mongodb.md": "/static/media/465-stale-statistic-for-mongodb.e1838eab.md",
     "static/media/466-redis-bitmap.md": "/static/media/466-redis-bitmap.d6a51c0c.md",
-    "static/media/467-redis-stream-2.md": "/static/media/467-redis-stream-2.c0dab2e7.md",
+    "static/media/467-redis-stream-2.md": "/static/media/467-redis-stream-2.795d13b8.md",
     "static/media/468-hyperlog.md": "/static/media/468-hyperlog.b49a889f.md",
     "static/media/469-hyperloglog-redis copy.md": "/static/media/469-hyperloglog-redis copy.840b9643.md",
     "static/media/470-redis-availability.md": "/static/media/470-redis-availability.cb1ec1d6.md",
@@ -540,6 +540,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.8ed27000.chunk.js",
     "static/css/main.115cfc0b.chunk.css",
-    "static/js/main.ed28b0f9.chunk.js"
+    "static/js/main.d95cb1f3.chunk.js"
   ]
 }

@@ -232,11 +232,18 @@ Now based on the question and the constant `TAGS` I have provided, the agent can
 
 #### Stage 2: Find the answer from scoped articles 
 
+##### Reason to Provide Boundary 
+Cosine similarity is not perfect. Since our embedding model is general-purpose, the resulting vector is inevitably capturing broad semantic similarity, resulting in ***semantic noise*** in our query. 
+
+Without correct scope (domain boundary), the result of highest score does not mean the best answer to our question.
+
+We provide scope (`tags: list[str]`) in our SQL query:
+
 ##### Implementation
 
-Since each of my articles has been carefully tagged, to shrink the scope of vector search for better results I have made the following sql:
+Since each of my articles has been carefully tagged, to shrink the scope of vector search for better results I have made the following sql in our PostgreSQL:
 
-```py
+```py-1{7}
 cur.execute(
     """
     SELECT * FROM (
@@ -253,7 +260,29 @@ cur.execute(
 )
 ```
 
-Now instead of calculating distance from everything in the vector store, it now just computes the distances only for those have matching tags. 
+Let's explain line 7:
+
+- `string_to_array(metadata->>'tags', ',')` resolves into a ***text array***;
+
+  <item bar>
+  
+  **Remark.**  `metadata->>'tags'` is `'tag1,tag2,tag3'`.
+
+  </item>
+
+- `%s::text[]` resolves into **`ARRAY['tag1', 'tag2', 'tag3']::text[]`**;
+
+  <item bar>
+  
+  **Remark.** Our query paramter `tags` is of type `list[str]`, `cur.execute`  converts it into `ARRAY[...]` by `psycopg2`
+
+  </item>
+  
+- `SELECT array1 && array2` returns whether there is intersection, for example:
+
+  ![](/assets/img/2026-03-21-06-10-01.png) 
+
+We have thereby obtained chunked articles whose tag is ***within the target scope*** before computing any "distances" (cosine similarities). 
 
 
 ##### Caveat 
@@ -262,7 +291,7 @@ Scoped vector search has enourmously enhanced the accuracy but it sacrifices the
 
 For exmaple, I have an article on f1-score in computer vision and this score is actually an harmonic mean. ***In the past*** if I search harmonic mean, the f1-score gets related.
 
-But if I now search for harmonic mean, it will simply find the results related to mathematics as it is hard to relate this "harmonic mean" with computer vision.
+But if I now search for harmonic mean, it will simply find the results related to mathematics as it is hard to relate this "harmonic mean" to computer vision.
 
 ##### Solution
 
