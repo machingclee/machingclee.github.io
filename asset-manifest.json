@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.8c91d9dc.chunk.css",
-    "main.js": "/static/js/main.1d28fe84.chunk.js",
+    "main.js": "/static/js/main.03428a56.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.d0ce6254.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.4e2f5fcd.chunk.js": "/static/js/2.4e2f5fcd.chunk.js",
@@ -476,8 +476,8 @@
     "static/media/474-linux-kernel-fundamentals-3-socket.md": "/static/media/474-linux-kernel-fundamentals-3-socket.a6f1c825.md",
     "static/media/475-linux-kernel-fundamentals-4-websocket.md": "/static/media/475-linux-kernel-fundamentals-4-websocket.de4a4cc7.md",
     "static/media/476-streaming.md": "/static/media/476-streaming.ded941b2.md",
-    "static/media/477-kafka-experiment.md": "/static/media/477-kafka-experiment.d751c50c.md",
-    "static/media/478-kafka-experiment-2.md": "/static/media/478-kafka-experiment-2.eefddc45.md",
+    "static/media/477-kafka-experiment.md": "/static/media/477-kafka-experiment.24af0316.md",
+    "static/media/478-kafka-experiment-2.md": "/static/media/478-kafka-experiment-2.02ecb4c8.md",
     "static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf": "/static/media/Combine_Notes_Linear_Algebra.6aed7a5f.pdf",
     "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
     "static/media/Midterm_Review_limsupinf.1e2193c7.pdf": "/static/media/Midterm_Review_limsupinf.1e2193c7.pdf",
@@ -542,6 +542,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.4e2f5fcd.chunk.js",
     "static/css/main.8c91d9dc.chunk.css",
-    "static/js/main.1d28fe84.chunk.js"
+    "static/js/main.03428a56.chunk.js"
   ]
 }

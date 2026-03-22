@@ -20,7 +20,7 @@ intro: "Experiment with Kafka API"
 </style>
 
 
-![](/assets/img/2026-03-22-18-53-29.png)
+![](/assets/img/2026-03-22-18-53-29.png?border=none)
 
 
 ### Cluster
@@ -356,7 +356,7 @@ These settings have **no effect** on:
 
 
 
-##### Message Key (Producer)
+##### Message Key (Producer Only)
 
 The **message key** is an optional value sent alongside the message payload when producing. Kafka uses it to route the message to a specific partition via consistent hashing:
 
@@ -391,7 +391,7 @@ Common key choices: a user ID, order ID, or any value where ordering matters.
 
 ### Consumer
 
-##### Consumer Group ID (Consumer)
+#### Consumer Group ID (Consumer Only)
 
 The **consumer group ID** identifies a logical group of consumer instances. Kafka uses it to coordinate which consumer owns which partition:
 
@@ -413,7 +413,23 @@ public class CourseConsumer {
 }
 ```
 
-##### Key vs Group ID — side-by-side
+Instead of hardcoding the group ID, it can be externalised to `application.yml` and referenced via a property placeholder:
+
+```yaml
+spring:
+  kafka:
+    consumer:
+      group-id: "course-group"
+```
+
+```java
+@KafkaListener(topics = "my-topic"")
+public void listen(Course course) { ... }
+```
+
+Spring uses `spring.kafka.consumer.group-id` as the default when no explicit `groupId` is set on `@KafkaListener`.
+
+#### Key vs Group ID — side-by-side
 
 | | Message Key | Consumer Group ID |
 |---|---|---|
