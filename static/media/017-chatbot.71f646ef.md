@@ -106,7 +106,7 @@ You can ask any technical question, my chatbot will try to find the most relevan
 
 And the relevant articles follow:
 
-![](/assets/img/2026-03-22-18-15-00.png)
+![](/assets/img/2026-03-22-18-15-00.png?width=500px)
 
 
 

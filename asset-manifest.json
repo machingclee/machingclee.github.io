@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.8c91d9dc.chunk.css",
-    "main.js": "/static/js/main.03428a56.chunk.js",
+    "main.js": "/static/js/main.992eb359.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.d0ce6254.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.4e2f5fcd.chunk.js": "/static/js/2.4e2f5fcd.chunk.js",
@@ -53,7 +53,7 @@
     "static/media/015-tiemetable-system.md": "/static/media/015-tiemetable-system.1cc4c5b3.md",
     "static/media/016-shell-script-manager.md": "/static/media/016-shell-script-manager.e98f570e.md",
     "static/media/016-spa-seo.md": "/static/media/016-spa-seo.79d662e9.md",
-    "static/media/017-chatbot.md": "/static/media/017-chatbot.c667b43f.md",
+    "static/media/017-chatbot.md": "/static/media/017-chatbot.71f646ef.md",
     "static/media/017-pytorch-study-notes.md": "/static/media/017-pytorch-study-notes.55820f54.md",
     "static/media/018-tensorflow-revisit.md": "/static/media/018-tensorflow-revisit.53fdac51.md",
     "static/media/019-colab.md": "/static/media/019-colab.050bd7bc.md",
@@ -520,7 +520,6 @@
     "static/media/WorkshopinAnalysis.402ecd08.pdf": "/static/media/WorkshopinAnalysis.402ecd08.pdf",
     "static/media/agent-classification.17931009.pdf": "/static/media/agent-classification.17931009.pdf",
     "static/media/bank_of_china.e794fee9.png": "/static/media/bank_of_china.e794fee9.png",
-    "static/media/cartoonme_2.a3c9e359.png": "/static/media/cartoonme_2.a3c9e359.png",
     "static/media/convex-analysis.md": "/static/media/convex-analysis.799783df.md",
     "static/media/eab_system.d7940c65.png": "/static/media/eab_system.d7940c65.png",
     "static/media/elearning_pro.c704508e.png": "/static/media/elearning_pro.c704508e.png",
@@ -528,6 +527,7 @@
     "static/media/eye_catching.abf79f7b.png": "/static/media/eye_catching.abf79f7b.png",
     "static/media/hkbu.4e7067a5.png": "/static/media/hkbu.4e7067a5.png",
     "static/media/hkust.bc01a41e.png": "/static/media/hkust.bc01a41e.png",
+    "static/media/me_real.12b0e0f9.png": "/static/media/me_real.12b0e0f9.png",
     "static/media/modulus-of-continuity.md": "/static/media/modulus-of-continuity.a26d4e79.md",
     "static/media/my_picture_2.1f6f32a9.jpg": "/static/media/my_picture_2.1f6f32a9.jpg",
     "static/media/raspect_limited.a813ea97.png": "/static/media/raspect_limited.a813ea97.png",
@@ -542,6 +542,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.4e2f5fcd.chunk.js",
     "static/css/main.8c91d9dc.chunk.css",
-    "static/js/main.03428a56.chunk.js"
+    "static/js/main.992eb359.chunk.js"
   ]
 }
