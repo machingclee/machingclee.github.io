@@ -915,7 +915,6 @@ Find messages stuck for > 5 minutes (300000 ms):
 XPENDING orders:payments payment-processors IDLE 300000 - + 100
 ```
 
-
 These are candidates for ***claiming*** (***reassigning*** to another consumer).
 
 #### `XCLAIM`

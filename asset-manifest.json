@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.79028d0d.chunk.css",
-    "main.js": "/static/js/main.f9be780e.chunk.js",
+    "main.js": "/static/js/main.3972e2af.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.1dfbf12a.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.5e91e2d9.chunk.js": "/static/js/2.5e91e2d9.chunk.js",
@@ -466,7 +466,7 @@
     "static/media/464-different-joins.md": "/static/media/464-different-joins.995eb3a2.md",
     "static/media/465-stale-statistic-for-mongodb.md": "/static/media/465-stale-statistic-for-mongodb.e1838eab.md",
     "static/media/466-redis-bitmap.md": "/static/media/466-redis-bitmap.d6a51c0c.md",
-    "static/media/467-redis-stream-2.md": "/static/media/467-redis-stream-2.cf22002a.md",
+    "static/media/467-redis-stream-2.md": "/static/media/467-redis-stream-2.795d13b8.md",
     "static/media/468-hyperlog.md": "/static/media/468-hyperlog.b49a889f.md",
     "static/media/469-hyperloglog-redis copy.md": "/static/media/469-hyperloglog-redis copy.840b9643.md",
     "static/media/470-redis-availability.md": "/static/media/470-redis-availability.cb1ec1d6.md",
@@ -547,6 +547,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.5e91e2d9.chunk.js",
     "static/css/main.79028d0d.chunk.css",
-    "static/js/main.f9be780e.chunk.js"
+    "static/js/main.3972e2af.chunk.js"
   ]
 }
