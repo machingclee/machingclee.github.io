@@ -36,6 +36,7 @@ intro: "Experiment with Kafka API"
 </Center>
 
 
+
 - `cd` into `kafka-cluster/` and run `docker-compose up`, a kafka-cluster of 3 instances will be launched, with `localhost:9092` as the entrypoint.
 - Both `consumer/` and `producer/` are spring applications
 -  Launch the spring application in `consumer/`
