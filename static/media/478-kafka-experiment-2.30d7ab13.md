@@ -19,7 +19,6 @@ intro: "Experiment with Kafka API"
   }
 </style>
 
-
 ![](/assets/img/2026-03-22-18-53-29.png?border=none)
 
 ### Repository
