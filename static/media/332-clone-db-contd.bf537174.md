@@ -153,7 +153,7 @@ rm temp_script.sql
 echo "Done"
 ```
 
-### Remove all Database by TRUNCATE TABLE \<table\> CASCADE
+### Remove all Database by TRUNCATE TABLE `table` CASCADE
 
 - As mentioned in step 4 above we may wish to have follow-up actions.
 
