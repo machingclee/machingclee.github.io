@@ -1,6 +1,6 @@
 ---
 title: "Logitech 鍵盤設定 (for mac)"
-date: 2025-12-03
+date: 2026-03-08
 id: personal0007
 tag: personal, tech
 intro: 記錄鍵盤設定

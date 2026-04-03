@@ -1,12 +1,17 @@
 ---
-title: "那些年，短時間內離職的工作"
+title: "那些年，因期望偏差導致短期內離職，不會寫到 CV 的工作"
 date: 2026-04-02
 id: personal0008
 tag: personal
 intro: 快速結束合約的一些工作
 indent: true
 toc: true
+img: /assets/img/2026-04-03-13-54-47.png
+scale: 1.3
+offsetx: 0
+offsety: -20
 ---
+
 
 <style>
   video {
@@ -29,17 +34,22 @@ toc: true
 </style>
 
 
-### 多久為之短？
+### 多久為之短？本篇日記的用意？
 
 我自己定義為︰
 
 
-> 那些我上崗 ***不到一個月*** 便離職的工作 (主動或被動) 我都視為短時間。
+> 那些我上崗 ***不到一個月*** 便離職的工作 (主動或被動) 我都視之為 ***短*** 期。
 
-我覺得這些經歷回憶起來蠻有趣的所以寫一篇日記做做紀錄。像是這工作是怎樣得來，為甚麼被辭退，又為甚麼要辭職等等。
+我覺得這些經歷回憶起來蠻有趣的所以寫一篇日記做做紀錄。像是︰
+- 這工作是怎樣得來
+- 為甚麼被辭退
+- 又為甚麼要辭職
+
+等等。
 
 ### 遊戲業
-#### Zoomob Limited (2018 年，1 星期)
+#### Zoomob Limited (2018 年，Project Manager, 1 星期)
 
 ##### 投求職信 及 當時的 Art Portfolio
 
@@ -56,12 +66,12 @@ toc: true
 現在回頭看整個尷尬癌發作 ... 😂。
 
 
-##### 約面試
+##### 面試，但我投的是 2D Game Artist 啊 ...?
 
 
 某一天我在大陸午餐時收到一個來自香港的電話。是一名 Zoomob Limited 的職員通知我其公司對我的申請有興趣 (當時我還怕香港沒有人知道怎樣打電話到大陸)。
 
-好吧這是我唯一一個面試邀請，就約好回香港直接跟老闆聊天。面試前有一份作業，看我能不能夠畫出相同的畫風。題目為︰
+好吧這是我唯一一個面試邀請，就約好回香港直接跟老闆聊一下。面試前有一份作業，看我能不能夠畫出相同的畫風。題目為︰
 
 <item bar>
 
@@ -101,7 +111,7 @@ toc: true
 
 Mac 是我自己的，工作還是必須使用公司提供的電腦。
 
-工作內容我記得是玩玩公司的遊戲，給給意見，提出想法，還有遊戲的一些設定是可以用一個固定的 json 格式由 PM 做設定，再傳給 developer 把設定塞進遊戲。
+工作內容我記得是玩玩公司的遊戲，給給意見，還有遊戲的一些設定是可以用一個固定的 json 格式由 PM 做設計 (對白，角色在某個時刻的表情等)，再傳給 developer 把設定塞進遊戲。
 
 禮拜一上班，禮拜五就被辭退了，死因如下︰
 
@@ -116,7 +126,7 @@ Mac 是我自己的，工作還是必須使用公司提供的電腦。
 ### 科技業
 
 
-#### Corbel Systems Limited (2019 年，3 星期)
+#### Corbel Systems Limited (2019 年，Full Stack Software Developer, 3 星期)
 
 ##### 當年 IT 零經驗的 Tech Portfolio 
 
@@ -146,11 +156,15 @@ Mac 是我自己的，工作還是必須使用公司提供的電腦。
 
 **Cover Letter.** 
 
-Corbel Systems Limited <br/>
+<div>Corbel Systems Limited <br/></div>
 29th July, 2019 <br/>
-Dear Hiring Manager,
+Dear Hiring Manager, <br/><br/>
+
+<Center>
 
 **Application for Full Stack Software Developer**
+
+</Center>
 
 I am writing to express my interest to the position of Full Stack Software Developer which is posted on CTgoodjobs on 25th July, 2019.
 
@@ -162,42 +176,40 @@ As I love mathematics and I am eager to explore new technology, in the upcoming 
 
 I am looking forward to discussing the detail with you. Thank you for your consideration.
 
-Yours sincerely,<br/>
+<div>Yours sincerely,<br/></div>
 Lee Ching Cheong (李政昌)
 
 </item>
 
 
-##### 由入職到辭職
 
-
-###### 面試
+##### 面試
 
 
 ![](/assets/img/2026-04-03-01-23-29.png)
 
 基本上面試當天就確定被聘用了。雖然月薪要求寫的是 HKD 23,000，但最後談合約就只有 HKD 16,000。CV 的 expected salary 是當時 bootcamp training 的導師幫我想的，其實我真的沒甚麼所謂 (我從以前開始就一直沒在意薪金的，作為一直努力追求學術和美術的 nerd，反而沒甚麼金錢觀)。
 
-###### 痛みを知れ
+##### 這跟我學的不一樣啊？
 
-入職的第一週做 "練習"，沒有在做公司項目。回想起來應該算是一種 "在職培訓" 吧。練習目的是要熟習使用 `Ext JS` 寫前端然後 locally 塔建一個 `.net` framework 的 backend，最終要做到某一個 CRUD。第二週開始正式接觸項目代碼了。
+入職的第一週做 "練習"，沒有在做公司項目。回想起來應該算是一種 "在職培訓" 吧。練習目的是要熟習使用 `Ext JS` 寫前端以及 locally 塔建一個 `.net` framework 的 backend，最終要做到某一個 CRUD。第二週開始正式接觸項目代碼了。
 
-這是我第一次接觸 C# ...，而且有很多後端的 "norm" 跟我以前在 bootcamp 學的後端知識不太一樣。加上他們前端 react 版本非常老舊，class component 跟 functional component 混在一起，我整整兩個星期還是沒辦法適應他們的前端跟後端。
-
-
-
-###### 痛みを考えろ
-
-最後我覺得我能力確實不足，正好當時有另一個 offer (就是自我介紹中的 eLearningPro) 就申請辭職了。
-
-新工作的內容我終於應付得來，才正上開始上軌道。
+這是我第一次接觸 C# ...，而且有很多後端的 "norm" 跟我以前在 bootcamp 學的後端知識不太一樣。加上他們前端 react 版本非常老舊，class component 跟 functional component 又混在一起，我整整兩個星期還是沒辦法適應他們的前端跟後端。
 
 
-###### 離職前的小貢獻
+
+##### 有更好的 Offer，走了
+
+最後我覺得我能力確實不足，正好當時有另一個 offer (就是自我介紹中的 eLearningPro) 而且薪金漲 HKD 2,000，就申請離職了 。
+
+新工作的內容我終於應付得來，才正式開始上軌道。
+
+
+##### 離職前的小貢獻
 
 當年有一部分 react project 改代碼後還要經過一個 `gulp` 做自動化打包才能夠看到轉變。而不知道為甚麼他們的打包總會把整個 react application 打包一次，過程非常之耗時間。直到我幫他們在 gulp config 中找到一個可以 enable watch mode 的 flag .....。這算是我離職前的唯一小小貢獻吧。
 
-#### Xensetech Limited (2022 年，3 星期)
+#### Xensetech Limited (2022 年，Research Specialist, 3 星期)
 
 
 
@@ -206,14 +218,17 @@ Lee Ching Cheong (李政昌)
 現在不是甚麼祕密所以公開講了，Xensetech Limited 的母公司為保華建業集團 (已清盤)。負責引入 AI 技術到建築公地使用及響應香港政府推的 Smart City Solution。
 
 
-##### 轉職 Research Specialist 的動機
+##### 轉職動機 
 
 
 教練 ... 我想深詣 AI 學問。
 
-##### 面試
+2022 年 chatgpt 還沒誕生，在家拿個 GPU (nvidia 3090) 還是可以 train 一些 computer vision 的 deep learning model 的，學有小成後想往這方向發展。後來憑敏銳的嗅覺跑道一改再改，最後遠離了 deep learning 相關的行業。
 
-###### なに the Fxxk？考我 Bayes' Theorem ...！
+> **題外話.** 2024 年開始變成 LLM 世代，自己 train 大語言模型已經是不可行了。也就是大部分的 AI Developer 實際上變成 Software Engineer。
+
+
+##### なに the Fxxk？面試考我 Bayes' Theorem ...
 
 面試前先給我做一道概率問題，其中要使用到以下公式 (Bayes’ theorem)︰
 
@@ -224,8 +239,16 @@ Lee Ching Cheong (李政昌)
 
 
 
-###### 面試談的工作內容 ... 不存在的
+##### 面試談的工作內容 ... 不存在的
 
-面試是由 1 名 Project Manager + 2 個 Engineer 跟我進行的。他們以為公司內部會有需要研究的工作。但他們的上司原意是想找一名 "研究" 別人 "在研究甚麼" 的 specialist。嗯 ... 一場美麗的誤會，果斷離職 (`・ω・´)。
+面試是由 1 名 Project Manager + 2 名 Engineer 跟我進行的。他們以為公司內部會有需要研究的工作。但他們的上司原意是想找一名 "研究" 別人 "在研究甚麼" 的 specialist。嗯 ... 一場美麗的誤會，果斷離職 (`・ω・´)。
 
-之後我都有小心留意 interview 時要跟 "領導" 級別的人對話，問清楚工作範圍。可惜後來有遇過公司太大，"領導" 不清楚團隊在幹甚麼，最後還是得到錯誤的工作範圍訊息 ... (找工作不難，找對工作真的太難了 ...)。
+之後我都有小心留意 interview 時要跟 "領導" 級別的人對話，問清楚工作範圍。可惜後來有遇過公司太大，"領導" 不清楚團隊在幹甚麼，最後還是得到錯誤的工作範圍訊息 ...。
+
+### 總結，還有後續 ...
+
+找工作不難，找對工作真的太難了。
+
+找工作除了會遇到跟自己期望不一致的情況外，還會遇到一些初時不為意，但卻是極之不合理的合同。比方說合同 "沒有試用期"，比方說合約期內辭職必須付上懲罰性賠償，等等單方面剝奪求職者利益的 terms 等等。
+
+這些合約上的坑，一些香港碰不得的 agency，等等，留待有心力去寫的時候再講。

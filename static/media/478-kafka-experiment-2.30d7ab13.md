@@ -23,7 +23,6 @@ intro: "Experiment with Kafka API"
 
 ### Repository
 
-
 #### Repo Link
 - https://github.com/machingclee/2026-03-22-kafka-study
 
