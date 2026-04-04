@@ -49,7 +49,7 @@ offsety: -20
 等等。
 
 ### 遊戲業
-#### Zoomob Limited (2018 年，Project Manager, 1 星期)
+#### Zoomob Limited (2018 年, Project Manager, 1 星期)
 
 ##### 投求職信 及 當時的 Art Portfolio
 
@@ -57,7 +57,7 @@ offsety: -20
 那時我還在大陸當一名 2D 美術。在 2018 年的 9 ~ 10 月我開始在香港寄求職信尋找 2D 美術職位。當年使用 InDesign 製作的 PDF︰
 
 <a href="/assets/portfolios/pdfs/ArtPortfolio.pdf">
-  <img src="/assets/img/2026-04-03-00-07-23.png" width="600" default="true"/>
+  <img src="/assets/img/2026-04-03-00-07-23.png" default="true"/>
 </a>
 
 ***(可點擊圖片開啟)***
@@ -126,7 +126,7 @@ Mac 是我自己的，工作還是必須使用公司提供的電腦。
 ### 科技業
 
 
-#### Corbel Systems Limited (2019 年，Full Stack Software Developer, 3 星期)
+#### Corbel Systems Limited (2019 年, Full Stack Software Developer, 3 星期)
 
 ##### 當年 IT 零經驗的 Tech Portfolio 
 
@@ -139,7 +139,7 @@ Mac 是我自己的，工作還是必須使用公司提供的電腦。
 
 
 <a href="/assets/portfolios/pdfs/0_exp_CV.pdf">
-  <img src="/assets/img/2026-04-03-01-31-34.png" width="400" default="true"/>
+  <img src="/assets/img/2026-04-03-01-31-34.png"  default="true"/>
 </a>
 
 
@@ -202,6 +202,8 @@ Lee Ching Cheong (李政昌)
 
 最後我覺得我能力確實不足，正好當時有另一個 offer (就是自我介紹中的 eLearningPro) 而且薪金漲 HKD 2,000，就申請離職了 。
 
+![](/assets/img/2026-04-04-02-22-15.png)
+
 新工作的內容我終於應付得來，才正式開始上軌道。
 
 
@@ -209,7 +211,7 @@ Lee Ching Cheong (李政昌)
 
 當年有一部分 react project 改代碼後還要經過一個 `gulp` 做自動化打包才能夠看到轉變。而不知道為甚麼他們的打包總會把整個 react application 打包一次，過程非常之耗時間。直到我幫他們在 gulp config 中找到一個可以 enable watch mode 的 flag .....。這算是我離職前的唯一小小貢獻吧。
 
-#### Xensetech Limited (2022 年，Research Specialist, 3 星期)
+#### Xensetech Limited (2022 年, Research Specialist, 3 星期)
 
 
 
@@ -230,9 +232,14 @@ Lee Ching Cheong (李政昌)
 
 ##### なに the Fxxk？面試考我 Bayes' Theorem ...
 
+
 面試前先給我做一道概率問題，其中要使用到以下公式 (Bayes’ theorem)︰
 
-![](/assets/img/2026-04-03-02-08-35.png)
+
+$$
+\mathbb P(A_i |B) = \frac{\mathbb P(B|A_i)\cdot \mathbb P(A_i)}{\sum_{j} \mathbb P(B|A_j)\cdot \mathbb P(A_j)}
+$$
+
 
 這是有關 posterior probability 跟 prior probability 的基礎應用，Bayesian  statistic 的入門內容。碰考當時我有在學習 variational autoencoder (為了學習 NLP)，對這些 "先檢" "後檢" 概率非常熟習，面試題很輕鬆就過關了 (有填上數值但不用計算出來)。
 

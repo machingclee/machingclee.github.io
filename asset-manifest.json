@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.681870eb.chunk.css",
-    "main.js": "/static/js/main.df59f03d.chunk.js",
+    "main.js": "/static/js/main.364f98b3.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.d488189d.js",
     "static/css/2.d36edc37.chunk.css": "/static/css/2.d36edc37.chunk.css",
     "static/js/2.81de1906.chunk.js": "/static/js/2.81de1906.chunk.js",
@@ -40,7 +40,7 @@
     "static/media/007-logitech-setting.md": "/static/media/007-logitech-setting.3f7ea324.md",
     "static/media/007-redux-saga.md": "/static/media/007-redux-saga.cb509a48.md",
     "static/media/008-defectGAN.md": "/static/media/008-defectGAN.160592d3.md",
-    "static/media/008-first-job.md": "/static/media/008-first-job.d1ef4a5e.md",
+    "static/media/008-first-job.md": "/static/media/008-first-job.23cd8b69.md",
     "static/media/009-algorithms.md": "/static/media/009-algorithms.2fdb7732.md",
     "static/media/009-text-detection-and-erase.md": "/static/media/009-text-detection-and-erase.c9852e05.md",
     "static/media/010-algo-exercises.md": "/static/media/010-algo-exercises.f397a08e.md",
@@ -549,6 +549,6 @@
     "static/css/2.d36edc37.chunk.css",
     "static/js/2.81de1906.chunk.js",
     "static/css/main.681870eb.chunk.css",
-    "static/js/main.df59f03d.chunk.js"
+    "static/js/main.364f98b3.chunk.js"
   ]
 }
