@@ -1,0 +1,786 @@
+const n=`---
+title: Prisma with SQLite for GUI Application in Rust
+date: 2025-10-14
+id: blog0427
+tag: rust, prisma
+toc: true
+intro: Record prisma setup for GUI application.
+---
+
+### Install Prisma
+
+
+#### Install Prisma CLI via npm/yarn
+
+This is for schema-migration based on our \`schema.prisma\`.
+
+\`\`\`bash
+yarn init -y
+yarn add -D prisma@4.8.0
+yarn add @prisma/client@4.8.0
+\`\`\`
+
+####  Install Prisma CLI (Rust binary) via Cargo
+
+This is for building \`rust\` entites code based on our \`schema.prisma\`.
+
+1. Install with SQLite support (add other databases as needed)
+    \`\`\`bash
+    cargo install --git https://github.com/Brendonovich/prisma-client-rust \\
+    --tag 0.6.11 \\
+    prisma-cli \\
+    --features sqlite \\˛
+    --force
+    \`\`\`
+2. Create symlink for cargo subcommand
+    \`\`\`bash
+    ln -s ~/.cargo/bin/prisma ~/.cargo/bin/cargo-prisma
+    \`\`\`
+
+Available database features:
+- \`sqlite\` - SQLite
+- \`postgresql\` - PostgreSQL
+- \`mysql\` - MySQL
+- \`mssql\` - Microsoft SQL Server
+- \`mongodb\` - MongoDB
+
+#### Add Prisma Client Rust to Cargo.toml
+
+
+\`\`\`toml
+[dependencies]
+prisma-client-rust = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.11", default-features = false, features = ["sqlite", "migrations"] }
+serde = { version = "1.0", features = ["derive"] }
+tokio = { version = "1.0", features = ["full"] }
+[build-dependencies]
+prisma-client-rust-cli = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.11" }
+\`\`\`
+
+#### Create \`build.rs\` in project root
+
+The following script will be executed when we \`cargo build\` or \`cargo run\`:
+
+\`\`\`rust
+fn main() {
+    // Generate Prisma Client Rust whenever schema.prisma changes
+    println!("cargo:rerun-if-changed=prisma/schema.prisma");
+    prisma_client_rust_cli::run();
+}
+\`\`\`
+
+### Brief Introduction to Prisma
+#### Prisma Schema File
+
+##### Initialize prisma
+
+Create \`prisma/schema.prisma\` file:
+\`\`\`bash
+npx prisma init --datasource-provider sqlite
+\`\`\`
+
+##### Complete \`prisma/schema.prisma\` example
+
+\`\`\`prisma
+generator client {
+  provider = "cargo prisma"
+  output   = "../src/prisma.rs"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:../dev-database.db"
+}
+
+// Your data models
+model Counter {
+  id          Int      @id @default(autoincrement())
+  value       BigInt
+  name        String
+  description String?
+  isActive    Boolean  @default(true) @map("is_active")
+  multiplier  Float?
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("counter")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String
+  createdAt DateTime @default(now()) @map("created_at")
+  
+  @@map("users")
+}
+\`\`\`
+
+Note that we may also need:
+
+\`\`\`prisma
+created_at        Float          @default(dbgenerated("(CAST((julianday('now') - 2440587.5) * 86400000.0 AS REAL))"))
+created_at_hk     String         @default(dbgenerated("(strftime('%Y-%m-%d %H:%M:%S', datetime('now', '+8 hours')))"))
+\`\`\` 
+
+which are the \`sqlite\` specific way to create 
+- auto-generate \`created_at\` in milli-second and 
+
+- \`created_at\` in hong kong time string format.
+
+##### Schema syntax reference
+
+**Field Types**
+- \`String\` → \`TEXT\`
+- \`Int\` → \`INTEGER\`
+- \`BigInt\` → \`BIGINT\`
+- \`Float\` → \`REAL\`/\`DOUBLE\`
+- \`Boolean\` → \`BOOLEAN\`
+- \`DateTime\` → \`TIMESTAMP\`
+- \`Json\` → \`JSON\`
+
+**Field Modifiers**
+- \`?\` → Optional field (nullable)
+- \`[]\` → Array/List field
+- \`@id\` → Primary key
+- \`@unique\` → Unique constraint
+- \`@default(value)\` → Default value
+- \`@updatedAt\` → Auto-update timestamp
+- \`@map("db_name")\` → Custom column name
+- \`@@map("table_name")\` → Custom table name
+
+
+**Default Values**
+
+\`\`\`prisma 
+@default(autoincrement())   // Auto-increment ID
+@default(now())             // Current timestamp
+@default(true)              // Boolean default
+@default("text")            // String default
+@default(0)                 // Number default
+\`\`\`
+
+#### Schema Migration & Code Generation
+
+#####  Create our first migration
+This command will:
+
+1. Generate SQL migration file
+2. Create/update the database
+3. Generate Rust code in src/prisma.rs
+
+\`\`\`bash
+npx prisma migrate dev --name init
+\`\`\`
+which outputs: 
+\`\`\`bash
+✓ Generated SQL migration
+✓ Applied migration to database
+✓ Generated Prisma Client Rust to ./src/prisma.rs
+\`\`\`
+
+##### When we change the schema
+After editing schema.prisma, create a new migration by:
+\`\`\`bash
+npx prisma migrate dev --name add_user_table
+\`\`\`
+Prisma will automatically detects what is changed!
+
+##### Where to find generated code
+
+Generated file location: \`src/prisma.rs\`, this file contains:
+
+- Type-safe Rust structs for your models
+- Query builder methods (create, find, update, delete)
+- Field helper functions
+- PrismaClient struct
+
+**Do not edit this file manually!** It's regenerated on every migration.
+
+##### Other useful commands
+
+- Regenerate client without creating migration
+  \`\`\`bash
+  npx prisma generate
+  \`\`\`
+- Reset database (WARNING: deletes all data)
+  \`\`\`bash
+  npx prisma migrate reset
+  \`\`\`
+
+- Open Prisma Studio (database GUI)
+  \`\`\`bash 
+  npx prisma studio
+  \`\`\`
+
+### Connecting to Database & CRUD Operations
+
+#### Database Connection String
+
+- Set in \`prisma/schema.prisma\`:
+
+  \`\`\`prisma
+  datasource db {
+    provider = "sqlite"
+    url = "file:../dev-database.db"
+  }
+
+  // For PostgreSQL:
+  // provider = "postgresql"
+  // url = "postgresql://user:password@localhost:5432/mydb"
+  
+  // For MySQL:
+  // provider = "mysql"
+  // url = "mysql://user:password@localhost:3306/mydb"
+  \`\`\`
+
+- Or use environment variable:
+
+  \`\`\`prisma
+  datasource db {
+  provider = "sqlite"
+  url = env("DATABASE_URL")
+  }
+  \`\`\`
+  and create \`.env\` file:
+  \`\`\`bash
+  DATABASE_URL="file:./dev-database.db"
+  \`\`\`
+
+#### Connect to Database in Rust
+
+\`\`\`rust
+// In main.rs
+mod prisma;
+use prisma::PrismaClient;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    // Create client (reads connection string from schema.prisma)
+    let client = prisma::new_client().await?;
+    
+    // Or specify custom URL at runtime
+    // let client = prisma::new_client_with_url("file:./my-database.db").await?;
+    
+    // Now use the client for queries
+    Ok(())
+}
+\`\`\`
+
+#### CRUD Operations
+
+##### \`CREATE\`
+
+- Create a single record
+  \`\`\`rust
+  let counter = client
+      .counter()
+      .create(
+          0,                          // value (required field)
+          "My Counter".to_string(),   // name (required field)
+          vec![                       // optional fields
+              prisma::counter::description::set(Some("A test counter".to_string())),
+              prisma::counter::is_active::set(true),
+              prisma::counter::multiplier::set(Some(2.5)),
+          ]
+      )
+      .exec()
+      .await?;
+  \`\`\`
+- Create multiple records
+  \`\`\`rust
+  client
+      .counter()
+      .create_many(vec![
+          prisma::counter::create(0, "Counter 1".to_string(), vec![]),
+          prisma::counter::create(10, "Counter 2".to_string(), vec![]),
+          prisma::counter::create(20, "Counter 3".to_string(), vec![]),
+      ])
+      .exec()
+      .await?;
+  \`\`\`
+
+
+
+##### \`READ\`
+
+- Find by \`id\` (returns \`Option<Data>\`)
+  \`\`\`rust
+  let counter = client
+      .counter()
+      .find_unique(prisma::counter::id::equals(1))
+      .exec()
+      .await?;
+
+  if let Some(c) = counter {
+      println!("Found: {}", c.name);
+  } else {
+      println!("Not found");
+  }
+  \`\`\`
+- Find first match
+  \`\`\`rust
+  let counter = client
+      .counter()
+      .find_first(vec![
+          prisma::counter::is_active::equals(true)
+      ])
+      .exec()
+      .await?;
+  \`\`\`
+- Find many with filters
+  \`\`\`rust
+  let counters = client
+      .counter()
+      .find_many(vec![
+          prisma::counter::is_active::equals(true),
+          prisma::counter::value::gte(10),
+      ])
+      .exec()
+      .await?;
+
+  println!("Found {} active counters", counters.len());
+  \`\`\`
+
+
+- Find many with ordering
+  \`\`\`rust
+  let counters = client
+      .counter()
+      .find_many(vec![])
+      .order_by(prisma::counter::value::order(prisma::Direction::Desc))
+      .exec()
+      .await?;
+  \`\`\`
+- Find many with pagination
+  \`\`\`rust 
+  let counters = client
+      .counter()
+      .find_many(vec![])
+      .skip(10)
+      .take(5)  // Limit to 5 results
+      .exec()
+      .await?;
+  \`\`\`
+- Select specific fields only
+  \`\`\`rust
+  let names = client
+      .counter()
+      .find_many(vec![])
+      .select(prisma::counter::select!({
+          id
+          name
+      }))
+      .exec()
+      .await?;
+
+  for counter in names {
+      println!("ID: {}, Name: {}", counter.id, counter.name);
+  }
+  \`\`\`
+
+
+
+##### \`UPDATE\`
+- Update a single record
+  \`\`\`rust 
+  let updated = client
+      .counter()
+      .update(
+          prisma::counter::id::equals(1),  // which record
+          vec![                             // what to update
+              prisma::counter::value::increment(1),
+              prisma::counter::name::set("Updated Name".to_string()),
+              prisma::counter::description::set(Some("New description".to_string())),
+          ]
+      )
+      .exec()
+      .await?;
+
+  println!("New value: {}", updated.value);
+  \`\`\`
+- Update many records
+  \`\`\`rust
+  let count = client
+      .counter()
+      .update_many(
+          vec![
+              prisma::counter::is_active::equals(false)  // filter
+          ],
+          vec![
+              prisma::counter::is_active::set(true)      // update
+          ]
+      )
+      .exec()
+      .await?;
+
+  println!("Updated {} records", count);
+  \`\`\`
+
+- Upsert (\`update\` if exists, \`create\` if not)
+  \`\`\`rust
+  let counter = client
+      .counter()
+      .upsert(
+          prisma::counter::id::equals(1),                     // find by this
+          prisma::counter::create(0, "New".to_string(), vec![]), // create if not found
+          vec![prisma::counter::value::increment(1)]          // update if found
+      )
+      .exec()
+      .await?;
+  \`\`\`
+
+##### \`DELETE\`
+- Delete a single record
+  \`\`\`rust
+  let deleted = client
+      .counter()
+      .delete(prisma::counter::id::equals(1))
+      .exec()
+      .await?;
+
+  println!("Deleted counter: {}", deleted.name);
+  \`\`\`
+- Delete many records
+  \`\`\`rust
+  let count = client
+      .counter()
+      .delete_many(vec![
+          prisma::counter::is_active::equals(false)
+      ])
+      .exec()
+      .await?;
+
+  println!("Deleted {} inactive counters", count);
+  \`\`\`
+
+
+### Advanced Queries
+
+#### Query with Conditions
+
+- Combine multiple conditions (\`AND\`)
+  \`\`\`rust
+  let counters = client
+      .counter()
+      .find_many(vec![
+          prisma::counter::is_active::equals(true),
+          prisma::counter::value::gte(10),
+          prisma::counter::value::lte(100),
+          prisma::counter::name::contains("test"),
+      ])
+      .exec()
+      .await?;
+  \`\`\`
+
+- \`OR\` conditions
+  \`\`\`rust
+  let counters = client
+      .counter()
+      .find_many(vec![
+          prisma::counter::or(vec![
+              prisma::counter::name::equals("Counter A".to_string()),
+              prisma::counter::name::equals("Counter B".to_string()),
+          ])
+      ])
+      .exec()
+      .await?;
+  \`\`\`
+- \`NOT\` condition
+  \`\`\`rust
+  let counters = client
+      .counter()
+      .find_many(vec![
+          prisma::counter::not(vec![
+              prisma::counter::is_active::equals(false)
+          ])
+      ])
+      .exec()
+      .await?;
+  \`\`\`
+
+
+
+
+#### String Filters
+
+- Exact match
+  \`\`\`rust
+  prisma::counter::name::equals("exact name")
+  \`\`\`
+
+- Contains substring
+  \`\`\`rust
+  prisma::counter::name::contains("substring")
+  \`\`\`
+
+- Starts with
+  \`\`\`rust
+  prisma::counter::name::starts_with("prefix")
+  \`\`\`
+
+- Ends with
+  \`\`\`rust
+  prisma::counter::name::ends_with("suffix")
+  \`\`\`
+
+- Case insensitive (if supported by database)
+  \`\`\`rust
+  prisma::counter::name::mode(prisma::QueryMode::Insensitive)
+  \`\`\`
+
+#### Number Filters
+
+\`\`\`rust
+prisma::counter::value::equals(10)
+prisma::counter::value::lt(10)      // less than
+prisma::counter::value::lte(10)     // less than or equal
+prisma::counter::value::gt(10)      // greater than
+prisma::counter::value::gte(10)     // greater than or equal
+prisma::counter::value::in_vec(vec![1, 2, 3, 4])
+prisma::counter::value::not_in_vec(vec![5, 6])
+\`\`\`
+
+#### Optional Field Filters
+
+- Check if field is null
+  \`\`\`rust
+  prisma::counter::description::equals(None)
+  \`\`\`
+
+- Check if field is not null
+  \`\`\`rust
+  prisma::counter::description::not(None)
+  \`\`\`
+
+- Specific value
+  \`\`\`rust
+  prisma::counter::description::equals(Some("text".to_string()))
+  \`\`\`
+
+#### Count Records
+
+\`\`\`rust
+let count = client
+    .counter()
+    .count(vec![
+        prisma::counter::is_active::equals(true)
+    ])
+    .exec()
+    .await?;
+
+println!("Total active counters: {}", count);
+\`\`\`
+
+#### Transactions
+
+- Execute multiple operations atomically
+  \`\`\`rust
+  let result = client
+      ._transaction()
+      .run(|tx| async move {
+          // Create user
+          let user = tx
+              .user()
+              .create("user@example.com".to_string(), "John".to_string(), vec![])
+              .exec()
+              .await?;
+          
+          // Create counter linked to user
+          let counter = tx
+              .counter()
+              .create(0, "User's Counter".to_string(), vec![])
+              .exec()
+              .await?;
+          
+          Ok((user, counter))
+      })
+      .await?;
+
+  println!("Created user {} and counter {}", result.0.id, result.1.id);
+  \`\`\`
+
+#### Raw SQL Queries
+
+- Raw query with type safety
+  \`\`\`rust
+  use prisma_client_rust::raw;
+
+  let counters: Vec<prisma::counter::Data> = client
+      ._query_raw(raw!(
+          "SELECT * FROM counter WHERE value > {}",
+          10
+      ))
+      .exec()
+      .await?;
+  \`\`\`
+
+- Raw execute (\`INSERT\`/\`UPDATE\`/\`DELETE\`)
+  \`\`\`rust
+  let affected = client
+      ._execute_raw(raw!(
+          "UPDATE counter SET value = value + 1 WHERE is_active = {}",
+          true
+      ))
+      .exec()
+      .await?;
+
+  println!("Updated {} rows", affected);
+  \`\`\`
+
+#### Left Joins over Association Table
+Suppose that we have the following tables:
+
+[![](/assets/img/2025-10-14-09-21-36.png)](/assets/img/2025-10-14-09-21-36.png)
+
+Then to get all scripts belonging to a folder:
+
+\`\`\`rust{10-13}
+pub fn get_all_scripts_of_folder(&self, folder_id: i32) -> Vec<prisma::shell_script::Data> {
+    let runtime = tokio::runtime::Runtime::new().unwrap();
+
+    let scripts = runtime
+        .block_on(async move {
+            // Query the folder with all related scripts through the junction table
+            self.db
+                .scripts_folder()
+                .find_unique(prisma::scripts_folder::id::equals(folder_id))
+                .with(
+                    prisma::scripts_folder::rel_scriptsfolder_shellscript::fetch(vec![])
+                        .with(prisma::rel_scriptsfolder_shellscript::shell_script::fetch()),
+                )
+                .exec()
+                .await
+        })
+        .unwrap();
+
+    // Extract the shell scripts from the joined data
+    if let Some(folder) = scripts {
+        folder
+            .rel_scriptsfolder_shellscript
+            .unwrap_or_default()
+            .into_iter()
+            .filter_map(|rel| rel.shell_script.map(|s| *s))
+            .collect()
+    } else {
+        vec![]
+    }
+}
+\`\`\`
+- \`.with()\` means left join;
+
+- \`.fetch()\` follows from what we declared in \`schema.prisma\`; Do we fetch a list? or fetch a single item?
+
+
+### Complete Example: Iced App with Prisma
+
+\`\`\`rust
+use iced::{executor, Application, Command, Element, Settings, Theme};
+use iced::widget::{button, column, container, text};
+
+mod prisma;
+
+struct CounterApp {
+    count: i64,
+    client: Option<prisma::PrismaClient>,
+    counter_id: Option<i32>,
+}
+
+#[derive(Debug, Clone)]
+enum Message {
+    DatabaseConnected(prisma::PrismaClient),
+    Increment,
+    Decrement,
+    CounterSaved,
+    CounterLoaded(i64),
+}
+
+impl Application for CounterApp {
+    type Executor = executor::Default;
+    type Message = Message;
+    type Theme = Theme;
+    type Flags = ();
+
+    fn new(_flags: ()) -> (Self, Command<Message>) {
+        (
+            Self {
+                count: 0,
+                client: None,
+                counter_id: None,
+            },
+            Command::perform(setup_database(), Message::DatabaseConnected),
+        )
+    }
+
+    fn title(&self) -> String {
+        String::from("Prisma Counter")
+    }
+
+    fn update(&mut self, message: Message) -> Command<Message> {
+        match message {
+            Message::DatabaseConnected(client) => {
+                self.client = Some(client);
+                Command::perform(load_counter(), Message::CounterLoaded)
+            }
+            Message::Increment => {
+                self.count += 1;
+                Command::perform(
+                    save_counter(self.client.clone(), self.count),
+                    |_| Message::CounterSaved,
+                )
+            }
+            Message::Decrement => {
+                self.count -= 1;
+                Command::perform(
+                    save_counter(self.client.clone(), self.count),
+                    |_| Message::CounterSaved,
+                )
+            }
+            Message::CounterLoaded(value) => {
+                self.count = value;
+                Command::none()
+            }
+            Message::CounterSaved => Command::none(),
+        }
+    }
+
+    fn view(&self) -> Element<Message> {
+        let content = column![
+            text(format!("Count: {}", self.count)).size(50),
+            button("Increment").on_press(Message::Increment),
+            button("Decrement").on_press(Message::Decrement),
+        ]
+        .spacing(20)
+        .padding(20);
+
+        container(content).center_x().center_y().into()
+    }
+}
+
+async fn setup_database() -> prisma::PrismaClient {
+    prisma::new_client().await.expect("Failed to connect to database")
+}
+
+async fn load_counter() -> i64 {
+    // Implement loading logic
+    0
+}
+
+async fn save_counter(client: Option<prisma::PrismaClient>, value: i64) {
+    if let Some(client) = client {
+        client
+            .counter()
+            .upsert(
+                prisma::counter::id::equals(1),
+                prisma::counter::create(value, "Main Counter".to_string(), vec![]),
+                vec![prisma::counter::value::set(value)],
+            )
+            .exec()
+            .await
+            .ok();
+    }
+}
+
+fn main() -> iced::Result {
+    CounterApp::run(Settings::default())
+}
+\`\`\``;export{n as default};
