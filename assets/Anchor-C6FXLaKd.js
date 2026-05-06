@@ -1,0 +1,1 @@
+import{j as c,m as n}from"./index-BnWxFDM0.js";const t=n({customAnchor:{"& a":{color:"#989fc3 !important"}}},{name:"custom-anchor"}),e=({href:s,title:o})=>{const a=t();return c.jsx("span",{className:a.customAnchor,children:c.jsx("a",{href:s,target:"_blank",children:o||s})})};export{e as A};
