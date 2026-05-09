@@ -2,4 +2,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://machingclee.github.io/sitesmap.xml
+Sitemap: https://machingclee.github.io/sitemap_new.xml
